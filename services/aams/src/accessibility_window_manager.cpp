@@ -44,30 +44,20 @@ int AccessibilityWindowInfoManager::ConvertToRealWindowId(int windowId, int focu
     return windowId;
 }
 
-WindowType ConvertWindowType(WMWindowType type) {
+WindowType ConvertWindowType(Rosen::WindowType type) {
     WindowType winType = TYPE_WINDOW_INVALID;
-    switch (type) {
-        case WINDOW_TYPE_NORMAL:
-            winType = TYPE_APPLICATION;
-            break;
-        case WINDOW_TYPE_STATUS_BAR:
-        case WINDOW_TYPE_NAVI_BAR:
-        case WINDOW_TYPE_SYSTEM_UI:
-        case WINDOW_TYPE_ALARM_SCREEN:
-        case WINDOW_TYPE_LAUNCHER:
-            winType = TYPE_SYSTEM;
-            break;
-        default:
-            break;
+    if (type < Rosen::WindowType::SYSTEM_WINDOW_BASE) {
+        winType = TYPE_APPLICATION;
+    } else {
+        winType = TYPE_SYSTEM;
     }
     return winType;
 }
 
-AccessibilityWindowInfo AccessibilityWindowInfoManager::CreateAccessibilityWindowInfo(GetWindowInfoResult &windowInfo) {
+AccessibilityWindowInfo AccessibilityWindowInfoManager::CreateAccessibilityWindowInfo(Rosen::WindowInfo &windowInfo) {
     AccessibilityWindowInfo info;
     info.SetWindowId(windowInfo.wid);
     info.SetWindowType(ConvertWindowType(windowInfo.type));
-    info.SetWindowLayer(windowInfo.zorder);
     // TODO: Set anchorId or anchorPosition
     info.SetFocused(windowInfo.isFocused);
     Rect bound;
@@ -82,8 +72,7 @@ AccessibilityWindowInfo AccessibilityWindowInfoManager::CreateAccessibilityWindo
 void AccessibilityWindowInfoManager::RegisterWindowChangeListener() {
     if (!registerFlag_) {
         auto aams = DelayedSingleton<AccessibleAbilityManagerService>::GetInstance();
-        sptr<IWindowManagerService> wms = aams->GetWindowMgrProxy();
-        wms->OnWindowListChange(this);
+        Rosen::WindowManager::GetInstance().RegisterWindowUpdateListener(this);
         registerFlag_ = true;
         return;
     }
@@ -92,8 +81,7 @@ void AccessibilityWindowInfoManager::RegisterWindowChangeListener() {
 void AccessibilityWindowInfoManager::DeregisterWindowChangeListener() {
     if (registerFlag_) {
         auto aams = DelayedSingleton<AccessibleAbilityManagerService>::GetInstance();
-        sptr<IWindowManagerService> wms = aams->GetWindowMgrProxy();
-        wms->OnWindowListChange(nullptr);
+        Rosen::WindowManager::GetInstance().UnregisterWindowUpdateListener(this);
         registerFlag_ = false;
         return;
     }
@@ -105,8 +93,7 @@ void AccessibilityWindowInfoManager::OnWindowChanged(int windowId, bool add) {
     if (add) {
         auto accountData = aams->GetCurrentAccountData();
         if (accountData->GetAccessibilityInteractionConnection(windowId)) {
-            sptr<IWindowManagerService> wms = aams->GetWindowMgrProxy();
-            sptr<GetWindowInfoResult> windowInfo = wms->GetWindowInfo(windowId);
+            sptr<Rosen::WindowInfo> windowInfo = Rosen::WindowManager::GetInstance().GetWindowInfo(windowId);
             if (!windowInfo) {
                 HILOG_ERROR("GetWindowInfo failed by window id!!");
                 return;
@@ -145,12 +132,38 @@ void AccessibilityWindowInfoManager::OnWindowChanged(int windowId, bool add) {
     }
 }
 
-void AccessibilityWindowInfoManager::OnWindowCreate(int32_t wid) {
-    OnWindowChanged(wid, true);
-}
-
-void AccessibilityWindowInfoManager::OnWindowDestroy(int32_t wid) {
-    OnWindowChanged(wid, false);
+void AccessibilityWindowInfoManager::OnWindowUpdate(uint32_t windowId, Rosen::WindowUpdateType type) {
+    HILOG_DEBUG("ycz OnWindowUpdate, windowId and updateType: %{public}d, %{public}x", windowId, type);
+    sptr<Rosen::WindowInfo> info = Rosen::WindowManager::GetInstance().GetWindowInfo(windowId);
+    if (info->wret == Rosen::WMError::WM_ERROR_NULLPTR) {
+        HILOG_ERROR("ycz wret error: nullptr");
+        return;
+    }
+    switch(type) {
+        case Rosen::WindowUpdateType::WINDOW_UPDATE_ADDED:{
+            HILOG_DEBUG("ycz window added:wret[%{public}x], wid[%{public}d],width[%{public}d], \
+            height[%{public}d],positionX[%{public}d],positionY[%{public}d],\
+            isFocused[%{public}d],mode[%{public}d],type[%{public}d]",
+            info->wret, info->wid, info->width,info->height,info->positionX,info->positionY,
+            info->isFocused,info->mode,info->type);
+            OnWindowChanged(windowId, true);
+            break;
+        }
+        case Rosen::WindowUpdateType::WINDOW_UPDATE_REMOVED: {
+            HILOG_DEBUG("ycz window removed:wret[%{public}x], wid[%{public}d],width[%{public}d], \
+            height[%{public}d],positionX[%{public}d],positionY[%{public}d],\
+            isFocused[%{public}d],mode[%{public}d],type[%{public}d]",
+            info->wret, info->wid, info->width,info->height,info->positionX,info->positionY,
+            info->isFocused,info->mode,info->type);
+            OnWindowChanged(windowId, false);
+            break;
+        }
+        case Rosen::WindowUpdateType::WINDOW_UPDATE_FOCUSED:
+            HILOG_DEBUG("ycz window focused");
+            break;
+        default:
+            HILOG_DEBUG("other update type");
+    }
 }
 
 void AccessibilityWindowInfoManager::SetActiveWindow(int windowId) {

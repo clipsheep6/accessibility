@@ -59,11 +59,13 @@ struct AccessibilityAbilityInfoDummy
 };
 
 // WMS dummy start
+// done
 enum WMError {
     WM_OK = 0,
     WM_NG
 };
 
+//todo
 struct WMDisplayInfo:public OHOS::RefBase {
     int32_t id;
     uint32_t width;
@@ -74,11 +76,13 @@ struct WMDisplayInfo:public OHOS::RefBase {
     uint32_t dpi; // 额外的像素密度，比如hi3516的mipi屏是 60mmx120mm, 480x960, dpi=203
 };
 
+//delete
 struct GetFocusWindowResult:public OHOS::RefBase {
     WMError wret; // 返回结果
     int32_t wid; // 窗口id
 };
 
+//todo
 class IWindowManagerDisplayListenerClazz {
 public:
     IWindowManagerDisplayListenerClazz() = default;
@@ -87,6 +91,7 @@ public:
     virtual void OnScreenPlugout(int32_t did) = 0;
 };
 
+//done
 enum WindowMode {
     WINDOW_MODE_UNSET = 0,
     WINDOW_MODE_FREE = 1,
@@ -94,6 +99,7 @@ enum WindowMode {
     WINDOW_MODE_MAX,
 };
 
+//done
 enum WMWindowType {
     WINDOW_TYPE_NORMAL = 0,
     WINDOW_TYPE_STATUS_BAR = 1,
@@ -105,6 +111,7 @@ enum WMWindowType {
     WINDOW_TYPE_MAX,
 };
 
+//done
 struct GetWindowInfoResult:public OHOS::RefBase {
     WMError wret; // 调用返回值
     int32_t wid; // 窗口ID
@@ -120,6 +127,7 @@ struct GetWindowInfoResult:public OHOS::RefBase {
     WMWindowType type; // 窗口类型
 };
 
+//done
 class IWindowChangeListenerClazz {
 public:
     IWindowChangeListenerClazz() = default;
@@ -130,6 +138,7 @@ public:
 
 class IWindowManagerService : public RefBase {
 public:
+    // todo
     WMError GetDisplays(std::vector<struct WMDisplayInfo> &displays)
     { 
         WMDisplayInfo display;
@@ -140,9 +149,11 @@ public:
         displays.push_back(display);
         return WM_OK;
     }
+    // todo
     WMError AddDisplayChangeListener(IWindowManagerDisplayListenerClazz *listener) {return WM_OK;}
+    // delete
     sptr<struct GetFocusWindowResult> GetFocusWindowID() {return nullptr;}
-
+    // done
     sptr<struct GetWindowInfoResult> GetWindowInfo(int32_t wid) {
       
         window = new GetWindowInfoResult();
@@ -153,6 +164,7 @@ public:
     }
 
     sptr<struct GetWindowInfoResult> window;
+    // done
     void OnWindowListChange(IWindowChangeListenerClazz *listener) {}
 };
 // WMS dummy end
