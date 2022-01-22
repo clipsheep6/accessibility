@@ -17,8 +17,8 @@ import("//base/accessibility/services/aams/accessibleabilityms.gni")
 ohos_prebuilt_etc("accessibility_service.rc") {
    source = "etc/accessibility_service.rc"
    relative_install_dir = "init"
-   part_name = "accessibility_standard"
-   subsystem_name = "accessibility"
+   part_name = "accessibility"
+   subsystem_name = "barrierfree"
 }
 
 config("aams_service_config") {
@@ -94,6 +94,6 @@ ohos_shared_library("accessibleabilityms") {
     "window_manager:libwm",
   ]
 
-  subsystem_name = "accessibility"
-  part_name = "accessibility_standard"
+  subsystem_name = "barrierfree"
+  part_name = "accessibility"
 }
