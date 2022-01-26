@@ -36,6 +36,7 @@
 #include "system_ability.h"
 #include "dummy.h"
 #include "multimoduleDummy.h"
+#include "wm_common.h"
 
 
 namespace OHOS {

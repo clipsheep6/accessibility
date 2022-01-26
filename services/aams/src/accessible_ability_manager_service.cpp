@@ -258,7 +258,7 @@ void AccessibleAbilityManagerService::RegisterInteractionOperation(const int win
         }
     }
 
-    AccessibilityWindowInfoManager::GetInstance().OnWindowCreate(windowId);
+    AccessibilityWindowInfoManager::GetInstance().OnWindowUpdate(windowId, Rosen::WindowUpdateType::WINDOW_UPDATE_ADDED);
 }
 
 void AccessibleAbilityManagerService::DeregisterInteractionOperation(int windowId) {
@@ -281,7 +281,7 @@ void AccessibleAbilityManagerService::DeregisterInteractionOperation(int windowI
 
     accountData->RemoveAccessibilityInteractionConnection(windowId);
     auto& a11yWindowMgr = AccessibilityWindowInfoManager::GetInstance();
-    a11yWindowMgr.OnWindowDestroy(windowId);
+    a11yWindowMgr.OnWindowUpdate(windowId, Rosen::WindowUpdateType::WINDOW_UPDATE_REMOVED);
 }
 
 void AccessibleAbilityManagerService::InteractionOperationDeathRecipient::OnRemoteDied(
