@@ -24,39 +24,39 @@ namespace Accessibility {
 AccessibleAbilityChannelStub::AccessibleAbilityChannelStub() {
     HILOG_DEBUG("%{public}s start.", __func__);
 
-    memberFuncMap_[static_cast<uint32_t>(IAccessibleAbilityChannel::Message::SEARCH_ELEMENTINFO_BY_ACCESSIBILITYID)] = 
+    memberFuncMap_[static_cast<uint32_t>(IAccessibleAbilityChannel::Message::SEARCH_ELEMENTINFO_BY_ACCESSIBILITYID)] =
         &AccessibleAbilityChannelStub::HandleSearchElementInfoByAccessibilityId;
-    memberFuncMap_[static_cast<uint32_t>(IAccessibleAbilityChannel::Message::SEARCH_ELEMENTINFOS_BY_TEXT)] = 
+    memberFuncMap_[static_cast<uint32_t>(IAccessibleAbilityChannel::Message::SEARCH_ELEMENTINFOS_BY_TEXT)] =
         &AccessibleAbilityChannelStub::HandleSearchElementInfosByText;
-    memberFuncMap_[static_cast<uint32_t>(IAccessibleAbilityChannel::Message::FIND_FOCUSED_ELEMENTINFO)] = 
+    memberFuncMap_[static_cast<uint32_t>(IAccessibleAbilityChannel::Message::FIND_FOCUSED_ELEMENTINFO)] =
         &AccessibleAbilityChannelStub::HandleFindFocusedElementInfo;
-    memberFuncMap_[static_cast<uint32_t>(IAccessibleAbilityChannel::Message::FOCUS_MOVE_SEARCH)] = 
+    memberFuncMap_[static_cast<uint32_t>(IAccessibleAbilityChannel::Message::FOCUS_MOVE_SEARCH)] =
         &AccessibleAbilityChannelStub::HandleFocusMoveSearch;
-    memberFuncMap_[static_cast<uint32_t>(IAccessibleAbilityChannel::Message::PERFORM_ACTION)] = 
+    memberFuncMap_[static_cast<uint32_t>(IAccessibleAbilityChannel::Message::PERFORM_ACTION)] =
         &AccessibleAbilityChannelStub::HandlePerformAction;
-    memberFuncMap_[static_cast<uint32_t>(IAccessibleAbilityChannel::Message::GET_WINDOWS)] = 
+    memberFuncMap_[static_cast<uint32_t>(IAccessibleAbilityChannel::Message::GET_WINDOWS)] =
         &AccessibleAbilityChannelStub::HandleGetWindows;
-    memberFuncMap_[static_cast<uint32_t>(IAccessibleAbilityChannel::Message::PERFORM_COMMON_ACTION)] = 
+    memberFuncMap_[static_cast<uint32_t>(IAccessibleAbilityChannel::Message::PERFORM_COMMON_ACTION)] =
         &AccessibleAbilityChannelStub::HandlePerformCommonAction;
-    memberFuncMap_[static_cast<uint32_t>(IAccessibleAbilityChannel::Message::DISABLE_ABILITY)] = 
+    memberFuncMap_[static_cast<uint32_t>(IAccessibleAbilityChannel::Message::DISABLE_ABILITY)] =
         &AccessibleAbilityChannelStub::HandleDisableAbility;
-    memberFuncMap_[static_cast<uint32_t>(IAccessibleAbilityChannel::Message::SET_ON_KEY_PRESS_EVENT_RESULT)] = 
+    memberFuncMap_[static_cast<uint32_t>(IAccessibleAbilityChannel::Message::SET_ON_KEY_PRESS_EVENT_RESULT)] =
         &AccessibleAbilityChannelStub::HandleSetOnKeyPressEventResult;
-    memberFuncMap_[static_cast<uint32_t>(IAccessibleAbilityChannel::Message::GET_DISPALYRESIZE_SCALE)] = 
+    memberFuncMap_[static_cast<uint32_t>(IAccessibleAbilityChannel::Message::GET_DISPALYRESIZE_SCALE)] =
         &AccessibleAbilityChannelStub::HandleGetDisplayResizeScale;
-    memberFuncMap_[static_cast<uint32_t>(IAccessibleAbilityChannel::Message::GET_DISPALYRESIZE_CETER_X)] = 
+    memberFuncMap_[static_cast<uint32_t>(IAccessibleAbilityChannel::Message::GET_DISPALYRESIZE_CETER_X)] =
         &AccessibleAbilityChannelStub::HandleGetDisplayResizeCenterX;
-    memberFuncMap_[static_cast<uint32_t>(IAccessibleAbilityChannel::Message::GET_DISPLAYRESIZE_CETER_Y)] = 
+    memberFuncMap_[static_cast<uint32_t>(IAccessibleAbilityChannel::Message::GET_DISPLAYRESIZE_CETER_Y)] =
         &AccessibleAbilityChannelStub::HandleGetDisplayResizeCenterY;
-    memberFuncMap_[static_cast<uint32_t>(IAccessibleAbilityChannel::Message::GET_DISPLAYRESIZE_RECT)] = 
+    memberFuncMap_[static_cast<uint32_t>(IAccessibleAbilityChannel::Message::GET_DISPLAYRESIZE_RECT)] =
         &AccessibleAbilityChannelStub::HandleGetDisplayResizeRect;
-    memberFuncMap_[static_cast<uint32_t>(IAccessibleAbilityChannel::Message::RESET_DISPALYRESIZE)] = 
+    memberFuncMap_[static_cast<uint32_t>(IAccessibleAbilityChannel::Message::RESET_DISPALYRESIZE)] =
         &AccessibleAbilityChannelStub::HandleResetDisplayResize;
-    memberFuncMap_[static_cast<uint32_t>(IAccessibleAbilityChannel::Message::SET_DISPLAYRESIZE_SCALE_AND_CENTER)] = 
+    memberFuncMap_[static_cast<uint32_t>(IAccessibleAbilityChannel::Message::SET_DISPLAYRESIZE_SCALE_AND_CENTER)] =
         &AccessibleAbilityChannelStub::HandleSetDisplayResizeScaleAndCenter;
-    memberFuncMap_[static_cast<uint32_t>(IAccessibleAbilityChannel::Message::SEND_SIMULATE_GESTURE)] = 
+    memberFuncMap_[static_cast<uint32_t>(IAccessibleAbilityChannel::Message::SEND_SIMULATE_GESTURE)] =
         &AccessibleAbilityChannelStub::HandleSendSimulateGesture;
-    memberFuncMap_[static_cast<uint32_t>(IAccessibleAbilityChannel::Message::IS_FINGERPRINT_GESTURE_DETECTION_VALID)] = 
+    memberFuncMap_[static_cast<uint32_t>(IAccessibleAbilityChannel::Message::IS_FINGERPRINT_GESTURE_DETECTION_VALID)] =
         &AccessibleAbilityChannelStub::HandleIsFingerprintGestureDetectionValid;
 }
 
@@ -87,7 +87,7 @@ int32_t AccessibleAbilityChannelStub::OnRemoteRequest(uint32_t code, MessageParc
     return IPCObjectStub::OnRemoteRequest(code, data, reply, option);
 }
 
-ErrCode AccessibleAbilityChannelStub::HandleSearchElementInfoByAccessibilityId(MessageParcel &data, 
+ErrCode AccessibleAbilityChannelStub::HandleSearchElementInfoByAccessibilityId(MessageParcel &data,
             MessageParcel &reply) {
     HILOG_DEBUG("%{public}s start.", __func__);
 
@@ -100,7 +100,7 @@ ErrCode AccessibleAbilityChannelStub::HandleSearchElementInfoByAccessibilityId(M
         HILOG_ERROR("object is nullptr.");
         return ERR_INVALID_VALUE;
     }
-    sptr<IAccessibilityInteractionOperationCallback> callback = 
+    sptr<IAccessibilityInteractionOperationCallback> callback =
         iface_cast<IAccessibilityInteractionOperationCallback>(object);
     if (!callback) {
         HILOG_ERROR("callback is nullptr.");
@@ -115,7 +115,7 @@ ErrCode AccessibleAbilityChannelStub::HandleSearchElementInfoByAccessibilityId(M
     return NO_ERROR;
 }
 
-ErrCode AccessibleAbilityChannelStub::HandleSearchElementInfosByText(MessageParcel &data, 
+ErrCode AccessibleAbilityChannelStub::HandleSearchElementInfosByText(MessageParcel &data,
                                                                               MessageParcel &reply) {
     HILOG_DEBUG("%{public}s start.", __func__);
 
@@ -125,7 +125,7 @@ ErrCode AccessibleAbilityChannelStub::HandleSearchElementInfosByText(MessageParc
     int requestId = data.ReadInt32();
 
     sptr<IRemoteObject> object = data.ReadRemoteObject();
-    sptr<IAccessibilityInteractionOperationCallback> callback = 
+    sptr<IAccessibilityInteractionOperationCallback> callback =
         iface_cast<IAccessibilityInteractionOperationCallback>(object);
 
     bool result = SearchElementInfosByText(accessibilityWindowId, elementId, text, requestId, callback);
@@ -144,7 +144,7 @@ ErrCode AccessibleAbilityChannelStub::HandleFindFocusedElementInfo(MessageParcel
     int requestId = data.ReadInt32();
 
     sptr<IRemoteObject> object = data.ReadRemoteObject();
-    sptr<IAccessibilityInteractionOperationCallback> callback = 
+    sptr<IAccessibilityInteractionOperationCallback> callback =
         iface_cast<IAccessibilityInteractionOperationCallback>(object);
 
     bool result = FindFocusedElementInfo(accessibilityWindowId, elementId, focusType, requestId, callback);
@@ -163,7 +163,7 @@ ErrCode AccessibleAbilityChannelStub::HandleFocusMoveSearch(MessageParcel &data,
     int requestId = data.ReadInt32();
 
     sptr<IRemoteObject> object = data.ReadRemoteObject();
-    sptr<IAccessibilityInteractionOperationCallback> callback = 
+    sptr<IAccessibilityInteractionOperationCallback> callback =
         iface_cast<IAccessibilityInteractionOperationCallback>(object);
 
     bool result = FocusMoveSearch(accessibilityWindowId, elementId, direction, requestId, callback);
@@ -207,7 +207,7 @@ ErrCode AccessibleAbilityChannelStub::HandlePerformAction(MessageParcel &data, M
         HILOG_ERROR("callback is nullptr");
         return ERR_INVALID_VALUE;
     }
-    
+
     bool result = PerformAction(accessibilityWindowId, elementId, action, actionArguments, requestId, callback);
     HILOG_DEBUG("PerformAction ret = %{public}d", result);
     reply.WriteBool(result);
@@ -216,7 +216,7 @@ ErrCode AccessibleAbilityChannelStub::HandlePerformAction(MessageParcel &data, M
 
 ErrCode AccessibleAbilityChannelStub::HandleGetWindows(MessageParcel &data, MessageParcel &reply) {
     HILOG_DEBUG("%{public}s start.", __func__);
-    
+
     vector<AccessibilityWindowInfo> windows = GetWindows();
     if (!reply.WriteInt32((int32_t)windows.size())) {
         HILOG_ERROR("windows.size() write error: %{public}d, ", windows.size());
@@ -314,7 +314,7 @@ ErrCode AccessibleAbilityChannelStub::HandleResetDisplayResize(MessageParcel &da
     return NO_ERROR;
 }
 
-ErrCode AccessibleAbilityChannelStub::HandleSetDisplayResizeScaleAndCenter(MessageParcel &data, 
+ErrCode AccessibleAbilityChannelStub::HandleSetDisplayResizeScaleAndCenter(MessageParcel &data,
                                                                                  MessageParcel &reply) {
     HILOG_DEBUG("%{public}s start.", __func__);
 
@@ -349,7 +349,7 @@ ErrCode AccessibleAbilityChannelStub::HandleSendSimulateGesture(MessageParcel &d
     return NO_ERROR;
 }
 
-ErrCode AccessibleAbilityChannelStub::HandleIsFingerprintGestureDetectionValid(MessageParcel &data, 
+ErrCode AccessibleAbilityChannelStub::HandleIsFingerprintGestureDetectionValid(MessageParcel &data,
                                                                                      MessageParcel &reply) {
     HILOG_DEBUG("%{public}s start.", __func__);
 

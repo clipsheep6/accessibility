@@ -30,7 +30,7 @@ import { RangeInfo } from "./@component/progress"
  */
 declare namespace accessibility {
 /************************************************************************************************
- * Type define 
+ * Type define
 ***********************************************************************************************/
   /**
    * The type of the Ability app.
@@ -39,7 +39,7 @@ declare namespace accessibility {
    * @sysCap Accessibility
    */
   type AbilityType = 'audible' | 'generic' | 'haptic' | 'spoken' | 'visual';
-  
+
   /**
    * The action that the ability can execute.
    * @note -
@@ -51,7 +51,7 @@ declare namespace accessibility {
     'scrollForward' | 'scrollBackward' |
     'setSelection' |
     'unfold' | 'fold' | 'nextText' | 'previousText' | 'nextHtmlItem' | 'previousHtmlItem';
-  
+
   /**
    * The type of the accessibility event.
    * @note windowsChange:页面变化(迁移)的通知，旁白需要确定新画面的焦点【must】
@@ -70,7 +70,7 @@ declare namespace accessibility {
     'touchGuideGestureBegin' | 'touchGuideGestureEnd' |
     'windowUpdate' | 'pageContentUpdate' | 'pageStateUpdate' |
     'publicNotice' | 'notificationUpdate';
-  
+
   /**
    * The change type of the windowsChange event.
    * @note It's used when received the {@code windowsChange} event.
@@ -79,7 +79,7 @@ declare namespace accessibility {
    */
   type WindowUpdateType = 'add' | 'remove' | 'title' | 'bounds' | 'layer' | 'active' |
     'focus' | 'accessibilityFocus' | 'parent' | 'children' | 'pip';
-  
+
   /**
    * The type of the StateEvent.
    * @note -
@@ -87,7 +87,7 @@ declare namespace accessibility {
    * @sysCap Accessibility
    */
   type StateEventType = 'accessibility' | 'touchGuide';
-  
+
   /**
    * The type of the window.
    * @note -
@@ -95,7 +95,7 @@ declare namespace accessibility {
    * @sysCap Accessibility
    */
   type WindowType = 'application' | 'inputMethod' | 'system' | 'accessibilityOverlay' | 'screenDivider';
-  
+
   /**
    * The type of the focus.
    * @note accessibility: accessibility focus; input: input focus;
@@ -119,20 +119,20 @@ declare namespace accessibility {
    * @sysCap Accessibility
    */
   type Direction = 'up' | 'down' | 'left' | 'right' | 'forward' | 'backward';
-  
+
   /**
    * The ability that accessibility subsystem support.
-   * @note touchExplorer: Describes the capability to talkback. 
-    magnification: Describes the capability to request to control the display magnification. 
-    gesturesSimulation: Describes the capability to request to simulate the gesture. 
-    windowContent: Describes the capability to search for the content of the active window. 
-    filterKeyEvents: Describes the capability to request to filter key events. 
-    fingerprintGesture: Describes the capability to request to fingerprint gesture. 
+   * @note touchExplorer: Describes the capability to talkback.
+    magnification: Describes the capability to request to control the display magnification.
+    gesturesSimulation: Describes the capability to request to simulate the gesture.
+    windowContent: Describes the capability to search for the content of the active window.
+    filterKeyEvents: Describes the capability to request to filter key events.
+    fingerprintGesture: Describes the capability to request to fingerprint gesture.
    * @since 3
    * @sysCap Accessibility
    */
   type Capability = 'retrieve' | 'touchGuide' | 'keyEventObserver' | 'zoom' | 'gesture';
-    
+
   /**
    * The global action that the ability can execute.
    * @note back: Indicates a global action of returning to the previous page.
@@ -177,7 +177,7 @@ declare namespace accessibility {
     * @sysCap Accessibility
   */
   type OperatorParamType = 'selectTextBegin' | 'selectTextEnd' | 'htmlItem' | 'setText' | 'textMoveUnit';
-  
+
   /**
     * The category of the notification
     * @note 应用Notification的具体分类，用于朗读通知信息时提示是哪类通知.
@@ -186,7 +186,7 @@ declare namespace accessibility {
   */
   type NotificationCategory = 'call' | 'msg' | 'email' | 'event' |
     'promo' | 'alarm' | 'progress' | 'social' | 'err' | 'transport' | 'sys' | 'service';
-  
+
   /**
     * The html element type. The arguments of  nextHtmlElement/previousHtmlElement
     * @note html元素的具体分类，用于实现网页的按类别导航，如“跳到下一个链接或按钮”.
@@ -201,12 +201,12 @@ declare namespace accessibility {
    * Checks whether accessibility ability is enabled.
    * @since 3
    * @sysCap Accessibility
-   * @param - 
+   * @param -
    * @return Returns {@code true} if the accessibility is enabled; returns {@code false} otherwise.
   */
   function isOpenAccessibility(callback: AsyncCallback<boolean>): void;
   function isOpenAccessibility(): Promise<boolean>;
-  
+
   /**
    * Checks touch browser ability (which is used by talkback) is enabled.
    * @since 3
@@ -216,7 +216,7 @@ declare namespace accessibility {
   */
   function isOpenTouchGuide(callback: AsyncCallback<boolean>): void;
   function isOpenTouchGuide(): Promise<boolean>;
-  
+
   /**
    * Queries the list of accessibility abilities.
    * @since 3
@@ -229,7 +229,7 @@ declare namespace accessibility {
     callback: AsyncCallback<Array<AccessibilityAbilityInfo>>): void;
   function getAbilityLists(abilityType: AbilityType,
     stateType: AbilityState): Promise<Array<AccessibilityAbilityInfo>>;
-  
+
   /**
    * Send accessibility Event.
    * @since 3
@@ -248,7 +248,7 @@ declare namespace accessibility {
    * @return Returns {@code true} if the register is successed; returns {@code false} otherwise.
   */
   function on(type: StateEventType, callback: Callback<StateEvent>): void;
-  
+
   /**
    * Deregister the observe of the state changed.
    * @since 3
@@ -266,10 +266,10 @@ declare namespace accessibility {
   */
   function getAccessibleAbility(callback: AsyncCallback<AccessibleAbility>): void;
   function getAccessibleAbility(): Promise<AccessibleAbility>;
-  
+
   interface AccessibleAbility {
     /**
-     * Connect to the accessibility subsystem. 
+     * Connect to the accessibility subsystem.
      * @since 3
      * @sysCap AccessibilityAbility
      * @param -
@@ -287,7 +287,7 @@ declare namespace accessibility {
     */
     getFocusElementInfo(focusType: FocusType, callback: AsyncCallback<AccessibilityElementInfo>): void;
     getFocusElementInfo(focusType: FocusType): Promise<AccessibilityElementInfo>;
-  
+
     /**
      * Obtains information about the accessibility root node.
      * @since 3
@@ -297,7 +297,7 @@ declare namespace accessibility {
     */
     getRootElementInfo(callback: AsyncCallback<AccessibilityElementInfo>): void;
     getRootElementInfo(): Promise<AccessibilityElementInfo>;
-  
+
     /**
      * Obtains the list of interactive windows on the device, in the layers they are visible to users.
      * @since 3
@@ -328,7 +328,7 @@ declare namespace accessibility {
     */
     disableAbility(callback: AsyncCallback<void>): void;
     disableAbility(): Promise<void>;
-    
+
     /**
      * Called when an accessibility event occurs.
      * @since 3
@@ -337,7 +337,7 @@ declare namespace accessibility {
      * @return -
     */
     on(type: 'accessibilityEvent', callback: Callback<EventInfo>): void;
-  
+
     /**
      * Called when a user performs a specified gesture on the device that your accessibility application
      has requested to be in touch browser mode.
@@ -358,9 +358,9 @@ declare namespace accessibility {
      * @return -
     */
     on(type: 'AbilityConnected', callback: Callback<void>): void;
-  
+
   }
-    
+
   interface AccessibilityAbilityInfo {
     /**
      * The ability id.
@@ -391,7 +391,7 @@ declare namespace accessibility {
      * @sysCap AccessibilityAbility
      */
     readonly abilityInfo: AbilityInfo;
-      
+
     /**
      * The type of the ability.
      * @default -
@@ -399,7 +399,7 @@ declare namespace accessibility {
      * @sysCap AccessibilityAbility
      */
     readonly abilityTypes: Array<AbilityType>;
-    
+
     /**
      * The capabilities of the ability.
      * @default -
@@ -407,7 +407,7 @@ declare namespace accessibility {
      * @sysCap AccessibilityAbility
      */
     readonly capabilities: Array<Capability>;
-    
+
     /**
      * The description of the ability.
      * @default -
@@ -415,7 +415,7 @@ declare namespace accessibility {
      * @sysCap AccessibilityAbility
      */
     readonly description: string;
-    
+
     /**
      * The events which the accessibility ability wants to observe.
      * @default -
@@ -423,7 +423,7 @@ declare namespace accessibility {
      * @sysCap AccessibilityAbility
      */
     readonly eventTypes: Array<EventType>;
-      
+
     /**
      * The application names which the accessibility ability wants to observe.
      * @default -
@@ -443,7 +443,7 @@ declare namespace accessibility {
      * @sysCap Accessibility
      */
     type: EventType;
-    
+
     /**
      * The type of the window change event.
      * @default -
@@ -451,7 +451,7 @@ declare namespace accessibility {
      * @sysCap Accessibility
      */
     windowUpdateType?: WindowUpdateType;
-    
+
     /**
      * The bundle name of the target application.
      * @default -
@@ -475,7 +475,7 @@ declare namespace accessibility {
     * @sysCap Accessibility
     */
     timeStamp?: number;
-    
+
     /**
      * The window id of the event source.
      * @default -
@@ -490,7 +490,7 @@ declare namespace accessibility {
      * @sysCap Accessibility
      */
     pageId ?: number;
-    
+
     /**
      * The component Id associated with the accessibility event.
      * @default -
@@ -498,7 +498,7 @@ declare namespace accessibility {
      * @sysCap Accessibility
      */
     componentId?: number;
-    
+
     /**
      * The accessibility event description.
      * @default -
@@ -506,7 +506,7 @@ declare namespace accessibility {
      * @sysCap Accessibility
      */
     description?: string;
-    
+
     /**
      * The action that triggers the accessibility event, for example, clicking or focusing a view.
      * @default -
@@ -514,7 +514,7 @@ declare namespace accessibility {
      * @sysCap Accessibility
      */
     triggerAction: Action;
-    
+
     /**
      * The movement step used for reading texts.
      * @default -
@@ -539,7 +539,7 @@ declare namespace accessibility {
      * @sysCap Accessibility
      */
     lastContent?: string;
-    
+
     /**
      * The start index of listed items on the screen.
      * @default -
@@ -547,7 +547,7 @@ declare namespace accessibility {
      * @sysCap Accessibility
      */
     beginIndex?: number;
-    
+
     /**
      * The index of the current item on the screen.
      * @default -
@@ -565,14 +565,14 @@ declare namespace accessibility {
     endIndex?: number;
 
     /**
-     * The total of the items. 
-     * @note talkback used it when scroll. 
+     * The total of the items.
+     * @note talkback used it when scroll.
      * @default 0
      * @since 3
      * @sysCap Accessibility
      */
     itemCount?: number;
-    
+
     /**
      * The category type for notificationChanged event.
      * @default -
@@ -590,7 +590,7 @@ declare namespace accessibility {
     getSource(callback: AsyncCallback<AccessibilityElementInfo>): void;
     getSource(): Promise<AccessibilityElementInfo>;
   }
-  // AccessibilityElementInfo 
+  // AccessibilityElementInfo
   interface AccessibilityElementInfo {
     /**
      * The id of the window which the node in.
@@ -599,7 +599,7 @@ declare namespace accessibility {
      * @sysCap Accessibility
      */
     readonly windowId: number;
-    
+
     /**
      * The accessibility id of the node.
      * @default -
@@ -607,7 +607,7 @@ declare namespace accessibility {
      * @sysCap Accessibility
      */
     readonly accessibilityId: number;
-    
+
     /**
      * The id of the view which the node in.
      * @default -
@@ -615,7 +615,7 @@ declare namespace accessibility {
      * @sysCap Accessibility
      */
     readonly componentId: number;
-    
+
     /**
      * The bundle name.
      * @default -
@@ -639,7 +639,7 @@ declare namespace accessibility {
      * @sysCap Accessibility
      */
     readonly inputType: number;
-    
+
     /**
      * The text of the node.
      * @default -
@@ -647,7 +647,7 @@ declare namespace accessibility {
      * @sysCap Accessibility
      */
     readonly text: string;
-    
+
     /**
      * The hint text of the node.
      * @default -
@@ -655,8 +655,8 @@ declare namespace accessibility {
      * @sysCap Accessibility
      */
     readonly hintText: string;
-    
-    /** 
+
+    /**
      * The description of the node.
      * @node 朗读控件时用到的信息，通常是控件名称，比如“蓝牙”开关
      * @default -
@@ -664,15 +664,15 @@ declare namespace accessibility {
      * @sysCap Accessibility
      */
     readonly description: string;
-    
-    /** 
+
+    /**
      * The resource name of the node.
      * @default -
      * @since 3
      * @sysCap Accessibility
      */
     readonly resourceName: string;
-    
+
     /**
      * The list of the children node.
      * @default -
@@ -680,7 +680,7 @@ declare namespace accessibility {
      * @sysCap Accessibility
      */
     readonly childNodeIds: Array<number>;
-    
+
     /**
      * The operation list of the node.
      * @default -
@@ -688,7 +688,7 @@ declare namespace accessibility {
      * @sysCap Accessibility
      */
     readonly operations: Array<Operation>;
-    
+
     /**
      * The max text length of the node.
      * @default -
@@ -696,7 +696,7 @@ declare namespace accessibility {
      * @sysCap Accessibility
      */
     readonly textLengthLimit: number;
-    
+
     /**
      * The rect of the node.
      * @default -
@@ -704,7 +704,7 @@ declare namespace accessibility {
      * @sysCap Accessibility
      */
     readonly rect: Rect;
-    
+
     /**
      * Whether the node can be check.
      * @default -
@@ -712,7 +712,7 @@ declare namespace accessibility {
      * @sysCap Accessibility
      */
     readonly checkable: boolean;
-    
+
     /**
      * Whether the node is checked.
      * @default -
@@ -720,7 +720,7 @@ declare namespace accessibility {
      * @sysCap Accessibility
      */
     readonly checked: boolean;
-    
+
     /**
      * Whether the node can be focused.
      * @default -
@@ -728,7 +728,7 @@ declare namespace accessibility {
      * @sysCap Accessibility
      */
     readonly focusable: boolean;
-    
+
     /**
      * Whether the node is focused.
      * @default -
@@ -736,7 +736,7 @@ declare namespace accessibility {
      * @sysCap Accessibility
      */
     readonly focused: boolean;
-    
+
     /**
      * Whether the node is visible.
      * @default -
@@ -744,7 +744,7 @@ declare namespace accessibility {
      * @sysCap Accessibility
      */
     readonly isVisible: boolean;
-    
+
     /**
      * Whether the node is accessibility focused.
      * @default -
@@ -752,7 +752,7 @@ declare namespace accessibility {
      * @sysCap Accessibility
      */
     readonly accessibilityFocused: boolean;
-    
+
     /**
      * Whether the node is selected.
      * @default -
@@ -760,7 +760,7 @@ declare namespace accessibility {
      * @sysCap Accessibility
      */
     readonly selected: boolean;
-    
+
     /**
      * Whether the node can be click.
      * @default -
@@ -768,7 +768,7 @@ declare namespace accessibility {
      * @sysCap Accessibility
      */
     readonly clickable: boolean;
-   
+
     /**
      * Whether the node can be long click.
      * @default -
@@ -776,7 +776,7 @@ declare namespace accessibility {
      * @sysCap Accessibility
      */
     readonly longClickable: boolean;
-    
+
     /**
      * Whether the node can be enable.
      * @default -
@@ -784,7 +784,7 @@ declare namespace accessibility {
      * @sysCap Accessibility
      */
     readonly isEnable: boolean;
-    
+
     /**
      * Whether the node is password.
      * @default -
@@ -792,7 +792,7 @@ declare namespace accessibility {
      * @sysCap Accessibility
      */
     readonly isPassword: boolean;
-    
+
     /**
      * Whether the node can be scrollable.
      * @default -
@@ -800,7 +800,7 @@ declare namespace accessibility {
      * @sysCap Accessibility
      */
     readonly scrollable: boolean;
-    
+
     /**
      * Whether the node can be editable.
      * @default -
@@ -808,7 +808,7 @@ declare namespace accessibility {
      * @sysCap Accessibility
      */
     readonly editable: boolean;
-    
+
     /**
      * Whether the node can popup.
      * @default -
@@ -816,7 +816,7 @@ declare namespace accessibility {
      * @sysCap Accessibility
      */
     readonly popupSupported: boolean;
-    
+
     /**
      * Whether the node is multiline.
      * @default -
@@ -824,7 +824,7 @@ declare namespace accessibility {
      * @sysCap Accessibility
      */
     readonly pluralLineSupported: boolean;
-    
+
     /**
      * Whether the node can be delete.
      * @default -
@@ -832,7 +832,7 @@ declare namespace accessibility {
      * @sysCap Accessibility
      */
     readonly deleteable: boolean;
-    
+
     /**
      * Whether the node is displaying hint.
      * @default -
@@ -840,7 +840,7 @@ declare namespace accessibility {
      * @sysCap Accessibility
      */
     readonly isHint: boolean;
-    
+
     /**
      * Whether the node is important.
      * @default -
@@ -848,7 +848,7 @@ declare namespace accessibility {
      * @sysCap Accessibility
      */
     readonly isEssential: boolean;
-    
+
     /**
      * current index of children.
      * @default -
@@ -856,7 +856,7 @@ declare namespace accessibility {
      * @sysCap Accessibility
      */
     readonly currentIndex: number;
-    
+
     /**
      * start index of children.
      * @default -
@@ -864,7 +864,7 @@ declare namespace accessibility {
      * @sysCap Accessibility
      */
     readonly startIndex: number;
-    
+
     /**
      * end index of children.
      * @default -
@@ -872,7 +872,7 @@ declare namespace accessibility {
      * @sysCap Accessibility
      */
     readonly endIndex: number;
-    
+
     /**
      * Range info of the progress node.
      * @default -
@@ -880,7 +880,7 @@ declare namespace accessibility {
      * @sysCap Accessibility
      */
     readonly rangeInfo: RangeInfo;
-    
+
     /**
      * It is used when the node is collection.
      * @default -
@@ -888,7 +888,7 @@ declare namespace accessibility {
      * @sysCap Accessibility
      */
     readonly grid: GridInfo;
-    
+
     /**
      * collection item info.
      * @default -
@@ -896,15 +896,15 @@ declare namespace accessibility {
      * @sysCap Accessibility
      */
     readonly gridItem: GridItemInfo;
-    
+
     /**
      * The live range of the node.
      * @default -
      * @since 3
-     * @sysCap Accessibility 
+     * @sysCap Accessibility
      */
     readonly activeRegion: number;
-    
+
     /**
      * Whether the content is invalid.
      * @default -
@@ -912,7 +912,7 @@ declare namespace accessibility {
      * @sysCap Accessibility
      */
     readonly isContentInvalid: boolean;
-    
+
     /**
      * error information.
      * @note 控件发生错误，如输入类型不合法，旁白会读出错误信息。
@@ -929,7 +929,7 @@ declare namespace accessibility {
      * @sysCap Accessibility
      */
     readonly label: number;
-    
+
     /**
      * The start position of text selected.
      * @default -
@@ -937,7 +937,7 @@ declare namespace accessibility {
      * @sysCap Accessibility
      */
     readonly beginSelected: number;
-    
+
     /**
      * The end position of text selected.
      * @default -
@@ -945,14 +945,14 @@ declare namespace accessibility {
      * @sysCap Accessibility
      */
     readonly endSelected: number;
-   
+
     /**
      * Perform the specified action on the node.
      * @since 3
      * @sysCap AccessibilityAbility
      * @param action: accessibility action.
      * @param args: Key: specify the argument type, such as: OperatorParamType
-     *              Value: The value of arguments for Node 
+     *              Value: The value of arguments for Node
      * @return true: success, false: failed.
      */
     executeAction(action: Action, callback: AsyncCallback<boolean>, args?: object): void;
@@ -1027,7 +1027,7 @@ declare namespace accessibility {
      */
     readonly description: string;
   }
-  
+
   interface StateEvent {
     /**
      * The type of the state event.
@@ -1053,7 +1053,7 @@ declare namespace accessibility {
      */
     readonly description: string;
   }
-  
+
   interface WindowInfo {
     /**
      * The rect of the window.
@@ -1062,7 +1062,7 @@ declare namespace accessibility {
      * @sysCap Accessibility
      */
     readonly screenRect: Rect;
-    
+
     /**
      * The id of the window.
      * @default -
@@ -1070,7 +1070,7 @@ declare namespace accessibility {
      * @sysCap Accessibility
      */
     readonly id: number;
-    
+
     /**
      * The layer of the window.
      * @default -
@@ -1078,7 +1078,7 @@ declare namespace accessibility {
      * @sysCap Accessibility
      */
     readonly layer: number;
-    
+
     /**
      * The title of the window.
      * @default -
@@ -1086,7 +1086,7 @@ declare namespace accessibility {
      * @sysCap Accessibility
      */
     readonly title: string;
-    
+
     /**
      * The type of the window.
      * @default -
@@ -1094,7 +1094,7 @@ declare namespace accessibility {
      * @sysCap Accessibility
      */
     readonly type: WindowType;
-    
+
     /**
      * The list of the children windows.
      * @default -
@@ -1102,7 +1102,7 @@ declare namespace accessibility {
      * @sysCap Accessibility
      */
     readonly childIds: Array<number>;
-    
+
     /**
      * The parent of the window.
      * @default -

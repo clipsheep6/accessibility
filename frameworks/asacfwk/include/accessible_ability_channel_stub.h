@@ -192,7 +192,7 @@ private:
      */
     ErrCode HandleIsFingerprintGestureDetectionValid(MessageParcel &data, MessageParcel &reply);
 
-    using AccessibleAbilityConnectionFunc = ErrCode (AccessibleAbilityChannelStub::*)(MessageParcel &data, 
+    using AccessibleAbilityConnectionFunc = ErrCode (AccessibleAbilityChannelStub::*)(MessageParcel &data,
                                                         MessageParcel &reply);
     std::map<uint32_t, AccessibleAbilityConnectionFunc> memberFuncMap_;
 

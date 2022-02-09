@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-// Rect 
+// Rect
 export interface Rect{
   leftTopX:number;
   leftTopY: number;

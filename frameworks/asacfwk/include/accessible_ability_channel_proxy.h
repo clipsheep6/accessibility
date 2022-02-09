@@ -52,10 +52,10 @@ public:
      * @param mode PREFETCH_PREDECESSORS: Need to make the parent element info also.
      *             PREFETCH_SIBLINGS: Need to make the sister/brothers element info also.
      *             PREFETCH_CHILDREN: Need to make the child element info also.
-     *             otherwise: Make the element information by elementId only. 
+     *             otherwise: Make the element information by elementId only.
      * @return Return true if search elementInfo successfully, else return false.
      */
-    virtual bool SearchElementInfoByAccessibilityId(const int accessibilityWindowId, 
+    virtual bool SearchElementInfoByAccessibilityId(const int accessibilityWindowId,
         const long elementId, const int requestId, const sptr<IAccessibilityInteractionOperationCallback> &callback,
         const int mode) override;
 
@@ -63,8 +63,8 @@ public:
      * @brief Make the child element information by accessibility ID and filtered by text and
      *        set the result by callback through the proxy object.
      * @param accessibilityWindowId The id of accessibility window.
-     * @param elementId: The unique id of the component ID. 
-     * @param text  Filter for the child components to matched with the text 
+     * @param elementId: The unique id of the component ID.
+     * @param text  Filter for the child components to matched with the text
      * @param requestId Matched the request and response. It needn't cared by ACE, transfer it by callback only.
      * @param callback  To transfer the element info to ASAC and it defined by ASAC.
      * @return Return true if search elementInfo successfully, else return false.
@@ -84,7 +84,7 @@ public:
      * @param callback  To transfer the element info to ASAC and it defined by ASAC.
      * @return Return true if find elementInfo successfully, else return false.
      */
-    virtual bool FindFocusedElementInfo(const int accessibilityWindowId, const long elementId, 
+    virtual bool FindFocusedElementInfo(const int accessibilityWindowId, const long elementId,
         const int focusType, const int requestId,
         const sptr<IAccessibilityInteractionOperationCallback> &callback) override;
 
@@ -97,7 +97,7 @@ public:
      * @param callback  To transfer the element info to ASAC and it defined by ASAC.
      * @return Return true if search elementInfo successfully, else return false.
      */
-    virtual bool FocusMoveSearch(const int accessibilityWindowId, const long elementId, 
+    virtual bool FocusMoveSearch(const int accessibilityWindowId, const long elementId,
         const int direction, const int requestId,
         const sptr<IAccessibilityInteractionOperationCallback> &callback) override;
 
@@ -111,8 +111,8 @@ public:
      * @param callback  To transfer the node info to ASAC and it defined by ASAC.
      * @return Return true if perform action successfully, else return false.
      */
-    virtual bool PerformAction(const int accessibilityWindowId, const long elementId, const int action, 
-        std::map<std::string, std::string> &actionArguments, const int requestId, 
+    virtual bool PerformAction(const int accessibilityWindowId, const long elementId, const int action,
+        std::map<std::string, std::string> &actionArguments, const int requestId,
         const sptr<IAccessibilityInteractionOperationCallback> &callback) override;
 
     /**
@@ -140,7 +140,7 @@ public:
     /**
      * @brief Set the result of key press event through the proxy object.
      * @param handled The result of key press event, true if the event has been consumed, otherwise false.
-     * @param sequence The sequence of key press event result. 
+     * @param sequence The sequence of key press event result.
      * @return
      */
     virtual void SetOnKeyPressEventResult(const bool handled, const int sequence) override;
@@ -190,7 +190,7 @@ public:
      * @param animate Specifies whether animation is required.
      * @return Returns true if the center coordinates and scale are successfully set; returns false otherwise.
      */
-    virtual bool SetDisplayResizeScaleAndCenter(const int displayId, const float scale, const float centerX, 
+    virtual bool SetDisplayResizeScaleAndCenter(const int displayId, const float scale, const float centerX,
         const float centerY, const bool animate) override;
 
     /**
@@ -206,7 +206,7 @@ public:
      *        through the proxy object.
      * @param
      * @return Return true if the fingerprint sensor is available, else return false.
-     */ 
+     */
     virtual bool IsFingerprintGestureDetectionValid() override;
 
 private:

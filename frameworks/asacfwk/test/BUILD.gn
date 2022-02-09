@@ -102,7 +102,7 @@ ohos_unittest("asac_unit_test") {
     "//third_party/googletest:gmock_main",
     "//third_party/googletest:gtest_main",
     "//utils/native/base:utils",
-    "//base/miscservices/time/services:time_service",    
+    "//base/miscservices/time/services:time_service",
   ]
 
   external_deps = [
