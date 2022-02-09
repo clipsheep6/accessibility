@@ -910,7 +910,7 @@ ohos_unittest("accessibility_interaction_bridge_test") {
 group("unittest") {
   testonly = true
   deps = []
-  
+
   deps += [
     ":accessibility_account_data_test",
     ":accessible_ability_manager_service_test",

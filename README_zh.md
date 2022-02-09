@@ -27,17 +27,17 @@
 检查是否启用了辅助功能。
 
 - 参数：
-  
+
   无
-  
+
 - 返回值：
-  
+
   | 类型  | 说明  |
   | --- | --- |
   | Promise\<boolean> | 以Promise形式返回结果，如果辅助功能已启用，则返回true；如果辅助功能未启用，则返回false。 |
-  
+
 - 示例
-  
+
   ```js
   accessibility.isOpenAccessibility()
       .then((data) => {
@@ -52,19 +52,19 @@
 发送无障碍事件。
 
 - 参数：
-  
+
   | 参数名 | 参数类型 | 必填  | 说明  |
   | --- | --- | --- | --- |
   | event | EventInfo | 是   | 辅助事件对象。 |
-  
+
 - 返回值：
-  
+
   | 类型  | 说明  |
   | --- | --- |
   | Promise<void> | 以Promise形式返回结果，如果发送无障碍事件成功，则data有数据返回；如果发送无障碍事件失败，则err有数据返回。 |
-  
+
 - 示例
-  
+
   ```js
   accessibility.sendEvent(this.eventInfo)
       .then((data) => {

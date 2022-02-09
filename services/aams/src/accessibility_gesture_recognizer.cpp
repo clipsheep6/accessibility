@@ -144,7 +144,7 @@ bool AccessibilityGestureRecognizer::HandleTouchMoveEvent(TouchEvent &event) {
             }
         } else if (!isFirstTapUp_) {
             unsigned int durationTime = eventTime - startTime_;
-            unsigned int thresholdTime = isGestureStarted_ ? 
+            unsigned int thresholdTime = isGestureStarted_ ?
                 GESTURE_STARTED_TIME_THRESHOLD : GESTURE_NOT_STARTED_TIME_THRESHOLD;
             if (durationTime > thresholdTime) {
                 isRecognizingGesture_ = false;

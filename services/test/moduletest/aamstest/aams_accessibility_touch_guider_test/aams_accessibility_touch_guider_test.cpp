@@ -70,7 +70,7 @@ void aamsTouchGuideTest::writefileAll(const char* fname,const char* data)
 	if ((fp=fopen(fname, "w")) == NULL) {
 		printf("open file %s fail \n", fname);
 	}
-	
+
 	fprintf(fp, "%s", data);
 	fclose(fp);
 }

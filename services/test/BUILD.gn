@@ -534,7 +534,7 @@ ohos_moduletest("aams_common_event_registry_test") {
 group("moduletest") {
   testonly = true
   deps = []
-  
+
   if (is_phone_product) {
     deps += [
       ":aams_accessibility_touch_guider_test",
