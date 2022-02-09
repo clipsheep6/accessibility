@@ -21,6 +21,7 @@
 #include <iremote_object.h>
 #include <iremote_stub.h>
 #include "accessible_ability_client_interface.h"
+#include "accessible_ability_channel_interface.h"
 
 namespace OHOS {
 namespace Accessibility {
@@ -80,7 +81,7 @@ public:
         GTEST_LOG_(INFO) << "MOCK AccessibleAbilityClientStubMock OnKeyPressEvent";
     }
 
-    virtual void OnDisplayResizeChanged(const int displayId, const Rect &rect, const float scale, const float centerX, 
+    virtual void OnDisplayResizeChanged(const int displayId, const Rect &rect, const float scale, const float centerX,
         const float centerY)
     {
         GTEST_LOG_(INFO) << "MOCK AccessibleAbilityClientStubMock OnDisplayResizeChanged";

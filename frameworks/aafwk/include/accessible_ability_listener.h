@@ -17,9 +17,11 @@
 #define ACCESSIBLE_ABILITY_LISTENER_H
 
 #include <stdint.h>
-#include "key_event.h"
 #include "accessibility_event_info.h"
 
+namespace OHOS::MMI {
+    class KeyEvent;
+}
 namespace OHOS {
 namespace Accessibility {
 
@@ -36,7 +38,7 @@ public:
     virtual void OnAbilityConnected() {}
 
     /**
-     * @brief Called when an accessibility event occurs. 
+     * @brief Called when an accessibility event occurs.
      * @param eventInfo The infomation of accessible event.
      * @return
      */
@@ -44,7 +46,7 @@ public:
 
     /**
      * @brief Called when a user performs a specified gesture on the device that
-     *        your accessibility application has requested to be in touch exploration mode. 
+     *        your accessibility application has requested to be in touch exploration mode.
      * @param gestureId The id of gesture.
      * @return
      */

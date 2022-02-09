@@ -19,6 +19,7 @@
 #include "accessible_ability_client_stub_impl.h"
 #include "accessible_ability_channel_proxy.h"
 #include "mock_accessible_ability_channel_stub.h"
+#include "key_event.h"
 
 using namespace testing;
 using namespace testing::ext;
@@ -123,7 +124,7 @@ HWTEST_F(AccessibleAbilityClientStubImplUnitTest, AccessibleAbilityClientStubImp
     shared_ptr<AccessibleAbilityListener> listener = make_shared<UnitTestAccessibleAbilityListener>();
     stub_->RegisterListenerImpl(listener);
     stub_->RegisterListenerImpl(listener);
-    
+
     GTEST_LOG_(INFO) << "AccessibleAbilityClientStubImpl_Unittest_RegisterListenerImpl_001 end";
 }
 

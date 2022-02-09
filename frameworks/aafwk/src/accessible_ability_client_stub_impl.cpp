@@ -15,9 +15,11 @@
 
 #include <string>
 #include "accessible_ability_client_stub_impl.h"
+#include "accessible_ability_channel_interface.h"
 #include "accessible_ability.h"
 #include "display_resize_controller.h"
 #include "fingerprint_controller.h"
+#include "key_event.h"
 
 using namespace std;
 

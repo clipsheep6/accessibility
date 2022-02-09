@@ -14,6 +14,7 @@
  */
 #include <stdint.h>
 #include "accessible_ability_client_proxy.h"
+#include "accessible_ability_channel_interface.h"
 #include "accessibility_errorcode.h"
 #include "parcel.h"
 

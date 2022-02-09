@@ -19,6 +19,7 @@
 #include "accessible_ability_listener.h"
 #include "napi/native_api.h"
 #include "napi/native_node_api.h"
+#include "key_event.h"
 
 class AccessibleAbilityObserver: public OHOS::Accessibility::AccessibleAbilityListener {
 public:
