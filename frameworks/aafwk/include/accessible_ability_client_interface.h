@@ -18,11 +18,13 @@
 
 #include "iremote_broker.h"
 #include "refbase.h"
-#include "key_event.h"
 #include "accessibility_element_info.h"
 #include "accessible_ability_channel_interface.h"
 #include "accessibility_event_info.h"
 
+namespace OHOS::MMI {
+    class KeyEvent;
+}
 namespace OHOS {
 namespace Accessibility {
 
@@ -122,7 +124,6 @@ public:
         ON_FINGERPRINT_GESTURE,
     };
 };
-
 } // namespace Accessibility
 } // namespace OHOS
 #endif // ACCESSIBLE_ABILITY_CLIENT_INTERFACE_H

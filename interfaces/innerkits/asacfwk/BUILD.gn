@@ -19,6 +19,7 @@ config("accessibilityclient_private_config") {
 
   include_dirs = [
     "//base/accessibility/frameworks/asacfwk/include",
+    "//base/accessibility/frameworks/aafwk/include",
     "//base/accessibility/util/include",
     "//base/accessibility/common/log/include",
     "//base/accessibility/dummyData",

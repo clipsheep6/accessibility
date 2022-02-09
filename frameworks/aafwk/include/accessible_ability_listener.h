@@ -17,9 +17,11 @@
 #define ACCESSIBLE_ABILITY_LISTENER_H
 
 #include <stdint.h>
-#include "key_event.h"
 #include "accessibility_event_info.h"
 
+namespace OHOS::MMI {
+    class KeyEvent;
+}
 namespace OHOS {
 namespace Accessibility {
 

@@ -19,6 +19,7 @@
 #include "accessible_ability_client_stub_impl.h"
 #include "accessible_ability_channel_proxy.h"
 #include "mock_accessible_ability_channel_stub.h"
+#include "key_event.h"
 
 using namespace testing;
 using namespace testing::ext;

@@ -21,6 +21,7 @@
 #include <iremote_object.h>
 #include <iremote_stub.h>
 #include "accessible_ability_client_interface.h"
+#include "accessible_ability_channel_interface.h"
 
 namespace OHOS {
 namespace Accessibility {

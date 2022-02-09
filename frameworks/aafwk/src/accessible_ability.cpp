@@ -20,6 +20,7 @@
 #include "iservice_registry.h"
 #include "if_system_ability_manager.h"
 #include "accessible_ability_manager_service_proxy.h"
+#include "accessible_ability_manager_service_interface.h"
 #include "dummy.h"
 
 using namespace std;
@@ -36,7 +37,7 @@ AccessibleAbility& AccessibleAbility::GetInstance()
     return accessibleAbility;
 }
 
-AccessibleAbility::AccessibleAbility()
+AccessibleAbility::AccessibleAbility() : pImpl_(std::make_unique<Impl>())
 {
     HILOG_DEBUG("%{public}s start.", __func__);
     if (!Init()) {
@@ -44,9 +45,42 @@ AccessibleAbility::AccessibleAbility()
     }
 }
 
-bool AccessibleAbility::Init()
+class AccessibleAbility::Impl {
+public:
+    void RegisterListener(const std::shared_ptr<AccessibleAbilityListener> &listener);
+    bool Init();
+    void ConnectToAAMS();
+
+    std::vector<AccessibilityWindowInfo> accessibilityWindow_ {};
+    std::map<uint32_t, std::shared_ptr<GestureResultListenerInfo>> gestureResultListenerInfos_{};
+    std::map<uint32_t, std::shared_ptr<DisplayResizeController>> displayResizeControllers_{};
+    std::shared_ptr<FingerprintController> fingerprintController_ = nullptr;
+    std::shared_ptr<AccessibleAbilityEventHandler> accessibleAbilityEventHandler_ = nullptr;
+    std::shared_ptr<AppExecFwk::EventRunner> runner_ = nullptr;
+
+    sptr<IAccessibleAbilityManagerServiceClient> proxy_ = nullptr;
+    sptr<AccessibleAbilityClientStubImpl> stub_ = nullptr;
+
+    uint32_t channelId_ = AccessibleAbilityClientStubImpl::INVALID_CHANNEL_ID;
+    uint32_t gestureStatusListenerSequence_ = 0;
+};
+
+void AccessibleAbility::Impl::RegisterListener(const std::shared_ptr<AccessibleAbilityListener> &listener)
 {
-    HILOG_DEBUG("%{public}s start.", __func__);
+    if (!listener) {
+        HILOG_ERROR("listener is nullptr.");
+        return;
+    }
+
+    if (!stub_) {
+        HILOG_ERROR("AccessibleAbility::ConnectToAAMS fail, no pImpl_->stub_");
+        return;
+    }
+    stub_->RegisterListenerImpl(listener);
+}
+
+bool AccessibleAbility::Impl::Init()
+{
     if (!runner_) {
         runner_ = AppExecFwk::EventRunner::Create(AA_NAME);
         if (!runner_) {
@@ -54,7 +88,7 @@ bool AccessibleAbility::Init()
             return false;
         }
     }
-    HILOG_DEBUG("Get runner_ successfully");
+    HILOG_DEBUG("Get pImpl_->runner_ successfully");
 
     if (!accessibleAbilityEventHandler_) {
         accessibleAbilityEventHandler_ = std::make_shared<AccessibleAbilityEventHandler>(runner_);
@@ -63,31 +97,28 @@ bool AccessibleAbility::Init()
             return false;
         }
     }
-    HILOG_DEBUG("Get accessibleAbilityEventHandler_ successfully");
+    HILOG_DEBUG("Get pImpl_->accessibleAbilityEventHandler_ successfully");
 
     stub_ = new AccessibleAbilityClientStubImpl(accessibleAbilityEventHandler_);    
     if (!stub_) {
-        HILOG_ERROR("stub_ is nullptr.");
+        HILOG_ERROR("pImpl_->stub_ is nullptr.");
         return false;
     }
-    HILOG_DEBUG("Get stub_ successfully");
+    HILOG_DEBUG("Get pImpl_->stub_ successfully");
 
     return true;
+}
+
+bool AccessibleAbility::Init()
+{
+    HILOG_DEBUG("%{public}s start.", __func__);
+    return pImpl_->Init();
 }
 
 void AccessibleAbility::RegisterListener(const std::shared_ptr<AccessibleAbilityListener> &listener)
 {
     HILOG_DEBUG("%{public}s start.", __func__);
-    if (!listener) {
-        HILOG_ERROR("listener is nullptr.");
-        return;
-    }
-
-    if (!stub_) {
-        HILOG_ERROR("AccessibleAbility::ConnectToAAMS fail, no stub_");
-        return;
-    }
-    stub_->RegisterListenerImpl(listener);
+    pImpl_->RegisterListener(listener);
 }
 
 void AccessibleAbility::ConnectToAAMS()
@@ -108,23 +139,23 @@ void AccessibleAbility::ConnectToAAMS()
     }
 
     HILOG_DEBUG("Get remote object ok");
-    proxy_ = iface_cast<AccessibleAbilityManagerServiceClientProxy>(object);
-    if (!proxy_) {
+    pImpl_->proxy_ = iface_cast<AccessibleAbilityManagerServiceClientProxy>(object);
+    if (!pImpl_->proxy_) {
         HILOG_ERROR("AccessibleAbility::ConnectToAAMS IAccessibleAbilityManagerServiceClient iface_cast failed");
         return;
     }
 
-    if (!stub_) {
-        HILOG_ERROR("AccessibleAbility::stub_ is nullptr");
+    if (!pImpl_->stub_) {
+        HILOG_ERROR("AccessibleAbility::pImpl_->stub_ is nullptr");
         return;
     }
-    proxy_->RegisterAbilityConnectionClientTmp(stub_);
+    pImpl_->proxy_->RegisterAbilityConnectionClientTmp(pImpl_->stub_);
 }
 
 void AccessibleAbility::DisableAbility()
 {
     HILOG_DEBUG("%{public}s start.", __func__);
-    AccessibilityOperator::GetInstance().DisableAbility(channelId_);
+    AccessibilityOperator::GetInstance().DisableAbility(pImpl_->channelId_);
 }
 
 bool AccessibleAbility::GetFocusElementInfo(uint32_t focusType, std::optional<AccessibilityElementInfo>& elementInfo)
@@ -136,7 +167,7 @@ bool AccessibleAbility::GetFocusElementInfo(uint32_t focusType, std::optional<Ac
     }
 
     AccessibilityElementInfo info {};
-    bool result = AccessibilityOperator::GetInstance().FindFocusedElementInfo(channelId_,
+    bool result = AccessibilityOperator::GetInstance().FindFocusedElementInfo(pImpl_->channelId_,
                             ANY_WINDOW_ID, ROOT_NODE_ID, focusType, info);
     elementInfo = info;
     return result;
@@ -164,15 +195,15 @@ bool AccessibleAbility::GestureSimulate(std::vector<GesturePathDefine>& gestureP
         return false;
     }
 
-    gestureStatusListenerSequence_++;
+    pImpl_->gestureStatusListenerSequence_++;
 
     if (listener) {
-        gestureResultListenerInfos_.insert(make_pair(gestureStatusListenerSequence_,
+        pImpl_->gestureResultListenerInfos_.insert(make_pair(pImpl_->gestureStatusListenerSequence_,
             make_shared<GestureResultListenerInfo>(gesturePathDefineList, listener)));
     }
 
     AccessibilityOperator::GetInstance().SendSimulateGesture(
-        channelId_, gestureStatusListenerSequence_, gesturePathDefineList);
+        pImpl_->channelId_, pImpl_->gestureStatusListenerSequence_, gesturePathDefineList);
 
     return true;
 }
@@ -190,14 +221,14 @@ std::shared_ptr<DisplayResizeController>& AccessibleAbility::GetDisplayResizeCon
 {
     HILOG_DEBUG("%{public}s start.", __func__);
 
-    auto it = displayResizeControllers_.find(displayId);
-    if (it != displayResizeControllers_.end()) {
-        return displayResizeControllers_[displayId];
+    auto it = pImpl_->displayResizeControllers_.find(displayId);
+    if (it != pImpl_->displayResizeControllers_.end()) {
+        return pImpl_->displayResizeControllers_[displayId];
     } else {
         HILOG_DEBUG("Have no DisplayResizeController and make a new one.");
-        displayResizeControllers_.insert(make_pair(displayId,
-            make_shared<DisplayResizeController>(channelId_, displayId)));
-        return displayResizeControllers_[displayId];
+        pImpl_->displayResizeControllers_.insert(make_pair(displayId,
+            make_shared<DisplayResizeController>(pImpl_->channelId_, displayId)));
+        return pImpl_->displayResizeControllers_[displayId];
     }
 }
 
@@ -205,7 +236,7 @@ bool AccessibleAbility::GetRootElementInfo(std::optional<AccessibilityElementInf
 {
     HILOG_DEBUG("%{public}s start.", __func__);
     AccessibilityElementInfo info {};
-    bool result = AccessibilityOperator::GetInstance().GetRoot(channelId_, info);
+    bool result = AccessibilityOperator::GetInstance().GetRoot(pImpl_->channelId_, info);
     elementInfo = info;
     return result;
 }
@@ -213,8 +244,8 @@ bool AccessibleAbility::GetRootElementInfo(std::optional<AccessibilityElementInf
 std::vector<AccessibilityWindowInfo>& AccessibleAbility::GetWindows()
 {
     HILOG_DEBUG("%{public}s start.", __func__);
-    accessibilityWindow_ = AccessibilityOperator::GetInstance().GetWindows(channelId_);
-    return accessibilityWindow_;
+    pImpl_->accessibilityWindow_ = AccessibilityOperator::GetInstance().GetWindows(pImpl_->channelId_);
+    return pImpl_->accessibilityWindow_;
 }
 
 bool AccessibleAbility::PerformCommonAction(uint32_t action)
@@ -225,36 +256,36 @@ bool AccessibleAbility::PerformCommonAction(uint32_t action)
         return false;
     }
 
-    return AccessibilityOperator::GetInstance().PerformCommonAction(channelId_, action);
+    return AccessibilityOperator::GetInstance().PerformCommonAction(pImpl_->channelId_, action);
 }
 
 std::shared_ptr<FingerprintController>& AccessibleAbility::GetFingerprintController()
 {
     HILOG_DEBUG("%{public}s start.", __func__);
-    if (!fingerprintController_) {
-        fingerprintController_ = make_shared<FingerprintController>(channelId_);
+    if (!pImpl_->fingerprintController_) {
+        pImpl_->fingerprintController_ = make_shared<FingerprintController>(pImpl_->channelId_);
     }
-    return fingerprintController_;
+    return pImpl_->fingerprintController_;
 }
 
 void AccessibleAbility::DispatchOnSimulationGestureResult(uint32_t sequence, bool result)
 {
     HILOG_DEBUG("%{public}s start.", __func__);
 
-    if (gestureResultListenerInfos_.empty()) {
+    if (pImpl_->gestureResultListenerInfos_.empty()) {
         HILOG_ERROR("There is no informations of gestureResultListener");
         return;
     }
 
     shared_ptr<GestureResultListenerInfo> gestureResultListenerInfo = nullptr;
-    auto it = gestureResultListenerInfos_.find(sequence);
-    if (it != gestureResultListenerInfos_.end()) {
+    auto it = pImpl_->gestureResultListenerInfos_.find(sequence);
+    if (it != pImpl_->gestureResultListenerInfos_.end()) {
         HILOG_DEBUG("gestureResultListenerInfo has been found.");
-        gestureResultListenerInfo = gestureResultListenerInfos_[sequence];
+        gestureResultListenerInfo = pImpl_->gestureResultListenerInfos_[sequence];
     }
 
     if (!gestureResultListenerInfo) {
-        HILOG_ERROR("There is no gestureResultListenerInfo in gestureResultListenerInfos_[%{public}d", sequence);
+        HILOG_ERROR("There is no gestureResultListenerInfo in pImpl_->gestureResultListenerInfos_[%{public}d", sequence);
         return;
     }
 
@@ -282,7 +313,7 @@ void AccessibleAbility::DispatchOnSimulationGestureResult(uint32_t sequence, boo
 void AccessibleAbility::SetChannelId(uint32_t channelId)
 {
     HILOG_DEBUG("%{public}s start.", __func__);
-    channelId_ = channelId;
+    pImpl_->channelId_ = channelId;
 }
 
 bool AccessibleAbility::CheckCommonAction(uint32_t action)
@@ -297,6 +328,5 @@ bool AccessibleAbility::CheckCommonAction(uint32_t action)
         return true;
     }
 }
-
 } // namespace Accessibility
 } // namespace OHOS

@@ -22,18 +22,20 @@
 #include <vector>
 #include <map>
 
-#include "key_event.h"
 #include "accessible_ability_listener.h"
 #include "accessibility_element_info.h"
 #include "accessibility_window_info.h"
 #include "accessibility_event_info.h"
 #include "iremote_object.h"
-#include "accessible_ability_manager_service_interface.h"
 #include "display_resize_controller.h"
 #include "fingerprint_controller.h"
 #include "gesture_simulation.h"
 #include "accessible_ability_client_stub_impl.h"
 #include "hilog_wrapper.h"
+
+namespace OHOS::MMI {
+    class KeyEvent;
+}
 
 namespace OHOS {
 namespace Accessibility {
@@ -190,6 +192,8 @@ private:
     AccessibleAbility();
     ~AccessibleAbility() = default;
 
+    class Impl;
+    std::unique_ptr<Impl> pImpl_;
     /**
      * @brief Init AccessibleAbility.
      * @param
@@ -203,19 +207,6 @@ private:
      * @return Return true if the type of common action is right, else return false.
      */
     bool CheckCommonAction(uint32_t action);
-
-    std::vector<AccessibilityWindowInfo> accessibilityWindow_ {};
-    std::map<uint32_t, std::shared_ptr<GestureResultListenerInfo>> gestureResultListenerInfos_{};
-    std::map<uint32_t, std::shared_ptr<DisplayResizeController>> displayResizeControllers_{};
-    std::shared_ptr<FingerprintController> fingerprintController_ = nullptr;
-    std::shared_ptr<AccessibleAbilityEventHandler> accessibleAbilityEventHandler_ = nullptr;
-    std::shared_ptr<AppExecFwk::EventRunner> runner_ = nullptr;
-
-    sptr<IAccessibleAbilityManagerServiceClient> proxy_ = nullptr;
-    sptr<AccessibleAbilityClientStubImpl> stub_ = nullptr;
- 
-    uint32_t channelId_ = AccessibleAbilityClientStubImpl::INVALID_CHANNEL_ID;
-    uint32_t gestureStatusListenerSequence_ = 0;
 };
 
 } // namespace Accessibility
