@@ -99,7 +99,7 @@ bool AccessibleAbility::Impl::Init()
     }
     HILOG_DEBUG("Get pImpl_->accessibleAbilityEventHandler_ successfully");
 
-    stub_ = new AccessibleAbilityClientStubImpl(accessibleAbilityEventHandler_);    
+    stub_ = new AccessibleAbilityClientStubImpl(accessibleAbilityEventHandler_);
     if (!stub_) {
         HILOG_ERROR("pImpl_->stub_ is nullptr.");
         return false;

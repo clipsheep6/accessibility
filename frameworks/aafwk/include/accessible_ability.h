@@ -168,7 +168,7 @@ public:
 
     /**
      * @brief Obtains the controller for fingerprint operations.
-     * @param 
+     * @param
      * @return Return the fingerprint controller.
      */
     std::shared_ptr<FingerprintController>& GetFingerprintController();
