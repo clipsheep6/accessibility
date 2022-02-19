@@ -1109,6 +1109,7 @@ AccessibilityAbilityTypes ConvertStringToAccessibilityAbilityTypes(std::string t
         {"audible", AccessibilityAbilityTypes::ACCESSIBILITY_ABILITY_TYPE_AUDIBLE},
         {"visual", AccessibilityAbilityTypes::ACCESSIBILITY_ABILITY_TYPE_VISUAL},
         {"generic", AccessibilityAbilityTypes::ACCESSIBILITY_ABILITY_TYPE_GENERIC},
+        {"all", AccessibilityAbilityTypes::ACCESSIBILITY_ABILITY_TYPE_ALL},
     };
 
     if (accessibilityAbilityTypesTable.find(type) == accessibilityAbilityTypesTable.end()) {
