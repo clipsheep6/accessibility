@@ -105,10 +105,6 @@ std::shared_ptr<Media::PixelMap> DisplayManager::GetScreenshot(DisplayId display
 const sptr<Display> DisplayManager::GetDefaultDisplay()
 {
     DisplayInfo info;
-    info.id_ = 1;
-    info.width_ = 0;
-    info.height_ = 0;
-    info.freshRate_ = 0;
     sptr<Display> display = new Display("name", &info);
     return display;
 }
