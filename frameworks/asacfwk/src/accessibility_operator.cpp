@@ -15,7 +15,6 @@
 
 #include "accessibility_operator.h"
 #include "accessibility_system_ability_client.h"
-#include <sys/time.h>
 #include <unistd.h>
 
 namespace OHOS {

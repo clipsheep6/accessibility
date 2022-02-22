@@ -48,14 +48,6 @@ namespace Accessibility {
         ACCESSIBILITY_ABILITY_TYPE_ALL = 0xFFFFFFFF,
     };
 
-    // The interception types of key event.
-    // enum KeyEventInterceptionTypes : uint32_t{
-    //     INTERCEPT_KEY_POWER = 0x001,
-    //     INTERCEPT_KEY_VOLUME_UP = 0x002,
-    //     INTERCEPT_KEY_VOLUME_DOWN = 0x004,
-    //     INETRCEPT_KEY_ALL = 0xFFFFFFFF,
-    // };
-
 class AccessibilityAbilityInfo : public Parcelable {
 public:
 

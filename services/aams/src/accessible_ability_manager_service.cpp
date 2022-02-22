@@ -682,7 +682,9 @@ void AccessibleAbilityManagerService::UpdateAbilities()
         sptr<AccessibleAbilityConnection> connection = accountData->GetAccessibleAbilityConnection(elementName);
         if (accountData->GetEnabledAbilities().count(elementName)) {
             if (!connection) {
-                installAbility.SetCapabilityValues(Capability::CAPABILITY_RETRIEVE);// this is a temp deal for ace test
+                // this is a temp deal for ace test
+                installAbility.SetCapabilityValues(Capability::CAPABILITY_RETRIEVE |
+                                                Capability::CAPABILITY_KEY_EVENT_OBSERVER);
                 connection = new AccessibleAbilityConnection(accountData, connectCounter_++, installAbility);
                 connection->Connect(element);
             }
