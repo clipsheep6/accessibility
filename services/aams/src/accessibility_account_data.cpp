@@ -15,6 +15,7 @@
 
 #include "accessibility_account_data.h"
 #include "accessibility_display_manager.h"
+#include "accessible_ability_manager_service.h"
 #include "extension_ability_info.h"
 #include "hilog_wrapper.h"
 #include "json_utils.h"
@@ -631,7 +632,6 @@ bool AccessibilityAccountData::ReadConfigurationForAccountData()
 }
 
 // get installedAbilities_.
-#define THREE_SECOND (3)
 void AccessibilityAccountData::GetInstalledAbilitiesFromBMS()
 {
     HILOG_DEBUG("%{public}s start.", __func__);
@@ -643,8 +643,8 @@ void AccessibilityAccountData::GetInstalledAbilitiesFromBMS()
     do {
         bms = aams->GetBundleMgrProxy();
         if (!bms) {
-            HILOG_ERROR("Get bms failed! sleep 3s and retry is %{public}d", retry);
-            sleep(THREE_SECOND);
+            HILOG_ERROR("Get bms failed! sleep 1s and retry is %{public}d", retry);
+            sleep(1);
             retry ++;
         } else {
             HILOG_DEBUG("Get bms successful and retry is %{public}d", retry);

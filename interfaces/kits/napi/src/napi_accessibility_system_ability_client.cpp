@@ -1458,14 +1458,12 @@ napi_value NAccessibilityClient::GetCaptionsManager(napi_env env, napi_callback_
     napi_get_boolean(env, callbackInfo->captionState_, &keyCode);
     napi_set_named_property(env, result, "enabled", keyCode);
 
-    // napi_create_object(env, &keyCode);
     napi_status status = napi_new_instance(env, NAccessibilityClient::aaStyleCons_, 0, nullptr, &keyCode);
     HILOG_INFO("%{public}s napi_new_instance() = %{public}d ", __func__, (int32_t)status);
     ConvertCaptionPropertyToJS(env, keyCode, callbackInfo->captionProperty_);
     napi_set_named_property(env, result, "style", keyCode);
 
     delete callbackInfo;
-
     return result;
 }
 
@@ -1535,7 +1533,6 @@ napi_value NAccessibilityClient::GetCaptionStyle(napi_env env, napi_callback_inf
 
     captionProperty = AccessibilitySystemAbilityClient::GetInstance()->GetCaptionProperty();
 
-    // napi_create_object(env, &captionStyle);
     napi_status status = napi_new_instance(env, NAccessibilityClient::aaStyleCons_, 0, nullptr, &captionStyle);
     HILOG_INFO("%{public}s napi_new_instance() = %{public}d ", __func__, (int32_t)status);
     ConvertCaptionPropertyToJS(env, captionStyle, captionProperty);
@@ -1617,7 +1614,6 @@ napi_value NAccessibilityClient::DeregisterCaptionStateCallback(napi_env env, na
         napi_get_undefined(env, &undefined);
         napi_get_boolean(env, callbackInfo->result_, &result[PARAM1]);
         if (callbackInfo->callback_) {
-            // result[PARAM0] = GetErrorValue(env, CODE_SUCCESS);
             napi_get_boolean(env, callbackInfo->result_, &result[PARAM0]); //maby rework
 
             napi_get_reference_value(env, callbackInfo->callback_, &callback);
