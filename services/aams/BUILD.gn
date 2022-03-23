@@ -44,8 +44,6 @@ config("aams_service_config") {
     "//utils/system/safwk/native/include",
     "//foundation/distributeddatamgr/appdatamgr/interfaces/innerkits/native_preferences/include",
     "//foundation/distributedschedule/samgr/interfaces/innerkits/samgr_proxy/include",
-    "//foundation/multimodalinput/input/interfaces/native/innerkits/event/include",
-    "//foundation/multimodalinput/input/interfaces/native/innerkits/proxy/include",
     "//utils/native/base/include",
     "//base/powermgr/power_manager/interfaces/innerkits/native/include",
     "//foundation/appexecfwk/standard/kits/appkit/native/app/include",
@@ -66,11 +64,8 @@ config("aams_service_config") {
 
   if (target_cpu == "arm") {
     cflags = [ "-DBINDER_IPC_32BIT" ]
-    # cflags_cc = ["-frtti"]
   }
 }
-
-# remove_configs = [ "//build/config/compiler:no_rtti" ]
 
 ohos_shared_library("accessibleabilityms") {
   install_enable = true
@@ -102,8 +97,8 @@ ohos_shared_library("accessibleabilityms") {
     "bundle_framework:appexecfwk_core",
     "ces_standard:cesfwk_innerkits",
     "hiviewdfx_hilog_native:libhilog",
+    "input:libmmi-client",
     "ipc:ipc_core",
-    "multimodalinput_base:libmmi-client",
     "os_account_standard:os_account_innerkits",
   ]
 
