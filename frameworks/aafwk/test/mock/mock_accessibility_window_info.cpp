@@ -74,9 +74,7 @@ bool AccessibilityWindowInfo::GetRootAccessibilityInfo(AccessibilityElementInfo 
 }
 
 void AccessibilityWindowInfo::SetAnchorId(const int anchorId)
-{
-    (void)anchorId;
-}
+{}
 
 bool AccessibilityWindowInfo::GetAnchor(AccessibilityElementInfo &elementInfo)
 {

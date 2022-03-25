@@ -74,7 +74,7 @@ bool AccessibilityCommonEventRegistry::RegisterSubscriber()
     accessibilityCommonEventSubscriber_ =
         std::make_shared<AccessibilityCommonEventSubscriber>(subscribeInfo, eventHandles_);
 
-    int retry = RETRY_SUBSCRIBER;
+    int retry = 3;
     do {
         subscribeResult = CommonEventManager::SubscribeCommonEvent(accessibilityCommonEventSubscriber_);
         if (subscribeResult) {

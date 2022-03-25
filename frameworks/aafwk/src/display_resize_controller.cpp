@@ -109,9 +109,7 @@ void DisplayResizeController::DispatchOnDisplayResized(const Rect& rect,
 {
     HILOG_DEBUG("start.");
     for (auto listener : displayResizeListeners_) {
-        if (listener) {
-            listener->OnDisplayResized(*this, rect, scale, centerX, centerY);
-        }
+        listener->OnDisplayResized(*this, rect, scale, centerX, centerY);
     }
 }
 } // namespace Accessibility

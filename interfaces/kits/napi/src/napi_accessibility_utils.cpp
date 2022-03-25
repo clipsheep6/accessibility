@@ -69,7 +69,7 @@ bool ParseUint32(napi_env env, uint32_t& param, napi_value args)
     napi_valuetype valuetype;
     status = napi_typeof(env, args, &valuetype);
     if (status != napi_ok) {
-        HILOG_ERROR("napi_typeof error and status is %{public}d", status);
+        HILOG_INFO("napi_typeof error and status is %{public}d", status);
         return false;
     }
     HILOG_INFO("param=%{public}d.", valuetype);
@@ -258,11 +258,10 @@ static void ConvertAccessibleAbilityInfoToJS(napi_env env, napi_value& result, A
     NAPI_CALL_RETURN_VOID(env, napi_create_array(env, &nAbilityType));
     uint32_t abilityTypesValue = info.GetAccessibilityAbilityType();
     std::vector<std::string> abilityTypes = ParseAbilityTypesToVec(abilityTypesValue);
-    for (size_t idxType = 0; idxType < abilityTypes.size(); idxType++) {
+    for (size_t idx = 0; idx < abilityTypes.size(); idx++) {
         napi_value nType;
-        NAPI_CALL_RETURN_VOID(env, napi_create_string_utf8(env, abilityTypes[idxType].c_str(),
-            NAPI_AUTO_LENGTH, &nType));
-        NAPI_CALL_RETURN_VOID(env, napi_set_element(env, nAbilityType, idxType, nType));
+        NAPI_CALL_RETURN_VOID(env, napi_create_string_utf8(env, abilityTypes[idx].c_str(), NAPI_AUTO_LENGTH, &nType));
+        NAPI_CALL_RETURN_VOID(env, napi_set_element(env, nAbilityType, idx, nType));
     }
     NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, result, "abilityTypes", nAbilityType));
 
@@ -270,11 +269,10 @@ static void ConvertAccessibleAbilityInfoToJS(napi_env env, napi_value& result, A
     NAPI_CALL_RETURN_VOID(env, napi_create_array(env, &nCapabilities));
     uint32_t capabilitiesValue = info.GetCapabilityValues();
     std::vector<std::string> capabilities = ParseCapabilitiesToVec(capabilitiesValue);
-    for (size_t idxCap = 0; idxCap < capabilities.size(); idxCap++) {
-        napi_value nCap;
-        NAPI_CALL_RETURN_VOID(env, napi_create_string_utf8(env, capabilities[idxCap].c_str(),
-            NAPI_AUTO_LENGTH, &nCap));
-        NAPI_CALL_RETURN_VOID(env, napi_set_element(env, nCapabilities, idxCap, nCap));
+    for (size_t idx = 0; idx < capabilities.size(); idx++) {
+        napi_value nType;
+        NAPI_CALL_RETURN_VOID(env, napi_create_string_utf8(env, capabilities[idx].c_str(), NAPI_AUTO_LENGTH, &nType));
+        NAPI_CALL_RETURN_VOID(env, napi_set_element(env, nCapabilities, idx, nType));
     }
     NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, result, "capabilities", nCapabilities));
 
@@ -287,10 +285,10 @@ static void ConvertAccessibleAbilityInfoToJS(napi_env env, napi_value& result, A
     NAPI_CALL_RETURN_VOID(env, napi_create_array(env, &nEventTypes));
     uint32_t eventTypesValue = info.GetEventTypes();
     std::vector<std::string> eventTypes = ParseEventTypesToVec(eventTypesValue);
-    for (size_t idxEve = 0; idxEve < eventTypes.size(); idxEve++) {
-        napi_value nEve;
-        NAPI_CALL_RETURN_VOID(env, napi_create_string_utf8(env, eventTypes[idxEve].c_str(), NAPI_AUTO_LENGTH, &nEve));
-        NAPI_CALL_RETURN_VOID(env, napi_set_element(env, nEventTypes, idxEve, nEve));
+    for (size_t idx = 0; idx < eventTypes.size(); idx++) {
+        napi_value nType;
+        NAPI_CALL_RETURN_VOID(env, napi_create_string_utf8(env, eventTypes[idx].c_str(), NAPI_AUTO_LENGTH, &nType));
+        NAPI_CALL_RETURN_VOID(env, napi_set_element(env, nEventTypes, idx, nType));
     }
     NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, result, "eventTypes", nEventTypes));
 
@@ -849,11 +847,11 @@ void ConvertElementInfoToJS(napi_env env, napi_value result, const Accessibility
     NAPI_CALL_RETURN_VOID(env, napi_create_array(env, &nOperations));
     std::vector<AccessibleAction> operations = elementInfo.GetActionList();
     size_t operationCount = operations.size();
-    for (size_t i = 0; i < operationCount; i++) {
+    for (size_t idx = 0; idx < operationCount; idx++) {
         napi_value nOp;
         napi_create_object(env, &nOp);
-        ConvertOperationToJS(env, nOp, operations[i]);
-        NAPI_CALL_RETURN_VOID(env, napi_set_element(env, nOperations, i, nOp));
+        ConvertOperationToJS(env, nOp, operations[idx]);
+        NAPI_CALL_RETURN_VOID(env, napi_set_element(env, nOperations, idx, nOp));
     }
     NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, result, "operations", nOperations));
 
@@ -1240,9 +1238,9 @@ void ConvertActionArgsJSToNAPI(
             napi_create_string_utf8(env, "htmlItem", NAPI_AUTO_LENGTH, &propertyNameValue);
             napi_has_property(env, object, propertyNameValue, &hasProperty);
             if (hasProperty) {
-                napi_value htmlItemValue = nullptr;
-                napi_get_property(env, object, propertyNameValue, &htmlItemValue);
-                str = GetStringFromNAPI(env, htmlItemValue);
+                napi_value value = nullptr;
+                napi_get_property(env, object, propertyNameValue, &value);
+                str = GetStringFromNAPI(env, value);
                 args.insert(std::pair<std::string, std::string>("htmlItem", str.c_str()));
             }
             break;
@@ -1251,9 +1249,9 @@ void ConvertActionArgsJSToNAPI(
             napi_create_string_utf8(env, "textMoveUnit", NAPI_AUTO_LENGTH, &propertyNameValue);
             napi_has_property(env, object, propertyNameValue, &hasProperty);
             if (hasProperty) {
-                napi_value textMoveUnitValue = nullptr;
-                napi_get_property(env, object, propertyNameValue, &textMoveUnitValue);
-                str = GetStringFromNAPI(env, textMoveUnitValue);
+                napi_value value = nullptr;
+                napi_get_property(env, object, propertyNameValue, &value);
+                str = GetStringFromNAPI(env, value);
                 args.insert(std::pair<std::string, std::string>("textMoveUnit", str.c_str()));
             }
             break;
@@ -1261,17 +1259,17 @@ void ConvertActionArgsJSToNAPI(
             napi_create_string_utf8(env, "selectTextBegin", NAPI_AUTO_LENGTH, &propertyNameValue);
             napi_has_property(env, object, propertyNameValue, &hasProperty);
             if (hasProperty) {
-                napi_value selectTextBeginValue = nullptr;
-                napi_get_property(env, object, propertyNameValue, &selectTextBeginValue);
-                str = GetStringFromNAPI(env, selectTextBeginValue);
+                napi_value value = nullptr;
+                napi_get_property(env, object, propertyNameValue, &value);
+                str = GetStringFromNAPI(env, value);
                 args.insert(std::pair<std::string, std::string>("selectTextBegin", str.c_str()));
             }
             napi_create_string_utf8(env, "selectTextEnd", NAPI_AUTO_LENGTH, &propertyNameValue);
             napi_has_property(env, object, propertyNameValue, &hasProperty);
             if (hasProperty) {
-                napi_value selectTextEndValue = nullptr;
-                napi_get_property(env, object, propertyNameValue, &selectTextEndValue);
-                str = GetStringFromNAPI(env, selectTextEndValue);
+                napi_value value = nullptr;
+                napi_get_property(env, object, propertyNameValue, &value);
+                str = GetStringFromNAPI(env, value);
                 args.insert(std::pair<std::string, std::string>("selectTextEnd", str.c_str()));
             }
             break;
@@ -1279,9 +1277,9 @@ void ConvertActionArgsJSToNAPI(
             napi_create_string_utf8(env, "setText", NAPI_AUTO_LENGTH, &propertyNameValue);
             napi_has_property(env, object, propertyNameValue, &hasProperty);
             if (hasProperty) {
-                napi_value setTextValue = nullptr;
-                napi_get_property(env, object, propertyNameValue, &setTextValue);
-                str = GetStringFromNAPI(env, setTextValue);
+                napi_value value = nullptr;
+                napi_get_property(env, object, propertyNameValue, &value);
+                str = GetStringFromNAPI(env, value);
                 args.insert(std::pair<std::string, std::string>("setText", str.c_str()));
             }
             break;
@@ -1313,18 +1311,18 @@ bool ConvertEventInfoJSToNAPI(napi_env env, napi_value object, AccessibilityEven
     napi_create_string_utf8(env, "windowUpdateType", NAPI_AUTO_LENGTH, &propertyNameValue);
     napi_has_property(env, object, propertyNameValue, &hasProperty);
     if (hasProperty) {
-        napi_value windowUpdateTypeValue = nullptr;
-        napi_get_property(env, object, propertyNameValue, &windowUpdateTypeValue);
-        str = GetStringFromNAPI(env, windowUpdateTypeValue);
+        napi_value value = nullptr;
+        napi_get_property(env, object, propertyNameValue, &value);
+        str = GetStringFromNAPI(env, value);
         eventInfo.SetWindowChangeTypes(ConvertStringToWindowUpdateTypes(str));
     }
 
     napi_create_string_utf8(env, "bundleName", NAPI_AUTO_LENGTH, &propertyNameValue);
     napi_has_property(env, object, propertyNameValue, &hasProperty);
     if (hasProperty) {
-        napi_value bundleNameValue = nullptr;
-        napi_get_property(env, object, propertyNameValue, &bundleNameValue);
-        str = GetStringFromNAPI(env, bundleNameValue);
+        napi_value value = nullptr;
+        napi_get_property(env, object, propertyNameValue, &value);
+        str = GetStringFromNAPI(env, value);
         if (str == "") {
             return false;
         }
@@ -1336,9 +1334,9 @@ bool ConvertEventInfoJSToNAPI(napi_env env, napi_value object, AccessibilityEven
     napi_create_string_utf8(env, "componentType", NAPI_AUTO_LENGTH, &propertyNameValue);
     napi_has_property(env, object, propertyNameValue, &hasProperty);
     if (hasProperty) {
-        napi_value componentTypeValue = nullptr;
-        napi_get_property(env, object, propertyNameValue, &componentTypeValue);
-        str = GetStringFromNAPI(env, componentTypeValue);
+        napi_value value = nullptr;
+        napi_get_property(env, object, propertyNameValue, &value);
+        str = GetStringFromNAPI(env, value);
         eventInfo.SetComponentType(str);
     }
 
@@ -1346,54 +1344,54 @@ bool ConvertEventInfoJSToNAPI(napi_env env, napi_value object, AccessibilityEven
     napi_create_string_utf8(env, "timeStamp", NAPI_AUTO_LENGTH, &propertyNameValue);
     napi_has_property(env, object, propertyNameValue, &hasProperty);
     if (hasProperty) {
-        napi_value timeStampValue = nullptr;
-        napi_get_property(env, object, propertyNameValue, &timeStampValue);
-        napi_get_value_int64(env, timeStampValue, &timestamp);
+        napi_value value = nullptr;
+        napi_get_property(env, object, propertyNameValue, &value);
+        napi_get_value_int64(env, value, &timestamp);
         eventInfo.SetTimeStamp(timestamp);
     }
 
     napi_create_string_utf8(env, "windowId", NAPI_AUTO_LENGTH, &propertyNameValue);
     napi_has_property(env, object, propertyNameValue, &hasProperty);
     if (hasProperty) {
-        napi_value windowIdValue = nullptr;
-        napi_get_property(env, object, propertyNameValue, &windowIdValue);
-        napi_get_value_int32(env, windowIdValue, &dataValue);
+        napi_value value = nullptr;
+        napi_get_property(env, object, propertyNameValue, &value);
+        napi_get_value_int32(env, value, &dataValue);
         eventInfo.SetWindowId(dataValue);
     }
 
     napi_create_string_utf8(env, "pageId", NAPI_AUTO_LENGTH, &propertyNameValue);
     napi_has_property(env, object, propertyNameValue, &hasProperty);
     if (hasProperty) {
-        napi_value pageIdValue = nullptr;
-        napi_get_property(env, object, propertyNameValue, &pageIdValue);
-        napi_get_value_int32(env, pageIdValue, &dataValue);
+        napi_value value = nullptr;
+        napi_get_property(env, object, propertyNameValue, &value);
+        napi_get_value_int32(env, value, &dataValue);
         eventInfo.SetPageId(dataValue);
     }
 
     napi_create_string_utf8(env, "componentId", NAPI_AUTO_LENGTH, &propertyNameValue);
     napi_has_property(env, object, propertyNameValue, &hasProperty);
     if (hasProperty) {
-        napi_value componentIdValue = nullptr;
-        napi_get_property(env, object, propertyNameValue, &componentIdValue);
-        napi_get_value_int32(env, componentIdValue, &dataValue);
+        napi_value value = nullptr;
+        napi_get_property(env, object, propertyNameValue, &value);
+        napi_get_value_int32(env, value, &dataValue);
         eventInfo.SetSource(dataValue);
     }
 
     napi_create_string_utf8(env, "description", NAPI_AUTO_LENGTH, &propertyNameValue);
     napi_has_property(env, object, propertyNameValue, &hasProperty);
     if (hasProperty) {
-        napi_value descriptionValue = nullptr;
-        napi_get_property(env, object, propertyNameValue, &descriptionValue);
-        str = GetStringFromNAPI(env, descriptionValue);
+        napi_value value = nullptr;
+        napi_get_property(env, object, propertyNameValue, &value);
+        str = GetStringFromNAPI(env, value);
         eventInfo.SetDescription(str);
     }
 
     napi_create_string_utf8(env, "triggerAction", NAPI_AUTO_LENGTH, &propertyNameValue);
     napi_has_property(env, object, propertyNameValue, &hasProperty);
     if (hasProperty) {
-        napi_value triggerActionValue = nullptr;
-        napi_get_property(env, object, propertyNameValue, &triggerActionValue);
-        str = GetStringFromNAPI(env, triggerActionValue);
+        napi_value value = nullptr;
+        napi_get_property(env, object, propertyNameValue, &value);
+        str = GetStringFromNAPI(env, value);
         eventInfo.SetTriggerAction(ConvertStringToAccessibleOperationType(str));
         if (eventInfo.GetTriggerAction() == ACCESSIBILITY_ACTION_INVALID) {
             return false;
@@ -1405,22 +1403,22 @@ bool ConvertEventInfoJSToNAPI(napi_env env, napi_value object, AccessibilityEven
     napi_create_string_utf8(env, "textMoveUnit", NAPI_AUTO_LENGTH, &propertyNameValue);
     napi_has_property(env, object, propertyNameValue, &hasProperty);
     if (hasProperty) {
-        napi_value textMoveUnitValue = nullptr;
-        napi_get_property(env, object, propertyNameValue, &textMoveUnitValue);
-        str = GetStringFromNAPI(env, textMoveUnitValue);
+        napi_value value = nullptr;
+        napi_get_property(env, object, propertyNameValue, &value);
+        str = GetStringFromNAPI(env, value);
         eventInfo.SetTextMovementStep(ConvertStringToTextMoveStep(str));
     }
 
     napi_create_string_utf8(env, "contents", NAPI_AUTO_LENGTH, &propertyNameValue);
     napi_has_property(env, object, propertyNameValue, &hasProperty);
     if (hasProperty) {
-        napi_value contentsValue = nullptr;
-        napi_get_property(env, object, propertyNameValue, &contentsValue);
+        napi_value value = nullptr;
+        napi_get_property(env, object, propertyNameValue, &value);
         napi_value data = nullptr;
         size_t dataLen = 0;
-        napi_get_array_length(env, contentsValue, &dataLen);
+        napi_get_array_length(env, value, &dataLen);
         for (int i = 0; i < int(dataLen); i++) {
-            napi_get_element(env, contentsValue, i, &data);
+            napi_get_element(env, value, i, &data);
             str = GetStringFromNAPI(env, data);
             eventInfo.AddContent(str);
         }
@@ -1429,63 +1427,63 @@ bool ConvertEventInfoJSToNAPI(napi_env env, napi_value object, AccessibilityEven
     napi_create_string_utf8(env, "lastContent", NAPI_AUTO_LENGTH, &propertyNameValue);
     napi_has_property(env, object, propertyNameValue, &hasProperty);
     if (hasProperty) {
-        napi_value lastContentValue = nullptr;
-        napi_get_property(env, object, propertyNameValue, &lastContentValue);
-        str = GetStringFromNAPI(env, lastContentValue);
+        napi_value value = nullptr;
+        napi_get_property(env, object, propertyNameValue, &value);
+        str = GetStringFromNAPI(env, value);
         eventInfo.SetLatestContent(str);
     }
 
     napi_create_string_utf8(env, "beginIndex", NAPI_AUTO_LENGTH, &propertyNameValue);
     napi_has_property(env, object, propertyNameValue, &hasProperty);
     if (hasProperty) {
-        napi_value beginIndexValue = nullptr;
-        napi_get_property(env, object, propertyNameValue, &beginIndexValue);
-        napi_get_value_int32(env, beginIndexValue, &dataValue);
+        napi_value value = nullptr;
+        napi_get_property(env, object, propertyNameValue, &value);
+        napi_get_value_int32(env, value, &dataValue);
         eventInfo.SetBeginIndex(dataValue);
     }
 
     napi_create_string_utf8(env, "currentIndex", NAPI_AUTO_LENGTH, &propertyNameValue);
     napi_has_property(env, object, propertyNameValue, &hasProperty);
     if (hasProperty) {
-        napi_value currentIndexValue = nullptr;
-        napi_get_property(env, object, propertyNameValue, &currentIndexValue);
-        napi_get_value_int32(env, currentIndexValue, &dataValue);
+        napi_value value = nullptr;
+        napi_get_property(env, object, propertyNameValue, &value);
+        napi_get_value_int32(env, value, &dataValue);
         eventInfo.SetCurrentIndex(dataValue);
     }
 
     napi_create_string_utf8(env, "endIndex", NAPI_AUTO_LENGTH, &propertyNameValue);
     napi_has_property(env, object, propertyNameValue, &hasProperty);
     if (hasProperty) {
-        napi_value endIndexValue = nullptr;
-        napi_get_property(env, object, propertyNameValue, &endIndexValue);
-        napi_get_value_int32(env, endIndexValue, &dataValue);
+        napi_value value = nullptr;
+        napi_get_property(env, object, propertyNameValue, &value);
+        napi_get_value_int32(env, value, &dataValue);
         eventInfo.SetEndIndex(dataValue);
     }
 
     napi_create_string_utf8(env, "itemCount", NAPI_AUTO_LENGTH, &propertyNameValue);
     napi_has_property(env, object, propertyNameValue, &hasProperty);
     if (hasProperty) {
-        napi_value itemCountValue = nullptr;
-        napi_get_property(env, object, propertyNameValue, &itemCountValue);
-        napi_get_value_int32(env, itemCountValue, &dataValue);
+        napi_value value = nullptr;
+        napi_get_property(env, object, propertyNameValue, &value);
+        napi_get_value_int32(env, value, &dataValue);
         eventInfo.SetItemCounts(dataValue);
     }
 
     napi_create_string_utf8(env, "categoryNotification", NAPI_AUTO_LENGTH, &propertyNameValue);
     napi_has_property(env, object, propertyNameValue, &hasProperty);
     if (hasProperty) {
-        napi_value categoryNotificationValue = nullptr;
-        napi_get_property(env, object, propertyNameValue, &categoryNotificationValue);
-        str = GetStringFromNAPI(env, categoryNotificationValue);
+        napi_value value = nullptr;
+        napi_get_property(env, object, propertyNameValue, &value);
+        str = GetStringFromNAPI(env, value);
         eventInfo.SetNotificationInfo(ConvertStringToNotificationCategory(str));
     }
 
     napi_create_string_utf8(env, "gestureType", NAPI_AUTO_LENGTH, &propertyNameValue);
     napi_has_property(env, object, propertyNameValue, &hasProperty);
     if (hasProperty) {
-        napi_value gestureTypeValue = nullptr;
-        napi_get_property(env, object, propertyNameValue, &gestureTypeValue);
-        str = GetStringFromNAPI(env, gestureTypeValue);
+        napi_value value = nullptr;
+        napi_get_property(env, object, propertyNameValue, &value);
+        str = GetStringFromNAPI(env, value);
         eventInfo.SetGestureType(ConvertStringToGestureType(str));
     }
     return true;
@@ -1501,18 +1499,18 @@ static void ConvertGesturePathPositionJSToNAPI(
     napi_create_string_utf8(env, "posX", NAPI_AUTO_LENGTH, &propertyNameValue);
     napi_has_property(env, object, propertyNameValue, &hasProperty);
     if (hasProperty) {
-        napi_value valueX = nullptr;
-        napi_get_property(env, object, propertyNameValue, &valueX);
-        napi_get_value_double(env, valueX, &position);
+        napi_value value = nullptr;
+        napi_get_property(env, object, propertyNameValue, &value);
+        napi_get_value_double(env, value, &position);
         gesturePathPosition.SetPositionX((float)position);
     }
 
     napi_create_string_utf8(env, "posY", NAPI_AUTO_LENGTH, &propertyNameValue);
     napi_has_property(env, object, propertyNameValue, &hasProperty);
     if (hasProperty) {
-        napi_value valueY = nullptr;
-        napi_get_property(env, object, propertyNameValue, &valueY);
-        napi_get_value_double(env, valueY, &position);
+        napi_value value = nullptr;
+        napi_get_property(env, object, propertyNameValue, &value);
+        napi_get_value_double(env, value, &position);
         gesturePathPosition.SetPositionY((float)position);
     }
 }
@@ -1526,18 +1524,18 @@ static void ConvertGesturePathJSToNAPI(napi_env env, napi_value object, GestureP
     napi_create_string_utf8(env, "startPos", NAPI_AUTO_LENGTH, &propertyNameValue);
     napi_has_property(env, object, propertyNameValue, &hasProperty);
     if (hasProperty) {
-        napi_value startValue = nullptr;
-        napi_get_property(env, object, propertyNameValue, &startValue);
-        ConvertGesturePathPositionJSToNAPI(env, startValue, gesturePathPosition);
+        napi_value value = nullptr;
+        napi_get_property(env, object, propertyNameValue, &value);
+        ConvertGesturePathPositionJSToNAPI(env, value, gesturePathPosition);
         gesturePath.SetStartPosition(gesturePathPosition);
     }
 
     napi_create_string_utf8(env, "endPos", NAPI_AUTO_LENGTH, &propertyNameValue);
     napi_has_property(env, object, propertyNameValue, &hasProperty);
     if (hasProperty) {
-        napi_value endValue = nullptr;
-        napi_get_property(env, object, propertyNameValue, &endValue);
-        ConvertGesturePathPositionJSToNAPI(env, endValue, gesturePathPosition);
+        napi_value value = nullptr;
+        napi_get_property(env, object, propertyNameValue, &value);
+        ConvertGesturePathPositionJSToNAPI(env, value, gesturePathPosition);
         gesturePath.SetEndPosition(gesturePathPosition);
     }
 
@@ -1545,9 +1543,9 @@ static void ConvertGesturePathJSToNAPI(napi_env env, napi_value object, GestureP
     napi_create_string_utf8(env, "durationTime", NAPI_AUTO_LENGTH, &propertyNameValue);
     napi_has_property(env, object, propertyNameValue, &hasProperty);
     if (hasProperty) {
-        napi_value timeValue = nullptr;
-        napi_get_property(env, object, propertyNameValue, &timeValue);
-        napi_get_value_int64(env, timeValue, &durationTime);
+        napi_value value = nullptr;
+        napi_get_property(env, object, propertyNameValue, &value);
+        napi_get_value_int64(env, value, &durationTime);
         gesturePath.SetDurationTime(durationTime);
     }
 }
@@ -1612,9 +1610,9 @@ void ConvertKeyEventToJS(napi_env env, napi_value result, OHOS::MMI::KeyEvent& k
         NAPI_CALL_RETURN_VOID(env, napi_get_boolean(env, key.GetDeviceId(), &deviceId));
         NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, keyItem, "deviceId", deviceId));
 
-        napi_value itemKeyCode;
-        NAPI_CALL_RETURN_VOID(env, napi_get_boolean(env, key.GetKeyCode(), &itemKeyCode));
-        NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, keyItem, "keyCode", itemKeyCode));
+        napi_value keyCode;
+        NAPI_CALL_RETURN_VOID(env, napi_get_boolean(env, key.GetKeyCode(), &keyCode));
+        NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, keyItem, "keyCode", keyCode));
 
         NAPI_CALL_RETURN_VOID(env, napi_set_element(env, keys, idx, keyItem));
         idx++;
@@ -1712,16 +1710,16 @@ uint32_t ConvertColorStringToNumer(std::string colorStr)
             newColorStr += c;
             newColorStr += c;
         }
-        auto valueMini = stoul(newColorStr, nullptr, COLOR_STRING_BASE);
+        auto value = stoul(newColorStr, nullptr, COLOR_STRING_BASE);
         if (newColorStr.length() < COLOR_STRING_SIZE_STANDARD) {
             // no alpha specified, set alpha to 0xff
-            valueMini |= COLOR_ALPHA_MASK;
+            value |= COLOR_ALPHA_MASK;
         } else {
-            auto alphaMini = valueMini << ALPHA_MOVE;
-            auto rgbMini = valueMini >> COLOR_MOVE;
-            valueMini = alphaMini | rgbMini;
+            auto alpha = value << ALPHA_MOVE;
+            auto rgb = value >> COLOR_MOVE;
+            value = alpha | rgb;
         }
-        color = valueMini;
+        color = value;
         return color;
     }
 

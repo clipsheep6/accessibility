@@ -102,10 +102,10 @@ void AccessibleAbilityClientStubImpl::Init(const sptr<IAccessibleAbilityChannel>
             deathRecipient_ = new AccessibleAbilityDeathRecipient(channelId_, channel_);
         }
 
-        auto uiTestObject = channel_->AsObject();
-        if (uiTestObject) {
+        auto object = channel_->AsObject();
+        if (object) {
             HILOG_DEBUG("Add death recipient");
-            uiTestObject->AddDeathRecipient(deathRecipient_);
+            object->AddDeathRecipient(deathRecipient_);
         }
 
         uiTestListener_->OnAbilityConnected();
@@ -134,10 +134,8 @@ void AccessibleAbilityClientStubImpl::Disconnect(const int channelId)
         }
     } else {
         AccessibilityUITestAbility::GetInstance()->SetChannelId(channelId_);
-        if (uiTestListener_) {
-            uiTestListener_->OnAbilityDisconnected();
-            uiTestListener_ = nullptr;
-        }
+        uiTestListener_->OnAbilityDisconnected();
+        uiTestListener_ = nullptr;
     }
 }
 
@@ -165,8 +163,8 @@ void AccessibleAbilityClientStubImpl::OnKeyPressEvent(const MMI::KeyEvent &keyEv
 
     if (uiTestListener_) {
         std::shared_ptr<MMI::KeyEvent> tmp = std::make_shared<MMI::KeyEvent>(keyEvent);
-        bool uiTestHandled = uiTestListener_->OnKeyPressEvent(tmp, sequence);
-        AccessibilityOperator::GetInstance().SetOnKeyPressEventResult(channelId_, uiTestHandled, sequence);
+        bool handled = uiTestListener_->OnKeyPressEvent(tmp, sequence);
+        AccessibilityOperator::GetInstance().SetOnKeyPressEventResult(channelId_, handled, sequence);
     }
 }
 
@@ -216,7 +214,7 @@ void AccessibleAbilityClientStubImpl::AccessibleAbilityDeathRecipient::OnRemoteD
         return;
     }
 
-    if (!recipientchannel_ || (recipientchannel_->AsObject() != remote)) {
+    if (!recipientchannel_ && (recipientchannel_->AsObject() != remote)) {
         HILOG_ERROR("recipientchannel_ is nullptr or remote is wrong.");
         return;
     }

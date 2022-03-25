@@ -215,12 +215,6 @@ public:
     const std::vector<AccessibilityAbilityInfo> GetAbilitiesByState(AbilityStateType state);
 
     /**
-     * @brief Get the accessibility ability info of the disabled ability.
-     * @return
-     */
-    const std::vector<AccessibilityAbilityInfo> GetDisableAbilities();
-
-    /**
      * @brief Get enable accessibility list.
      * @param
      * @return Store map of enable accessibility abilities.

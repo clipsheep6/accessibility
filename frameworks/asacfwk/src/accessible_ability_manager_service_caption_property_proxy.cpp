@@ -55,13 +55,7 @@ void AccessibleAbilityManagerServiceCaptionPropertyProxy::OnCaptionPropertyChang
         return;
     }
 
-    sptr<IRemoteObject> remote = Remote();
-    if (!remote) {
-        HILOG_ERROR("fail to send transact cmd due to remote object");
-        return;
-    }
-
-    error = remote->SendRequest(
+    error = Remote()->SendRequest(
         static_cast<uint32_t>(IAccessibleAbilityManagerServiceCaptionProperty::Message::ON_CAPTION_PROPERTY_CHANGED),
         data, reply, option);
     if (error != NO_ERROR) {

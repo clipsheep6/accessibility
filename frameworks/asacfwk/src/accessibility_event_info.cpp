@@ -100,14 +100,15 @@ bool AccessibilityMemo::GetSource(AccessibilityElementInfo &elementInfo) const
     bool result = false;
     if (instance != nullptr) {
         result = instance->SearchElementInfosByAccessibilityId(channelId_, windowId_, elementId_, 0, elementInfos);
-        HILOG_DEBUG("elementInfos' size is [%{public}d]", elementInfos.size());
-        if (!elementInfos.empty()) {
+        for (auto& info : elementInfos) {
             HILOG_INFO("called] GetSource OK");
             result = true;
-            elementInfo = elementInfos[0];
+            elementInfo = info;
+            break;
         }
+        HILOG_INFO("called] GetSource is null");
     } else {
-        HILOG_ERROR("called] Can't get AccessibilityOperator instance");
+        HILOG_INFO("called] Can't get AccessibilityOperator instance");
     }
     return result;
 }
@@ -303,7 +304,7 @@ bool AccessibilityEventInfo::ReadFromParcel(Parcel &parcel)
     int32_t contentSize = 0;
     READ_PARCEL_AND_RETURN_FALSE_IF_FAIL(Int32, parcel, contentSize);
     std::string content;
-    for (auto j = 0 ; j < contentSize; j++) {
+    for (auto i = 0 ; i < contentSize; i++) {
         READ_PARCEL_AND_RETURN_FALSE_IF_FAIL(String, parcel, content);
         AddContent(content);
     }

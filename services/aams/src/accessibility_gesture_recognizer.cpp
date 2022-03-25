@@ -29,10 +29,6 @@ GestureHandler::GestureHandler(const std::shared_ptr<AppExecFwk::EventRunner> &r
 void GestureHandler::ProcessEvent(const AppExecFwk::InnerEvent::Pointer &event)
 {
     HILOG_DEBUG();
-    if (!event) {
-        HILOG_ERROR("event is null");
-        return;
-    }
 
     switch (event->GetInnerEventId()) {
         case AccessibilityGestureRecognizer::LONG_PRESS_MSG:
@@ -183,8 +179,7 @@ bool AccessibilityGestureRecognizer::HandleTouchMoveEvent(MMI::PointerEvent &eve
             isDoubleTap_ = false;
             if (!isGestureStarted_) {
                 isGestureStarted_ = true;
-                listener_->OnStarted();
-                return false;
+                return listener_->OnStarted();
             }
         } else if (!isFirstTapUp_) {
             int64_t durationTime = eventTime - startTime_;

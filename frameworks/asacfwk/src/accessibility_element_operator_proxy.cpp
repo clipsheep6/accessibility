@@ -38,27 +38,12 @@ bool AccessibilityElementOperatorProxy::WriteInterfaceToken(MessageParcel &data)
     return true;
 }
 
-bool AccessibilityElementOperatorProxy::SendTransactCmd(IAccessibilityElementOperator::Message code,
-    MessageParcel &data, MessageParcel &reply,  MessageOption &option)
-{
-    HILOG_DEBUG("start.");
-    sptr<IRemoteObject> remote = Remote();
-    if (!remote) {
-        HILOG_ERROR("fail to send transact cmd %{public}d due to remote object", code);
-        return false;
-    }
-    int32_t result = remote->SendRequest(static_cast<uint32_t>(code), data, reply, option);
-    if (result != NO_ERROR) {
-        HILOG_ERROR("receive error transact code %{public}d in transact cmd %{public}d", result, code);
-        return false;
-    }
-    return true;
-}
-
 void AccessibilityElementOperatorProxy::SearchElementInfoByAccessibilityId(const long elementId,
     const int requestId, const sptr<IAccessibilityElementOperatorCallback> &callback, const int mode)
 {
     HILOG_DEBUG("start");
+
+    int error = NO_ERROR;
     MessageParcel data;
     MessageParcel reply;
     MessageOption option(MessageOption::TF_ASYNC);
@@ -78,10 +63,6 @@ void AccessibilityElementOperatorProxy::SearchElementInfoByAccessibilityId(const
         return;
     }
 
-    if (!callback) {
-        HILOG_ERROR("callback is nullptr.");
-        return;
-    }
     if (!data.WriteRemoteObject(callback->AsObject())) {
         HILOG_ERROR("fail, connection write parcelable callback error");
         return;
@@ -92,9 +73,11 @@ void AccessibilityElementOperatorProxy::SearchElementInfoByAccessibilityId(const
         return;
     }
 
-    if (!SendTransactCmd(AccessibilityElementOperatorProxy::Message::SEARCH_BY_ACCESSIBILITY_ID,
-        data, reply, option)) {
-        HILOG_ERROR("SearchElementInfoByAccessibilityId failed");
+    error = Remote()->SendRequest(
+        static_cast<uint32_t>(AccessibilityElementOperatorProxy::Message::SEARCH_BY_ACCESSIBILITY_ID),
+        data, reply, option);
+    if (error != NO_ERROR) {
+        HILOG_ERROR("SearchAccessibilityInfo fail, error: %d", error);
         return;
     }
 }
@@ -104,6 +87,8 @@ void AccessibilityElementOperatorProxy::SearchElementInfosByText(const long elem
     const int requestId, const sptr<IAccessibilityElementOperatorCallback> &callback)
 {
     HILOG_DEBUG("start");
+
+    int error = NO_ERROR;
     MessageParcel data;
     MessageParcel reply;
     MessageOption option(MessageOption::TF_ASYNC);
@@ -127,17 +112,16 @@ void AccessibilityElementOperatorProxy::SearchElementInfosByText(const long elem
         return;
     }
 
-    if (!callback) {
-        HILOG_ERROR("callback is nullptr.");
-        return;
-    }
     if (!data.WriteRemoteObject(callback->AsObject())) {
         HILOG_ERROR("fail, connection write callback error");
         return;
     }
 
-    if (!SendTransactCmd(AccessibilityElementOperatorProxy::Message::SEARCH_BY_TEXT, data, reply, option)) {
-        HILOG_ERROR("SearchElementInfosByText failed");
+    error = Remote()->SendRequest(
+        static_cast<uint32_t>(AccessibilityElementOperatorProxy::Message::SEARCH_BY_TEXT),
+        data, reply, option);
+    if (error != NO_ERROR) {
+        HILOG_ERROR("SearchElementInfosByText fail, error: %d", error);
         return;
     }
 }
@@ -146,6 +130,8 @@ void AccessibilityElementOperatorProxy::FindFocusedElementInfo(const long elemen
     const int focusType, const int requestId, const sptr<IAccessibilityElementOperatorCallback> &callback)
 {
     HILOG_DEBUG("start");
+
+    int error = NO_ERROR;
     MessageParcel data;
     MessageParcel reply;
     MessageOption option(MessageOption::TF_ASYNC);
@@ -170,17 +156,16 @@ void AccessibilityElementOperatorProxy::FindFocusedElementInfo(const long elemen
         return;
     }
 
-    if (!callback) {
-        HILOG_ERROR("callback is nullptr.");
-        return;
-    }
     if (!data.WriteRemoteObject(callback->AsObject())) {
         HILOG_ERROR("fail, connection write callback error");
         return;
     }
 
-    if (!SendTransactCmd(AccessibilityElementOperatorProxy::Message::FIND_FOCUSED_INFO, data, reply, option)) {
-        HILOG_ERROR("FindFocusedElementInfo failed");
+    error = Remote()->SendRequest(
+        static_cast<uint32_t>(AccessibilityElementOperatorProxy::Message::FIND_FOCUSED_INFO),
+        data, reply, option);
+    if (error != NO_ERROR) {
+        HILOG_ERROR("FindFocusedElementInfo fail, error: %d", error);
         return;
     }
 }
@@ -189,6 +174,8 @@ void AccessibilityElementOperatorProxy::FocusMoveSearch(const long elementId,
     const int direction, const int requestId, const sptr<IAccessibilityElementOperatorCallback> &callback)
 {
     HILOG_DEBUG("start");
+
+    int error = NO_ERROR;
     MessageParcel data;
     MessageParcel reply;
     MessageOption option(MessageOption::TF_ASYNC);
@@ -213,17 +200,15 @@ void AccessibilityElementOperatorProxy::FocusMoveSearch(const long elementId,
         return;
     }
 
-    if (!callback) {
-        HILOG_ERROR("callback is nullptr.");
-        return;
-    }
     if (!data.WriteRemoteObject(callback->AsObject())) {
         HILOG_ERROR("fail, connection write callback error");
         return;
     }
 
-    if (!SendTransactCmd(AccessibilityElementOperatorProxy::Message::FOCUS_FIND, data, reply, option)) {
-        HILOG_ERROR("FocusMoveSearch failed");
+    error = Remote()->SendRequest(static_cast<uint32_t>(AccessibilityElementOperatorProxy::Message::FOCUS_FIND),
+        data, reply, option);
+    if (error != NO_ERROR) {
+        HILOG_ERROR("FindFocusedElementInfo fail, error: %d", error);
         return;
     }
 }
@@ -233,6 +218,8 @@ void AccessibilityElementOperatorProxy::ExecuteAction(const long elementId, cons
     const sptr<IAccessibilityElementOperatorCallback> &callback)
 {
     HILOG_DEBUG("start");
+
+    int error = NO_ERROR;
     MessageParcel data;
     MessageParcel reply;
     MessageOption option(MessageOption::TF_ASYNC);
@@ -276,17 +263,16 @@ void AccessibilityElementOperatorProxy::ExecuteAction(const long elementId, cons
         return;
     }
 
-    if (!callback) {
-        HILOG_ERROR("callback is nullptr.");
-        return;
-    }
     if (!data.WriteRemoteObject(callback->AsObject())) {
         HILOG_ERROR("fail, connection write callback error");
         return;
     }
 
-    if (!SendTransactCmd(AccessibilityElementOperatorProxy::Message::PERFORM_ACTION, data, reply, option)) {
-        HILOG_ERROR("ExecuteAction failed");
+    error = Remote()->SendRequest(static_cast<uint32_t>(
+        AccessibilityElementOperatorProxy::Message::PERFORM_ACTION),
+        data, reply, option);
+    if (error != NO_ERROR) {
+        HILOG_ERROR("ExecuteAction fail, error: %d", error);
         return;
     }
 }
@@ -294,6 +280,8 @@ void AccessibilityElementOperatorProxy::ExecuteAction(const long elementId, cons
 void AccessibilityElementOperatorProxy::ClearFocus()
 {
     HILOG_DEBUG("start");
+
+    int error = NO_ERROR;
     MessageParcel data;
     MessageParcel reply;
     MessageOption option;
@@ -302,8 +290,10 @@ void AccessibilityElementOperatorProxy::ClearFocus()
         return;
     }
 
-    if (!SendTransactCmd(AccessibilityElementOperatorProxy::Message::CLEAR_FOCUS, data, reply, option)) {
-        HILOG_ERROR("ClearFocus failed");
+    error = Remote()->SendRequest(static_cast<uint32_t>(AccessibilityElementOperatorProxy::Message::CLEAR_FOCUS),
+        data, reply, option);
+    if (error != NO_ERROR) {
+        HILOG_ERROR("ExecuteAction fail, error: %d", error);
         return;
     }
 }
@@ -311,6 +301,8 @@ void AccessibilityElementOperatorProxy::ClearFocus()
 void AccessibilityElementOperatorProxy::OutsideTouch()
 {
     HILOG_DEBUG("start");
+
+    int error = NO_ERROR;
     MessageParcel data;
     MessageParcel reply;
     MessageOption option;
@@ -319,8 +311,11 @@ void AccessibilityElementOperatorProxy::OutsideTouch()
         return;
     }
 
-    if (!SendTransactCmd(AccessibilityElementOperatorProxy::Message::OUTSIDE_TOUCH, data, reply, option)) {
-        HILOG_ERROR("OutsideTouch failed");
+    error = Remote()->SendRequest(
+        static_cast<uint32_t>(AccessibilityElementOperatorProxy::Message::OUTSIDE_TOUCH),
+        data, reply, option);
+    if (error != NO_ERROR) {
+        HILOG_ERROR("ExecuteAction fail, error: %d", error);
         return;
     }
 }

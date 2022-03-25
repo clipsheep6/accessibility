@@ -29,7 +29,6 @@ using EventHandle = std::function<void(const OHOS::AAFwk::Want&)>;
 
 namespace OHOS {
 namespace Accessibility {
-#define RETRY_SUBSCRIBER 3
 class AccessibilityCommonEventSubscriber : public EventFwk::CommonEventSubscriber {
 public:
     AccessibilityCommonEventSubscriber(const EventFwk::CommonEventSubscribeInfo &subscriberInfo,

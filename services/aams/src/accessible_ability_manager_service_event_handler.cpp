@@ -29,10 +29,6 @@ AAMSEventHandler::~AAMSEventHandler()
 
 void AAMSEventHandler::ProcessEvent(const AppExecFwk::InnerEvent::Pointer &event)
 {
-    if (!event) {
-        HILOG_ERROR("event is null");
-        return;
-    }
     HILOG_DEBUG("the eventId is %{public}d", event->GetInnerEventId());
 }
 } // namespace Accessibility

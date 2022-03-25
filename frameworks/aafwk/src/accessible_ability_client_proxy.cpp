@@ -34,26 +34,9 @@ bool AccessibleAbilityClientProxy::WriteInterfaceToken(MessageParcel &data)
     return true;
 }
 
-bool AccessibleAbilityClientProxy::SendTransactCmd(IAccessibleAbilityClient::Message code, MessageParcel &data,
-    MessageParcel &reply,  MessageOption &option)
-{
-    HILOG_DEBUG("start.");
-
-    sptr<IRemoteObject> remote = Remote();
-    if (!remote) {
-        HILOG_ERROR("fail to send transact cmd %{public}d due to remote object", code);
-        return false;
-    }
-    int32_t result = remote->SendRequest(static_cast<uint32_t>(code), data, reply, option);
-    if (result != NO_ERROR) {
-        HILOG_ERROR("receive error transact code %{public}d in transact cmd %{public}d", result, code);
-        return false;
-    }
-    return true;
-}
-
 void AccessibleAbilityClientProxy::Init(const sptr<IAccessibleAbilityChannel> &channel, const int channelId)
 {
+    int error = NO_ERROR;
     MessageParcel data;
     MessageParcel reply;
     MessageOption option(MessageOption::TF_ASYNC);
@@ -77,14 +60,15 @@ void AccessibleAbilityClientProxy::Init(const sptr<IAccessibleAbilityChannel> &c
         return;
     }
 
-    if (!SendTransactCmd(IAccessibleAbilityClient::Message::INIT, data, reply, option)) {
-        HILOG_ERROR("Init fail");
-        return;
+    error = Remote()->SendRequest(static_cast<uint32_t>(IAccessibleAbilityClient::Message::INIT), data, reply, option);
+    if (error != NO_ERROR) {
+        HILOG_ERROR("Init fail, error: %d", error);
     }
 }
 
 void AccessibleAbilityClientProxy::Disconnect(const int channelId)
 {
+    int error = NO_ERROR;
     MessageParcel data;
     MessageParcel reply;
     MessageOption option(MessageOption::TF_ASYNC);
@@ -100,14 +84,16 @@ void AccessibleAbilityClientProxy::Disconnect(const int channelId)
         return;
     }
 
-    if (!SendTransactCmd(IAccessibleAbilityClient::Message::DISCONNECT, data, reply, option)) {
-        HILOG_ERROR("Disconnect fail");
-        return;
+    error = Remote()->SendRequest(static_cast<uint32_t>(IAccessibleAbilityClient::Message::DISCONNECT),
+        data, reply, option);
+    if (error != NO_ERROR) {
+        HILOG_ERROR("Disconnect fail, error: %d", error);
     }
 }
 
 void AccessibleAbilityClientProxy::OnAccessibilityEvent(const AccessibilityEventInfo &eventInfo)
 {
+    int error = NO_ERROR;
     MessageParcel data;
     MessageParcel reply;
     MessageOption option(MessageOption::TF_ASYNC);
@@ -121,14 +107,16 @@ void AccessibleAbilityClientProxy::OnAccessibilityEvent(const AccessibilityEvent
         HILOG_ERROR("fail, eventInfo write parcelable error");
         return;
     }
-    if (!SendTransactCmd(IAccessibleAbilityClient::Message::ON_ACCESSIBILITY_EVENT, data, reply, option)) {
-        HILOG_ERROR("OnAccessibilityEvent fail");
-        return;
+    error = Remote()->SendRequest(static_cast<uint32_t>(IAccessibleAbilityClient::Message::ON_ACCESSIBILITY_EVENT),
+        data, reply, option);
+    if (error != NO_ERROR) {
+        HILOG_ERROR("OnAccessibilityEvent fail, error: %d", error);
     }
 }
 
 void AccessibleAbilityClientProxy::OnKeyPressEvent(const MMI::KeyEvent &keyEvent, const int sequence)
 {
+    int error = NO_ERROR;
     MessageParcel data;
     MessageParcel reply;
     MessageOption option(MessageOption::TF_ASYNC);
@@ -148,15 +136,17 @@ void AccessibleAbilityClientProxy::OnKeyPressEvent(const MMI::KeyEvent &keyEvent
         return;
     }
 
-    if (!SendTransactCmd(IAccessibleAbilityClient::Message::ON_KEY_PRESS_EVENT, data, reply, option)) {
-        HILOG_ERROR("OnKeyPressEvent fail");
-        return;
+    error = Remote()->SendRequest(static_cast<uint32_t>(IAccessibleAbilityClient::Message::ON_KEY_PRESS_EVENT),
+        data, reply, option);
+    if (error != NO_ERROR) {
+        HILOG_ERROR("OnKeyPressEvent fail, error: %d", error);
     }
 }
 
 void AccessibleAbilityClientProxy::OnDisplayResized(const int displayId, const Rect &rect, const float scale,
     const float centerX, const float centerY)
 {
+    int error = NO_ERROR;
     MessageParcel data;
     MessageParcel reply;
     MessageOption option(MessageOption::TF_ASYNC);
@@ -187,14 +177,16 @@ void AccessibleAbilityClientProxy::OnDisplayResized(const int displayId, const R
         return;
     }
 
-    if (!SendTransactCmd(IAccessibleAbilityClient::Message::ON_DISPALYRESIZE_CHANGED, data, reply, option)) {
-        HILOG_ERROR("OnDisplayResized fail");
-        return;
+    error = Remote()->SendRequest(static_cast<uint32_t>(IAccessibleAbilityClient::Message::ON_DISPALYRESIZE_CHANGED),
+        data, reply, option);
+    if (error != NO_ERROR) {
+        HILOG_ERROR("OnDisplayResized fail, error: %d", error);
     }
 }
 
 void AccessibleAbilityClientProxy::OnGestureSimulateResult(const int sequence, const bool completedSuccessfully)
 {
+    int error = NO_ERROR;
     MessageParcel data;
     MessageParcel reply;
     MessageOption option(MessageOption::TF_ASYNC);
@@ -212,10 +204,10 @@ void AccessibleAbilityClientProxy::OnGestureSimulateResult(const int sequence, c
         HILOG_ERROR("fail, completedSuccessfully write bool error");
         return;
     }
-
-    if (!SendTransactCmd(IAccessibleAbilityClient::Message::ON_GESTURE_SIMULATE_RESULT, data, reply, option)) {
-        HILOG_ERROR("OnGestureSimulateResult fail");
-        return;
+    error = Remote()->SendRequest(static_cast<uint32_t>(IAccessibleAbilityClient::Message::ON_GESTURE_SIMULATE_RESULT),
+        data, reply, option);
+    if (error != NO_ERROR) {
+        HILOG_ERROR("OnGestureSimulateResult fail, error: %d", error);
     }
 }
 } // namespace Accessibility

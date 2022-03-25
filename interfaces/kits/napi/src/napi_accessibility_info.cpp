@@ -127,7 +127,6 @@ napi_value NElementInfo::ExecuteAction(napi_env env, napi_callback_info info)
 
             napi_delete_async_work(env, callbackInfo->work_);
             delete callbackInfo;
-            callbackInfo = nullptr;
         },
         (void*)callbackInfo,
         &callbackInfo->work_);
@@ -209,7 +208,6 @@ napi_value NElementInfo::GetByContent(napi_env env, napi_callback_info info)
 
             napi_delete_async_work(env, callbackInfo->work_);
             delete callbackInfo;
-            callbackInfo = nullptr;
         },
         (void*)callbackInfo,
         &callbackInfo->work_);
@@ -299,7 +297,6 @@ napi_value NElementInfo::GetFocus(napi_env env, napi_callback_info info)
 
             napi_delete_async_work(env, callbackInfo->work_);
             delete callbackInfo;
-            callbackInfo = nullptr;
         },
         (void*)callbackInfo,
         &callbackInfo->work_);
@@ -406,7 +403,6 @@ napi_value NElementInfo::GetNext(napi_env env, napi_callback_info info)
 
             napi_delete_async_work(env, callbackInfo->work_);
             delete callbackInfo;
-            callbackInfo = nullptr;
         },
         (void*)callbackInfo,
         &callbackInfo->work_);
@@ -488,7 +484,6 @@ napi_value NElementInfo::GetChild(napi_env env, napi_callback_info info)
 
             napi_delete_async_work(env, callbackInfo->work_);
             delete callbackInfo;
-            callbackInfo = nullptr;
         },
         (void*)callbackInfo,
         &callbackInfo->work_);
@@ -567,7 +562,6 @@ napi_value NElementInfo::GetParent(napi_env env, napi_callback_info info)
 
             napi_delete_async_work(env, callbackInfo->work_);
             delete callbackInfo;
-            callbackInfo = nullptr;
         },
         (void*)callbackInfo,
         &callbackInfo->work_);

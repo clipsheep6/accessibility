@@ -62,7 +62,7 @@ bool AccessibleAbilityChannelStubImpl::SearchElementInfoByAccessibilityId(const 
         return false;
     }
     connection->GetProxy()->SearchElementInfoByAccessibilityId(elementId, requestId, callback, mode);
-    HILOG_DEBUG("AccessibleAbilityChannelStubImpl::SearchElementInfoByAccessibilityId successfully");
+    HILOG_ERROR("AccessibleAbilityChannelStubImpl::SearchElementInfoByAccessibilityId successfully");
     return true;
 }
 
@@ -82,10 +82,6 @@ bool AccessibleAbilityChannelStubImpl::SearchElementInfosByText(const int access
     }
     if (!(connection_.GetAbilityInfo().GetCapabilityValues() & Capability::CAPABILITY_RETRIEVE)) {
         HILOG_ERROR("AccessibleAbilityChannelStubImpl::SearchElementInfosByText failed: no capability");
-        return false;
-    }
-    if (!connection->GetProxy()) {
-        HILOG_ERROR("get proxy failed");
         return false;
     }
     connection->GetProxy()->SearchElementInfosByText(elementId, text, requestId, callback);
@@ -108,10 +104,6 @@ bool AccessibleAbilityChannelStubImpl::FindFocusedElementInfo(const int accessib
     }
     if (!(connection_.GetAbilityInfo().GetCapabilityValues() & Capability::CAPABILITY_RETRIEVE)) {
         HILOG_ERROR("AccessibleAbilityChannelStubImpl::FindFocusedElementInfo failed: no capability");
-        return false;
-    }
-    if (!connection->GetProxy()) {
-        HILOG_ERROR("get proxy failed");
         return false;
     }
     connection->GetProxy()->FindFocusedElementInfo(elementId, focusType, requestId, callback);
@@ -311,7 +303,7 @@ void AccessibleAbilityConnection::OnAbilityConnectDone(const AppExecFwk::Element
     elementName_ = element;
 
     if (resultCode != NO_ERROR) {
-        HILOG_ERROR("Connect failed!");
+        HILOG_DEBUG("Connect failed!");
         accountData_->RemoveEnabledAbility(elementName_);
         accountData_->RemoveConnectingA11yAbility(elementName_);
         DelayedSingleton<AccessibleAbilityManagerService>::GetInstance()->UpdateAbilities();
@@ -507,10 +499,15 @@ AAFwk::Want CreateWant(AppExecFwk::ElementName& element)
 void AccessibleAbilityConnection::Disconnect()
 {
     HILOG_DEBUG("start");
+    // temp deal:
+#if 1
     if (AAFwk::AbilityManagerClient::GetInstance()->DisconnectAbility(this) != ERR_OK) {
         HILOG_ERROR("Disconnect failed!");
         return;
     }
+#else
+    OnAbilityDisconnectDone(elementName_, 0);
+#endif
 }
 
 void AccessibleAbilityConnection::Connect(const AppExecFwk::ElementName &element)
