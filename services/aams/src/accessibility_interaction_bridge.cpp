@@ -55,6 +55,10 @@ AccessibilityInteractionBridge::AccessibilityInteractionBridge()
     }
     channel_ = new(std::nothrow) AccessibleAbilityChannelStubImpl(*connection_);
     if (!channel_) {
+        HILOG_ERROR("channel_ is null");
+        return;
+    }
+    if (!channel_) {
         HILOG_DEBUG("channel is nullptr.");
         AccessibilityOperator::GetInstance().RemoveChannel(INTERACTION_BRIDGE_CHANNEL_ID);
     } else {
