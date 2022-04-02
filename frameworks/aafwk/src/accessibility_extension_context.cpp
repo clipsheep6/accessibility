@@ -14,6 +14,7 @@
  */
 
 #include "accessibility_extension_context.h"
+#include <cinttypes>
 #include "accessibility_element_info.h"
 #include "accessible_ability_client_stub_impl.h"
 #include "accessible_ability_manager_service_proxy.h"
@@ -48,7 +49,7 @@ bool AccessibilityExtensionContext::GestureSimulate(uint32_t sequence,
 
     if (gesturePathDefineList.size() > gesturePathDefineList.front().GetMaxStrokes() ||
         gesturePathDefineList.size() <= 0) {
-        HILOG_ERROR("The number of gesturePathDefine : [%{public}d] is not allowed.", gesturePathDefineList.size());
+        HILOG_ERROR("The number of gesturePathDefine : [%{public}zu] is not allowed.", gesturePathDefineList.size());
         return false;
     }
 
@@ -56,10 +57,10 @@ bool AccessibilityExtensionContext::GestureSimulate(uint32_t sequence,
     for (auto gesturePath : gesturePathDefineList) {
         totalDurationTime += gesturePath.GetDurationTime();
     }
-    HILOG_DEBUG("The total duration time is %{public}lld.", totalDurationTime);
+    HILOG_DEBUG("The total duration time is %{public}" PRId64".", totalDurationTime);
 
     if (totalDurationTime > gesturePathDefineList.front().GetMaxStrokeDuration()) {
-        HILOG_ERROR("The total duration time : [%{public}lld] is not allowed.", totalDurationTime);
+        HILOG_ERROR("The total duration time : [%{public}" PRId64"] is not allowed.", totalDurationTime);
         return false;
     }
 

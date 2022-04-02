@@ -14,6 +14,7 @@
  */
 
 #include "gesture_simulation.h"
+#include <cinttypes>
 #include "hilog_wrapper.h"
 #include "parcel_util.h"
 
@@ -104,7 +105,7 @@ GesturePathDefine::GesturePathDefine(GesturePathPositionDefine &startPosition,
 
 int64_t GesturePathDefine::GetDurationTime()
 {
-    HILOG_DEBUG("start and max stroke duration is %{public}lld", durationTime_);
+    HILOG_DEBUG("start and max stroke duration is %{public}" PRId64, durationTime_);
     return durationTime_;
 }
 
@@ -116,7 +117,7 @@ GesturePathPositionDefine &GesturePathDefine::GetEndPosition()
 
 int64_t GesturePathDefine::GetMaxStrokeDuration()
 {
-    HILOG_DEBUG("start and max stroke duration is %{public}lld", MAX_STROKE_DURATION);
+    HILOG_DEBUG("start and max stroke duration is %{public}" PRId64, MAX_STROKE_DURATION);
     return MAX_STROKE_DURATION;
 }
 
