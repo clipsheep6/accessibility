@@ -23,7 +23,6 @@ config("module_private_config") {
     cflags += [ "-DBINDER_IPC_32BIT" ]
   }
   include_dirs = [
-    "//third_party/json/include",
     "//utils/native/base/include",
     "//utils/system/safwk/native/include",
     "//base/accessibility/frameworks/aafwk/include",
@@ -57,6 +56,7 @@ ohos_systemtest("asac_system_test") {
     "//foundation/aafwk/standard/frameworks/kits/ability/native:abilitykit_native",
     "//foundation/appexecfwk/standard/interfaces/innerkits/libeventhandler:libeventhandler",
     "//third_party/googletest:gtest_main",
+    "//third_party/json:nlohmann_json_static",
     "//utils/native/base:utils",
   ]
 

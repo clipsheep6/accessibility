@@ -26,7 +26,6 @@ config("module_private_config") {
   include_dirs = aams_mock_include_dirs
   include_dirs += [
     "mock",
-    "//third_party/json/include",
     "//utils/system/safwk/native/include",
     "//base/accessibility/frameworks/aafwk/include",
     "//base/accessibility/interfaces/innerkits/aafwk/include",
@@ -81,6 +80,7 @@ ohos_unittest("accessible_ability_test") {
     "//foundation/appexecfwk/standard/interfaces/innerkits/libeventhandler:libeventhandler",
     "//third_party/googletest:gmock_main",
     "//third_party/googletest:gtest_main",
+    "//third_party/json:nlohmann_json_static",
     "//utils/native/base:utils",
   ]
 
