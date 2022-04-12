@@ -60,6 +60,8 @@ ohos_systemtest("asac_system_test") {
     "//utils/native/base:utils",
   ]
 
+  ldflags = [ "-Wl,--exclude-libs,libnlohmann_json_static.a" ]
+
   external_deps = [
     "ability_base:want",
     "ability_runtime:ability_manager",

@@ -84,6 +84,8 @@ ohos_unittest("accessible_ability_test") {
     "//utils/native/base:utils",
   ]
 
+  ldflags = [ "-Wl,--exclude-libs,libnlohmann_json_static.a" ]
+
   external_deps = [
     "ability_base:want",
     "bundle_framework:appexecfwk_base",

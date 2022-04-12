@@ -103,6 +103,8 @@ ohos_unittest("asac_unit_test") {
     "//utils/native/base:utils",
   ]
 
+  ldflags = [ "-Wl,--exclude-libs,libnlohmann_json_static.a" ]
+
   external_deps = [
     "bundle_framework:appexecfwk_base",
     "bundle_framework:appexecfwk_core",

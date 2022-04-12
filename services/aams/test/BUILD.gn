@@ -140,6 +140,8 @@ ohos_unittest("accessibility_account_data_test") {
     "//utils/native/base:utils",
   ]
 
+  ldflags = [ "-Wl,--exclude-libs,libnlohmann_json_static.a" ]
+
   external_deps = [
     "ability_base:want",
     "ability_runtime:runtime",
@@ -234,6 +236,8 @@ ohos_unittest("accessible_ability_manager_service_test") {
     "//utils/native/base:utils",
   ]
 
+  ldflags = [ "-Wl,--exclude-libs,libnlohmann_json_static.a" ]
+
   external_deps = [
     "ability_base:want",
     "ability_runtime:runtime",
@@ -319,6 +323,8 @@ ohos_unittest("accessibility_touch_guider_test") {
     "//third_party/json:nlohmann_json_static",
     "//utils/native/base:utils",
   ]
+
+  ldflags = [ "-Wl,--exclude-libs,libnlohmann_json_static.a" ]
 
   external_deps = [
     "ability_base:want",
@@ -408,6 +414,8 @@ ohos_unittest("accessibility_common_event_registry_test") {
     "//utils/native/base:utils",
   ]
 
+  ldflags = [ "-Wl,--exclude-libs,libnlohmann_json_static.a" ]
+
   external_deps = [
     "ability_base:want",
     "ability_runtime:ability_manager",
@@ -492,6 +500,8 @@ ohos_unittest("accessibility_input_interceptor_test") {
     "//utils/native/base:utils",
   ]
 
+  ldflags = [ "-Wl,--exclude-libs,libnlohmann_json_static.a" ]
+
   external_deps = [
     "ability_base:want",
     "ability_runtime:runtime",
@@ -570,6 +580,8 @@ ohos_unittest("accessibility_window_manager_test") {
     "//third_party/json:nlohmann_json_static",
     "//utils/native/base:utils",
   ]
+
+  ldflags = [ "-Wl,--exclude-libs,libnlohmann_json_static.a" ]
 
   external_deps = [
     "ability_base:want",
@@ -660,6 +672,8 @@ ohos_unittest("accessibility_keyevent_filter_test") {
     "//third_party/json:nlohmann_json_static",
     "//utils/native/base:utils",
   ]
+
+  ldflags = [ "-Wl,--exclude-libs,libnlohmann_json_static.a" ]
 
   external_deps = [
     "ability_base:want",
@@ -761,6 +775,8 @@ ohos_unittest("accessible_ability_connection_test") {
     "//utils/native/base:utils",
   ]
 
+  ldflags = [ "-Wl,--exclude-libs,libnlohmann_json_static.a" ]
+
   external_deps = [
     "ability_base:want",
     "ability_runtime:runtime",
@@ -848,6 +864,8 @@ ohos_unittest("accessibility_display_manager_test") {
     "//utils/native/base:utils",
   ]
 
+  ldflags = [ "-Wl,--exclude-libs,libnlohmann_json_static.a" ]
+
   external_deps = [
     "ability_base:want",
     "ability_runtime:ability_manager",
@@ -933,6 +951,8 @@ ohos_unittest("accessibility_touchEvent_injector_test") {
     "//third_party/json:nlohmann_json_static",
     "//utils/native/base:utils",
   ]
+
+  ldflags = [ "-Wl,--exclude-libs,libnlohmann_json_static.a" ]
 
   external_deps = [
     "ability_base:want",
@@ -1025,6 +1045,8 @@ ohos_unittest("accessibility_interaction_bridge_test") {
     "//third_party/json:nlohmann_json_static",
     "//utils/native/base:utils",
   ]
+
+  ldflags = [ "-Wl,--exclude-libs,libnlohmann_json_static.a" ]
 
   external_deps = [
     "ability_base:want",
