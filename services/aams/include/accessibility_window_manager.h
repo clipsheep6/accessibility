@@ -18,49 +18,63 @@
 
 #include <map>
 #include <memory>
-#include <vector>
-
 #include "accessibility_window_info.h"
+#include "event_handler.h"
 #include "singleton.h"
 #include "window_manager.h"
 
 namespace OHOS {
 namespace Accessibility {
-class AccessibilityWindowListener : public Rosen::IWindowUpdateListener {
-public:
-    virtual void OnWindowUpdate(const sptr<Rosen::AccessibilityWindowInfo>& windowInfo,
-        Rosen::WindowUpdateType type) override;
-};
-
 class AccessibilityWindowInfoManager {
 public:
     ~AccessibilityWindowInfoManager() = default;
     static AccessibilityWindowInfoManager &GetInstance();
     static AccessibilityWindowInfo CreateAccessibilityWindowInfo(Rosen::AccessibilityWindowInfo &windowInfo);
-    int ConvertToRealWindowId(int windowId, int focusType);
+    int32_t ConvertToRealWindowId(int32_t windowId, int32_t focusType);
     void RegisterWindowChangeListener();
     void DeregisterWindowChangeListener();
-    void SetActiveWindow(int windowId);
-    void SetAccessibilityFocusedWindow(int windowId);
-    void SetInputFocusedWindow(int windowId);
+    void SetActiveWindow(int32_t windowId);
+    void SetAccessibilityFocusedWindow(int32_t windowId);
+    void SetInputFocusedWindow(int32_t windowId);
     std::vector<AccessibilityWindowInfo> GetAccessibilityWindows();
-    bool GetAccessibilityWindow(int windowId, AccessibilityWindowInfo &window);
-    bool IsValidWindow(int windowId);
+    bool GetAccessibilityWindow(int32_t windowId, AccessibilityWindowInfo &window);
+    bool IsValidWindow(int32_t windowId);
 
-    // Test for ut to resize a window
-    void SetWindowSize(int windowId, Rect rect);
+    // test for ut to resize a window
+    void SetWindowSize(int32_t windowId, Rect rect);
     void UpdateWindowLayer(const sptr<Rosen::AccessibilityWindowInfo>& windowInfo);
 
-    std::map<int, AccessibilityWindowInfo> a11yWindows_ {};
-    int activeWindowId_ = INVALID_WINDOW_ID;
-    int a11yFocusedWindowId_ = INVALID_WINDOW_ID;
-    int inputFocusedWindowId_ = 0;
+    void OnWindowUpdate(const sptr<Rosen::AccessibilityWindowInfo>& windowInfo, Rosen::WindowUpdateType type);
+
+    std::map<int32_t, AccessibilityWindowInfo> a11yWindows_ {};
+    int32_t activeWindowId_ = INVALID_WINDOW_ID;
+    int32_t a11yFocusedWindowId_ = INVALID_WINDOW_ID;
+    int32_t inputFocusedWindowId_ = 0;
 
     bool registerFlag_ = false;
-    sptr<AccessibilityWindowListener> windowListener_ = nullptr;
 
 private:
-    AccessibilityWindowInfoManager() : windowListener_(new AccessibilityWindowListener()) {}
+    class AccessibilityWindowListener : public Rosen::IWindowUpdateListener {
+    public:
+        explicit AccessibilityWindowListener(AccessibilityWindowInfoManager &windInfoMgr)
+            : windInfoMgr_(windInfoMgr) {}
+        ~AccessibilityWindowListener() = default;
+
+        virtual void OnWindowUpdate(const sptr<Rosen::AccessibilityWindowInfo>& windowInfo,
+            Rosen::WindowUpdateType type) override
+        {
+            windInfoMgr_.OnWindowUpdate(windowInfo, type);
+        }
+
+    private:
+        AccessibilityWindowInfoManager &windInfoMgr_;
+    };
+
+    AccessibilityWindowInfoManager();
+    void WindowUpdate(const sptr<Rosen::AccessibilityWindowInfo>& windowInfo, Rosen::WindowUpdateType type);
+
+    sptr<AccessibilityWindowListener> windowListener_ = nullptr;
+    std::shared_ptr<AppExecFwk::EventHandler> eventHandler_ = nullptr;
     DISALLOW_COPY_AND_MOVE(AccessibilityWindowInfoManager);
 };
 } // namespace Accessibility

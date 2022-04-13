@@ -13,21 +13,21 @@
  * limitations under the License.
  */
 
+#include "accessibility_display_manager.h"
 #include <gtest/gtest.h>
 #include <vector>
 
-#include "accessibility_display_manager.h"
-
 using namespace testing;
 using namespace testing::ext;
-using namespace std;
 
 namespace OHOS {
 namespace Accessibility {
 class AccessibilityDisplayManagerUnitTest : public ::testing::Test {
 public:
-    AccessibilityDisplayManagerUnitTest() {}
-    ~AccessibilityDisplayManagerUnitTest() {}
+    AccessibilityDisplayManagerUnitTest()
+    {}
+    ~AccessibilityDisplayManagerUnitTest()
+    {}
 
     static void SetUpTestCase();
     static void TearDownTestCase();
@@ -46,12 +46,10 @@ void AccessibilityDisplayManagerUnitTest::TearDownTestCase()
 }
 
 void AccessibilityDisplayManagerUnitTest::SetUp()
-{
-}
+{}
 
 void AccessibilityDisplayManagerUnitTest::TearDown()
-{
-}
+{}
 
 /**
  * @tc.number: AccessibilityDisplayManager_Unittest_OnCreate_001
