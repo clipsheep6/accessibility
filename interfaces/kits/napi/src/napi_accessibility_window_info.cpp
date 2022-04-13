@@ -22,8 +22,7 @@
 using namespace OHOS;
 using namespace OHOS::Accessibility;
 
-napi_value NAccessibilityWindowInfo::cons_ = nullptr;
-napi_ref NAccessibilityWindowInfo::consRef_ = nullptr;
+thread_local napi_ref NAccessibilityWindowInfo::consRef_ = nullptr;
 
 void NAccessibilityWindowInfo::DefineJSAccessibilityWindowInfo(napi_env env)
 {
@@ -34,6 +33,8 @@ void NAccessibilityWindowInfo::DefineJSAccessibilityWindowInfo(napi_env env)
         DECLARE_NAPI_FUNCTION("getChild", NAccessibilityWindowInfo::GetChild),
     };
 
+    napi_value constructor = nullptr;
+
     NAPI_CALL_RETURN_VOID(env,
         napi_define_class(env,
             "AccessibilityWindowInfo",
@@ -42,8 +43,8 @@ void NAccessibilityWindowInfo::DefineJSAccessibilityWindowInfo(napi_env env)
             nullptr,
             sizeof(descForAccessibilityWindowInfo) / sizeof(descForAccessibilityWindowInfo[0]),
             descForAccessibilityWindowInfo,
-            &NAccessibilityWindowInfo::cons_));
-    napi_create_reference(env, NAccessibilityWindowInfo::cons_, 1, &NAccessibilityWindowInfo::consRef_);
+            &constructor));
+    napi_create_reference(env, constructor, 1, &NAccessibilityWindowInfo::consRef_);
 }
 
 napi_value NAccessibilityWindowInfo::JSConstructor(napi_env env, napi_callback_info info)
@@ -104,9 +105,9 @@ napi_value NAccessibilityWindowInfo::GetAnchorElementInfo(napi_env env, napi_cal
             napi_value callback = 0;
             napi_value undefined = 0;
             napi_get_undefined(env, &undefined);
-
-            napi_get_reference_value(env, NElementInfo::consRef_, &NElementInfo::cons_);
-            napi_new_instance(env, NElementInfo::cons_, 0, nullptr, &argv[PARAM1]);
+            napi_value constructor = nullptr;
+            napi_get_reference_value(env, NElementInfo::consRef_, &constructor);
+            napi_new_instance(env, constructor, 0, nullptr, &argv[PARAM1]);
             ConvertElementInfoToJS(env, argv[PARAM1], callbackInfo->nodeInfo_);
 
             argv[PARAM0] = GetErrorValue(env, callbackInfo->result_ ? CODE_SUCCESS : CODE_FAILED);
@@ -185,9 +186,9 @@ napi_value NAccessibilityWindowInfo::GetRootElementInfo(napi_env env, napi_callb
             napi_value callback = 0;
             napi_value undefined = 0;
             napi_get_undefined(env, &undefined);
-
-            napi_get_reference_value(env, NElementInfo::consRef_, &NElementInfo::cons_);
-            napi_new_instance(env, NElementInfo::cons_, 0, nullptr, &argv[PARAM1]);
+            napi_value constructor = nullptr;
+            napi_get_reference_value(env, NElementInfo::consRef_, &constructor);
+            napi_new_instance(env, constructor, 0, nullptr, &argv[PARAM1]);
             ConvertElementInfoToJS(env, argv[PARAM1], callbackInfo->nodeInfo_);
 
             argv[PARAM0] = GetErrorValue(env, callbackInfo->result_ ? CODE_SUCCESS : CODE_FAILED);
@@ -266,9 +267,9 @@ napi_value NAccessibilityWindowInfo::GetParent(napi_env env, napi_callback_info 
             napi_value callback = 0;
             napi_value undefined = 0;
             napi_get_undefined(env, &undefined);
-
-            napi_get_reference_value(env, NElementInfo::consRef_, &NElementInfo::cons_);
-            napi_new_instance(env, NAccessibilityWindowInfo::cons_, 0, nullptr, &argv[PARAM1]);
+            napi_value constructor = nullptr;
+            napi_get_reference_value(env, NAccessibilityWindowInfo::consRef_, &constructor);
+            napi_new_instance(env, constructor, 0, nullptr, &argv[PARAM1]);
             ConvertAccessibilityWindowInfoToJS(env, argv[PARAM1], callbackInfo->window_);
 
             if (callbackInfo->callback_) {
@@ -347,9 +348,9 @@ napi_value NAccessibilityWindowInfo::GetChild(napi_env env, napi_callback_info i
             napi_value callback = 0;
             napi_value undefined = 0;
             napi_get_undefined(env, &undefined);
-
-            napi_get_reference_value(env, NElementInfo::consRef_, &NElementInfo::cons_);
-            napi_new_instance(env, NAccessibilityWindowInfo::cons_, 0, nullptr, &argv[PARAM1]);
+            napi_value constructor = nullptr;
+            napi_get_reference_value(env, NAccessibilityWindowInfo::consRef_, &constructor);
+            napi_new_instance(env, constructor, 0, nullptr, &argv[PARAM1]);
             ConvertAccessibilityWindowInfoToJS(env, argv[PARAM1], callbackInfo->window_);
 
             if (callbackInfo->callback_) {
