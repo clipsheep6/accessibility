@@ -47,7 +47,6 @@ config("module_private_config") {
     "//foundation/appexecfwk/standard/interfaces/innerkits/appexecfwk_core/include/bundlemgr",
     "//foundation/multimodalinput/input/util/common/include",
     "//base/accessibility/services/aams/test/mock/include",
-
   ]
   defines = [
     "AAMS_LOG_TAG = \"accessibility_test\"",
@@ -63,18 +62,30 @@ ohos_unittest("accessible_ability_test") {
     "../src/accessibility_ui_test_ability_impl.cpp",
     "../src/accessible_ability_channel_client.cpp",
     "../src/accessible_ability_client_impl.cpp",
-    "//base/accessibility/frameworks/aafwk/test/mock/src/mock_accessible_ability_channel_proxy.cpp",  
-    "//base/accessibility/frameworks/aafwk/test/mock/src/mock_accessible_ability_channel_stub.cpp", 
+    "//base/accessibility/frameworks/aafwk/test/mock/src/mock_accessible_ability_channel_proxy.cpp",
+    "//base/accessibility/frameworks/aafwk/test/mock/src/mock_accessible_ability_channel_stub.cpp",
     "//base/accessibility/frameworks/common/src/accessibility_caption.cpp",
     "//base/accessibility/frameworks/common/src/accessibility_constants.cpp",
     "//base/accessibility/frameworks/common/src/accessibility_element_info.cpp",
     "//base/accessibility/frameworks/common/src/accessibility_event_info.cpp",
     "//base/accessibility/frameworks/common/src/accessibility_gesture_path.cpp",
     "//base/accessibility/frameworks/common/src/accessibility_window_info.cpp",
+    "//base/accessibility/services/aams/src/accessibility_display_manager.cpp",
+    "//base/accessibility/services/aams/src/accessible_ability_manager_service.cpp",
+    "//base/accessibility/services/aams/src/accessible_ability_manager_service_event_handler.cpp",
+    "//base/accessibility/services/aams/test/mock/src/mock_accessibility_account_data.cpp",
+    "//base/accessibility/services/aams/test/mock/src/mock_accessibility_common_event_registry.cpp",
+    "//base/accessibility/services/aams/test/mock/src/mock_accessibility_event_transmission.cpp",
+    "//base/accessibility/services/aams/test/mock/src/mock_accessibility_input_interceptor.cpp",
+    "//base/accessibility/services/aams/test/mock/src/mock_accessibility_window_connection.cpp",
+    "//base/accessibility/services/aams/test/mock/src/mock_accessibility_window_manager.cpp",
+    "//base/accessibility/services/aams/test/mock/src/mock_accessible_ability_connection.cpp",
+    "//base/accessibility/services/aams/test/mock/src/mock_accessible_ability_manager_service_state_observer_proxy.cpp",
+    "//base/accessibility/services/aams/test/mock/src/mock_accessible_ability_manager_service_state_observer_stub.cpp",
     "//base/accessibility/services/interface/src/accessibility_element_operator_callback_stub.cpp",
     "//base/accessibility/services/interface/src/accessible_ability_client_stub.cpp",
     "//base/accessibility/services/interface/src/accessible_ability_manager_service_proxy.cpp",
-    "//base/accessibility/services/interface/src/parcel/accessibility_ability_info_parcel.cpp",  
+    "//base/accessibility/services/interface/src/parcel/accessibility_ability_info_parcel.cpp",
     "//base/accessibility/services/interface/src/parcel/accessibility_caption_parcel.cpp",
     "//base/accessibility/services/interface/src/parcel/accessibility_element_info_parcel.cpp",
     "//base/accessibility/services/interface/src/parcel/accessibility_event_info_parcel.cpp",
@@ -83,38 +94,29 @@ ohos_unittest("accessible_ability_test") {
     "unittest/accessibility_ui_test_ability_impl_test.cpp",
     "unittest/accessible_ability_channel_client_test.cpp",
     "unittest/accessible_ability_client_impl_test.cpp",
-    "//base/accessibility/services/aams/src/accessible_ability_manager_service.cpp",
-    "//base/accessibility/services/aams/test/mock/src/mock_accessibility_account_data.cpp",
-    "//base/accessibility/services/aams/test/mock/src/mock_accessible_ability_manager_service_state_observer_proxy.cpp",
-    "//base/accessibility/services/aams/test/mock/src/mock_accessible_ability_manager_service_state_observer_stub.cpp",
-    "//base/accessibility/services/aams/src/accessible_ability_manager_service_event_handler.cpp",
-    "//base/accessibility/services/aams/test/mock/src/mock_accessibility_window_connection.cpp",
-    "//base/accessibility/services/aams/test/mock/src/mock_accessible_ability_connection.cpp",
-    "//base/accessibility/services/aams/test/mock/src/mock_accessibility_common_event_registry.cpp",
-    "//base/accessibility/services/aams/test/mock/src/mock_accessibility_window_manager.cpp",
-    "//base/accessibility/services/aams/test/mock/src/mock_accessibility_input_interceptor.cpp",
-    "//base/accessibility/services/aams/src/accessibility_display_manager.cpp",
-    "//base/accessibility/services/aams/test/mock/src/mock_accessibility_event_transmission.cpp",
   ]
   sources += aams_mock_multimodalinput_src
 
-  configs = [ ":module_private_config",
-    "//foundation/aafwk/standard/interfaces/innerkits/base:base_public_config", ]
+  configs = [
+    ":module_private_config",
+    "//foundation/aafwk/standard/interfaces/innerkits/base:base_public_config",
+  ]
 
   deps = [
+    "//base/accessibility/interfaces/innerkits/common:accessibility_common",
+    "//base/accessibility/services/interface:aams_interface",
     "//base/global/resmgr_standard/frameworks/resmgr:global_resmgr",
     "//foundation/ace/napi:ace_napi",
     "//foundation/appexecfwk/standard/interfaces/innerkits/libeventhandler:libeventhandler",
     "//third_party/googletest:gmock_main",
     "//third_party/googletest:gtest_main",
     "//utils/native/base:utils",
-    "//base/accessibility/interfaces/innerkits/common:accessibility_common",
-    "//base/accessibility/services/interface:aams_interface",
   ]
 
   external_deps = [
     "ability_base:want",
     "ability_base:want",
+    "ability_runtime:ability_manager",
     "ability_runtime:abilitykit_native",
     "bundle_framework:appexecfwk_base",
     "bundle_framework:appexecfwk_core",
@@ -128,8 +130,7 @@ ohos_unittest("accessible_ability_test") {
     "samgr_standard:samgr_proxy",
     "utils_base:utils",
     "window_manager:libdm",
-    "ability_runtime:ability_manager",
-    "window_manager:libwm"
+    "window_manager:libwm",
   ]
 }
 

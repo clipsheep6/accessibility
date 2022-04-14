@@ -16,8 +16,8 @@
 #ifndef MOCK_ACCESSIBILITY_GESTURE_RECOGNIZER_H
 #define MOCK_ACCESSIBILITY_GESTURE_RECOGNIZER_H
 
-#include "accessibility_gesture_recognizer.h"
 #include <gmock/gmock.h>
+#include "accessibility_gesture_recognizer.h"
 
 namespace OHOS {
 namespace Accessibility {

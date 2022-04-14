@@ -16,8 +16,8 @@
 #ifndef MOCK_ACCESSIBILITY_COMMON_EVENT_REGISTRY_H
 #define MOCK_ACCESSIBILITY_COMMON_EVENT_REGISTRY_H
 
+#include <gmock/gmock.h>
 #include "accessibility_common_event_registry.h"
-#include "gmock/gmock.h"
 
 namespace OHOS {
 namespace Accessibility {

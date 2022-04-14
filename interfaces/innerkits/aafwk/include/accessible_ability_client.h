@@ -18,13 +18,13 @@
 
 #include <map>
 #include <memory>
-#include "accessibility_ability_listener.h"
 #include "accessibility_display_resize_controller.h"
 #include "accessibility_element_info.h"
 #include "accessibility_event_info.h"
 #include "accessibility_gesture_path.h"
 #include "accessibility_gesture_result_listener.h"
 #include "accessibility_window_info.h"
+#include "accessible_ability_listener.h"
 #include "iremote_object.h"
 
 namespace OHOS {

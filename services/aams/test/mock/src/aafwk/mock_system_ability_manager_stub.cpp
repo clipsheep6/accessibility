@@ -13,12 +13,12 @@
  * limitations under the License.
  */
 
-#include "system_ability_manager_stub.h"
 #include "errors.h"
 #include "ipc_skeleton.h"
 #include "ipc_types.h"
-#include "string_ex.h"
 #include "sam_log.h"
+#include "string_ex.h"
+#include "system_ability_manager_stub.h"
 
 namespace OHOS {
 SystemAbilityManagerStub::SystemAbilityManagerStub()

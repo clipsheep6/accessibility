@@ -13,15 +13,15 @@
  * limitations under the License.
  */
 
-#include "accessibility_touch_guider.h"
 #include <gtest/gtest.h>
 #include <unistd.h>
-#include "accessible_ability_channel.h"
+#include "accessibility_touch_guider.h"
 #include "accessibility_account_data.h"
 #include "accessibility_display_manager.h"
 #include "accessibility_element_operator_stub.h"
 #include "accessibility_helper.h"
 #include "accessibility_input_interceptor.h"
+#include "accessible_ability_channel.h"
 #include "accessible_ability_connection.h"
 #include "accessible_ability_manager_service.h"
 #include "iservice_registry.h"
@@ -38,9 +38,10 @@ using namespace Json;
 
 namespace OHOS {
 namespace Accessibility {
-const int32_t timeout = 10000;
-const int32_t sleepTime = 2;
-const int32_t testNum_2 = 2;
+const static int32_t timeout = 10000;
+const static int32_t sleepTime = 2;
+const static int32_t testNum_2 = 2;
+
 class AamsTouchGuideTest : public testing::Test {
 public:
     AamsTouchGuideTest()

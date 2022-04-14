@@ -13,8 +13,8 @@
  * limitations under the License.
  */
 
-#ifndef PACEL_UTIL_H
-#define PACEL_UTIL_H
+#ifndef PARCEL_UTIL_H
+#define PARCEL_UTIL_H
 
 #include "parcel.h"
 
@@ -37,4 +37,4 @@ namespace Accessibility {
     } while (0)
 } // namespace Accessibility
 } // namespace OHOS
-#endif // PACEL_UTIL_H
+#endif // PARCEL_UTIL_H

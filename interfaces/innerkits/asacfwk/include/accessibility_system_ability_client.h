@@ -157,7 +157,7 @@ public:
      * @return true: send ok; otherwise is refused.
      */
     virtual bool SubscribeStateObserver(const std::shared_ptr<AccessibilityStateObserver> &observer,
-        const int32_t eventType) = 0;
+        const uint32_t eventType) = 0;
 
     /**
      * @brief Unsubscribe the specified type of accessibility status change events.
@@ -168,14 +168,7 @@ public:
      * @return true: send ok; otherwise is refused.
      */
     virtual bool UnsubscribeStateObserver(const std::shared_ptr<AccessibilityStateObserver> &observer,
-        const int32_t eventType) = 0;
-
-    /**
-     * @brief Unsubscribe the accessibility status change events from the observer.
-     * @param observer Indicates the registered accessibility status event observer.
-     * @return true is succeed otherwise is failed.
-     */
-    virtual bool UnsubscribeStateObserver(const std::shared_ptr<AccessibilityStateObserver> &observer) = 0;
+        const uint32_t eventType) = 0;
 
     /**
      * @brief Inner function for aams status update;

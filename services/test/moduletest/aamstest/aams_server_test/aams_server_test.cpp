@@ -32,9 +32,9 @@ using namespace Json;
 
 namespace OHOS {
 namespace Accessibility {
-const int32_t timeout = 10000;
-const int32_t testNum_2 = 2;
-const int32_t testNum_3 = 3;
+const static int32_t timeout = 10000;
+const static int32_t testNum_2 = 2;
+const static int32_t testNum_3 = 3;
 
 class AAMSServerTest : public testing::Test {
 public:

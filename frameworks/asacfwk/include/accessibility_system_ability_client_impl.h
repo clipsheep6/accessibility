@@ -16,6 +16,7 @@
 #ifndef ACCESSIBILITY_SYSTEM_ABILITY_CLIENT_IMPL_H
 #define ACCESSIBILITY_SYSTEM_ABILITY_CLIENT_IMPL_H
 
+#include <array>
 #include <mutex>
 #include "accessibility_element_operator_impl.h"
 #include "accessibility_system_ability_client.h"
@@ -25,6 +26,8 @@
 
 namespace OHOS {
 namespace Accessibility {
+using StateObserverVector = std::vector<std::shared_ptr<AccessibilityStateObserver>>;
+using StateObserversArray = std::array<StateObserverVector, AccessibilityStateEventType::EVENT_TYPE_MAX>;
 class AccessibilitySystemAbilityClientImpl : public AccessibilitySystemAbilityClient {
 public:
     /**
@@ -136,7 +139,7 @@ public:
      * @return true: send ok; otherwise is refused.
      */
     virtual bool SubscribeStateObserver(const std::shared_ptr<AccessibilityStateObserver> &observer,
-        const int32_t eventType) override;
+        const uint32_t eventType) override;
 
     /**
      * @brief Unsubscribe the specified type of accessibility status change events.
@@ -147,14 +150,7 @@ public:
      * @return true: send ok; otherwise is refused.
      */
     virtual bool UnsubscribeStateObserver(const std::shared_ptr<AccessibilityStateObserver> &observer,
-        const int32_t eventType) override;
-
-    /**
-     * @brief Unsubscribe the accessibility status change events from the observer.
-     * @param observer Indicates the registered accessibility status event observer.
-     * @return true is succeed otherwise is failed.
-     */
-    virtual bool UnsubscribeStateObserver(const std::shared_ptr<AccessibilityStateObserver> &observer) override;
+        const uint32_t eventType) override;
 
     /**
      * @brief Inner function for aams status update;
@@ -319,57 +315,90 @@ public:
      * @brief Enable Screen Magnifier
      * @return Return true if the command is sent successfully, else return false.
      */
-    virtual bool EnableScreenMagnifier() override {return false;}
+    virtual bool EnableScreenMagnifier() override
+    {
+        return false;
+    }
+
     /**
      * @brief Disable Screen Magnifier
      * @return Return true if the command is sent successfully, else return
      * false.
      */
-    virtual bool DisableScreenMagnifier() override {return false;}
+    virtual bool DisableScreenMagnifier() override
+    {
+        return false;
+    }
+
     /**
      * @brief Get Screen Magnifier feather state
      * @return Return the open state of screen magnifier.
      * false.
      */
-    virtual bool GetScreenMagnifierState() override {return isScreenMagnifierEnabled_;}
+    virtual bool GetScreenMagnifierState() override
+    {
+        return isScreenMagnifierEnabled_;
+    }
 
     /**
      * @brief Enable AutoClick
      * @return Return true if the command is sent successfully, else return
      * false.
      */
-    virtual bool EnableAutoClick() override {return false;}
+    virtual bool EnableAutoClick() override
+    {
+        return false;
+    }
+
     /**
      * @brief Disable Auto Click
      * @return Return true if the command is sent successfully, else return
      * false.
      */
-    virtual bool DisableAutoClick() override {return false;}
+    virtual bool DisableAutoClick() override
+    {
+        return false;
+    }
+
     /**
      * @brief Get AutoClick feather state
      * @return Return the open state of AutoClick.
      * false.
      */
-    virtual bool GetAutoClickState() override {return isAutoClickEnabled_;}
+    virtual bool GetAutoClickState() override
+    {
+        return isAutoClickEnabled_;
+    }
 
     /**
      * @brief Enable Short Key
      * @return Return true if the command is sent successfully, else return
      * false.
      */
-    virtual bool EnableShortKey() override { return false; }
+    virtual bool EnableShortKey() override
+    {
+        return false;
+    }
+
     /**
      * @brief Disable Short Key
      * @return Return true if the command is sent successfully, else return
      * false.
      */
-    virtual bool DisableShortKey() override { return false; }
+    virtual bool DisableShortKey() override
+    {
+        return false;
+    }
+
     /**
      * @brief Get Short Key feather state
      * @return Return the open state of AutoClick.
      * false.
      */
-    virtual bool GetShortKeyState() override { return isShortKeyEnabled_; }
+    virtual bool GetShortKeyState() override
+    {
+        return isShortKeyEnabled_;
+    }
 
 private:
     class AccessibleAbilityManagerStateObserverImpl : public AccessibleAbilityManagerStateObserverStub {
@@ -436,6 +465,20 @@ private:
     void NotifyTouchExplorationStateChanged();
 
     /**
+     * @brief Notify the state of key event is changed.
+     * @param
+     * @return
+     */
+    void NotifyKeyEventStateChanged();
+
+    /**
+     * @brief Notify the state of gesture is changed.
+     * @param
+     * @return
+     */
+    void NotifyGestureStateChanged();
+
+    /**
      * @brief Notify the state of caption is changed.
      * @param
      * @return
@@ -463,29 +506,8 @@ private:
      */
     bool CheckActionType(ActionType actionType);
 
-    /**
-     * @brief Notify the state of key event is changed.
-     * @param
-     * @return
-     */
-    void NotifyKeyEventStateChanged();
-
-    /**
-     * @brief Notify the state of gesture is changed.
-     * @param
-     * @return
-     */
-    void NotifyGestureStateChanged();
-
     std::mutex mutex_;
-
-    std::vector<std::shared_ptr<AccessibilityStateObserver>> observersAccessibilityState_;
-    std::vector<std::shared_ptr<AccessibilityStateObserver>> observersTouchState_;
-    std::vector<std::shared_ptr<AccessibilityStateObserver>> observersKeyEventState_;
-    std::vector<std::shared_ptr<AccessibilityStateObserver>> observersGestureState_;
-    std::vector<std::shared_ptr<AccessibilityStateObserver>> observersScreenMagnifierState_;
-    std::vector<std::shared_ptr<AccessibilityStateObserver>> observersAutoClickState_;
-    std::vector<std::shared_ptr<AccessibilityStateObserver>> observersShortKeyState_;
+    StateObserversArray stateObserversArray_;
     std::vector<std::shared_ptr<CaptionObserver>> observersCaptionProperty_;
     std::vector<std::shared_ptr<CaptionObserver>> observersCaptionEnable_;
 

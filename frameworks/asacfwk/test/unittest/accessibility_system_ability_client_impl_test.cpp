@@ -13,11 +13,12 @@
  * limitations under the License.
  */
 
-#include "accessibility_system_ability_client_impl.h"
 #include <gtest/gtest.h>
 #include <memory>
+#include "accessibility_system_ability_client_impl.h"
 #include "accessible_ability_manager_service.h"
 #include "mock_accessibility_element_operator.h"
+
 using namespace testing;
 using namespace testing::ext;
 
@@ -25,39 +26,39 @@ const int32_t WINDOW_ID = 1;
 const int32_t ACCOUNT_ID = 1;
 const uint32_t ACCESSIBILITY_ABILITY_TYPES = 1;
 const int32_t COMPONENT_ID = 1;
-const int32_t EVENT_TYPE = 1;
+const uint32_t EVENT_TYPE = 1;
 const int32_t TYPE = 1;
 const uint32_t STATE_TYPE = 1;
 
 namespace OHOS {
 namespace Accessibility {
-class AccessibilitySystemAbilityClientImplUnitTest : public ::testing::Test {
+class AccessibilitySystemAbilityClientImplTest : public ::testing::Test {
 public:
-    AccessibilitySystemAbilityClientImplUnitTest()
+    AccessibilitySystemAbilityClientImplTest()
     {}
-    ~AccessibilitySystemAbilityClientImplUnitTest()
+    ~AccessibilitySystemAbilityClientImplTest()
     {}
     std::shared_ptr<AccessibilitySystemAbilityClientImpl> impl_ = nullptr;
 
     static void SetUpTestCase()
     {
         DelayedSingleton<AccessibleAbilityManagerService>::GetInstance()->OnStart();
-        GTEST_LOG_(INFO) << "AccessibilitySystemAbilityClientImplUnitTest Start";
+        GTEST_LOG_(INFO) << "AccessibilitySystemAbilityClientImplTest Start";
     }
     static void TearDownTestCase()
     {
         DelayedSingleton<AccessibleAbilityManagerService>::GetInstance()->OnStop();
-        GTEST_LOG_(INFO) << "AccessibilitySystemAbilityClientImplUnitTest End";
+        GTEST_LOG_(INFO) << "AccessibilitySystemAbilityClientImplTest End";
     }
     void SetUp()
     {
-        GTEST_LOG_(INFO) << "AccessibilitySystemAbilityClientImplUnitTest SetUp()";
+        GTEST_LOG_(INFO) << "AccessibilitySystemAbilityClientImplTest SetUp()";
         int32_t accountId = 0;
         impl_ = std::make_shared<AccessibilitySystemAbilityClientImpl>(accountId);
     };
     void TearDown()
     {
-        GTEST_LOG_(INFO) << "AccessibilitySystemAbilityClientImplUnitTest TearDown()";
+        GTEST_LOG_(INFO) << "AccessibilitySystemAbilityClientImplTest TearDown()";
         impl_ = nullptr;
     }
 };
@@ -67,7 +68,7 @@ public:
  * @tc.name: RegisterElementOperator
  * @tc.desc: Test function RegisterElementOperator
  */
-HWTEST_F(AccessibilitySystemAbilityClientImplUnitTest, RegisterElementOperator_001, TestSize.Level1)
+HWTEST_F(AccessibilitySystemAbilityClientImplTest, RegisterElementOperator_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "RegisterElementOperator_001 start";
     if (!impl_) {
@@ -84,7 +85,7 @@ HWTEST_F(AccessibilitySystemAbilityClientImplUnitTest, RegisterElementOperator_0
  * @tc.name: DeregisterElementOperator
  * @tc.desc: Test function DeregisterElementOperator
  */
-HWTEST_F(AccessibilitySystemAbilityClientImplUnitTest, DeregisterElementOperator_001, TestSize.Level1)
+HWTEST_F(AccessibilitySystemAbilityClientImplTest, DeregisterElementOperator_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "DeregisterElementOperator_001 start";
     if (!impl_) {
@@ -100,7 +101,7 @@ HWTEST_F(AccessibilitySystemAbilityClientImplUnitTest, DeregisterElementOperator
  * @tc.name: GetAbilityList
  * @tc.desc: Test function GetAbilityList
  */
-HWTEST_F(AccessibilitySystemAbilityClientImplUnitTest, GetAbilityList_001, TestSize.Level1)
+HWTEST_F(AccessibilitySystemAbilityClientImplTest, GetAbilityList_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "GetAbilityList_001 start";
     AbilityStateType stateType = ABILITY_STATE_INVALID;
@@ -109,7 +110,7 @@ HWTEST_F(AccessibilitySystemAbilityClientImplUnitTest, GetAbilityList_001, TestS
         return;
     }
 
-    std::vector<AccessibilityAbilityInfo> infos{};
+    std::vector<AccessibilityAbilityInfo> infos {};
     infos = impl_->GetAbilityList(ACCESSIBILITY_ABILITY_TYPES, stateType);
     EXPECT_EQ(0, infos.size());
     GTEST_LOG_(INFO) << "GetAbilityList_001 end";
@@ -120,7 +121,7 @@ HWTEST_F(AccessibilitySystemAbilityClientImplUnitTest, GetAbilityList_001, TestS
  * @tc.name: IsAccessibilityCaptionEnabled
  * @tc.desc: Test function IsAccessibilityCaptionEnabled
  */
-HWTEST_F(AccessibilitySystemAbilityClientImplUnitTest, IsAccessibilityCaptionEnabled_001, TestSize.Level1)
+HWTEST_F(AccessibilitySystemAbilityClientImplTest, IsAccessibilityCaptionEnabled_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "IsAccessibilityCaptionEnabled_001 start";
     if (!impl_) {
@@ -136,7 +137,7 @@ HWTEST_F(AccessibilitySystemAbilityClientImplUnitTest, IsAccessibilityCaptionEna
  * @tc.name: IsEnabled
  * @tc.desc: Test function IsEnabled
  */
-HWTEST_F(AccessibilitySystemAbilityClientImplUnitTest, IsEnabled_001, TestSize.Level1)
+HWTEST_F(AccessibilitySystemAbilityClientImplTest, IsEnabled_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "IsEnabled_001 start";
     if (!impl_) {
@@ -152,7 +153,7 @@ HWTEST_F(AccessibilitySystemAbilityClientImplUnitTest, IsEnabled_001, TestSize.L
  * @tc.name: IsTouchExplorationEnabled
  * @tc.desc: Test function IsTouchExplorationEnabled
  */
-HWTEST_F(AccessibilitySystemAbilityClientImplUnitTest, IsTouchExplorationEnabled_001, TestSize.Level1)
+HWTEST_F(AccessibilitySystemAbilityClientImplTest, IsTouchExplorationEnabled_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "IsTouchExplorationEnabled_001 start";
     if (!impl_) {
@@ -168,7 +169,7 @@ HWTEST_F(AccessibilitySystemAbilityClientImplUnitTest, IsTouchExplorationEnabled
  * @tc.name: IsCaptionEnabled
  * @tc.desc: Test function IsCaptionEnabled
  */
-HWTEST_F(AccessibilitySystemAbilityClientImplUnitTest, IsCaptionEnabled_001, TestSize.Level1)
+HWTEST_F(AccessibilitySystemAbilityClientImplTest, IsCaptionEnabled_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "IsCaptionEnabled_001 start";
     if (!impl_) {
@@ -184,7 +185,7 @@ HWTEST_F(AccessibilitySystemAbilityClientImplUnitTest, IsCaptionEnabled_001, Tes
  * @tc.name: GetCaptionProperty
  * @tc.desc: Test function GetCaptionProperty
  */
-HWTEST_F(AccessibilitySystemAbilityClientImplUnitTest, GetCaptionProperty_001, TestSize.Level1)
+HWTEST_F(AccessibilitySystemAbilityClientImplTest, GetCaptionProperty_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "GetCaptionProperty_001 start";
     if (!impl_) {
@@ -204,7 +205,7 @@ HWTEST_F(AccessibilitySystemAbilityClientImplUnitTest, GetCaptionProperty_001, T
  * @tc.name: SetCaptionProperty
  * @tc.desc: Test function SetCaptionProperty
  */
-HWTEST_F(AccessibilitySystemAbilityClientImplUnitTest, SetCaptionProperty_001, TestSize.Level1)
+HWTEST_F(AccessibilitySystemAbilityClientImplTest, SetCaptionProperty_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "SetCaptionProperty_001 start";
     if (!impl_) {
@@ -221,7 +222,7 @@ HWTEST_F(AccessibilitySystemAbilityClientImplUnitTest, SetCaptionProperty_001, T
  * @tc.name: SendEvent
  * @tc.desc: Test function SendEvent
  */
-HWTEST_F(AccessibilitySystemAbilityClientImplUnitTest, SendEvent_001, TestSize.Level1)
+HWTEST_F(AccessibilitySystemAbilityClientImplTest, SendEvent_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "SendEvent_001 start";
     if (!impl_) {
@@ -238,14 +239,14 @@ HWTEST_F(AccessibilitySystemAbilityClientImplUnitTest, SendEvent_001, TestSize.L
  * @tc.name: SendEvent
  * @tc.desc: Test function SendEvent
  */
-HWTEST_F(AccessibilitySystemAbilityClientImplUnitTest, SendEvent_002, TestSize.Level1)
+HWTEST_F(AccessibilitySystemAbilityClientImplTest, SendEvent_002, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "SendEvent_002 start";
     if (!impl_) {
         GTEST_LOG_(INFO) << "Cann't get AccessibilitySystemAbilityClientImpl impl_";
         return;
     }
-    AccessibilityEventInfo event{};
+    AccessibilityEventInfo event {};
     EXPECT_FALSE(impl_->SendEvent(event));
     GTEST_LOG_(INFO) << "SendEvent_002 end";
 }
@@ -255,7 +256,7 @@ HWTEST_F(AccessibilitySystemAbilityClientImplUnitTest, SendEvent_002, TestSize.L
  * @tc.name: SubscribeStateObserver
  * @tc.desc: Test function SubscribeStateObserver
  */
-HWTEST_F(AccessibilitySystemAbilityClientImplUnitTest, SubscribeStateObserver_001, TestSize.Level1)
+HWTEST_F(AccessibilitySystemAbilityClientImplTest, SubscribeStateObserver_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "SubscribeStateObserver_001 start";
     if (!impl_) {
@@ -272,7 +273,7 @@ HWTEST_F(AccessibilitySystemAbilityClientImplUnitTest, SubscribeStateObserver_00
  * @tc.name: UnsubscribeStateObserver
  * @tc.desc: Test function UnsubscribeStateObserver
  */
-HWTEST_F(AccessibilitySystemAbilityClientImplUnitTest, UnsubscribeStateObserver_001, TestSize.Level1)
+HWTEST_F(AccessibilitySystemAbilityClientImplTest, UnsubscribeStateObserver_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "UnsubscribeStateObserver_001 start";
     if (!impl_) {
@@ -283,29 +284,13 @@ HWTEST_F(AccessibilitySystemAbilityClientImplUnitTest, UnsubscribeStateObserver_
     EXPECT_FALSE(impl_->UnsubscribeStateObserver(observer, EVENT_TYPE));
     GTEST_LOG_(INFO) << "UnsubscribeStateObserver_001 end";
 }
-/**
- * @tc.number: UnsubscribeStateObserver_002
- * @tc.name: UnsubscribeStateObserver
- * @tc.desc: Test function UnsubscribeStateObserver
- */
-HWTEST_F(AccessibilitySystemAbilityClientImplUnitTest, UnsubscribeStateObserver_002, TestSize.Level1)
-{
-    GTEST_LOG_(INFO) << "UnsubscribeStateObserver_002 start";
-    if (!impl_) {
-        GTEST_LOG_(INFO) << "Cann't get AccessibilitySystemAbilityClientImpl impl_";
-        return;
-    }
-    std::shared_ptr<AccessibilityStateObserver> observer = nullptr;
-    EXPECT_FALSE(impl_->UnsubscribeStateObserver(observer));
-    GTEST_LOG_(INFO) << "UnsubscribeStateObserver_002 end";
-}
 
 /**
  * @tc.number: UpdateCapabilitiesState_001
  * @tc.name: UpdateEnabled
  * @tc.desc: Test function UpdateEnabled
  */
-HWTEST_F(AccessibilitySystemAbilityClientImplUnitTest, UpdateCapabilitiesState_001, TestSize.Level1)
+HWTEST_F(AccessibilitySystemAbilityClientImplTest, UpdateCapabilitiesState_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "UpdateCapabilitiesState_001 start";
     if (!impl_) {
@@ -326,7 +311,7 @@ HWTEST_F(AccessibilitySystemAbilityClientImplUnitTest, UpdateCapabilitiesState_0
  * @tc.name: AddCaptionListener
  * @tc.desc: Test function AddCaptionListener
  */
-HWTEST_F(AccessibilitySystemAbilityClientImplUnitTest, AddCaptionListener_001, TestSize.Level1)
+HWTEST_F(AccessibilitySystemAbilityClientImplTest, AddCaptionListener_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "AddCaptionListener_001 start";
     if (!impl_) {
@@ -343,7 +328,7 @@ HWTEST_F(AccessibilitySystemAbilityClientImplUnitTest, AddCaptionListener_001, T
  * @tc.name: DeleteCaptionListener
  * @tc.desc: Test DeleteCaptionListener
  */
-HWTEST_F(AccessibilitySystemAbilityClientImplUnitTest, DeleteCaptionListener_001, TestSize.Level1)
+HWTEST_F(AccessibilitySystemAbilityClientImplTest, DeleteCaptionListener_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "DeleteCaptionListener_001 start";
     if (!impl_) {
@@ -360,7 +345,7 @@ HWTEST_F(AccessibilitySystemAbilityClientImplUnitTest, DeleteCaptionListener_001
  * @tc.name: GetEnabledState
  * @tc.desc: Test function GetEnabledState
  */
-HWTEST_F(AccessibilitySystemAbilityClientImplUnitTest, GetCapabilitiesState_001, TestSize.Level1)
+HWTEST_F(AccessibilitySystemAbilityClientImplTest, GetCapabilitiesState_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "GetCapabilitiesState_001 start";
     if (!impl_) {
@@ -379,7 +364,7 @@ HWTEST_F(AccessibilitySystemAbilityClientImplUnitTest, GetCapabilitiesState_001,
  * @tc.name: SetCaptionPropertyTojson
  * @tc.desc: Test function SetCaptionPropertyTojson
  */
-HWTEST_F(AccessibilitySystemAbilityClientImplUnitTest, SetCaption_001, TestSize.Level1)
+HWTEST_F(AccessibilitySystemAbilityClientImplTest, SetCaption_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "SetCaption_001 start";
     if (!impl_) {
@@ -397,7 +382,7 @@ HWTEST_F(AccessibilitySystemAbilityClientImplUnitTest, SetCaption_001, TestSize.
  * @tc.name: ResetService
  * @tc.desc: Test function ResetService
  */
-HWTEST_F(AccessibilitySystemAbilityClientImplUnitTest, ResetService_001, TestSize.Level1)
+HWTEST_F(AccessibilitySystemAbilityClientImplTest, ResetService_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "ResetService_001 start";
     if (!impl_) {
@@ -414,7 +399,7 @@ HWTEST_F(AccessibilitySystemAbilityClientImplUnitTest, ResetService_001, TestSiz
  * @tc.name: OnAccessibleAbilityManagerStateChanged
  * @tc.desc: Test function OnAccessibleAbilityManagerStateChanged
  */
-HWTEST_F(AccessibilitySystemAbilityClientImplUnitTest, OnAccessibleAbilityManagerStateChanged_001, TestSize.Level1)
+HWTEST_F(AccessibilitySystemAbilityClientImplTest, OnAccessibleAbilityManagerStateChanged_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "OnAccessibleAbilityManagerStateChanged_001 start";
     if (!impl_) {
@@ -431,7 +416,7 @@ HWTEST_F(AccessibilitySystemAbilityClientImplUnitTest, OnAccessibleAbilityManage
  * @tc.desc: Test function OnAccessibleAbilityManagerCaptionPropertyChanged_001
  */
 HWTEST_F(
-    AccessibilitySystemAbilityClientImplUnitTest, OnAccessibleAbilityManagerCaptionPropertyChanged_001, TestSize.Level1)
+    AccessibilitySystemAbilityClientImplTest, OnAccessibleAbilityManagerCaptionPropertyChanged_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "OnAccessibleAbilityManagerCaptionPropertyChanged_001 start";
     if (!impl_) {
@@ -448,14 +433,14 @@ HWTEST_F(
  * @tc.name: EnableAbilities
  * @tc.desc: Test function EnableAbilities
  */
-HWTEST_F(AccessibilitySystemAbilityClientImplUnitTest, EnableAbilities_001, TestSize.Level1)
+HWTEST_F(AccessibilitySystemAbilityClientImplTest, EnableAbilities_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "EnableAbilities_001 start";
     if (!impl_) {
         GTEST_LOG_(INFO) << "Cann't get AccessibilitySystemAbilityClientImpl impl_";
         return;
     }
-    std::vector<std::string> it{};
+    std::vector<std::string> it {};
     EXPECT_TRUE(impl_->EnableAbilities(it));
     GTEST_LOG_(INFO) << "EnableAbilities_001 end";
 }
@@ -465,14 +450,14 @@ HWTEST_F(AccessibilitySystemAbilityClientImplUnitTest, EnableAbilities_001, Test
  * @tc.name: DisableAbilities
  * @tc.desc: Test function DisableAbilities
  */
-HWTEST_F(AccessibilitySystemAbilityClientImplUnitTest, DisableAbilities_001, TestSize.Level1)
+HWTEST_F(AccessibilitySystemAbilityClientImplTest, DisableAbilities_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "DisableAbilities_001 start";
     if (!impl_) {
         GTEST_LOG_(INFO) << "Cann't get AccessibilitySystemAbilityClientImpl impl_";
         return;
     }
-    std::vector<std::string> it{};
+    std::vector<std::string> it {};
     EXPECT_TRUE(impl_->DisableAbilities(it));
     GTEST_LOG_(INFO) << "DisableAbilities_001 end";
 }
@@ -482,7 +467,7 @@ HWTEST_F(AccessibilitySystemAbilityClientImplUnitTest, DisableAbilities_001, Tes
  * @tc.name: GetInstalledAbilities
  * @tc.desc: Test function GetInstalledAbilities
  */
-HWTEST_F(AccessibilitySystemAbilityClientImplUnitTest, GetInstalledAbilities_001, TestSize.Level1)
+HWTEST_F(AccessibilitySystemAbilityClientImplTest, GetInstalledAbilities_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "GetInstalledAbilities_001 start";
     if (!impl_) {

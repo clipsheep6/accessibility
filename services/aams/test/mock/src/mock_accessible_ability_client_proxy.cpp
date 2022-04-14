@@ -13,13 +13,12 @@
  * limitations under the License.
  */
 
-#include "accessible_ability_client_proxy.h"
-#include <cstdint>
 #include <gtest/gtest.h>
 #include "accessibility_ability_helper.h"
 #include "accessibility_account_data.h"
 #include "accessibility_event_info.h"
 #include "accessible_ability_channel_stub.h"
+#include "accessible_ability_client_proxy.h"
 #include "accessible_ability_connection.h"
 #include "accessible_ability_manager_service.h"
 #include "parcel.h"

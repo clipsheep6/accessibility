@@ -16,8 +16,8 @@
 #ifndef MOCK_ACCESSIBILITY_INPUT_INTERCEPTOR_H
 #define MOCK_ACCESSIBILITY_INPUT_INTERCEPTOR_H
 
+#include <gmock/gmock.h>
 #include "accessibility_input_interceptor.h"
-#include "gmock/gmock.h"
 
 namespace OHOS {
 namespace Accessibility {

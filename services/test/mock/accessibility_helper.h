@@ -24,8 +24,6 @@
 
 namespace OHOS {
 namespace Accessibility {
-static constexpr HiviewDFX::HiLogLabel LABEL = {LOG_CORE, 0xD001100, "MockSystemAbility"};
-
 class AccessibilityHelper {
 public:
     static AccessibilityHelper& GetInstance()

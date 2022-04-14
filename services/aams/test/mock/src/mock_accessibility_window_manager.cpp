@@ -18,19 +18,23 @@
 
 namespace OHOS {
 namespace Accessibility {
-AccessibilityWindowInfoManager::AccessibilityWindowInfoManager()
+static const int32_t TOP_X  = 0;
+static const int32_t TOP_Y = 100;
+static const int32_t BOTTOM_X = 800;
+static const int32_t BOTTOM_Y = 400;
+AccessibilityWindowManager::AccessibilityWindowManager()
 {
     windowListener_ = new AccessibilityWindowListener(*this);
     eventHandler_ = nullptr;
 }
 
-AccessibilityWindowInfoManager& AccessibilityWindowInfoManager::GetInstance()
+AccessibilityWindowManager& AccessibilityWindowManager::GetInstance()
 {
-    static AccessibilityWindowInfoManager windowManager;
+    static AccessibilityWindowManager windowManager;
     return windowManager;
 }
 
-void AccessibilityWindowInfoManager::OnWindowUpdate(const sptr<Rosen::AccessibilityWindowInfo>& windowInfo,
+void AccessibilityWindowManager::OnWindowUpdate(const sptr<Rosen::AccessibilityWindowInfo>& windowInfo,
     Rosen::WindowUpdateType type)
 {
     HILOG_DEBUG("start");
@@ -38,7 +42,7 @@ void AccessibilityWindowInfoManager::OnWindowUpdate(const sptr<Rosen::Accessibil
     (void)type;
 }
 
-void AccessibilityWindowInfoManager::WindowUpdate(const sptr<Rosen::AccessibilityWindowInfo>& windowInfo,
+void AccessibilityWindowManager::WindowUpdate(const sptr<Rosen::AccessibilityWindowInfo>& windowInfo,
     Rosen::WindowUpdateType type)
 {
     HILOG_DEBUG("windowId[%{public}d] type[%{public}d]", windowInfo->currentWindowInfo_->wid_, type);
@@ -46,7 +50,7 @@ void AccessibilityWindowInfoManager::WindowUpdate(const sptr<Rosen::Accessibilit
     (void)type;
 }
 
-int32_t AccessibilityWindowInfoManager::ConvertToRealWindowId(int32_t windowId, int32_t focusType)
+int32_t AccessibilityWindowManager::ConvertToRealWindowId(int32_t windowId, int32_t focusType)
 {
     (void)windowId;
     (void)focusType;
@@ -68,7 +72,7 @@ WindowType ConvertWindowType(Rosen::WindowType type)
     return winType;
 }
 
-AccessibilityWindowInfo AccessibilityWindowInfoManager::CreateAccessibilityWindowInfo(
+AccessibilityWindowInfo AccessibilityWindowManager::CreateAccessibilityWindowInfo(
     Rosen::AccessibilityWindowInfo& windowInfo)
 {
     (void)windowInfo;
@@ -76,39 +80,39 @@ AccessibilityWindowInfo AccessibilityWindowInfoManager::CreateAccessibilityWindo
     info.SetWindowId(0);
     info.SetWindowType(ConvertWindowType(Rosen::WindowType::SYSTEM_WINDOW_BASE));
     info.SetFocused(true);
-    Rect bound(0, 100, 800, 400);
+    Rect bound(TOP_X, TOP_Y, BOTTOM_X, BOTTOM_Y);
     info.SetRectInScreen(bound);
     return info;
 }
 
-void AccessibilityWindowInfoManager::RegisterWindowChangeListener()
+void AccessibilityWindowManager::RegisterWindowChangeListener()
 {}
 
-void AccessibilityWindowInfoManager::DeregisterWindowChangeListener()
+void AccessibilityWindowManager::DeregisterWindowChangeListener()
 {}
 
-void AccessibilityWindowInfoManager::SetActiveWindow(int32_t windowId)
+void AccessibilityWindowManager::SetActiveWindow(int32_t windowId)
 {
     (void)windowId;
 }
 
-void AccessibilityWindowInfoManager::SetAccessibilityFocusedWindow(int32_t windowId)
+void AccessibilityWindowManager::SetAccessibilityFocusedWindow(int32_t windowId)
 {
     (void)windowId;
 }
 
-void AccessibilityWindowInfoManager::SetInputFocusedWindow(int32_t windowId)
+void AccessibilityWindowManager::SetInputFocusedWindow(int32_t windowId)
 {
     (void)windowId;
 }
 
-std::vector<AccessibilityWindowInfo> AccessibilityWindowInfoManager::GetAccessibilityWindows()
+std::vector<AccessibilityWindowInfo> AccessibilityWindowManager::GetAccessibilityWindows()
 {
     std::vector<AccessibilityWindowInfo> windows;
     return windows;
 }
 
-bool AccessibilityWindowInfoManager::GetAccessibilityWindow(int32_t windowId, AccessibilityWindowInfo& window)
+bool AccessibilityWindowManager::GetAccessibilityWindow(int32_t windowId, AccessibilityWindowInfo& window)
 {
     HILOG_DEBUG("start windowId(%{public}d)", windowId);
     if (a11yWindows_.count(windowId)) {
@@ -118,13 +122,13 @@ bool AccessibilityWindowInfoManager::GetAccessibilityWindow(int32_t windowId, Ac
     return false;
 }
 
-bool AccessibilityWindowInfoManager::IsValidWindow(int32_t windowId)
+bool AccessibilityWindowManager::IsValidWindow(int32_t windowId)
 {
     (void)windowId;
     return true;
 }
 
-void AccessibilityWindowInfoManager::SetWindowSize(int32_t windowId, Rect rect)
+void AccessibilityWindowManager::SetWindowSize(int32_t windowId, Rect rect)
 {
     HILOG_DEBUG("start windowId(%{public}d)", windowId);
     for (auto& window : a11yWindows_) {
@@ -135,7 +139,7 @@ void AccessibilityWindowInfoManager::SetWindowSize(int32_t windowId, Rect rect)
     }
 }
 
-void AccessibilityWindowInfoManager::UpdateWindowLayer(const sptr<Rosen::AccessibilityWindowInfo>& windowInfo)
+void AccessibilityWindowManager::UpdateWindowLayer(const sptr<Rosen::AccessibilityWindowInfo>& windowInfo)
 {
     HILOG_DEBUG("start");
     int32_t layer = 0;

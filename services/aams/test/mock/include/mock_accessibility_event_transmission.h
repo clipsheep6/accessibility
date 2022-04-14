@@ -16,8 +16,8 @@
 #ifndef MOCK_ACCESSIBILITY_EVENT_TRANSMISSION_H
 #define MOCK_ACCESSIBILITY_EVENT_TRANSMISSION_H
 
+#include <gmock/gmock.h>
 #include "accessibility_event_transmission.h.h"
-#include "gmock/gmock.h"
 
 namespace OHOS {
 namespace Accessibility {

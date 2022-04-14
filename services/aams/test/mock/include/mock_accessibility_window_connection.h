@@ -15,8 +15,8 @@
 #ifndef MOCK_ACCESSIBILITY_WINDOW_CONNECTION_H
 #define MOCK_ACCESSIBILITY_WINDOW_CONNECTION_H
 
+#include <gmock/gmock.h>
 #include "accessibility_window_connection.h"
-#include "gmock/gmock.h"
 
 namespace OHOS {
 namespace Accessibility {

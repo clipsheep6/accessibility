@@ -59,10 +59,22 @@ ohos_unittest("asac_unit_test") {
   sources = [
     "../src/accessibility_element_operator_impl.cpp",
     "../src/accessibility_system_ability_client_impl.cpp",
+    "//base/accessibility/frameworks/asacfwk/test/mock/src/mock_accessibility_account_data.cpp",
     "//base/accessibility/frameworks/common/src/accessibility_caption.cpp",
     "//base/accessibility/frameworks/common/src/accessibility_constants.cpp",
     "//base/accessibility/frameworks/common/src/accessibility_element_info.cpp",
     "//base/accessibility/frameworks/common/src/accessibility_event_info.cpp",
+    "//base/accessibility/services/aams/src/accessibility_display_manager.cpp",
+    "//base/accessibility/services/aams/src/accessible_ability_manager_service.cpp",
+    "//base/accessibility/services/aams/src/accessible_ability_manager_service_event_handler.cpp",
+    "//base/accessibility/services/aams/test/mock/src/mock_accessibility_common_event_registry.cpp",
+    "//base/accessibility/services/aams/test/mock/src/mock_accessibility_event_transmission.cpp",
+    "//base/accessibility/services/aams/test/mock/src/mock_accessibility_input_interceptor.cpp",
+    "//base/accessibility/services/aams/test/mock/src/mock_accessibility_window_connection.cpp",
+    "//base/accessibility/services/aams/test/mock/src/mock_accessibility_window_manager.cpp",
+    "//base/accessibility/services/aams/test/mock/src/mock_accessible_ability_connection.cpp",
+    "//base/accessibility/services/aams/test/mock/src/mock_accessible_ability_manager_service_state_observer_proxy.cpp",
+    "//base/accessibility/services/aams/test/mock/src/mock_accessible_ability_manager_service_state_observer_stub.cpp",
     "//base/accessibility/services/interface/src/accessibility_element_operator_callback_proxy.cpp",
     "//base/accessibility/services/interface/src/accessibility_element_operator_stub.cpp",
     "//base/accessibility/services/interface/src/accessible_ability_manager_caption_observer_stub.cpp",
@@ -75,24 +87,11 @@ ohos_unittest("asac_unit_test") {
     "//foundation/aafwk/standard/interfaces/innerkits/uri/src/uri.cpp",
     "unittest/accessibility_element_operator_impl_test.cpp",
     "unittest/accessibility_system_ability_client_impl_test.cpp",
-    "//base/accessibility/services/aams/src/accessible_ability_manager_service.cpp",
-    "//base/accessibility/frameworks/asacfwk/test/mock/src/mock_accessibility_account_data.cpp",
-    "//base/accessibility/services/aams/test/mock/src/mock_accessible_ability_manager_service_state_observer_proxy.cpp",
-    "//base/accessibility/services/aams/test/mock/src/mock_accessible_ability_manager_service_state_observer_stub.cpp",
-    "//base/accessibility/services/aams/src/accessible_ability_manager_service_event_handler.cpp",
-    "//base/accessibility/services/aams/test/mock/src/mock_accessibility_window_connection.cpp",
-    "//base/accessibility/services/aams/test/mock/src/mock_accessible_ability_connection.cpp",
-    "//base/accessibility/services/aams/test/mock/src/mock_accessibility_common_event_registry.cpp",
-    "//base/accessibility/services/aams/test/mock/src/mock_accessibility_window_manager.cpp",
-    "//base/accessibility/services/aams/test/mock/src/mock_accessibility_input_interceptor.cpp",
-    "//base/accessibility/services/aams/src/accessibility_display_manager.cpp",
-    "//base/accessibility/services/aams/test/mock/src/mock_accessibility_event_transmission.cpp",
-  
   ]
 
-  configs = [ 
+  configs = [
     ":module_private_config",
-    "//foundation/aafwk/standard/interfaces/innerkits/base:base_public_config", 
+    "//foundation/aafwk/standard/interfaces/innerkits/base:base_public_config",
   ]
 
   deps = [

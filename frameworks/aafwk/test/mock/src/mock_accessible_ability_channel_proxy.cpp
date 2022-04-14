@@ -100,7 +100,7 @@ bool AccessibleAbilityChannelProxy::ExecuteAction(const int32_t accessibilityWin
 
 std::vector<AccessibilityWindowInfo> AccessibleAbilityChannelProxy::GetWindows()
 {
-    std::vector<AccessibilityWindowInfo> windows{};
+    std::vector<AccessibilityWindowInfo> windows {};
     return windows;
 }
 

@@ -16,8 +16,8 @@
 #ifndef MOCK_ACCESSIBLE_ABILITY_CONNECTION_H_
 #define MOCK_ACCESSIBLE_ABILITY_CONNECTION_H_
 
+#include <gmock/gmock.h>
 #include "accessible_ability_connection.h"
-#include "gmock/gmock.h"
 
 namespace OHOS {
 namespace Accessibility {

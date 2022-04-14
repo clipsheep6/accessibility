@@ -98,7 +98,6 @@ public:
     virtual bool UnsubscribeConfigObserver(const int32_t ids,
                 const std::shared_ptr<AccessibilityConfigObserver>& observer) = 0;
 };
-
 } // namespace Accessibility
 } // namespace OHOS
-#endif
+#endif // ACCESSIBILITY_CONFIG_H

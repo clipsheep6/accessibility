@@ -159,7 +159,7 @@ private:
 
                     napi_get_reference_value(reinterpret_cast<napi_env>(&engine), NElementInfo::consRef_, &constructor);
                     napi_value napiElementInfo = nullptr;
-                    napi_status result = napi_new_instance(reinterpret_cast<napi_env>(&engine),constructor, 0, nullptr, 
+                    napi_status result = napi_new_instance(reinterpret_cast<napi_env>(&engine), constructor, 0, nullptr,
                         &napiElementInfo);
                     HILOG_DEBUG("napi_new_instance result is %{public}d", result);
                     ConvertElementInfoToJS(reinterpret_cast<napi_env>(&engine), napiElementInfo, elementInfo);
@@ -398,8 +398,7 @@ void NAccessibilityGestureResultListener::OnGestureInjectResult(uint32_t sequenc
             callbackInfo = nullptr;
             delete work;
             work = nullptr;
-        } 
-    );        
+        });
 }
 } // namespace Accessibility
 } // namespace OHOS

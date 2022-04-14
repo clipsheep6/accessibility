@@ -26,10 +26,10 @@ public:
     MOCK_METHOD2(OnWindowUpdate, void(const sptr<Rosen::WindowInfo>& windowInfo, Rosen::WindowUpdateType type));
 };
 
-class MockAccessibilityWindowInfoManager : public AccessibilityWindowInfoManager {
+class MockAccessibilityWindowInfoManager : public AccessibilityWindowManager {
 public:
     ~MockAccessibilityWindowInfoManager() = default;
-    MOCK_METHOD0(GetInstance, AccessibilityWindowInfoManager&());
+    MOCK_METHOD0(GetInstance, AccessibilityWindowManager&());
     MOCK_METHOD1(CreateAccessibilityWindowInfo, AccessibilityWindowInfo(Rosen::WindowInfo& windowInfo));
     MOCK_METHOD2(ConvertToRealWindowId, int32_t(int32_t windowId, int32_t focusType));
     MOCK_METHOD0(RegisterWindowChangeListener, void());

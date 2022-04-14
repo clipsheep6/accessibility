@@ -16,8 +16,8 @@
 #ifndef MOCK_ACCESSIBILITY_ELEMENT_OPERATOR_STUB_H
 #define MOCK_ACCESSIBILITY_ELEMENT_OPERATOR_STUB_H
 
-#include "accessibility_element_operator_stub.h"
 #include <gmock/gmock.h>
+#include "accessibility_element_operator_stub.h"
 
 namespace OHOS {
 namespace Accessibility {

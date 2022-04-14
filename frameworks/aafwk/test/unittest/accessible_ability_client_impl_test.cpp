@@ -13,33 +13,33 @@
  * limitations under the License.
  */
 
-#include "accessible_ability_client_impl.h"
 #include <gtest/gtest.h>
+#include "accessible_ability_client_impl.h"
+#include "accessible_ability_manager_service.h"
 #include "mock_accessible_ability_channel_proxy.h"
 #include "mock_accessible_ability_channel_stub.h"
-#include "mock_accessibility_ability_listener.h"
-#include "accessible_ability_manager_service.h"
+#include "mock_accessible_ability_listener.h"
 
 using namespace testing;
 using namespace testing::ext;
 
-const int32_t CHANNEL_ID = 1;
-const int32_t SEQUENCE = 1;
-const int32_t DISPLAY_ID = 1;
-const float SCALE = 1.0;
-const float CENTER_X = 1.0;
-const float CENTER_Y = 1.0;
-const int32_t FOCUS_TYPE = 1;
-const int32_t INDEX = 1;
-const std::string TEST = "test";
+const static int32_t CHANNEL_ID = 1;
+const static int32_t SEQUENCE = 1;
+const static int32_t DISPLAY_ID = 1;
+const static float SCALE = 1.0;
+const static float CENTER_X = 1.0;
+const static float CENTER_Y = 1.0;
+const static int32_t FOCUS_TYPE = 1;
+const static int32_t INDEX = 1;
+const static std::string TEST = "test";
 
 namespace OHOS {
 namespace Accessibility {
-class AccessibleAbilityClientImplUnitTest : public ::testing::Test {
+class AccessibleAbilityClientImplTest : public ::testing::Test {
 public:
-    AccessibleAbilityClientImplUnitTest()
+    AccessibleAbilityClientImplTest()
     {}
-    ~AccessibleAbilityClientImplUnitTest()
+    ~AccessibleAbilityClientImplTest()
     {}
 
     std::shared_ptr<AccessibleAbilityClientImpl> instance_ = nullptr;
@@ -47,21 +47,21 @@ public:
     static void SetUpTestCase()
     {
         DelayedSingleton<AccessibleAbilityManagerService>::GetInstance()->OnStart();
-        GTEST_LOG_(INFO) << "AccessibleAbilityClientImplUnitTest Start";
+        GTEST_LOG_(INFO) << "AccessibleAbilityClientImplTest Start";
     }
     static void TearDownTestCase()
     {
         DelayedSingleton<AccessibleAbilityManagerService>::GetInstance()->OnStop();
-        GTEST_LOG_(INFO) << "AccessibleAbilityClientImplUnitTest End";
+        GTEST_LOG_(INFO) << "AccessibleAbilityClientImplTest End";
     }
     void SetUp()
     {
-        GTEST_LOG_(INFO) << "AccessibleAbilityClientImplUnitTest SetUp()";
+        GTEST_LOG_(INFO) << "AccessibleAbilityClientImplTest SetUp()";
         instance_ = std::make_shared<AccessibleAbilityClientImpl>();
     };
     void TearDown()
     {
-        GTEST_LOG_(INFO) << "AccessibleAbilityClientImplUnitTest TearDown()";
+        GTEST_LOG_(INFO) << "AccessibleAbilityClientImplTest TearDown()";
         instance_ = nullptr;
     }
 };
@@ -71,7 +71,7 @@ public:
  * @tc.name: Disconnect
  * @tc.desc: Test function Disconnect
  */
-HWTEST_F(AccessibleAbilityClientImplUnitTest, Disconnect_001, TestSize.Level1)
+HWTEST_F(AccessibleAbilityClientImplTest, Disconnect_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "Disconnect_001 start";
 
@@ -90,7 +90,7 @@ HWTEST_F(AccessibleAbilityClientImplUnitTest, Disconnect_001, TestSize.Level1)
  * @tc.name: OnAccessibilityEvent
  * @tc.desc: Test function OnAccessibilityEvent
  */
-HWTEST_F(AccessibleAbilityClientImplUnitTest, OnAccessibilityEvent_001, TestSize.Level1)
+HWTEST_F(AccessibleAbilityClientImplTest, OnAccessibilityEvent_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "OnAccessibilityEvent_001 start";
     if (!instance_) {
@@ -105,7 +105,7 @@ HWTEST_F(AccessibleAbilityClientImplUnitTest, OnAccessibilityEvent_001, TestSize
 
     int32_t channelId = 1;
     instance_->Init(channel, channelId);
-    AccessibilityEventInfo eventInfo{};
+    AccessibilityEventInfo eventInfo {};
     instance_->OnAccessibilityEvent(eventInfo);
     GTEST_LOG_(INFO) << "OnAccessibilityEvent_001 end";
 }
@@ -115,7 +115,7 @@ HWTEST_F(AccessibleAbilityClientImplUnitTest, OnAccessibilityEvent_001, TestSize
  * @tc.name: OnDisplayResized
  * @tc.desc: Test function OnDisplayResized
  */
-HWTEST_F(AccessibleAbilityClientImplUnitTest, OnDisplayResized_001, TestSize.Level1)
+HWTEST_F(AccessibleAbilityClientImplTest, OnDisplayResized_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "OnDisplayResized_001 start";
     std::shared_ptr<AccessibleAbilityListener> listener = std::make_shared<MockAccessibleAbilityListener>();
@@ -130,7 +130,7 @@ HWTEST_F(AccessibleAbilityClientImplUnitTest, OnDisplayResized_001, TestSize.Lev
         GTEST_LOG_(INFO) << "Cann't get AccessibleAbilityClientImpl instance_";
         return;
     }
-    Rect rect{};
+    Rect rect {};
     instance_->OnDisplayResized(DISPLAY_ID, rect, SCALE, CENTER_X, CENTER_Y);
     GTEST_LOG_(INFO) << "OnDisplayResized_001 end";
 }
@@ -140,7 +140,7 @@ HWTEST_F(AccessibleAbilityClientImplUnitTest, OnDisplayResized_001, TestSize.Lev
  * @tc.name: OnGestureInjectResult
  * @tc.desc: Test function OnGestureInjectResult
  */
-HWTEST_F(AccessibleAbilityClientImplUnitTest, OnGestureInjectResult_001, TestSize.Level1)
+HWTEST_F(AccessibleAbilityClientImplTest, OnGestureInjectResult_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "OnGestureInjectResult_001 start";
     std::shared_ptr<AccessibleAbilityListener> listener = std::make_shared<MockAccessibleAbilityListener>();
@@ -164,7 +164,7 @@ HWTEST_F(AccessibleAbilityClientImplUnitTest, OnGestureInjectResult_001, TestSiz
  * @tc.name: GetFocus
  * @tc.desc: Test function GetFocus
  */
-HWTEST_F(AccessibleAbilityClientImplUnitTest, GetFocus_001, TestSize.Level1)
+HWTEST_F(AccessibleAbilityClientImplTest, GetFocus_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "GetFocus_001 start";
         std::shared_ptr<AccessibleAbilityListener> listener = std::make_shared<MockAccessibleAbilityListener>();
@@ -180,7 +180,7 @@ HWTEST_F(AccessibleAbilityClientImplUnitTest, GetFocus_001, TestSize.Level1)
         return;
     }
     std::vector<AccessibilityElementInfo> infos;
-    AccessibilityElementInfo info{};
+    AccessibilityElementInfo info {};
     EXPECT_FALSE(instance_->GetFocus(FOCUS_TYPE, info));
     GTEST_LOG_(INFO) << "GetFocus_001 end";
 }
@@ -190,7 +190,7 @@ HWTEST_F(AccessibleAbilityClientImplUnitTest, GetFocus_001, TestSize.Level1)
  * @tc.name: GetRemoteObject
  * @tc.desc: Test function GetRemoteObject
  */
-HWTEST_F(AccessibleAbilityClientImplUnitTest, GetRemoteObject_001, TestSize.Level1)
+HWTEST_F(AccessibleAbilityClientImplTest, GetRemoteObject_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "GetRemoteObject_001 start";
 
@@ -209,7 +209,7 @@ HWTEST_F(AccessibleAbilityClientImplUnitTest, GetRemoteObject_001, TestSize.Leve
  * @tc.name: RegisterAbilityListener
  * @tc.desc: Test function RegisterAbilityListener
  */
-HWTEST_F(AccessibleAbilityClientImplUnitTest, RegisterAbilityListener_001, TestSize.Level1)
+HWTEST_F(AccessibleAbilityClientImplTest, RegisterAbilityListener_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "RegisterAbilityListener_001 start";
 
@@ -228,7 +228,7 @@ HWTEST_F(AccessibleAbilityClientImplUnitTest, RegisterAbilityListener_001, TestS
  * @tc.name: Init
  * @tc.desc: Test function Init
  */
-HWTEST_F(AccessibleAbilityClientImplUnitTest, Init_001, TestSize.Level1)
+HWTEST_F(AccessibleAbilityClientImplTest, Init_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "Init_001 start";
 
@@ -247,7 +247,7 @@ HWTEST_F(AccessibleAbilityClientImplUnitTest, Init_001, TestSize.Level1)
  * @tc.name: GetFocusByElementInfo
  * @tc.desc: Test function GetFocusByElementInfo
  */
-HWTEST_F(AccessibleAbilityClientImplUnitTest, GetFocusByElementInfo_001, TestSize.Level1)
+HWTEST_F(AccessibleAbilityClientImplTest, GetFocusByElementInfo_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "GetFocusByElementInfo_001 start";
     std::shared_ptr<AccessibleAbilityListener> listener = std::make_shared<MockAccessibleAbilityListener>();
@@ -262,8 +262,8 @@ HWTEST_F(AccessibleAbilityClientImplUnitTest, GetFocusByElementInfo_001, TestSiz
         GTEST_LOG_(INFO) << "Cann't get AccessibleAbilityClientImpl instance_";
         return;
     }
-    AccessibilityElementInfo sourceInfo{};
-    AccessibilityElementInfo elementInfo{};
+    AccessibilityElementInfo sourceInfo {};
+    AccessibilityElementInfo elementInfo {};
     EXPECT_FALSE(instance_->GetFocusByElementInfo(sourceInfo, FOCUS_TYPE, elementInfo));
 
     GTEST_LOG_(INFO) << "GetFocusByElementInfo_001 end";
@@ -274,14 +274,14 @@ HWTEST_F(AccessibleAbilityClientImplUnitTest, GetFocusByElementInfo_001, TestSiz
  * @tc.name: GestureInject
  * @tc.desc: Test function GestureInject
  */
-HWTEST_F(AccessibleAbilityClientImplUnitTest, GestureInject_001, TestSize.Level1)
+HWTEST_F(AccessibleAbilityClientImplTest, GestureInject_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "GestureInject_001 start";
     if (!instance_) {
         GTEST_LOG_(INFO) << "Cann't get AccessibleAbilityClientImpl instance_";
         return;
     }
-    std::vector<AccessibilityGesturePath> gesturePathList{};
+    std::vector<AccessibilityGesturePath> gesturePathList {};
     std::shared_ptr<AccessibilityGestureResultListener> listener = nullptr;
     EXPECT_FALSE(instance_->GestureInject(SEQUENCE, gesturePathList, listener));
 
@@ -293,7 +293,7 @@ HWTEST_F(AccessibleAbilityClientImplUnitTest, GestureInject_001, TestSize.Level1
  * @tc.name: GetDisplayResizeController
  * @tc.desc: Test function GetDisplayResizeController
  */
-HWTEST_F(AccessibleAbilityClientImplUnitTest, GetDisplayResizeController_001, TestSize.Level1)
+HWTEST_F(AccessibleAbilityClientImplTest, GetDisplayResizeController_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "GetDisplayResizeController_001 start";
 
@@ -321,7 +321,7 @@ HWTEST_F(AccessibleAbilityClientImplUnitTest, GetDisplayResizeController_001, Te
  * @tc.name: GetDisplayResizeController
  * @tc.desc: Test function GetDisplayResizeController
  */
-HWTEST_F(AccessibleAbilityClientImplUnitTest, GetDisplayResizeController_002, TestSize.Level1)
+HWTEST_F(AccessibleAbilityClientImplTest, GetDisplayResizeController_002, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "GetDisplayResizeController_002 start";
 
@@ -348,7 +348,7 @@ HWTEST_F(AccessibleAbilityClientImplUnitTest, GetDisplayResizeController_002, Te
  * @tc.name: GetRoot
  * @tc.desc: Test function GetRoot
  */
-HWTEST_F(AccessibleAbilityClientImplUnitTest, GetRoot_001, TestSize.Level1)
+HWTEST_F(AccessibleAbilityClientImplTest, GetRoot_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "GetRoot_001 start";
     std::shared_ptr<AccessibleAbilityListener> listener = std::make_shared<MockAccessibleAbilityListener>();
@@ -363,7 +363,7 @@ HWTEST_F(AccessibleAbilityClientImplUnitTest, GetRoot_001, TestSize.Level1)
         GTEST_LOG_(INFO) << "Cann't get AccessibleAbilityClientImpl instance_";
         return;
     }
-    AccessibilityElementInfo info{};
+    AccessibilityElementInfo info {};
     EXPECT_FALSE(instance_->GetRoot(info));
 
     GTEST_LOG_(INFO) << "GetRoot_001 end";
@@ -374,7 +374,7 @@ HWTEST_F(AccessibleAbilityClientImplUnitTest, GetRoot_001, TestSize.Level1)
  * @tc.name: GetRootByWindow
  * @tc.desc: Test function GetRootByWindow
  */
-HWTEST_F(AccessibleAbilityClientImplUnitTest, GetRootByWindow_001, TestSize.Level1)
+HWTEST_F(AccessibleAbilityClientImplTest, GetRootByWindow_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "GetRootByWindow_001 start";
     std::shared_ptr<AccessibleAbilityListener> listener = std::make_shared<MockAccessibleAbilityListener>();
@@ -389,8 +389,8 @@ HWTEST_F(AccessibleAbilityClientImplUnitTest, GetRootByWindow_001, TestSize.Leve
         GTEST_LOG_(INFO) << "Cann't get AccessibleAbilityClientImpl instance_";
         return;
     }
-    AccessibilityElementInfo info{};
-    AccessibilityWindowInfo windowInfo{};
+    AccessibilityElementInfo info {};
+    AccessibilityWindowInfo windowInfo {};
     EXPECT_FALSE(instance_->GetRootByWindow(windowInfo, info));
 
     GTEST_LOG_(INFO) << "GetRootByWindow_001 end";
@@ -401,7 +401,7 @@ HWTEST_F(AccessibleAbilityClientImplUnitTest, GetRootByWindow_001, TestSize.Leve
  * @tc.name: ExecuteCommonAction
  * @tc.desc: Test function ExecuteCommonAction
  */
-HWTEST_F(AccessibleAbilityClientImplUnitTest, ExecuteCommonAction_001, TestSize.Level1)
+HWTEST_F(AccessibleAbilityClientImplTest, ExecuteCommonAction_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "ExecuteCommonAction_001 start";
     std::shared_ptr<AccessibleAbilityListener> listener = std::make_shared<MockAccessibleAbilityListener>();
@@ -427,7 +427,7 @@ HWTEST_F(AccessibleAbilityClientImplUnitTest, ExecuteCommonAction_001, TestSize.
  * @tc.name: GetNext
  * @tc.desc: Test function GetNext
  */
-HWTEST_F(AccessibleAbilityClientImplUnitTest, GetNext_001, TestSize.Level1)
+HWTEST_F(AccessibleAbilityClientImplTest, GetNext_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "GetNext_001 start";
     std::shared_ptr<AccessibleAbilityListener> listener = std::make_shared<MockAccessibleAbilityListener>();
@@ -442,8 +442,8 @@ HWTEST_F(AccessibleAbilityClientImplUnitTest, GetNext_001, TestSize.Level1)
         GTEST_LOG_(INFO) << "Cann't get AccessibleAbilityClientImpl instance_";
         return;
     }
-    AccessibilityElementInfo info{};
-    AccessibilityElementInfo nextElementInfo{};
+    AccessibilityElementInfo info {};
+    AccessibilityElementInfo nextElementInfo {};
     FocusMoveDirection direction = DIRECTION_INVALID;
     EXPECT_FALSE(instance_->GetNext(info, direction, nextElementInfo));
 
@@ -455,7 +455,7 @@ HWTEST_F(AccessibleAbilityClientImplUnitTest, GetNext_001, TestSize.Level1)
  * @tc.name: GetChildWindowInfo
  * @tc.desc: Test function GetChildWindowInfo
  */
-HWTEST_F(AccessibleAbilityClientImplUnitTest, GetChildWindowInfo_001, TestSize.Level1)
+HWTEST_F(AccessibleAbilityClientImplTest, GetChildWindowInfo_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "GetChildWindowInfo_001 start";
     std::shared_ptr<AccessibleAbilityListener> listener = std::make_shared<MockAccessibleAbilityListener>();
@@ -470,8 +470,8 @@ HWTEST_F(AccessibleAbilityClientImplUnitTest, GetChildWindowInfo_001, TestSize.L
         GTEST_LOG_(INFO) << "Cann't get AccessibleAbilityClientImpl instance_";
         return;
     }
-    AccessibilityWindowInfo parent{};
-    AccessibilityWindowInfo child{};
+    AccessibilityWindowInfo parent {};
+    AccessibilityWindowInfo child {};
     EXPECT_FALSE(instance_->GetChildWindowInfo(INDEX, parent, child));
 
     GTEST_LOG_(INFO) << "GetChildWindowInfo_001 end";
@@ -482,7 +482,7 @@ HWTEST_F(AccessibleAbilityClientImplUnitTest, GetChildWindowInfo_001, TestSize.L
  * @tc.name: GetChildElementInfo
  * @tc.desc: Test function GetChildElementInfo
  */
-HWTEST_F(AccessibleAbilityClientImplUnitTest, GetChildElementInfo_001, TestSize.Level1)
+HWTEST_F(AccessibleAbilityClientImplTest, GetChildElementInfo_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "GetChildElementInfo_001 start";
     std::shared_ptr<AccessibleAbilityListener> listener = std::make_shared<MockAccessibleAbilityListener>();
@@ -497,8 +497,8 @@ HWTEST_F(AccessibleAbilityClientImplUnitTest, GetChildElementInfo_001, TestSize.
         GTEST_LOG_(INFO) << "Cann't get AccessibleAbilityClientImpl instance_";
         return;
     }
-    AccessibilityElementInfo parent{};
-    AccessibilityElementInfo child{};
+    AccessibilityElementInfo parent {};
+    AccessibilityElementInfo child {};
     EXPECT_FALSE(instance_->GetChildElementInfo(INDEX, parent, child));
 
     GTEST_LOG_(INFO) << "GetChildElementInfo_001 end";
@@ -509,7 +509,7 @@ HWTEST_F(AccessibleAbilityClientImplUnitTest, GetChildElementInfo_001, TestSize.
  * @tc.name: GetByContent
  * @tc.desc: Test function GetByContent
  */
-HWTEST_F(AccessibleAbilityClientImplUnitTest, GetByContent_001, TestSize.Level1)
+HWTEST_F(AccessibleAbilityClientImplTest, GetByContent_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "GetByContent_001 start";
     std::shared_ptr<AccessibleAbilityListener> listener = std::make_shared<MockAccessibleAbilityListener>();
@@ -524,7 +524,7 @@ HWTEST_F(AccessibleAbilityClientImplUnitTest, GetByContent_001, TestSize.Level1)
         GTEST_LOG_(INFO) << "Cann't get AccessibleAbilityClientImpl instance_";
         return;
     }
-    AccessibilityElementInfo elementInfo{};
+    AccessibilityElementInfo elementInfo {};
     std::vector<AccessibilityElementInfo> inelementInfosfos;
     EXPECT_FALSE(instance_->GetByContent(elementInfo, TEST, inelementInfosfos));
 
@@ -536,7 +536,7 @@ HWTEST_F(AccessibleAbilityClientImplUnitTest, GetByContent_001, TestSize.Level1)
  * @tc.name: GetAnchor
  * @tc.desc: Test function GetAnchor
  */
-HWTEST_F(AccessibleAbilityClientImplUnitTest, GetAnchor_001, TestSize.Level1)
+HWTEST_F(AccessibleAbilityClientImplTest, GetAnchor_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "GetAnchor_001 start";
     std::shared_ptr<AccessibleAbilityListener> listener = std::make_shared<MockAccessibleAbilityListener>();
@@ -551,8 +551,8 @@ HWTEST_F(AccessibleAbilityClientImplUnitTest, GetAnchor_001, TestSize.Level1)
         GTEST_LOG_(INFO) << "Cann't get AccessibleAbilityClientImpl instance_";
         return;
     }
-    AccessibilityWindowInfo windowInfo{};
-    AccessibilityElementInfo elementInfo{};
+    AccessibilityWindowInfo windowInfo {};
+    AccessibilityElementInfo elementInfo {};
     EXPECT_FALSE(instance_->GetAnchor(windowInfo, elementInfo));
 
     GTEST_LOG_(INFO) << "GetAnchor_001 end";
@@ -563,7 +563,7 @@ HWTEST_F(AccessibleAbilityClientImplUnitTest, GetAnchor_001, TestSize.Level1)
  * @tc.name: GetSource
  * @tc.desc: Test function GetSource
  */
-HWTEST_F(AccessibleAbilityClientImplUnitTest, GetSource_001, TestSize.Level1)
+HWTEST_F(AccessibleAbilityClientImplTest, GetSource_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "GetSource_001 start";
     std::shared_ptr<AccessibleAbilityListener> listener = std::make_shared<MockAccessibleAbilityListener>();
@@ -578,8 +578,8 @@ HWTEST_F(AccessibleAbilityClientImplUnitTest, GetSource_001, TestSize.Level1)
         GTEST_LOG_(INFO) << "Cann't get AccessibleAbilityClientImpl instance_";
         return;
     }
-    AccessibilityEventInfo eventInfo{};
-    AccessibilityElementInfo elementInfo{};
+    AccessibilityEventInfo eventInfo {};
+    AccessibilityElementInfo elementInfo {};
     EXPECT_FALSE(instance_->GetSource(eventInfo, elementInfo));
 
     GTEST_LOG_(INFO) << "GetSource_001 end";
@@ -590,7 +590,7 @@ HWTEST_F(AccessibleAbilityClientImplUnitTest, GetSource_001, TestSize.Level1)
  * @tc.name: GetParentWindowInfo
  * @tc.desc: Test function GetParentWindowInfo
  */
-HWTEST_F(AccessibleAbilityClientImplUnitTest, GetParentWindowInfo_001, TestSize.Level1)
+HWTEST_F(AccessibleAbilityClientImplTest, GetParentWindowInfo_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "GetParentWindowInfo_001 start";
     std::shared_ptr<AccessibleAbilityListener> listener = std::make_shared<MockAccessibleAbilityListener>();
@@ -605,8 +605,8 @@ HWTEST_F(AccessibleAbilityClientImplUnitTest, GetParentWindowInfo_001, TestSize.
         GTEST_LOG_(INFO) << "Cann't get AccessibleAbilityClientImpl instance_";
         return;
     }
-    AccessibilityWindowInfo parent{};
-    AccessibilityWindowInfo child{};
+    AccessibilityWindowInfo parent {};
+    AccessibilityWindowInfo child {};
     EXPECT_TRUE(instance_->GetParentWindowInfo(child, parent));
 
     GTEST_LOG_(INFO) << "GetParentWindowInfo_001 end";
@@ -617,7 +617,7 @@ HWTEST_F(AccessibleAbilityClientImplUnitTest, GetParentWindowInfo_001, TestSize.
  * @tc.name: GetParentElementInfo
  * @tc.desc: Test function GetParentElementInfo
  */
-HWTEST_F(AccessibleAbilityClientImplUnitTest, GetParentElementInfo_001, TestSize.Level1)
+HWTEST_F(AccessibleAbilityClientImplTest, GetParentElementInfo_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "GetParentElementInfo_001 start";
     std::shared_ptr<AccessibleAbilityListener> listener = std::make_shared<MockAccessibleAbilityListener>();
@@ -632,8 +632,8 @@ HWTEST_F(AccessibleAbilityClientImplUnitTest, GetParentElementInfo_001, TestSize
         GTEST_LOG_(INFO) << "Cann't get AccessibleAbilityClientImpl instance_";
         return;
     }
-    AccessibilityElementInfo parent{};
-    AccessibilityElementInfo child{};
+    AccessibilityElementInfo parent {};
+    AccessibilityElementInfo child {};
     EXPECT_FALSE(instance_->GetParentElementInfo(child, parent));
 
     GTEST_LOG_(INFO) << "GetParentElementInfo_001 end";
@@ -644,7 +644,7 @@ HWTEST_F(AccessibleAbilityClientImplUnitTest, GetParentElementInfo_001, TestSize
  * @tc.name: GetLabeled
  * @tc.desc: Test function GetLabeled
  */
-HWTEST_F(AccessibleAbilityClientImplUnitTest, GetLabeled_001, TestSize.Level1)
+HWTEST_F(AccessibleAbilityClientImplTest, GetLabeled_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "GetLabeled_001 start";
     std::shared_ptr<AccessibleAbilityListener> listener = std::make_shared<MockAccessibleAbilityListener>();
@@ -659,8 +659,8 @@ HWTEST_F(AccessibleAbilityClientImplUnitTest, GetLabeled_001, TestSize.Level1)
         GTEST_LOG_(INFO) << "Cann't get AccessibleAbilityClientImpl instance_";
         return;
     }
-    AccessibilityElementInfo elementInfo{};
-    AccessibilityElementInfo labeledElementInfo{};
+    AccessibilityElementInfo elementInfo {};
+    AccessibilityElementInfo labeledElementInfo {};
     EXPECT_FALSE(instance_->GetLabeled(elementInfo, labeledElementInfo));
 
     GTEST_LOG_(INFO) << "GetLabeled_001 end";
@@ -671,7 +671,7 @@ HWTEST_F(AccessibleAbilityClientImplUnitTest, GetLabeled_001, TestSize.Level1)
  * @tc.name: ExecuteAction
  * @tc.desc: Test function ExecuteAction
  */
-HWTEST_F(AccessibleAbilityClientImplUnitTest, ExecuteAction_001, TestSize.Level1)
+HWTEST_F(AccessibleAbilityClientImplTest, ExecuteAction_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "ExecuteAction_001 start";
     std::shared_ptr<AccessibleAbilityListener> listener = std::make_shared<MockAccessibleAbilityListener>();
@@ -686,9 +686,9 @@ HWTEST_F(AccessibleAbilityClientImplUnitTest, ExecuteAction_001, TestSize.Level1
         GTEST_LOG_(INFO) << "Cann't get AccessibleAbilityClientImpl instance_";
         return;
     }
-    AccessibilityElementInfo elementInfo{};
+    AccessibilityElementInfo elementInfo {};
     ActionType action = ACCESSIBILITY_ACTION_INVALID;
-    std::map<std::string, std::string> actionArguments{};
+    std::map<std::string, std::string> actionArguments {};
     EXPECT_FALSE(instance_->ExecuteAction(elementInfo, action, actionArguments));
 
     GTEST_LOG_(INFO) << "ExecuteAction_001 end";
@@ -699,7 +699,7 @@ HWTEST_F(AccessibleAbilityClientImplUnitTest, ExecuteAction_001, TestSize.Level1
  * @tc.name: ResetAAClient
  * @tc.desc: Test function ResetAAClient
  */
-HWTEST_F(AccessibleAbilityClientImplUnitTest, ResetAAClient_001, TestSize.Level1)
+HWTEST_F(AccessibleAbilityClientImplTest, ResetAAClient_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "ResetAAClient_001 start";
     std::shared_ptr<AccessibleAbilityListener> listener = std::make_shared<MockAccessibleAbilityListener>();
@@ -725,7 +725,7 @@ HWTEST_F(AccessibleAbilityClientImplUnitTest, ResetAAClient_001, TestSize.Level1
  * @tc.name: OnKeyPressEvent
  * @tc.desc: Test function OnKeyPressEvent
  */
-HWTEST_F(AccessibleAbilityClientImplUnitTest, OnKeyPressEvent_001, TestSize.Level1)
+HWTEST_F(AccessibleAbilityClientImplTest, OnKeyPressEvent_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "OnKeyPressEvent_001 start";
     std::shared_ptr<AccessibleAbilityListener> listener = std::make_shared<MockAccessibleAbilityListener>();
@@ -751,7 +751,7 @@ HWTEST_F(AccessibleAbilityClientImplUnitTest, OnKeyPressEvent_001, TestSize.Leve
  * @tc.name: GetWindows
  * @tc.desc: Test function GetWindows
  */
-HWTEST_F(AccessibleAbilityClientImplUnitTest, GetWindows_001, TestSize.Level1)
+HWTEST_F(AccessibleAbilityClientImplTest, GetWindows_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "GetWindows_001 start";
         std::shared_ptr<AccessibleAbilityListener> listener = std::make_shared<MockAccessibleAbilityListener>();

@@ -30,10 +30,10 @@ config("accessibility_extension_module_config") {
 }
 
 ohos_shared_library("accessibility_extension_module") {
-  sources = [ 
-    "src/accessibility_extension_module_loader.cpp",
-    "src/accessibility_extension_context.cpp",
+  sources = [
     "src/accessibility_extension.cpp",
+    "src/accessibility_extension_context.cpp",
+    "src/accessibility_extension_module_loader.cpp",
     "src/napi_accessibility_extension.cpp",
     "src/napi_accessibility_extension_context.cpp",
   ]
@@ -48,8 +48,8 @@ ohos_shared_library("accessibility_extension_module") {
 
   external_deps = [
     "ability_base:want",
-    "ability_runtime:abilitykit_native",
     "ability_runtime:ability_context_native",
+    "ability_runtime:abilitykit_native",
     "ability_runtime:runtime",
     "hiviewdfx_hilog_native:libhilog",
     "input:libmmi-client",

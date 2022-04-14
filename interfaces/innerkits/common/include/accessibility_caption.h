@@ -45,13 +45,6 @@ public:
     void SetBackgroundColor(uint32_t color);
     uint32_t GetBackgroundColor() const;
 
-private:
-    bool HasBackgroundColor();
-    bool HasTextColor();
-    bool HasEdgeType();
-    bool HasEdgeColor();
-    bool HasWindowColor();
-
 protected:
     std::string fontFamily_ = "default";
     int32_t fontScale_ = 75;    // font size
@@ -59,6 +52,13 @@ protected:
     std::string fontEdgeType_ = "none";
     uint32_t backgroundColor_ = 0xff000000;
     uint32_t windowColor_ = 0xff000000;
+
+private:
+    bool HasBackgroundColor();
+    bool HasTextColor();
+    bool HasEdgeType();
+    bool HasEdgeColor();
+    bool HasWindowColor();
 };
 
 enum CaptionObserverType : int32_t {

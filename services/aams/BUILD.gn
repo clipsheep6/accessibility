@@ -82,7 +82,7 @@ ohos_shared_library("accessibleabilityms") {
     "samgr_standard:samgr_proxy",
     "utils_base:utils",
     "window_manager:libdm",
-    "window_manager:libwm"
+    "window_manager:libwm",
   ]
 
   install_enable = true

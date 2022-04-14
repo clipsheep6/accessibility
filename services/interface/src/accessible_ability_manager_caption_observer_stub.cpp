@@ -27,8 +27,7 @@ AccessibleAbilityManagerCaptionObserverStub::AccessibleAbilityManagerCaptionObse
 int AccessibleAbilityManagerCaptionObserverStub::OnRemoteRequest(uint32_t code, MessageParcel &data,
     MessageParcel &reply, MessageOption &option)
 {
-    HILOG_DEBUG("AccessibleAbilityManagerCaptionObserverStub::OnRemoteRequest,\
-        cmd = %{public}d, flags = %{public}d", code, option.GetFlags());
+    HILOG_DEBUG("cmd = %{public}d, flags = %{public}d", code, option.GetFlags());
     std::u16string descriptor = AccessibleAbilityManagerCaptionObserverStub::GetDescriptor();
     std::u16string remoteDescriptor = data.ReadInterfaceToken();
     if (descriptor != remoteDescriptor) {

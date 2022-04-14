@@ -25,10 +25,10 @@
 
 namespace OHOS {
 namespace Accessibility {
-class AccessibilityWindowInfoManager {
+class AccessibilityWindowManager {
 public:
-    ~AccessibilityWindowInfoManager() = default;
-    static AccessibilityWindowInfoManager &GetInstance();
+    ~AccessibilityWindowManager() = default;
+    static AccessibilityWindowManager &GetInstance();
     static AccessibilityWindowInfo CreateAccessibilityWindowInfo(Rosen::AccessibilityWindowInfo &windowInfo);
     int32_t ConvertToRealWindowId(int32_t windowId, int32_t focusType);
     void RegisterWindowChangeListener();
@@ -56,7 +56,7 @@ public:
 private:
     class AccessibilityWindowListener : public Rosen::IWindowUpdateListener {
     public:
-        explicit AccessibilityWindowListener(AccessibilityWindowInfoManager &windInfoMgr)
+        explicit AccessibilityWindowListener(AccessibilityWindowManager &windInfoMgr)
             : windInfoMgr_(windInfoMgr) {}
         ~AccessibilityWindowListener() = default;
 
@@ -67,15 +67,17 @@ private:
         }
 
     private:
-        AccessibilityWindowInfoManager &windInfoMgr_;
+        AccessibilityWindowManager &windInfoMgr_;
     };
 
-    AccessibilityWindowInfoManager();
+    AccessibilityWindowManager();
     void WindowUpdate(const sptr<Rosen::AccessibilityWindowInfo>& windowInfo, Rosen::WindowUpdateType type);
+    void WindowUpdateAdded(const sptr<Rosen::AccessibilityWindowInfo>& windowInfo);
+    void WindowUpdateRemoved(const sptr<Rosen::AccessibilityWindowInfo>& windowInfo);
 
     sptr<AccessibilityWindowListener> windowListener_ = nullptr;
     std::shared_ptr<AppExecFwk::EventHandler> eventHandler_ = nullptr;
-    DISALLOW_COPY_AND_MOVE(AccessibilityWindowInfoManager);
+    DISALLOW_COPY_AND_MOVE(AccessibilityWindowManager);
 };
 } // namespace Accessibility
 } // namespace OHOS

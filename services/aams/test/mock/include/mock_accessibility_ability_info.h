@@ -16,8 +16,8 @@
 #ifndef MOCK_ACCESSIBILITY_ABILITY_INFO_H
 #define MOCK_ACCESSIBILITY_ABILITY_INFO_H
 
-#include "accessibility_ability_info.h"
 #include <gmock/gmock.h>
+#include "accessibility_ability_info.h"
 
 namespace OHOS {
 namespace Accessibility {

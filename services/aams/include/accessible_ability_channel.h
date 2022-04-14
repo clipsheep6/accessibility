@@ -28,7 +28,8 @@ public:
     AccessibleAbilityChannel(AccessibleAbilityConnection &connection);
     ~AccessibleAbilityChannel() = default;
     bool SearchElementInfoByAccessibilityId(const int32_t accessibilityWindowId, const int32_t elementId,
-        const int32_t requestId, const sptr<IAccessibilityElementOperatorCallback> &callback, const int32_t mode) override;
+        const int32_t requestId, const sptr<IAccessibilityElementOperatorCallback> &callback,
+        const int32_t mode) override;
 
     bool SearchElementInfosByText(const int32_t accessibilityWindowId, const int32_t elementId,
         const std::string &text, const int32_t requestId,
@@ -90,7 +91,7 @@ private:
     void InnerGetDisplayResizeRect(std::promise<Rect> &syncPromise, const int32_t displayId);
     void InnerResetDisplayResize(std::promise<bool> &syncPromise,
         const int32_t displayId, const bool animate);
-    void InnerSetDisplayResizeScaleAndCenter(std::promise<bool> &syncPromise, 
+    void InnerSetDisplayResizeScaleAndCenter(std::promise<bool> &syncPromise,
         const int32_t displayId, const float scale, const float centerX, const float centerY, const bool animate);
     void InnerSendSimulateGesture(const int32_t requestId, const std::vector<AccessibilityGesturePath> &gestureSteps);
 

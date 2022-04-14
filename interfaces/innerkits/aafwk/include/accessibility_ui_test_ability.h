@@ -18,12 +18,12 @@
 
 #include <map>
 #include <memory>
-#include "accessibility_ability_listener.h"
 #include "accessibility_display_resize_controller.h"
 #include "accessibility_gesture_path.h"
 #include "accessibility_gesture_result_listener.h"
 #include "accessibility_ui_test_ability_listener.h"
 #include "accessibility_window_info.h"
+#include "accessible_ability_listener.h"
 
 namespace OHOS {
 namespace Accessibility {
@@ -234,7 +234,8 @@ public:
      * @param labeledElementInfo The labeled element info.
      * @return Return true if gets infos successfully, else return false.
      */
-    virtual bool GetLabeled(const AccessibilityElementInfo &elementInfo, AccessibilityElementInfo &labeledElementInfo) = 0;
+    virtual bool GetLabeled(const AccessibilityElementInfo &elementInfo,
+        AccessibilityElementInfo &labeledElementInfo) = 0;
 
     /**
      * @brief Executes a specified action.

@@ -158,7 +158,7 @@ void TouchGuider::SendAccessibilityEventToAA(EventType eventType)
 
     AccessibilityEventInfo eventInfo {};
     eventInfo.SetEventType(eventType);
-    int32_t windowsId = AccessibilityWindowInfoManager::GetInstance().activeWindowId_;
+    int32_t windowsId = AccessibilityWindowManager::GetInstance().activeWindowId_;
     eventInfo.SetWindowId(windowsId);
     pAams_->SendEvent(eventInfo, pAams_->GetCurrentAccountId());
     if (eventType == EventType::TYPE_TOUCH_GUIDE_BEGIN) {
@@ -868,12 +868,12 @@ bool TouchGuider::ExecuteActionOnAccessibilityFocused(const ActionType &action)
     int32_t elementId = -1;
     int32_t windowId = ANY_WINDOW_ID;
     int32_t focusType = FOCUS_TYPE_ACCESSIBILITY;
-    int32_t realWindowId = AccessibilityWindowInfoManager::GetInstance().ConvertToRealWindowId(windowId, focusType);
+    int32_t realWindowId = AccessibilityWindowManager::GetInstance().ConvertToRealWindowId(windowId, focusType);
 
     sptr<AccessibilityAccountData> accountData = pAams_->GetCurrentAccountData();
     if (!accountData) {
         HILOG_ERROR("GetCurrentAccountData failed");
-        return false;        
+        return false;
     }
 
     sptr<AccessibilityWindowConnection> connection = accountData->GetAccessibilityWindowConnection(realWindowId);

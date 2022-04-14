@@ -13,9 +13,9 @@
  * limitations under the License.
  */
 
-#include "accessibility_event_transmission.h"
 #include <gtest/gtest.h>
 #include "accessibility_ability_helper.h"
+#include "accessibility_event_transmission.h"
 #include "hilog_wrapper.h"
 
 namespace OHOS {

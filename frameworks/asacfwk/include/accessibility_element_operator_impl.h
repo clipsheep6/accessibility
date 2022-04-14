@@ -34,7 +34,7 @@ public:
     /**
      * @brief construct function
      * @param windowId The window id.
-     * @param operation 
+     * @param operation
      * @return
      */
     explicit AccessibilityElementOperatorImpl(int32_t windowId,

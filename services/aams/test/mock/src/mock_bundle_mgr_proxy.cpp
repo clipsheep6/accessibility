@@ -13,9 +13,9 @@
  * limitations under the License.
  */
 
-#include "bundle_mgr_proxy.h"
 #include "appexecfwk_errors.h"
 #include "bundle_constants.h"
+#include "bundle_mgr_proxy.h"
 #include "ipc_types.h"
 #include "parcel.h"
 #include "string_ex.h"

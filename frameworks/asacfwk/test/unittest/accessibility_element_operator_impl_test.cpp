@@ -13,10 +13,11 @@
  * limitations under the License.
  */
 
-#include "accessibility_element_operator_impl.h"
 #include <gtest/gtest.h>
 #include <memory>
+#include "accessibility_element_operator_impl.h"
 #include "mock_accessibility_element_operator.h"
+
 using namespace testing;
 using namespace testing::ext;
 
@@ -33,7 +34,7 @@ namespace Accessibility {
 class AccessibilityElementOperatorImplUnitTest : public ::testing::Test {
 public:
     sptr<AccessibilityElementOperatorImpl> mockStub_ = nullptr;
-    AccessibilityElementOperatorImpl::OperatorCallbackImpl callback_{};
+    AccessibilityElementOperatorImpl::OperatorCallbackImpl callback_ {};
     AccessibilityElementOperatorImplUnitTest()
     {}
     ~AccessibilityElementOperatorImplUnitTest()
@@ -221,7 +222,7 @@ HWTEST_F(AccessibilityElementOperatorImplUnitTest, SetSearchElementInfoByAccessi
         return;
     }
     std::list<AccessibilityElementInfo> infos;
-    AccessibilityElementInfo info{};
+    AccessibilityElementInfo info {};
     infos.push_back(info);
     callback_.SetSearchElementInfoByAccessibilityIdResult(infos, REQUEST_ID);
     GTEST_LOG_(INFO) << "SetSearchElementInfoByAccessibilityIdResult_001 end";
@@ -240,7 +241,7 @@ HWTEST_F(AccessibilityElementOperatorImplUnitTest, SetSearchElementInfoByTextRes
         return;
     }
     std::list<AccessibilityElementInfo> infos;
-    AccessibilityElementInfo info{};
+    AccessibilityElementInfo info {};
     infos.push_back(info);
     callback_.SetSearchElementInfoByTextResult(infos, REQUEST_ID);
     GTEST_LOG_(INFO) << "SetSearchElementInfoByTextResult_001 end";
@@ -258,7 +259,7 @@ HWTEST_F(AccessibilityElementOperatorImplUnitTest, SetFindFocusedElementInfoResu
         GTEST_LOG_(INFO) << "Cann't get AccessibilityElementOperatorImpl mockStub_";
         return;
     }
-    AccessibilityElementInfo info{};
+    AccessibilityElementInfo info {};
     callback_.SetFindFocusedElementInfoResult(info, REQUEST_ID);
     GTEST_LOG_(INFO) << "SetFindFocusedElementInfoResult_001 end";
 }
@@ -275,7 +276,7 @@ HWTEST_F(AccessibilityElementOperatorImplUnitTest, SetFocusMoveSearchResult_001,
         GTEST_LOG_(INFO) << "Cann't get AccessibilityElementOperatorImpl mockStub_";
         return;
     }
-    AccessibilityElementInfo info{};
+    AccessibilityElementInfo info {};
     callback_.SetFocusMoveSearchResult(info, REQUEST_ID);
     GTEST_LOG_(INFO) << "SetFocusMoveSearchResult_001 end";
 }

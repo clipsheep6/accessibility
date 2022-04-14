@@ -16,8 +16,8 @@
 #ifndef MOCK_ACCESSIBILITY_ZOOM_GESTURE_H
 #define MOCK_ACCESSIBILITY_ZOOM_GESTURE_H
 
+#include <gmock/gmock.h>
 #include "accessibility_zoom_gesture.h"
-#include "gmock/gmock.h"
 
 namespace OHOS {
 namespace Accessibility {

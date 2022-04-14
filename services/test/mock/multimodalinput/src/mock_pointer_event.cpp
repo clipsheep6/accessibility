@@ -227,5 +227,9 @@ std::vector<int32_t> PointerEvent::GetPointersIdList() const
 
     return pointerIdList;
 }
+
+void PointerEvent::Reset()
+{
+}
 } // namespace MMI
 } // namespace OHOS

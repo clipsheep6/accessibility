@@ -91,7 +91,6 @@ void TouchEventInjector::GetTouchEventsFromGesturePath(int64_t startTime)
 std::shared_ptr<MMI::PointerEvent> TouchEventInjector::obtainTouchEvent(
     int32_t action, MMI::PointerEvent::PointerItem point, int64_t actionTime)
 {
-
     (void)action;
     (void)point;
     (void)actionTime;

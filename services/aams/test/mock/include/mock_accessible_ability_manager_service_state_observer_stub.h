@@ -16,8 +16,8 @@
 #ifndef MOCK_ACCESSIBILITY_ABILITY_MANAGER_SERVICE_STATE_OBSERVER_STUB_H
 #define MOCK_ACCESSIBILITY_ABILITY_MANAGER_SERVICE_STATE_OBSERVER_STUB_H
 
+#include <gmock/gmock.h>
 #include "accessible_ability_manager_state_observer_stub.h"
-#include "gmock/gmock.h"
 
 namespace OHOS {
 namespace Accessibility {

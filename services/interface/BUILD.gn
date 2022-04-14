@@ -68,7 +68,9 @@ ohos_shared_library("aams_interface") {
 
   public_configs = [ ":aams_interface_public_config" ]
 
-  deps = [ "//base/accessibility/interfaces/innerkits/common:accessibility_common" ]
+  deps = [
+    "//base/accessibility/interfaces/innerkits/common:accessibility_common",
+  ]
 
   external_deps = [
     "ability_base:want",

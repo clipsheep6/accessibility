@@ -63,7 +63,8 @@ bool AccessibleAbilityChannelClient::FindFocusedElementInfo(int32_t accessibilit
     if (!proxy_->FindFocusedElementInfo(accessibilityWindowId, elementId, focusType, requestId, elementOperator)) {
         return false;
     }
-    HILOG_DEBUG("channelId[%{public}d], accessibilityWindowId[%{public}d], elementId[%{public}d], focusType[%{public}d]",
+    HILOG_DEBUG("channelId[%{public}d], accessibilityWindowId[%{public}d],\
+        elementId[%{public}d], focusType[%{public}d]",
         channelId_, accessibilityWindowId, elementId, focusType);
 
     std::future_status wait = promiseFutrue.wait_for(std::chrono::milliseconds(TIME_OUT_OPERATOR));
@@ -250,7 +251,7 @@ float AccessibleAbilityChannelClient::GetDisplayResizeCenterX(const int32_t disp
     } else {
         HILOG_ERROR("Failed to connect to aams [channelId:%{public}d]", channelId_);
         return 1.0f;
-    }  
+    }
 }
 
 float AccessibleAbilityChannelClient::GetDisplayResizeCenterY(const int32_t displayId)

@@ -13,8 +13,8 @@
  * limitations under the License.
  */
 
-#include "accessibility_display_resize_controller_impl.h"
 #include <gtest/gtest.h>
+#include "accessibility_display_resize_controller_impl.h"
 
 using namespace testing;
 using namespace testing::ext;
@@ -270,7 +270,7 @@ HWTEST_F(
         GTEST_LOG_(INFO) << "Cann't get DisplayResizeControllerImpl displayResizeController_";
         return;
     }
-    Rect rect{};
+    Rect rect {};
     float scale = 1;
     float centerX = 0;
     float centerY = 0;

@@ -13,7 +13,6 @@
  * limitations under the License.
  */
 
-#include "accessible_ability_manager_service.h"
 #include <ctime>
 #include <functional>
 #include <gtest/gtest.h>
@@ -23,6 +22,7 @@
 #include "accessibility_display_manager.h"
 #include "accessibility_event_info.h"
 #include "accessibility_window_manager.h"
+#include "accessible_ability_manager_service.h"
 #include "hilog_wrapper.h"
 #include "iservice_registry.h"
 #include "system_ability_definition.h"
@@ -276,7 +276,8 @@ void AccessibleAbilityManagerService::UpdateAbilities()
             abilityName.c_str());
 
         auto connectingAbilities = accountData->GetConnectingA11yAbilities();
-        std::vector<std::string>::iterator iter = std::find(connectingAbilities.begin(), connectingAbilities.end(), bundleName);
+        std::vector<std::string>::iterator iter =
+            std::find(connectingAbilities.begin(), connectingAbilities.end(), bundleName);
         if (iter != connectingAbilities.end()) {
             HILOG_DEBUG("The ability(%{public}s) is connecting.", bundleName.c_str());
             continue;
@@ -363,7 +364,7 @@ void AccessibleAbilityManagerService::UpdateInputFilter()
 
     if (flag) {
         inputInterceptor_ = AccessibilityInputInterceptor::GetInstance();
-        if(inputInterceptor_ != nullptr){
+        if (inputInterceptor_ != nullptr) {
             inputInterceptor_->SetAvailableFunctions(flag);
         }
     } else if (inputInterceptor_ != nullptr) {
@@ -601,11 +602,11 @@ std::vector<AccessibilityAbilityInfo> AccessibleAbilityManagerService::GetInstal
     HILOG_DEBUG("start");
     sptr<AccessibilityAccountData> accountData = GetCurrentAccountData();
     if (accountData != nullptr) {
-        std::vector<AccessibilityAbilityInfo> it{};
+        std::vector<AccessibilityAbilityInfo> it {};
         it = accountData->GetInstalledAbilities();
         return it;
     }
-    std::vector<AccessibilityAbilityInfo> ret{};
+    std::vector<AccessibilityAbilityInfo> ret {};
     return ret;
 }
 

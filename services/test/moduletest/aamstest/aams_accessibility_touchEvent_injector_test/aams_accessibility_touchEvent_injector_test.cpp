@@ -13,15 +13,15 @@
  * limitations under the License.
  */
 
-#include "accessibility_touchEvent_injector.h"
 #include <gtest/gtest.h>
-#include "accessible_ability_channel.h"
 #include "accessibility_display_manager.h"
 #include "accessibility_element_operator_stub.h"
 #include "accessibility_helper.h"
 #include "accessibility_input_interceptor.h"
 #include "accessibility_touch_guider.h"
+#include "accessibility_touchEvent_injector.h"
 #include "accessibility_window_manager.h"
+#include "accessible_ability_channel.h"
 #include "accessible_ability_client_proxy.h"
 #include "accessible_ability_connection.h"
 #include "accessible_ability_manager_service.h"
@@ -38,9 +38,10 @@ using namespace testing::ext;
 
 namespace OHOS {
 namespace Accessibility {
-const int32_t timeout = 10000;
-const int32_t sleepTime = 2;
-const int32_t testNum_2 = 2;
+const static int32_t timeout = 10000;
+const static int32_t sleepTime = 2;
+const static int32_t testNum_2 = 2;
+
 class AamsInjectorTest : public testing::Test {
 public:
     AamsInjectorTest()
@@ -56,7 +57,7 @@ public:
     sptr<AccessibilityInputInterceptor> inputInterceptor_ = nullptr;
     void CreateGesturePath(
         AccessibilityGesturePathPosition startpoint, AccessibilityGesturePathPosition endpoint, int64_t durationTime);
-    std::vector<AccessibilityGesturePath> getGesturePath{};
+    std::vector<AccessibilityGesturePath> getGesturePath {};
     sptr<AccessibleAbilityChannel> aacs_ = nullptr;
     sptr<AccessibleAbilityChannel> aastub_ = nullptr;
     sptr<OHOS::AppExecFwk::BundleMgrService> mock_ = nullptr;
@@ -112,7 +113,7 @@ void AamsInjectorTest::SetUp()
     aacs_ = new AccessibleAbilityChannel(*ptr_connect);
     GTEST_LOG_(INFO) << "AamsInjectorTest SetUp end";
 
-    AccessibilityWindowInfoManager::GetInstance().SetInputFocusedWindow(0);
+    AccessibilityWindowManager::GetInstance().SetInputFocusedWindow(0);
 }
 
 void AamsInjectorTest::TearDown()
@@ -210,8 +211,8 @@ HWTEST_F(AamsInjectorTest, TouchEventInjector_ModuleTest_TouchEventInjector_001,
 
     AccessibilityHelper::GetInstance().GetEventType() = {};
     MMI::MockInputManager::ClearTouchActions();
-    AccessibilityGesturePathPosition startpoint{500.0f, 500.0f};
-    AccessibilityGesturePathPosition endpoint{500.0f, 500.0f};
+    AccessibilityGesturePathPosition startpoint {500.0f, 500.0f};
+    AccessibilityGesturePathPosition endpoint {500.0f, 500.0f};
 
     CreateGesturePath(startpoint, endpoint, 100);
     aacs_->SendSimulateGesture(1, getGesturePath);

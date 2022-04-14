@@ -18,9 +18,7 @@ acfwk_path = "//base/accessibility/frameworks/acfwk"
 config("accessibilityconfig_private_config") {
   visibility = [ ":*" ]
 
-  include_dirs = [
-    "${acfwk_path}/include",
-  ]
+  include_dirs = [ "${acfwk_path}/include" ]
 
   defines = [
     "AAMS_LOG_TAG = \"accessibility_acfwk\"",
@@ -32,9 +30,7 @@ config("accessibilityconfig_public_config") {
   include_dirs = [ "include" ]
 }
 
-acfwk_src = [
-  "${acfwk_path}/src/accessibility_config_impl.cpp",
-]
+acfwk_src = [ "${acfwk_path}/src/accessibility_config_impl.cpp" ]
 
 ohos_shared_library("accessibilityconfig") {
   sources = acfwk_src
@@ -45,7 +41,9 @@ ohos_shared_library("accessibilityconfig") {
 
   deps = [ "//base/accessibility/services/interface:aams_interface" ]
 
-  public_deps = [ "//base/accessibility/interfaces/innerkits/common:accessibility_common" ]
+  public_deps = [
+    "//base/accessibility/interfaces/innerkits/common:accessibility_common",
+  ]
 
   external_deps = [
     "ability_base:want",

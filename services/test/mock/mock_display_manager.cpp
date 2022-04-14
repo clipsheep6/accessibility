@@ -13,8 +13,8 @@
  * limitations under the License.
  */
 
-#include "display_manager.h"
 #include <cinttypes>
+#include "display_manager.h"
 #include "display.h"
 #include "dm_common.h"
 #include "singleton_delegator.h"
@@ -52,7 +52,7 @@ DisplayManager::~DisplayManager()
 
 DisplayId DisplayManager::GetDefaultDisplayId()
 {
-    DisplayId id{0};
+    DisplayId id {0};
     return id;
 }
 

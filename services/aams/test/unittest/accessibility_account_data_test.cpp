@@ -13,9 +13,9 @@
  * limitations under the License.
  */
 
-#include "accessibility_account_data.h"
 #include <gtest/gtest.h>
 #include "accessibility_ability_info.h"
+#include "accessibility_account_data.h"
 #include "accessibility_constants.h"
 #include "accessibility_element_operator_proxy.h"
 #include "accessibility_element_operator_stub.h"
@@ -31,6 +31,7 @@ using namespace testing::ext;
 
 namespace OHOS {
 namespace Accessibility {
+#define SLEEP_TIME_1 1
 class AccessibilityAccountDataTest : public testing::Test {
 public:
     AccessibilityAccountDataTest()
@@ -238,12 +239,7 @@ HWTEST_F(AccessibilityAccountDataTest, AccessibilityAccountData_Unittest_RemoveC
 
     GTEST_LOG_(INFO) << "AccessibilityAccountData_Unittest_RemoveConnectedAbility001 end";
 }
-#define PRINT_VEC(x)                                  \
-    {                                                 \
-        for (auto& it : x) {                          \
-            GTEST_LOG_(INFO) << "str=" << it.c_str(); \
-        }                                             \
-    }
+
 /**
  * @tc.number: AccessibilityAccountData_Unittest_AbilityDisconnected001
  * @tc.name: AbilityDisconnected
@@ -614,7 +610,7 @@ HWTEST_F(AccessibilityAccountDataTest, AccessibilityAccountData_Unittest_GetAbil
     EXPECT_EQ(0, (int)accountData->GetInstalledAbilities().size());
     accountData->AddInstalledAbility(*installAbilityInfo);
     EXPECT_EQ(1, (int)accountData->GetInstalledAbilities().size());
-    sleep(1);
+    sleep(SLEEP_TIME_1);
 
     /* ABILITY_STATE_DISABLE */
     AbilityStateType state = AbilityStateType::ABILITY_STATE_DISABLE;

@@ -13,22 +13,22 @@
  * limitations under the License.
  */
 
-#include "accessibility_element_operator_callback_impl.h"
 #include <memory>
 #include <gtest/gtest.h>
+#include "accessibility_element_operator_callback_impl.h"
 
 using namespace testing;
 using namespace testing::ext;
 
-const int32_t SEQUENCE_NUM = 1;
+const static int32_t SEQUENCE_NUM = 1;
 
 namespace OHOS {
 namespace Accessibility {
-class AccessibilityElementOperatorCallbackImplUnitTest : public ::testing::Test {
+class AccessibilityElementOperatorCallbackImplTest : public ::testing::Test {
 public:
-    AccessibilityElementOperatorCallbackImplUnitTest()
+    AccessibilityElementOperatorCallbackImplTest()
     {}
-    ~AccessibilityElementOperatorCallbackImplUnitTest()
+    ~AccessibilityElementOperatorCallbackImplTest()
     {}
     std::promise<void> promise_;
 
@@ -36,20 +36,20 @@ public:
 
     static void SetUpTestCase()
     {
-        GTEST_LOG_(INFO) << "AccessibilityElementOperatorCallbackImplUnitTest Start";
+        GTEST_LOG_(INFO) << "AccessibilityElementOperatorCallbackImplTest Start";
     }
     static void TearDownTestCase()
     {
-        GTEST_LOG_(INFO) << "AccessibilityElementOperatorCallbackImplUnitTest End";
+        GTEST_LOG_(INFO) << "AccessibilityElementOperatorCallbackImplTest End";
     }
     void SetUp()
     {
-        GTEST_LOG_(INFO) << "AccessibilityElementOperatorCallbackImplUnitTest SetUp()";
+        GTEST_LOG_(INFO) << "AccessibilityElementOperatorCallbackImplTest SetUp()";
         instance_ = std::make_shared<AccessibilityElementOperatorCallbackImpl>(promise_);
     };
     void TearDown()
     {
-        GTEST_LOG_(INFO) << "AccessibilityElementOperatorCallbackImplUnitTest TearDown()";
+        GTEST_LOG_(INFO) << "AccessibilityElementOperatorCallbackImplTest TearDown()";
         instance_ = nullptr;
     }
 };
@@ -60,7 +60,7 @@ public:
  * @tc.desc: Test function SetSearchElementInfoByAccessibilityIdResult
  */
 HWTEST_F(
-    AccessibilityElementOperatorCallbackImplUnitTest, SetSearchElementInfoByAccessibilityIdResult_001, TestSize.Level1)
+    AccessibilityElementOperatorCallbackImplTest, SetSearchElementInfoByAccessibilityIdResult_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "SetSearchElementInfoByAccessibilityIdResult_001 start";
 
@@ -70,7 +70,7 @@ HWTEST_F(
     }
 
     std::vector<AccessibilityElementInfo> infos;
-    AccessibilityElementInfo info{};
+    AccessibilityElementInfo info {};
     infos.push_back(info);
     instance_->SetSearchElementInfoByAccessibilityIdResult(infos, SEQUENCE_NUM);
     GTEST_LOG_(INFO) << "SetSearchElementInfoByAccessibilityIdResult_001 end";
@@ -81,7 +81,7 @@ HWTEST_F(
  * @tc.name: SetSearchElementInfoByTextResult
  * @tc.desc: Test function SetSearchElementInfoByTextResult
  */
-HWTEST_F(AccessibilityElementOperatorCallbackImplUnitTest, SetSearchElementInfoByTextResult_001, TestSize.Level1)
+HWTEST_F(AccessibilityElementOperatorCallbackImplTest, SetSearchElementInfoByTextResult_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "SetSearchElementInfoByTextResult_001 start";
     if (!instance_) {
@@ -90,7 +90,7 @@ HWTEST_F(AccessibilityElementOperatorCallbackImplUnitTest, SetSearchElementInfoB
     }
 
     std::vector<AccessibilityElementInfo> infos;
-    AccessibilityElementInfo info{};
+    AccessibilityElementInfo info {};
     infos.push_back(info);
     instance_->SetSearchElementInfoByTextResult(infos, SEQUENCE_NUM);
     GTEST_LOG_(INFO) << "SetSearchElementInfoByTextResult_001 end";
@@ -101,7 +101,7 @@ HWTEST_F(AccessibilityElementOperatorCallbackImplUnitTest, SetSearchElementInfoB
  * @tc.name: SetFindFocusedElementInfoResult
  * @tc.desc: Test function SetFindFocusedElementInfoResult
  */
-HWTEST_F(AccessibilityElementOperatorCallbackImplUnitTest, SetFindFocusedElementInfoResult_001, TestSize.Level1)
+HWTEST_F(AccessibilityElementOperatorCallbackImplTest, SetFindFocusedElementInfoResult_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "SetFindFocusedElementInfoResult_001 start";
     if (!instance_) {
@@ -110,7 +110,7 @@ HWTEST_F(AccessibilityElementOperatorCallbackImplUnitTest, SetFindFocusedElement
     }
 
     std::vector<AccessibilityElementInfo> infos;
-    AccessibilityElementInfo info{};
+    AccessibilityElementInfo info {};
     infos.push_back(info);
     instance_->SetFindFocusedElementInfoResult(info, SEQUENCE_NUM);
     GTEST_LOG_(INFO) << "SetFindFocusedElementInfoResult_001 end";
@@ -121,7 +121,7 @@ HWTEST_F(AccessibilityElementOperatorCallbackImplUnitTest, SetFindFocusedElement
  * @tc.name: SetFocusMoveSearchResult
  * @tc.desc: Test function SetFocusMoveSearchResult
  */
-HWTEST_F(AccessibilityElementOperatorCallbackImplUnitTest, SetFocusMoveSearchResult_001, TestSize.Level1)
+HWTEST_F(AccessibilityElementOperatorCallbackImplTest, SetFocusMoveSearchResult_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "SetFocusMoveSearchResult_001 start";
     if (!instance_) {
@@ -130,7 +130,7 @@ HWTEST_F(AccessibilityElementOperatorCallbackImplUnitTest, SetFocusMoveSearchRes
     }
 
     std::vector<AccessibilityElementInfo> infos;
-    AccessibilityElementInfo info{};
+    AccessibilityElementInfo info {};
     infos.push_back(info);
     instance_->SetFocusMoveSearchResult(info, SEQUENCE_NUM);
     GTEST_LOG_(INFO) << "SetFocusMoveSearchResult_001 end";
@@ -141,7 +141,7 @@ HWTEST_F(AccessibilityElementOperatorCallbackImplUnitTest, SetFocusMoveSearchRes
  * @tc.name: SetExecuteActionResult
  * @tc.desc: Test function SetExecuteActionResult
  */
-HWTEST_F(AccessibilityElementOperatorCallbackImplUnitTest, SetExecuteActionResult_001, TestSize.Level1)
+HWTEST_F(AccessibilityElementOperatorCallbackImplTest, SetExecuteActionResult_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "SetExecuteActionResult_001 start";
     if (!instance_) {
@@ -150,7 +150,7 @@ HWTEST_F(AccessibilityElementOperatorCallbackImplUnitTest, SetExecuteActionResul
     }
 
     std::vector<AccessibilityElementInfo> infos;
-    AccessibilityElementInfo info{};
+    AccessibilityElementInfo info {};
     infos.push_back(info);
     instance_->SetExecuteActionResult(true, SEQUENCE_NUM);
     GTEST_LOG_(INFO) << "SetExecuteActionResult_001 end";

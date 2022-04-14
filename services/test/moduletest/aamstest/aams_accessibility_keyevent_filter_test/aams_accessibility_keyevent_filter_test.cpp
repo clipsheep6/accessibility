@@ -17,10 +17,10 @@
 #include <map>
 #include <memory>
 #include <unistd.h>
-#include "accessible_ability_channel.h"
 #include "accessibility_account_data.h"
 #include "accessibility_helper.h"
 #include "accessibility_input_interceptor.h"
+#include "accessible_ability_channel.h"
 #include "accessible_ability_connection.h"
 #include "accessible_ability_manager_service.h"
 #include "iservice_registry.h"

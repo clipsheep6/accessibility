@@ -212,13 +212,13 @@ bool AccessibleAbilityClientImpl::GetFocusByElementInfo(const AccessibilityEleme
     int32_t channelId = sourceInfo.GetChannelId();
     int32_t windowId = sourceInfo.GetWindowId();
     int32_t elementId = sourceInfo.GetAccessibilityId();
-    HILOG_INFO("channelId[%{public}d], windowId[%{public}d],\
-        elementId[%{public}d], focusType[%{public}d]", channelId, windowId, elementId, focusType);
+    HILOG_INFO("channelId[%{public}d], windowId[%{public}d], elementId[%{public}d], focusType[%{public}d]",
+        channelId, windowId, elementId, focusType);
 
     return channelClient_->FindFocusedElementInfo(windowId, elementId, focusType, elementInfo);
 }
 
-bool AccessibleAbilityClientImpl::GestureInject(const uint32_t sequence, 
+bool AccessibleAbilityClientImpl::GestureInject(const uint32_t sequence,
     const std::vector<AccessibilityGesturePath> &gesturePathList,
     const std::shared_ptr<AccessibilityGestureResultListener> &listener)
 {
@@ -293,7 +293,7 @@ bool AccessibleAbilityClientImpl::GetRoot(AccessibilityElementInfo &elementInfo)
     int32_t activeWindow = serviceProxy_->GetActiveWindow();
     std::vector<AccessibilityElementInfo> elementInfos {};
     bool result = channelClient_->SearchElementInfosByAccessibilityId(activeWindow, NONE_ID, 0, elementInfos);
-    if(!result) {
+    if (!result) {
         return false;
     }
 

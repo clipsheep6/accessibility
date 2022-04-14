@@ -13,8 +13,8 @@
  * limitations under the License.
  */
 
-#include "common_event_manager.h"
 #include <gtest/gtest.h>
+#include "common_event_manager.h"
 #include "singleton.h"
 
 namespace OHOS {

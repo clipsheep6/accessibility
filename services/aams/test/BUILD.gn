@@ -70,7 +70,6 @@ config("module_private_config") {
     "//utils/system/safwk/native/include",
     "//utils/system/safwk/native/include",
     "mock",
-
   ]
   defines = [
     "AAMS_LOG_TAG = \"accessibility_test\"",
@@ -140,7 +139,6 @@ ohos_unittest("accessible_ability_manager_service_test") {
     "mock/src/mock_common_event_support.cpp",
     "mock/src/mock_matching_skill.cpp",
     "unittest/accessible_ability_manager_service_test.cpp",
-
   ]
   sources += aams_mock_distributeddatamgr_src
 
@@ -197,8 +195,8 @@ ohos_unittest("accessibility_touch_guider_test") {
     "mock/src/mock_accessible_ability_channel_proxy.cpp",
     "mock/src/mock_accessible_ability_client_proxy.cpp",
     "mock/src/mock_accessible_ability_connection.cpp",
-    "mock/src/mock_accessible_ability_manager_service_stub.cpp",
     "mock/src/mock_accessible_ability_manager_service.cpp",
+    "mock/src/mock_accessible_ability_manager_service_stub.cpp",
     "mock/src/mock_common_event_data.cpp",
     "mock/src/mock_common_event_manager.cpp",
     "mock/src/mock_common_event_subscribe_info.cpp",
@@ -321,11 +319,11 @@ ohos_unittest("accessibility_input_interceptor_test") {
     "mock/src/mock_accessibility_account_data.cpp",
     "mock/src/mock_accessibility_gesture_recognizer.cpp",
     "mock/src/mock_accessibility_keyevent_filter.cpp",
-    "mock/src/mock_accessibility_touch_guider.cpp",
     "mock/src/mock_accessibility_touchEvent_injector.cpp",
+    "mock/src/mock_accessibility_touch_guider.cpp",
     "mock/src/mock_accessibility_window_manager.cpp",
+    "mock/src/mock_accessibility_zoom_gesture.cpp",
     "mock/src/mock_accessible_ability_manager_service_stub.cpp",
-    "mock/src/mock_saccessibility_zoom_gesture.cpp",
     "unittest/accessibility_input_interceptor_test.cpp",
   ]
   sources += aams_mock_distributeddatamgr_src
@@ -431,7 +429,6 @@ ohos_unittest("accessibility_keyevent_filter_test") {
     "//base/accessibility/services/aams/src/accessible_ability_channel.cpp",
     "//base/accessibility/services/aams/src/accessible_ability_connection.cpp",
     "//base/accessibility/services/aams/src/accessible_ability_manager_service.cpp",
-    "//base/accessibility/services/aams/test/mock/src/mock_accessible_ability_client_stub_impl.cpp",
     "//base/accessibility/services/interface/src/accessible_ability_channel_proxy.cpp",
     "//base/accessibility/services/interface/src/accessible_ability_client_proxy.cpp",
     "//base/accessibility/services/interface/src/accessible_ability_client_stub.cpp",
@@ -492,16 +489,16 @@ ohos_unittest("accessible_ability_connection_test") {
     "../src/accessibility_event_transmission.cpp",
     "../src/accessibility_gesture_recognizer.cpp",
     "../src/accessibility_input_interceptor.cpp",
-    "../src/accessibility_touch_guider.cpp",
     "../src/accessibility_touchEvent_injector.cpp",
+    "../src/accessibility_touch_guider.cpp",
     "../src/accessibility_window_connection.cpp",
     "../src/accessibility_window_manager.cpp",
     "../src/accessibility_zoom_gesture.cpp",
     "../src/accessibility_zoom_handler.cpp",
     "../src/accessible_ability_channel.cpp",
     "../src/accessible_ability_connection.cpp",
-    "../src/accessible_ability_manager_service_event_handler.cpp",
     "../src/accessible_ability_manager_service.cpp",
+    "../src/accessible_ability_manager_service_event_handler.cpp",
     "../src/json_utils.cpp",
     "mock/src/aafwk/mock_ability_manager_client.cpp",
     "mock/src/aafwk/mock_bundle_manager.cpp",
@@ -598,7 +595,7 @@ ohos_unittest("accessibility_display_manager_test") {
     "samgr_standard:samgr_proxy",
   ]
 }
- 
+
 ################################################################################
 ohos_unittest("accessibility_touchevent_injector_test") {
   module_out_path = module_output_path

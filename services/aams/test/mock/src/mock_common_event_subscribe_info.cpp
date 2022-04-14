@@ -13,8 +13,8 @@
  * limitations under the License.
  */
 
-#include "common_event_subscribe_info.h"
 #include <gtest/gtest.h>
+#include "common_event_subscribe_info.h"
 
 namespace OHOS {
 namespace EventFwk {

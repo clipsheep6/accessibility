@@ -149,7 +149,7 @@ int32_t AccessibilitySystemAbilityClientImpl::RegisterElementOperator(
     auto iter = interactionOperators_.find(windowId);
     if (iter != interactionOperators_.end()) {
         HILOG_ERROR("windowID[%{public}d] is exited", windowId);
-        return 0; 
+        return 0;
     }
 
     connectionWindowId_ = windowId;
@@ -345,13 +345,10 @@ bool AccessibilitySystemAbilityClientImpl::SendEvent(const AccessibilityEventInf
 }
 
 bool AccessibilitySystemAbilityClientImpl::SubscribeStateObserver(
-    const std::shared_ptr<AccessibilityStateObserver> &observer, const int32_t eventType)
+    const std::shared_ptr<AccessibilityStateObserver> &observer, const uint32_t eventType)
 {
     HILOG_DEBUG("start");
-    if (eventType != AccessibilityStateEventType::EVENT_ACCESSIBILITY_STATE_CHANGED &&
-        eventType != AccessibilityStateEventType::EVENT_TOUCH_GUIDE_STATE_CHANGED &&
-        eventType != AccessibilityStateEventType::EVENT_KEVEVENT_STATE_CHANGED &&
-        eventType != AccessibilityStateEventType::EVENT_GESTURE_STATE_CHANGED) {
+    if (eventType >= AccessibilityStateEventType::EVENT_TYPE_MAX) {
         HILOG_ERROR("Input eventType is out of scope");
         return false;
     }
@@ -359,36 +356,24 @@ bool AccessibilitySystemAbilityClientImpl::SubscribeStateObserver(
         HILOG_ERROR("Input observer is null");
         return false;
     }
-    AccessibilityStateEventType et = static_cast<AccessibilityStateEventType>(eventType);
-    switch (et) {
-        case AccessibilityStateEventType::EVENT_ACCESSIBILITY_STATE_CHANGED:
-            observersAccessibilityState_.push_back(observer);
-            break;
-        case AccessibilityStateEventType::EVENT_TOUCH_GUIDE_STATE_CHANGED:
-            observersTouchState_.push_back(observer);
-            break;
-        case AccessibilityStateEventType::EVENT_KEVEVENT_STATE_CHANGED:
-            observersKeyEventState_.push_back(observer);
-            break;
-        case AccessibilityStateEventType::EVENT_GESTURE_STATE_CHANGED:
-            observersGestureState_.push_back(observer);
-            break;
-        default:
-            HILOG_ERROR("The EventType observed is not supported");
-            return false;
+
+    StateObserverVector &observerVector = stateObserversArray_[eventType];
+    for (auto iter = observerVector.begin(); iter != observerVector.end(); ++iter) {
+        if (*iter == observer) {
+            HILOG_INFO("Observer has subscribed!");
+            return true;
+        }
     }
+    observerVector.push_back(observer);
     HILOG_DEBUG("end");
     return true;
 }
 
 bool AccessibilitySystemAbilityClientImpl::UnsubscribeStateObserver(
-    const std::shared_ptr<AccessibilityStateObserver> &observer, const int32_t eventType)
+    const std::shared_ptr<AccessibilityStateObserver> &observer, const uint32_t eventType)
 {
-    HILOG_DEBUG("start");
-    if (eventType != AccessibilityStateEventType::EVENT_ACCESSIBILITY_STATE_CHANGED &&
-        eventType != AccessibilityStateEventType::EVENT_TOUCH_GUIDE_STATE_CHANGED &&
-        eventType != AccessibilityStateEventType::EVENT_KEVEVENT_STATE_CHANGED &&
-        eventType != AccessibilityStateEventType::EVENT_GESTURE_STATE_CHANGED) {
+    HILOG_DEBUG("start. eventType is [%{public}d]", eventType);
+    if (eventType >= AccessibilityStateEventType::EVENT_TYPE_MAX) {
         HILOG_ERROR("Input eventType is out of scope");
         return false;
     }
@@ -397,93 +382,15 @@ bool AccessibilitySystemAbilityClientImpl::UnsubscribeStateObserver(
         return false;
     }
 
-    AccessibilityStateEventType et = static_cast<AccessibilityStateEventType>(eventType);
-    switch (et) {
-        case AccessibilityStateEventType::EVENT_ACCESSIBILITY_STATE_CHANGED:
-            for (auto it = observersAccessibilityState_.begin(); it != observersAccessibilityState_.end(); it++) {
-                if (*it == observer) {
-                    observersAccessibilityState_.erase(it);
-                    return true;
-                }
-            }
-            break;
-        case AccessibilityStateEventType::EVENT_TOUCH_GUIDE_STATE_CHANGED:
-            for (auto it = observersTouchState_.begin(); it != observersTouchState_.end(); it++) {
-                if (*it == observer) {
-                    observersTouchState_.erase(it);
-                    return true;
-                }
-            }
-            break;
-        case AccessibilityStateEventType::EVENT_KEVEVENT_STATE_CHANGED:
-            for (auto it = observersKeyEventState_.begin(); it != observersKeyEventState_.end(); it++) {
-                if (*it == observer) {
-                    observersKeyEventState_.erase(it);
-                    return true;
-                }
-            }
-            break;
-        case AccessibilityStateEventType::EVENT_GESTURE_STATE_CHANGED:
-            for (auto it = observersGestureState_.begin(); it != observersGestureState_.end(); it++) {
-                if (*it == observer) {
-                    observersGestureState_.erase(it);
-                    return true;
-                }
-            }
-            break;
-        default:
-            HILOG_ERROR("the EventType observed is not supported");
-            return false;
+    StateObserverVector &observerVector = stateObserversArray_[eventType];
+    for (auto iter = observerVector.begin(); iter != observerVector.end(); ++iter) {
+        if (*iter == observer) {
+            observerVector.erase(iter);
+            return true;
+        }
     }
-    HILOG_DEBUG("Not find eventType[%{public}d]", eventType);
+    HILOG_ERROR("The observer has not subscribed.");
     return false;
-}
-
-bool AccessibilitySystemAbilityClientImpl::UnsubscribeStateObserver(
-    const std::shared_ptr<AccessibilityStateObserver> &observer)
-{
-    HILOG_DEBUG("start");
-    if (!observer) {
-        HILOG_ERROR("Input observer is null");
-        return false;
-    }
-    bool result = false;
-    for (auto accessibilityState = observersAccessibilityState_.begin();
-        accessibilityState != observersAccessibilityState_.end(); accessibilityState++) {
-        if (*accessibilityState == observer) {
-            observersAccessibilityState_.erase(accessibilityState);
-            result = true;
-            break;
-        }
-    }
-
-    for (auto touchState = observersTouchState_.begin(); touchState != observersTouchState_.end(); touchState++) {
-        if (*touchState == observer) {
-            observersTouchState_.erase(touchState);
-            result = true;
-            break;
-        }
-    }
-
-    for (auto keyEventState = observersKeyEventState_.begin(); keyEventState != observersKeyEventState_.end();
-        keyEventState++) {
-        if (*keyEventState == observer) {
-            observersKeyEventState_.erase(keyEventState);
-            result = true;
-            break;
-        }
-    }
-
-    for (auto gestureState = observersGestureState_.begin(); gestureState != observersGestureState_.end();
-        gestureState++) {
-        if (*gestureState == observer) {
-            observersGestureState_.erase(gestureState);
-            result = true;
-            break;
-        }
-    }
-
-    return result;
 }
 
 void AccessibilitySystemAbilityClientImpl::UpdateEnabled(const bool enabled)
@@ -540,16 +447,14 @@ void AccessibilitySystemAbilityClientImpl::NotifyAccessibilityStateChanged()
 {
     HILOG_DEBUG("isEnabled_ is %{public}d", isEnabled_);
     std::lock_guard<std::recursive_mutex> lock(asacProxyLock_);
-    if (!observersAccessibilityState_.size()) {
-        HILOG_DEBUG("There is no observers");
-        return;
-    }
+    StateObserverVector &observers =
+        stateObserversArray_[AccessibilityStateEventType::EVENT_ACCESSIBILITY_STATE_CHANGED];
 
-    for (auto observer : observersAccessibilityState_) {
+    for (auto observer : observers) {
         if (observer) {
             observer->OnStateChanged(isEnabled_);
         } else {
-            HILOG_ERROR("end observersAccessibilityState_ is null");
+            HILOG_ERROR("end stateObserversArray[EVENT_ACCESSIBILITY_STATE_CHANGED] is null");
         }
     }
     HILOG_DEBUG("end");
@@ -559,16 +464,46 @@ void AccessibilitySystemAbilityClientImpl::NotifyTouchExplorationStateChanged()
 {
     HILOG_DEBUG("start");
     std::lock_guard<std::recursive_mutex> lock(asacProxyLock_);
-    if (!observersTouchState_.size()) {
-        HILOG_DEBUG("There is no observers");
-        return;
-    }
+    StateObserverVector &observers =
+        stateObserversArray_[AccessibilityStateEventType::EVENT_TOUCH_GUIDE_STATE_CHANGED];
 
-    for (auto observer : observersTouchState_) {
+    for (auto observer : observers) {
         if (observer) {
             observer->OnStateChanged(isTouchExplorationEnabled_);
         } else {
-            HILOG_ERROR("end observersTouchState_ is null");
+            HILOG_ERROR("end stateObserversArray[EVENT_TOUCH_GUIDE_STATE_CHANGED] is null");
+        }
+    }
+    HILOG_DEBUG("end");
+}
+
+void AccessibilitySystemAbilityClientImpl::NotifyKeyEventStateChanged()
+{
+    HILOG_DEBUG("start");
+    std::lock_guard<std::recursive_mutex> lock(asacProxyLock_);
+    StateObserverVector &observers = stateObserversArray_[AccessibilityStateEventType::EVENT_KEVEVENT_STATE_CHANGED];
+
+    for (auto observer : observers) {
+        if (observer) {
+            observer->OnStateChanged(isFilteringKeyEventsEnabled_);
+        } else {
+            HILOG_ERROR("end stateObserversArray[EVENT_KEVEVENT_STATE_CHANGED] is null");
+        }
+    }
+    HILOG_DEBUG("end");
+}
+
+void AccessibilitySystemAbilityClientImpl::NotifyGestureStateChanged()
+{
+    HILOG_DEBUG("start");
+    std::lock_guard<std::recursive_mutex> lock(asacProxyLock_);
+    StateObserverVector &observers = stateObserversArray_[AccessibilityStateEventType::EVENT_GESTURE_STATE_CHANGED];
+
+    for (auto observer : observers) {
+        if (observer) {
+            observer->OnStateChanged(isGesturesSimulationEnabled_);
+        } else {
+            HILOG_ERROR("end stateObserversArray[EVENT_GESTURE_STATE_CHANGED] is null");
         }
     }
     HILOG_DEBUG("end");
@@ -744,42 +679,6 @@ std::vector<AccessibilityAbilityInfo> AccessibilitySystemAbilityClientImpl::GetI
         return it;
     }
     return serviceProxy_->GetInstalledAbilities();
-}
-
-void AccessibilitySystemAbilityClientImpl::NotifyGestureStateChanged()
-{
-    HILOG_DEBUG("start");
-    std::lock_guard<std::recursive_mutex> lock(asacProxyLock_);
-    if (!observersGestureState_.size()) {
-        HILOG_DEBUG("observersGestureState_ is null");
-        return;
-    }
-    for (auto it = observersGestureState_.begin(); it != observersGestureState_.end(); it++) {
-        if (*it != nullptr && it->get() != nullptr) {
-            it->get()->OnStateChanged(isGesturesSimulationEnabled_);
-        } else {
-            HILOG_ERROR("end observersGestureState_ is null");
-        }
-    }
-    HILOG_DEBUG("end");
-}
-
-void AccessibilitySystemAbilityClientImpl::NotifyKeyEventStateChanged()
-{
-    HILOG_DEBUG("start");
-    std::lock_guard<std::recursive_mutex> lock(asacProxyLock_);
-    if (!observersKeyEventState_.size()) {
-        HILOG_DEBUG("observersKeyEventState_ is null");
-        return;
-    }
-    for (auto it = observersKeyEventState_.begin(); it != observersKeyEventState_.end(); it++) {
-        if (*it != nullptr && it->get() != nullptr) {
-            it->get()->OnStateChanged(isFilteringKeyEventsEnabled_);
-        } else {
-            HILOG_ERROR("end observersKeyEventState_ is null");
-        }
-    }
-    HILOG_DEBUG("end");
 }
 
 bool AccessibilitySystemAbilityClientImpl::DisableAbilities(std::vector<std::string> &abilities)

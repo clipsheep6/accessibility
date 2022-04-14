@@ -13,35 +13,35 @@
  * limitations under the License.
  */
 
-#include "accessible_ability_channel_client.h"
 #include <gtest/gtest.h>
+#include "accessible_ability_channel_client.h"
 #include "mock_accessible_ability_channel_proxy.h"
 #include "mock_accessible_ability_channel_stub.h"
 
 using namespace testing;
 using namespace testing::ext;
 
-const int32_t SEQUENCE = 1;
-const int32_t ACCESSIBILITY_WINDOW_ID = 1;
-const int32_t FOCUS_TYPE = 1;
-const int32_t SEQUENCE_NUM = 1;
-const int32_t ELEMENT_ID = 1;
-const int32_t ACTION = 1;
-const std::string TEST = "test";
-const int32_t DIRECTION = 1;
-const int32_t DISPLAY_ID = 1;
-const float SCALE = 1.0;
-const float CENTER_X = 1.0;
-const float CENTER_Y = 1.0;
-const int32_t MODE = 1;
+const static int32_t SEQUENCE = 1;
+const static int32_t ACCESSIBILITY_WINDOW_ID = 1;
+const static int32_t FOCUS_TYPE = 1;
+const static int32_t SEQUENCE_NUM = 1;
+const static int32_t ELEMENT_ID = 1;
+const static int32_t ACTION = 1;
+const static std::string TEST = "test";
+const static int32_t DIRECTION = 1;
+const static int32_t DISPLAY_ID = 1;
+const static float SCALE = 1.0;
+const static float CENTER_X = 1.0;
+const static float CENTER_Y = 1.0;
+const static int32_t MODE = 1;
 
 namespace OHOS {
 namespace Accessibility {
-class AccessibleAbilityChannelClientUnitTest : public ::testing::Test {
+class AccessibleAbilityChannelClientTest : public ::testing::Test {
 public:
-    AccessibleAbilityChannelClientUnitTest()
+    AccessibleAbilityChannelClientTest()
     {}
-    ~AccessibleAbilityChannelClientUnitTest()
+    ~AccessibleAbilityChannelClientTest()
     {}
 
     sptr<MockAccessibleAbilityChannelStub> stub_ = new MockAccessibleAbilityChannelStub();
@@ -52,20 +52,20 @@ public:
 
     static void SetUpTestCase()
     {
-        GTEST_LOG_(INFO) << "AccessibleAbilityChannelClientUnitTest Start";
+        GTEST_LOG_(INFO) << "AccessibleAbilityChannelClientTest Start";
     }
     static void TearDownTestCase()
     {
-        GTEST_LOG_(INFO) << "AccessibleAbilityChannelClientUnitTest End";
+        GTEST_LOG_(INFO) << "AccessibleAbilityChannelClientTest End";
     }
     void SetUp()
     {
-        GTEST_LOG_(INFO) << "AccessibleAbilityChannelClientUnitTest SetUp()";
+        GTEST_LOG_(INFO) << "AccessibleAbilityChannelClientTest SetUp()";
         instance_ = std::make_shared<AccessibleAbilityChannelClient>(channelId_, channel_);
     };
     void TearDown()
     {
-        GTEST_LOG_(INFO) << "AccessibleAbilityChannelClientUnitTest TearDown()";
+        GTEST_LOG_(INFO) << "AccessibleAbilityChannelClientTest TearDown()";
         instance_ = nullptr;
     }
 };
@@ -75,7 +75,7 @@ public:
  * @tc.name: SetOnKeyPressEventResult
  * @tc.desc: Test function SetOnKeyPressEventResult
  */
-HWTEST_F(AccessibleAbilityChannelClientUnitTest, SetOnKeyPressEventResult, TestSize.Level1)
+HWTEST_F(AccessibleAbilityChannelClientTest, SetOnKeyPressEventResult, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "SetOnKeyPressEventResult_001 start";
 
@@ -94,7 +94,7 @@ HWTEST_F(AccessibleAbilityChannelClientUnitTest, SetOnKeyPressEventResult, TestS
  * @tc.name: FindFocusedElementInfo
  * @tc.desc: Test function FindFocusedElementInfo
  */
-HWTEST_F(AccessibleAbilityChannelClientUnitTest, FindFocusedElementInfo_001, TestSize.Level1)
+HWTEST_F(AccessibleAbilityChannelClientTest, FindFocusedElementInfo_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "FindFocusedElementInfo_001 start";
     if (!instance_) {
@@ -102,7 +102,7 @@ HWTEST_F(AccessibleAbilityChannelClientUnitTest, FindFocusedElementInfo_001, Tes
         return;
     }
 
-    AccessibilityElementInfo info{};
+    AccessibilityElementInfo info {};
     EXPECT_FALSE(instance_->FindFocusedElementInfo(ACCESSIBILITY_WINDOW_ID, ELEMENT_ID, FOCUS_TYPE, info));
     GTEST_LOG_(INFO) << "FindFocusedElementInfo_001 end";
 }
@@ -112,7 +112,7 @@ HWTEST_F(AccessibleAbilityChannelClientUnitTest, FindFocusedElementInfo_001, Tes
  * @tc.name: SendSimulateGesture
  * @tc.desc: Test function SendSimulateGesture
  */
-HWTEST_F(AccessibleAbilityChannelClientUnitTest, SendSimulateGesture_001, TestSize.Level1)
+HWTEST_F(AccessibleAbilityChannelClientTest, SendSimulateGesture_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "SendSimulateGesture_001 start";
     if (!instance_) {
@@ -120,7 +120,7 @@ HWTEST_F(AccessibleAbilityChannelClientUnitTest, SendSimulateGesture_001, TestSi
         return;
     }
 
-    std::vector<AccessibilityGesturePath> gestureSteps{};
+    std::vector<AccessibilityGesturePath> gestureSteps {};
     instance_->SendSimulateGesture(SEQUENCE_NUM, gestureSteps);
     GTEST_LOG_(INFO) << "SendSimulateGesture_001 end";
 }
@@ -130,7 +130,7 @@ HWTEST_F(AccessibleAbilityChannelClientUnitTest, SendSimulateGesture_001, TestSi
  * @tc.name: ExecuteAction
  * @tc.desc: Test function ExecuteAction
  */
-HWTEST_F(AccessibleAbilityChannelClientUnitTest, ExecuteAction, TestSize.Level1)
+HWTEST_F(AccessibleAbilityChannelClientTest, ExecuteAction, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "ExecuteAction_001 start";
     if (!instance_) {
@@ -147,14 +147,14 @@ HWTEST_F(AccessibleAbilityChannelClientUnitTest, ExecuteAction, TestSize.Level1)
  * @tc.name: GetWindows
  * @tc.desc: Test function GetWindows
  */
-HWTEST_F(AccessibleAbilityChannelClientUnitTest, GetWindows_001, TestSize.Level1)
+HWTEST_F(AccessibleAbilityChannelClientTest, GetWindows_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "GetWindows_001 start";
     if (!instance_) {
         GTEST_LOG_(INFO) << "Cann't get AccessibleAbilityChannelClient instance_";
         return;
     }
-    std::vector<AccessibilityWindowInfo> res{};
+    std::vector<AccessibilityWindowInfo> res {};
     res = instance_->GetWindows();
     EXPECT_EQ(0, res.size());
     GTEST_LOG_(INFO) << "GetWindows_001 end";
@@ -165,7 +165,7 @@ HWTEST_F(AccessibleAbilityChannelClientUnitTest, GetWindows_001, TestSize.Level1
  * @tc.name: SearchElementInfosByText
  * @tc.desc: Test function SearchElementInfosByText
  */
-HWTEST_F(AccessibleAbilityChannelClientUnitTest, SearchElementInfosByText_001, TestSize.Level1)
+HWTEST_F(AccessibleAbilityChannelClientTest, SearchElementInfosByText_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "SearchElementInfosByText_001 start";
     if (!instance_) {
@@ -173,7 +173,7 @@ HWTEST_F(AccessibleAbilityChannelClientUnitTest, SearchElementInfosByText_001, T
         return;
     }
     std::vector<AccessibilityElementInfo> infos;
-    AccessibilityElementInfo info{};
+    AccessibilityElementInfo info {};
     infos.push_back(info);
     EXPECT_FALSE(instance_->SearchElementInfosByText(ACCESSIBILITY_WINDOW_ID, ELEMENT_ID, TEST, infos));
     GTEST_LOG_(INFO) << "SearchElementInfosByText_001 end";
@@ -184,14 +184,14 @@ HWTEST_F(AccessibleAbilityChannelClientUnitTest, SearchElementInfosByText_001, T
  * @tc.name: FocusMoveSearch
  * @tc.desc: Test function FocusMoveSearch
  */
-HWTEST_F(AccessibleAbilityChannelClientUnitTest, FocusMoveSearch_001, TestSize.Level1)
+HWTEST_F(AccessibleAbilityChannelClientTest, FocusMoveSearch_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "FocusMoveSearch_001 start";
     if (!instance_) {
         GTEST_LOG_(INFO) << "Cann't get AccessibleAbilityChannelClient instance_";
         return;
     }
-    AccessibilityElementInfo info{};
+    AccessibilityElementInfo info {};
     EXPECT_FALSE(instance_->FocusMoveSearch(ACCESSIBILITY_WINDOW_ID, ELEMENT_ID, DIRECTION, info));
     GTEST_LOG_(INFO) << "FocusMoveSearch_001 end";
 }
@@ -201,7 +201,7 @@ HWTEST_F(AccessibleAbilityChannelClientUnitTest, FocusMoveSearch_001, TestSize.L
  * @tc.name: ExecuteCommonAction
  * @tc.desc: Test function ExecuteCommonAction
  */
-HWTEST_F(AccessibleAbilityChannelClientUnitTest, ExecuteCommonAction_001, TestSize.Level1)
+HWTEST_F(AccessibleAbilityChannelClientTest, ExecuteCommonAction_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "ExecuteCommonAction_001 start";
     if (!instance_) {
@@ -217,7 +217,7 @@ HWTEST_F(AccessibleAbilityChannelClientUnitTest, ExecuteCommonAction_001, TestSi
  * @tc.name: GetDisplayResize
  * @tc.desc: Test function GetDisplayResizeRect
  */
-HWTEST_F(AccessibleAbilityChannelClientUnitTest, GetDisplayResize_001, TestSize.Level1)
+HWTEST_F(AccessibleAbilityChannelClientTest, GetDisplayResize_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "GetDisplayResize_001 start";
     if (!instance_) {
@@ -227,7 +227,7 @@ HWTEST_F(AccessibleAbilityChannelClientUnitTest, GetDisplayResize_001, TestSize.
     EXPECT_EQ(0, instance_->GetDisplayResizeCenterX(DISPLAY_ID));
     EXPECT_EQ(0, instance_->GetDisplayResizeCenterY(DISPLAY_ID));
     EXPECT_EQ(0, instance_->GetDisplayResizeScale(DISPLAY_ID));
-    Rect res{};
+    Rect res {};
     res = instance_->GetDisplayResizeRect(DISPLAY_ID);
     EXPECT_EQ(0, res.GetRightBottomXScreenPostion());
     EXPECT_EQ(0, res.GetRightBottomYScreenPostion());
@@ -239,7 +239,7 @@ HWTEST_F(AccessibleAbilityChannelClientUnitTest, GetDisplayResize_001, TestSize.
  * @tc.name: ResetDisplayResize
  * @tc.desc: Test function ResetDisplayResize
  */
-HWTEST_F(AccessibleAbilityChannelClientUnitTest, ResetDisplayResize_001, TestSize.Level1)
+HWTEST_F(AccessibleAbilityChannelClientTest, ResetDisplayResize_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "ResetDisplayResize_001 start";
     if (!instance_) {
@@ -256,7 +256,7 @@ HWTEST_F(AccessibleAbilityChannelClientUnitTest, ResetDisplayResize_001, TestSiz
  * @tc.name: SetDisplayResizeScaleAndCenter
  * @tc.desc: Test function SetDisplayResizeScaleAndCenter
  */
-HWTEST_F(AccessibleAbilityChannelClientUnitTest, SetDisplayResizeScaleAndCenter_001, TestSize.Level1)
+HWTEST_F(AccessibleAbilityChannelClientTest, SetDisplayResizeScaleAndCenter_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "SetDisplayResizeScaleAndCenter_001 start";
     if (!instance_) {
@@ -273,7 +273,7 @@ HWTEST_F(AccessibleAbilityChannelClientUnitTest, SetDisplayResizeScaleAndCenter_
  * @tc.name: SearchElementInfosByAccessibilityId
  * @tc.desc: Test function SearchElementInfosByAccessibilityId
  */
-HWTEST_F(AccessibleAbilityChannelClientUnitTest, SearchElementInfosByAccessibilityId_001, TestSize.Level1)
+HWTEST_F(AccessibleAbilityChannelClientTest, SearchElementInfosByAccessibilityId_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "SearchElementInfosByAccessibilityId_001 start";
     if (!instance_) {
@@ -281,7 +281,7 @@ HWTEST_F(AccessibleAbilityChannelClientUnitTest, SearchElementInfosByAccessibili
         return;
     }
     std::vector<AccessibilityElementInfo> infos;
-    AccessibilityElementInfo info{};
+    AccessibilityElementInfo info {};
     infos.push_back(info);
     EXPECT_FALSE(instance_->SearchElementInfosByAccessibilityId(ACCESSIBILITY_WINDOW_ID, ELEMENT_ID, MODE, infos));
 

@@ -13,8 +13,8 @@
  * limitations under the License.
  */
 
-#include "common_event_data.h"
 #include <gtest/gtest.h>
+#include "common_event_data.h"
 
 namespace OHOS {
 namespace EventFwk {

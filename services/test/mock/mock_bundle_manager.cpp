@@ -32,6 +32,101 @@ int BundleMgrStub::OnRemoteRequest(uint32_t code, MessageParcel& data, MessagePa
     return 0;
 }
 
+auto HiWordInfo = [](std::string bundleName, AbilityInfo& abilityInfo, ElementName& elementTemp) {
+    abilityInfo.name = elementTemp.GetAbilityName();
+    abilityInfo.bundleName = elementTemp.GetBundleName();
+    abilityInfo.applicationInfo.bundleName = elementTemp.GetBundleName();
+    abilityInfo.applicationName = "Helloworld";
+    abilityInfo.applicationInfo.name = "Helloworld";
+    abilityInfo.type = AbilityType::PAGE;
+    abilityInfo.applicationInfo.isLauncherApp = true;
+    return true;
+};
+
+auto HiMusicInfo = [](std::string bundleName, AbilityInfo& abilityInfo, ElementName& elementTemp) {
+    abilityInfo.name = elementTemp.GetAbilityName();
+    abilityInfo.bundleName = elementTemp.GetBundleName();
+    abilityInfo.applicationInfo.bundleName = elementTemp.GetBundleName();
+    abilityInfo.applicationName = "hiMusic";
+    abilityInfo.applicationInfo.name = "hiMusic";
+    abilityInfo.type = AbilityType::PAGE;
+    abilityInfo.applicationInfo.isLauncherApp = false;
+
+    if (elementTemp.GetAbilityName() == "MusicAbility") {
+        abilityInfo.process = "p1";
+        abilityInfo.launchMode = LaunchMode::STANDARD;
+    }
+    if (elementTemp.GetAbilityName() == "MusicTopAbility") {
+        abilityInfo.process = "p1";
+        abilityInfo.launchMode = LaunchMode::SINGLETOP;
+    }
+    if (elementTemp.GetAbilityName() == "MusicSAbility") {
+        abilityInfo.process = "p2";
+        abilityInfo.launchMode = LaunchMode::SINGLETON;
+    }
+    return true;
+};
+
+auto HiRadioInfo = [](std::string bundleName, AbilityInfo& abilityInfo, ElementName& elementTemp) {
+    abilityInfo.name = elementTemp.GetAbilityName();
+    abilityInfo.bundleName = elementTemp.GetBundleName();
+    abilityInfo.applicationInfo.bundleName = elementTemp.GetBundleName();
+    abilityInfo.applicationName = "hiRadio";
+    abilityInfo.applicationInfo.name = "hiRadio";
+    abilityInfo.type = AbilityType::PAGE;
+    abilityInfo.process = "p3";
+    if (elementTemp.GetAbilityName() == "RadioAbility") {
+        abilityInfo.launchMode = LaunchMode::STANDARD;
+    }
+    if (elementTemp.GetAbilityName() == "RadioTopAbility") {
+        abilityInfo.launchMode = LaunchMode::SINGLETON;
+    }
+    return true;
+};
+
+auto HiServiceInfo = [](std::string bundleName, AbilityInfo& abilityInfo, ElementName& elementTemp) {
+    abilityInfo.name = elementTemp.GetAbilityName();
+    abilityInfo.bundleName = elementTemp.GetBundleName();
+    abilityInfo.applicationInfo.bundleName = elementTemp.GetBundleName();
+    abilityInfo.applicationName = "hiService";
+    abilityInfo.applicationInfo.name = "hiService";
+    abilityInfo.type = AbilityType::SERVICE;
+    abilityInfo.process = "p4";
+    return true;
+};
+
+auto MusicServiceInfo = [](std::string bundleName, AbilityInfo& abilityInfo, ElementName& elementTemp) {
+    abilityInfo.name = elementTemp.GetAbilityName();
+    abilityInfo.bundleName = elementTemp.GetBundleName();
+    abilityInfo.applicationInfo.bundleName = elementTemp.GetBundleName();
+    abilityInfo.applicationName = "musicService";
+    abilityInfo.applicationInfo.name = "musicService";
+    abilityInfo.type = AbilityType::SERVICE;
+    abilityInfo.process = "p5";
+    return true;
+};
+
+auto HiDataInfo = [](std::string bundleName, AbilityInfo& abilityInfo, ElementName& elementTemp) {
+    abilityInfo.name = elementTemp.GetAbilityName();
+    abilityInfo.bundleName = elementTemp.GetBundleName();
+    abilityInfo.applicationInfo.bundleName = elementTemp.GetBundleName();
+    abilityInfo.applicationName = "hiData";
+    abilityInfo.applicationInfo.name = "hiData";
+    abilityInfo.type = AbilityType::DATA;
+    abilityInfo.process = "p6";
+    return true;
+};
+
+BundleMgrService::BundleMgrService()
+{
+    abilityInfoMap_.emplace(COM_IX_HIWORLD, HiWordInfo);
+    abilityInfoMap_.emplace(COM_IX_HIMUSIC, HiMusicInfo);
+    abilityInfoMap_.emplace(COM_IX_HIRADIO, HiRadioInfo);
+    abilityInfoMap_.emplace(COM_IX_HISERVICE, HiServiceInfo);
+    abilityInfoMap_.emplace(COM_IX_MUSICSERVICE, MusicServiceInfo);
+    abilityInfoMap_.emplace(COM_IX_HIDATA, HiDataInfo);
+}
+
 bool BundleMgrService::GetBundleInfo(
     const std::string& bundleName, const BundleFlag flag, BundleInfo& bundleInfo, int32_t userId)
 {

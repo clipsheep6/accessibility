@@ -292,7 +292,7 @@ napi_value NAccessibilityClient::SubscribeState(napi_env env, napi_callback_info
     NAPI_ASSERT(env, status == napi_ok, "Failed to get event type");
 
     std::string eventType = GetStringFromNAPI(env, args[0]);
-    AccessibilityStateEventType type = AccessibilityStateEventType::EVENT_ACCESSIBILITY_STATE_CHANGED;
+    uint32_t type = AccessibilityStateEventType::EVENT_ACCESSIBILITY_STATE_CHANGED;
     if (!std::strcmp(eventType.c_str(), "accessibilityStateChange")) {
         type = AccessibilityStateEventType::EVENT_ACCESSIBILITY_STATE_CHANGED;
     } else if (!std::strcmp(eventType.c_str(), "touchGuideStateChange")) {
@@ -320,7 +320,7 @@ napi_value NAccessibilityClient::UnsubscribeState(napi_env env, napi_callback_in
     napi_value args[ARGS_SIZE_TWO] = {0};
     napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
     std::string eventType = GetStringFromNAPI(env, args[PARAM0]);
-    AccessibilityStateEventType type = AccessibilityStateEventType::EVENT_ACCESSIBILITY_STATE_CHANGED;
+    uint32_t type = AccessibilityStateEventType::EVENT_ACCESSIBILITY_STATE_CHANGED;
     if (!std::strcmp(eventType.c_str(), "accessibilityStateChange")) {
         type = AccessibilityStateEventType::EVENT_ACCESSIBILITY_STATE_CHANGED;
     } else if (!std::strcmp(eventType.c_str(), "touchGuideStateChange")) {
@@ -408,8 +408,7 @@ void StateListener::NotifyJS(napi_env env, bool state, napi_ref handlerRef)
             callbackInfo = nullptr;
             delete work;
             work = nullptr;
-        } 
-    );
+        });
 }
 
 void StateListener::OnStateChanged(const bool state)
@@ -1428,8 +1427,7 @@ void CaptionListener::NotifyStateChangedJS(napi_env env, bool enabled, std::stri
                 callbackInfo = nullptr;
                 delete work;
                 work = nullptr;
-            } 
-        );
+            });
     } else {
         HILOG_ERROR("NotifyStateChangedJS eventType[%s] is error", eventType.c_str());
     }
@@ -1484,9 +1482,7 @@ void CaptionListener::NotifyPropertyChangedJS(napi_env env,
                 callbackInfo = nullptr;
                 delete work;
                 work = nullptr;
-            } 
-        );
-
+            });
     } else {
         HILOG_ERROR("NotifyPropertyChangedJS eventType[%s] is error", eventType.c_str());
     }

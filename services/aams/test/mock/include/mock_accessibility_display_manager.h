@@ -16,8 +16,8 @@
 #ifndef MOCK_ACCESSIBILITY_DISPLAY_MANAGER_H
 #define MOCK_ACCESSIBILITY_DISPLAY_MANAGER_H
 
-#include "accessibility_display_manager.h"
 #include <gmock/gmock.h>
+#include "accessibility_display_manager.h"
 
 namespace OHOS {
 namespace Accessibility {

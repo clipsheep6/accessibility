@@ -13,14 +13,14 @@
  * limitations under the License.
  */
 
-#include "accessibility_keyevent_filter.h"
 #include <gtest/gtest.h>
 #include <map>
 #include <memory>
+#include "accessible_ability_channel.h"
+#include "accessibility_keyevent_filter.h"
 #include "accessible_ability_manager_service.h"
 #include "iservice_registry.h"
 #include "mock_accessible_ability_manager_service.h"
-#include "mock_accessible_ability_client_stub_impl.h"
 #include "mock_bundle_manager.h"
 #include "system_ability_definition.h"
 
@@ -29,6 +29,7 @@ using namespace testing::ext;
 
 namespace OHOS {
 namespace Accessibility {
+#define SLEEP_TIME_3 3
 class KeyEventFilterUnitTest : public ::testing::Test {
 public:
     KeyEventFilterUnitTest()
@@ -44,6 +45,7 @@ public:
     void AddConnection();
     std::shared_ptr<KeyEventFilter> keyEventFilter_ = nullptr;
     sptr<OHOS::AppExecFwk::BundleMgrService> mock_ = nullptr;
+    sptr<AccessibleAbilityChannel> aastub_ = nullptr;
 };
 
 void KeyEventFilterUnitTest::SetUpTestCase()
@@ -76,13 +78,14 @@ void KeyEventFilterUnitTest::TearDown()
     GTEST_LOG_(INFO) << "TearDown";
     keyEventFilter_ = nullptr;
     mock_ = nullptr;
+    aastub_ = nullptr;
 }
 
 void KeyEventFilterUnitTest::AddConnection()
 {
     GTEST_LOG_(INFO) << "KeyEventFilterUnitTest AddConnection";
-    sptr<MockAccessibleAbilityClientStubImpl> stub = new MockAccessibleAbilityClientStubImpl();
-    std::shared_ptr<AccessibleAbilityManagerService> aams = DelayedSingleton<AccessibleAbilityManagerService>::GetInstance();
+    std::shared_ptr<AccessibleAbilityManagerService> aams =
+        DelayedSingleton<AccessibleAbilityManagerService>::GetInstance();
 
     // add an ability connection client
     AccessibilityAbilityInitParams initParams;
@@ -91,7 +94,9 @@ void KeyEventFilterUnitTest::AddConnection()
     sptr<AccessibilityAccountData> accountData = aams->GetCurrentAccountData();
     accountData->AddInstalledAbility(*abilityInfo);
     sptr<AccessibleAbilityConnection> connection = new AccessibleAbilityConnection(accountData, 0, *abilityInfo);
-    connection->OnAbilityConnectDone(elementName, stub, 0);
+    aastub_ = new AccessibleAbilityChannel(*connection);
+    connection->OnAbilityConnectDone(elementName, aastub_, 0);
+    sleep(SLEEP_TIME_3);
 }
 
 /**
@@ -314,7 +319,7 @@ HWTEST_F(KeyEventFilterUnitTest, KeyEventFilter_Unittest_ProcessEvent_001, TestS
     keyEventFilter_->OnKeyEvent(*event);
 
     GTEST_LOG_(INFO) << "Process event";
-    sleep(3);  // wait for ProcessEvent
+    sleep(SLEEP_TIME_3);  // wait for ProcessEvent
 
     GTEST_LOG_(INFO) << "KeyEventFilter_Unittest_ProcessEvent_001 end";
 }

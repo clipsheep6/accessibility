@@ -152,9 +152,9 @@ void TouchGuider::SendAccessibilityEventToAA(EventType eventType)
 {
     HILOG_DEBUG("eventType is 0x%{public}x.", eventType);
 
-    AccessibilityEventInfo eventInfo{};
+    AccessibilityEventInfo eventInfo {};
     eventInfo.SetEventType(eventType);
-    int32_t windowsId = AccessibilityWindowInfoManager::GetInstance().activeWindowId_;
+    int32_t windowsId = AccessibilityWindowManager::GetInstance().activeWindowId_;
     eventInfo.SetWindowId(windowsId);
     pAams_->SendEvent(eventInfo, pAams_->GetCurrentAccountId());
     if (eventType == EventType::TYPE_TOUCH_GUIDE_BEGIN) {
@@ -274,7 +274,7 @@ bool TouchGuider::TouchGuideListener::OnCompleted(GestureType gestureId)
     server_.CancelPostEvent(EXIT_GESTURE_REC_MSG);
     server_.currentState_ = static_cast<int32_t>(TouchGuideState::TOUCH_GUIDING);
 
-    AccessibilityEventInfo eventInfo{};
+    AccessibilityEventInfo eventInfo {};
     eventInfo.SetEventType(EventType::TYPE_GESTURE_EVENT);
     eventInfo.SetGestureType(gestureId);
     server_.pAams_->SendEvent(eventInfo, server_.pAams_->GetCurrentAccountId());

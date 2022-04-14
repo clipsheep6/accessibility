@@ -13,11 +13,11 @@
  * limitations under the License.
  */
 
-#include "accessible_ability_manager_service.h"
 #include <gtest/gtest.h>
 #include <optional>
 #include "accessibility_ability_info.h"
 #include "accessibility_display_manager.h"
+#include "accessible_ability_manager_service.h"
 #include "iservice_registry.h"
 #include "mock_accessible_ability_client_stub_impl.h"
 #include "mock_accessible_ability_manager_service_state_observer_proxy.h"
@@ -30,6 +30,7 @@ using namespace testing::ext;
 
 namespace OHOS {
 namespace Accessibility {
+#define SLEEP_TIME_1 1
 class AccessibleAbilityManagerServiceUnitTest : public ::testing::Test {
 public:
     AccessibleAbilityManagerServiceUnitTest()
@@ -164,7 +165,7 @@ HWTEST_F(AccessibleAbilityManagerServiceUnitTest, RegisterElementOperator_001, T
     auto map = accountData->GetAsacConnections();
     EXPECT_EQ(int(map.size()), 0);
     ins_->RegisterElementOperator(0, nullptr, 0);
-    sleep(1);
+    sleep(SLEEP_TIME_1);
     GTEST_LOG_(INFO) << "RegisterElementOperator OK";
     map = accountData->GetAsacConnections();
     EXPECT_EQ(int(map.size()), 1);
@@ -182,7 +183,7 @@ HWTEST_F(AccessibleAbilityManagerServiceUnitTest, DeregisterElementOperator_001,
     GTEST_LOG_(INFO) << "Accessible_Ability_Manager_ServiceUnittest_DeregisterElementOperator_001 start";
     sptr<AccessibilityAccountData> accountData = ins_->GetCurrentAccountData();
     ins_->DeregisterElementOperator(0);
-    sleep(1);
+    sleep(SLEEP_TIME_1);
     auto map = accountData->GetAsacConnections();
     EXPECT_EQ(int(map.size()), 0);
 

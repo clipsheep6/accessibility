@@ -13,19 +13,19 @@
  * limitations under the License.
  */
 
-#include "accessible_ability_connection.h"
 #include <cstdio>
 #include <gtest/gtest.h>
 #include "accessibility_ability_helper.h"
-#include "accessible_ability_manager_service.h"
-#include "accessibility_element_operator_stub.h"
 #include "accessibility_element_operator_proxy.h"
+#include "accessibility_element_operator_stub.h"
+#include "accessible_ability_connection.h"
+#include "accessible_ability_manager_service.h"
 #include "iservice_registry.h"
-#include "mock_accessible_ability_client_stub_impl.h"
 #include "mock_accessibility_account_data.h"
-#include "mock_accessible_ability_manager_service.h"
 #include "mock_accessibility_element_operator_proxy.h"
 #include "mock_accessibility_element_operator_stub.h"
+#include "mock_accessible_ability_client_stub_impl.h"
+#include "mock_accessible_ability_manager_service.h"
 #include "mock_bundle_manager.h"
 #include "system_ability_definition.h"
 
@@ -34,6 +34,8 @@ using namespace testing::ext;
 
 namespace OHOS {
 namespace Accessibility {
+#define SLEEP_TIME_2 2
+#define SLEEP_TIME_3 3
 class AccessibleAbilityConnectionUnitTest : public ::testing::Test {
 public:
     AccessibleAbilityConnectionUnitTest()
@@ -134,10 +136,10 @@ HWTEST_F(AccessibleAbilityConnectionUnitTest, AccessibleAbilityConnection_Unitte
 HWTEST_F(AccessibleAbilityConnectionUnitTest, AccessibleAbilityConnection_Unittest_GetElementName_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "AccessibleAbilityConnection_Unittest_GetElementName_001 start";
-    sleep(2);
+    sleep(SLEEP_TIME_2);
     auto elementName = connection_->GetElementName();
     auto ret = elementName.GetDeviceID();
-    sleep(2);
+    sleep(SLEEP_TIME_2);
     EXPECT_STREQ(ret.c_str(), "1");
 
     GTEST_LOG_(INFO) << "AccessibleAbilityConnection_Unittest_GetElementName_001 end";
@@ -163,12 +165,13 @@ HWTEST_F(AccessibleAbilityConnectionUnitTest, AccessibleAbilityConnection_Unitte
  * @tc.name: GetAbilityClient
  * @tc.desc: Test function GetAbilityClient
  */
-HWTEST_F(AccessibleAbilityConnectionUnitTest, AccessibleAbilityConnection_Unittest_GetAbilityClient_001, TestSize.Level1)
+HWTEST_F(
+    AccessibleAbilityConnectionUnitTest, AccessibleAbilityConnection_Unittest_GetAbilityClient_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "AccessibleAbilityConnection_Unittest_GetProxy_001 start";
-    sleep(2);
+    sleep(SLEEP_TIME_2);
     auto ret = connection_->GetAbilityClient();
-    sleep(2);
+    sleep(SLEEP_TIME_2);
     EXPECT_TRUE(ret);
 
     GTEST_LOG_(INFO) << "AccessibleAbilityConnection_Unittest_GetProxy_001 end";
@@ -186,9 +189,9 @@ HWTEST_F(
     AccessibilityEventInfo eventInfo;
     /* EventType is in the allowed list */
     eventInfo.SetEventType(EventType::TYPE_PAGE_STATE_UPDATE);
-    sleep(2);
+    sleep(SLEEP_TIME_2);
     connection_->OnAccessibilityEvent(eventInfo);
-    sleep(2);
+    sleep(SLEEP_TIME_2);
     EXPECT_EQ(int(EventType::TYPE_PAGE_STATE_UPDATE), AccessibilityAbilityHelper::GetInstance().GetTestEventType());
 
     GTEST_LOG_(INFO) << "AccessibleAbilityConnection_Unittest_OnAccessibilityEvent_001 end";
@@ -208,9 +211,9 @@ HWTEST_F(
     eventInfo.SetEventType(EventType::TYPE_VIEW_CLICKED_EVENT);
     /* invalid window */
     eventInfo.SetWindowId(3);
-    sleep(2);
+    sleep(SLEEP_TIME_2);
     connection_->OnAccessibilityEvent(eventInfo);
-    sleep(2);
+    sleep(SLEEP_TIME_2);
     EXPECT_EQ(1, AccessibilityAbilityHelper::GetInstance().GetTestEventType());
 
     GTEST_LOG_(INFO) << "AccessibleAbilityConnection_Unittest_OnAccessibilityEvent_002 end";
@@ -225,10 +228,10 @@ HWTEST_F(AccessibleAbilityConnectionUnitTest, AccessibleAbilityConnection_Unitte
     TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "AccessibleAbilityConnection_Unittest_OnGestureSimulateResult_001 start";
-    sleep(2);
+    sleep(SLEEP_TIME_2);
     OHOS::Accessibility::Rect rect(0, 0, 0, 0);
     connection_->OnGestureInjectResult(1, false);
-    sleep(2);
+    sleep(SLEEP_TIME_2);
     EXPECT_EQ(AccessibilityAbilityHelper::GetInstance().GetTestGestureSimulateResult(), 1);
 
     GTEST_LOG_(INFO) << "AccessibleAbilityConnection_Unittest_OnGestureSimulateResult_001 end";
@@ -245,7 +248,7 @@ HWTEST_F(AccessibleAbilityConnectionUnitTest, AccessibleAbilityConnection_Unitte
 
     AppExecFwk::ElementName element;
     connection_->Connect(element);
-    sleep(3);
+    sleep(SLEEP_TIME_3);
     auto accountData = connection_->GetAccountData();
     EXPECT_EQ(int(accountData->GetConnectingA11yAbilities().size()), 1);
 

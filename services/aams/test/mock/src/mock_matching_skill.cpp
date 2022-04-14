@@ -13,8 +13,8 @@
  * limitations under the License.
  */
 
-#include "matching_skills.h"
 #include <gtest/gtest.h>
+#include "matching_skills.h"
 #include "string_ex.h"
 
 namespace OHOS {

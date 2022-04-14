@@ -193,7 +193,6 @@ void AccessibilityAccountData::RemoveInstalledAbility(std::string bundleName)
 void AccessibilityAccountData::ClearInstalledAbility()
 {}
 
-// get AccessibleAbilityConnection
 const sptr<AccessibleAbilityConnection> AccessibilityAccountData::GetAccessibleAbilityConnection(
     const std::string elementName)
 {
@@ -201,8 +200,8 @@ const sptr<AccessibleAbilityConnection> AccessibilityAccountData::GetAccessibleA
     return nullptr;
 }
 
-// get AccessibilityWindowConnection.
-const sptr<AccessibilityWindowConnection> AccessibilityAccountData::GetAccessibilityWindowConnection(const int32_t windowId)
+const sptr<AccessibilityWindowConnection> AccessibilityAccountData::GetAccessibilityWindowConnection(
+    const int32_t windowId)
 {
     (void)windowId;
     return nullptr;
@@ -232,14 +231,12 @@ const CaptionPropertyCallbacks AccessibilityAccountData::GetCaptionPropertyCallb
     return captionPropertyCallbacks_;
 }
 
-// get connectingA11yAbilities_.
 const std::vector<std::string>& AccessibilityAccountData::GetConnectingA11yAbilities()
 {
     HILOG_DEBUG("start.");
     return connectingA11yAbilities_;
 }
 
-// get enabledAbilities_.
 const std::vector<std::string>& AccessibilityAccountData::GetEnabledAbilities()
 {
     HILOG_DEBUG("enabledAbilities_ size is (%{public}zu).", enabledAbilities_.size());
@@ -249,7 +246,6 @@ const std::vector<std::string>& AccessibilityAccountData::GetEnabledAbilities()
     return enabledAbilities_;
 }
 
-// get installedAbilities_.
 const std::vector<AccessibilityAbilityInfo> AccessibilityAccountData::GetInstalledAbilities()
 {
     HILOG_DEBUG("start.");
@@ -388,11 +384,10 @@ bool AccessibilityAccountData::EnableAbilities(std::vector<std::string>& abiliti
 bool AccessibilityAccountData::ReadConfigurationForAccountData()
 {
     HILOG_DEBUG("start.");
-    // temp deal: read the user confige data.
+    // Temp deal: read the user confige data.
     return true;
 }
 
-// get installedAbilities_.
 bool AccessibilityAccountData::GetInstalledAbilitiesFromBMS()
 {
     HILOG_DEBUG("start.");

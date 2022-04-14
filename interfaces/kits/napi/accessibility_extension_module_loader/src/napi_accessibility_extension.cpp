@@ -138,8 +138,7 @@ void NAccessibilityExtension::OnAbilityConnected()
             data = nullptr;
             delete work;
             work = nullptr;
-        } 
-    );        
+        });
     HILOG_INFO("end.");
 }
 
@@ -161,12 +160,12 @@ void NAccessibilityExtension::OnAccessibilityEvent(const AccessibilityEventInfo&
         [](uv_work_t *work, int status) {
             AccessibilityEventInfoCallbackInfo *data = (AccessibilityEventInfoCallbackInfo *)work->data;
             napi_value cons = nullptr;
-            napi_get_reference_value(reinterpret_cast<napi_env>(data->engine_), NAccessibilityEventInfo::consRef_, 
+            napi_get_reference_value(reinterpret_cast<napi_env>(data->engine_), NAccessibilityEventInfo::consRef_,
                 &cons);
             napi_value napiEventInfo = nullptr;
             napi_new_instance(
                 reinterpret_cast<napi_env>(data->engine_), cons, 0, nullptr, &napiEventInfo);
-            ConvertAccessibilityEventInfoToJS(reinterpret_cast<napi_env>(data->engine_), napiEventInfo, 
+            ConvertAccessibilityEventInfoToJS(reinterpret_cast<napi_env>(data->engine_), napiEventInfo,
                 data->eventInfo_);
             NativeValue* nativeEventInfo = reinterpret_cast<NativeValue*>(napiEventInfo);
             NativeValue* argv[] = {nativeEventInfo};
@@ -176,9 +175,7 @@ void NAccessibilityExtension::OnAccessibilityEvent(const AccessibilityEventInfo&
             data = nullptr;
             delete work;
             work = nullptr;
-        } 
-    );
-
+        });
     HILOG_INFO("end.");
 }
 
@@ -199,7 +196,7 @@ bool NAccessibilityExtension::OnKeyPressEvent(const std::shared_ptr<MMI::KeyEven
         [](uv_work_t *work) {},
         [](uv_work_t *work, int status) {
             KeyEventCallbackInfo *data = (KeyEventCallbackInfo *)work->data;
-            napi_value napiEventInfo = nullptr;    
+            napi_value napiEventInfo = nullptr;
             if (napi_create_object(reinterpret_cast<napi_env>(data->engine_), &napiEventInfo) != napi_ok) {
                 HILOG_ERROR("Create keyEvent object failed.");
                 delete data;
@@ -230,8 +227,7 @@ bool NAccessibilityExtension::OnKeyPressEvent(const std::shared_ptr<MMI::KeyEven
             data = nullptr;
             delete work;
             work = nullptr;
-        } 
-    );
+        });
     HILOG_INFO("end.");
     return true;
 }

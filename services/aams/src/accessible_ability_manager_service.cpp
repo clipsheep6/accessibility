@@ -469,7 +469,7 @@ void AccessibleAbilityManagerService::InnerDeregisterElementOperator(const int32
     if (!accountData) {
         HILOG_ERROR("accountData is nullptr.");
         return;
-    }	
+    }
     sptr<AccessibilityWindowConnection> connection = accountData->GetAccessibilityWindowConnection(windowId);
     if (!connection) {
         HILOG_WARN("The operation of windowId[%{public}d] has not been registered.", windowId);
@@ -528,7 +528,7 @@ void AccessibleAbilityManagerService::InnerGetCaptionProperty(std::promise<Capti
     if (!accountData) {
         HILOG_ERROR("accountData is nullptr.");
         return;
-    }	
+    }
     CaptionProperty property = accountData->GetCaptionProperty();
 
     syncPromise.set_value(property);
@@ -561,7 +561,7 @@ void AccessibleAbilityManagerService::InnerSetCaptionProperty(std::promise<bool>
     if (!accountData) {
         HILOG_ERROR("accountData is nullptr.");
         return;
-    }	
+    }
     bool result = accountData->SetCaptionProperty(caption);
     UpdateCaptionProperty();
     syncPromise.set_value(result);
@@ -976,8 +976,8 @@ void AccessibleAbilityManagerService::UpdateAccessibilityWindowStateByEvent(cons
     switch (evtType) {
         case TYPE_VIEW_HOVER_ENTER_EVENT:
         case TYPE_VIEW_ACCESSIBILITY_FOCUSED_EVENT:
-            AccessibilityWindowInfoManager::GetInstance().SetActiveWindow(event.GetWindowId());
-            AccessibilityWindowInfoManager::GetInstance().SetAccessibilityFocusedWindow(event.GetWindowId());
+            AccessibilityWindowManager::GetInstance().SetActiveWindow(event.GetWindowId());
+            AccessibilityWindowManager::GetInstance().SetAccessibilityFocusedWindow(event.GetWindowId());
             break;
         default:
             break;
@@ -1022,8 +1022,7 @@ void AccessibleAbilityManagerService::UpdateAbilities()
 
         auto connectingAbilities = accountData->GetConnectingA11yAbilities();
         vector<string>::iterator iter = std::find(connectingAbilities.begin(), connectingAbilities.end(), bundleName);
-        if (iter != connectingAbilities.end())
-        {
+        if (iter != connectingAbilities.end()) {
             HILOG_DEBUG("The ability(%{public}s) is connecting.", bundleName.c_str());
             continue;
         }
@@ -1169,11 +1168,11 @@ void AccessibleAbilityManagerService::UpdateWindowChangeListener()
     }
     if (isWindowRetrieve) {
         HILOG_INFO("RegisterWindowChangeListener.");
-        AccessibilityWindowInfoManager::GetInstance().RegisterWindowChangeListener();
+        AccessibilityWindowManager::GetInstance().RegisterWindowChangeListener();
     } else {
         HILOG_INFO("DeregisterWindowChangeListener.");
-        AccessibilityWindowInfoManager::GetInstance().DeregisterWindowChangeListener();
-        AccessibilityWindowInfoManager::GetInstance().GetAccessibilityWindows().clear();
+        AccessibilityWindowManager::GetInstance().DeregisterWindowChangeListener();
+        AccessibilityWindowManager::GetInstance().GetAccessibilityWindows().clear();
     }
 }
 
@@ -1198,7 +1197,7 @@ void AccessibleAbilityManagerService::InnerGetEnabledState(std::promise<bool> &s
     if (!accountData) {
         HILOG_ERROR("accountData is nullptr");
         return;
-    }	
+    }
     bool result = accountData->GetEnabledState();
     syncPromise.set_value(result);
 }
@@ -1224,7 +1223,7 @@ void AccessibleAbilityManagerService::InnerGetCaptionState(std::promise<bool> &s
     if (!accountData) {
         HILOG_ERROR("accountData is nullptr");
         return;
-    }	
+    }
     bool result = accountData->GetCaptionState();
     syncPromise.set_value(result);
 }
@@ -1250,7 +1249,7 @@ void AccessibleAbilityManagerService::InnerGetTouchGuideState(std::promise<bool>
     if (!accountData) {
         HILOG_ERROR("accountData is nullptr");
         return;
-    }	
+    }
     bool result = accountData->GetTouchGuideState();
     syncPromise.set_value(result);
 }
@@ -1276,7 +1275,7 @@ void AccessibleAbilityManagerService::InnerGetGestureState(std::promise<bool> &s
     if (!accountData) {
         HILOG_ERROR("accountData is nullptr");
         return;
-    }	
+    }
     bool result = accountData->GetGestureState();
     syncPromise.set_value(result);
 }
@@ -1302,7 +1301,7 @@ void AccessibleAbilityManagerService::InnerGetKeyEventObserverState(std::promise
     if (!accountData) {
         HILOG_ERROR("accountData is nullptr");
         return;
-    }	
+    }
     bool result = accountData->GetKeyEventObserverState();
     syncPromise.set_value(result);
 }
@@ -1329,7 +1328,7 @@ void AccessibleAbilityManagerService::InnerEnableAbilities(std::promise<bool> &s
     if (!accountData) {
         HILOG_ERROR("accountData is nullptr");
         return;
-    }	
+    }
     bool result = accountData->EnableAbilities(abilities);
     UpdateAbilities();
     syncPromise.set_value(result);
@@ -1384,7 +1383,7 @@ void AccessibleAbilityManagerService::InnerGetInstalledAbilities(
     if (!accountData) {
         HILOG_ERROR("accountData is nullptr");
         return;
-    }	
+    }
     std::vector<AccessibilityAbilityInfo> it {};
     it = accountData->GetInstalledAbilities();
     syncPromise.set_value(it);
@@ -1412,7 +1411,7 @@ void AccessibleAbilityManagerService::InnerDisableAbilities(std::promise<bool> &
     if (!accountData) {
         HILOG_ERROR("accountData is nullptr");
         return;
-    }	
+    }
     bool result = accountData->DisableAbilities(abilities);
     UpdateAbilities();
     syncPromise.set_value(result);
@@ -1440,7 +1439,7 @@ void AccessibleAbilityManagerService::InnerEnableUITestAbility(std::promise<bool
     if (!accountData) {
         HILOG_ERROR("accountData is nullptr");
         return;
-    }	
+    }
     std::string uiTestUri = "/" + UI_TEST_BUNDLE_NAME + "/" + UI_TEST_ABILITY_NAME;
     sptr<AccessibleAbilityConnection> connection = accountData->GetAccessibleAbilityConnection(uiTestUri);
     if (connection) {
@@ -1519,7 +1518,7 @@ void AccessibleAbilityManagerService::InnerDisableUITestAbility(std::promise<boo
     if (!accountData) {
         HILOG_ERROR("accountData is nullptr");
         return;
-    }	
+    }
     std::string uiTestUri = "/" + UI_TEST_BUNDLE_NAME + "/" + UI_TEST_ABILITY_NAME;
     sptr<AccessibleAbilityConnection> connection = accountData->GetAccessibleAbilityConnection(uiTestUri);
     if (!connection) {
@@ -1566,7 +1565,7 @@ int32_t AccessibleAbilityManagerService::GetActiveWindow()
 void AccessibleAbilityManagerService::InnerGetActiveWindow(std::promise<int32_t> &syncPromise)
 {
     HILOG_DEBUG("start");
-    int32_t ret = AccessibilityWindowInfoManager::GetInstance().activeWindowId_;
+    int32_t ret = AccessibilityWindowManager::GetInstance().activeWindowId_;
     syncPromise.set_value(ret);
 }
 
@@ -1595,7 +1594,7 @@ void AccessibleAbilityManagerService::OnAddSystemAbility(int32_t systemAbilityId
             }
             break;
         case WINDOW_MANAGER_SERVICE_ID:
-            AccessibilityWindowInfoManager::GetInstance().RegisterWindowChangeListener();
+            AccessibilityWindowManager::GetInstance().RegisterWindowChangeListener();
             break;
         default:
             break;

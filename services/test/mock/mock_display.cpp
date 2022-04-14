@@ -37,7 +37,7 @@ Display::~Display()
 
 DisplayId Display::GetId() const
 {
-    DisplayId id{0};
+    DisplayId id {0};
     return id;
 }
 
@@ -58,7 +58,7 @@ uint32_t Display::GetRefreshRate() const
 
 ScreenId Display::GetScreenId() const
 {
-    ScreenId id{0};
+    ScreenId id {0};
     return id;
 }
 

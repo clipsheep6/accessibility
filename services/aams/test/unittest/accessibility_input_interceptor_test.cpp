@@ -13,8 +13,8 @@
  * limitations under the License.
  */
 
-#include "accessibility_input_interceptor.h"
 #include <gtest/gtest.h>
+#include "accessibility_input_interceptor.h"
 #include "accessible_ability_manager_service.h"
 #include "iservice_registry.h"
 #include "mock_accessible_ability_manager_service.h"
@@ -27,6 +27,7 @@ using namespace testing::ext;
 
 namespace OHOS {
 namespace Accessibility {
+#define SLEEP_TIME_3 3
 class AccessibilityInputInterceptorTest : public testing::Test {
 public:
     AccessibilityInputInterceptorTest()
@@ -182,7 +183,7 @@ HWTEST_F(AccessibilityInputInterceptorTest, AccessibilityInputInterceptorTest_Un
         inputEventConsumer->OnInputEvent(event);
     }
     /* wait ProcessTouchEvent */
-    sleep(3);
+    sleep(SLEEP_TIME_3);
 
     GTEST_LOG_(INFO) << "AccessibilityInputInterceptorTest_Unittest_OnTouchEvent002 end";
 }
@@ -213,7 +214,7 @@ HWTEST_F(AccessibilityInputInterceptorTest, AccessibilityInputInterceptorTest_Un
         inputEventConsumer->OnInputEvent(event);
     }
     /* wait ProcessTouchEvent */
-    sleep(3);
+    sleep(SLEEP_TIME_3);
 
     GTEST_LOG_(INFO) << "AccessibilityInputInterceptorTest_Unittest_OnTouchEvent003 end";
 }
@@ -263,7 +264,7 @@ HWTEST_F(AccessibilityInputInterceptorTest, AccessibilityInputInterceptorTest_Un
         inputEventConsumer->OnInputEvent(event);
     }
     /* wait ProcessMouseEvent */
-    sleep(3);
+    sleep(SLEEP_TIME_3);
 
     GTEST_LOG_(INFO) << "AccessibilityInputInterceptorTest_Unittest_OnMouseEvent002 end";
 }
@@ -292,7 +293,7 @@ HWTEST_F(AccessibilityInputInterceptorTest, AccessibilityInputInterceptorTest_Un
         inputEventConsumer->OnInputEvent(event);
     }
     /* wait ProcessMouseEvent */
-    sleep(3);
+    sleep(SLEEP_TIME_3);
 
     GTEST_LOG_(INFO) << "AccessibilityInputInterceptorTest_Unittest_OnMouseEvent003 end";
 }
@@ -329,7 +330,7 @@ HWTEST_F(AccessibilityInputInterceptorTest, AccessibilityInputInterceptorTest_Un
     keyEvent->SetKeyCode(1);
 
     /* wait ProcessKeyEvent */
-    sleep(3);
+    sleep(SLEEP_TIME_3);
 
     GTEST_LOG_(INFO) << "AccessibilityInputInterceptorTest_Unittest_OnKeyEvent002 end";
 }
@@ -353,7 +354,7 @@ HWTEST_F(AccessibilityInputInterceptorTest, AccessibilityInputInterceptorTest_Un
     keyEvent->SetKeyCode(1);
 
     /* wait ProcessKeyEvent */
-    sleep(3);
+    sleep(SLEEP_TIME_3);
 
     GTEST_LOG_(INFO) << "AccessibilityInputInterceptorTest_Unittest_OnKeyEvent003 end";
 }
@@ -367,7 +368,7 @@ HWTEST_F(AccessibilityInputInterceptorTest, AccessibilityInputInterceptorTest_Un
     TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "AccessibilityInputInterceptorTest_Unittest_NotifyAccessibilityEvent001 start";
-    AccessibilityEventInfo event{};
+    AccessibilityEventInfo event {};
     inputInterceptor_->NotifyAccessibilityEvent(event);
 
     GTEST_LOG_(INFO) << "AccessibilityInputInterceptorTest_Unittest_NotifyAccessibilityEvent001 end";

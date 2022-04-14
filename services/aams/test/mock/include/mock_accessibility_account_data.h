@@ -16,8 +16,8 @@
 #ifndef MOCK_ACCESSIBILITY_ACCOUNT_DATA_H
 #define MOCK_ACCESSIBILITY_ACCOUNT_DATA_H
 
+#include <gmock/gmock.h>
 #include "accessibility_account_data.h"
-#include "gmock/gmock.h"
 
 namespace OHOS {
 namespace Accessibility {

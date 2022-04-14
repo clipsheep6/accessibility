@@ -13,9 +13,9 @@
  * limitations under the License.
  */
 
-#include "accessibility_display_manager.h"
 #include <gtest/gtest.h>
 #include <vector>
+#include "accessibility_display_manager.h"
 
 using namespace testing;
 using namespace testing::ext;

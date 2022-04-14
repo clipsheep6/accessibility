@@ -20,6 +20,7 @@ namespace Accessibility {
 static const int32_t POINTER_COUNT_1 = 1;
 const int32_t LIMIT_SIZE_TWO = 2;
 const int32_t LIMIT_SIZE_THREE = 3;
+static const float EPSINON = 0.0001f;
 
 GestureHandler::GestureHandler(
     const std::shared_ptr<AppExecFwk::EventRunner>& runner, AccessibilityGestureRecognizer& server)
@@ -345,9 +346,9 @@ int AccessibilityGestureRecognizer::GetSwipeDirection(Pointer firstP, Pointer se
     float offsetX = secondP.px_ - firstP.px_;
     float offsetY = secondP.py_ - firstP.py_;
     if (abs(offsetX) > abs(offsetY)) {
-        return offsetX > 0.0 ? SWIPE_RIGHT : SWIPE_LEFT;
+        return offsetX > EPSINON ? SWIPE_RIGHT : SWIPE_LEFT;
     } else {
-        return offsetY < 0.0 ? SWIPE_UP : SWIPE_DOWN;
+        return offsetY < EPSINON ? SWIPE_UP : SWIPE_DOWN;
     }
 }
 
@@ -378,7 +379,7 @@ std::vector<Pointer> AccessibilityGestureRecognizer::GetPointerPath(std::vector<
             float xNextUnitVector = nextPoint.px_ - newSeparation.px_;
             float yNextUnitVector = nextPoint.py_ - newSeparation.py_;
             float nextVectorLength = hypot(xNextUnitVector, yNextUnitVector);
-            if (nextVectorLength > 0.0f) {
+            if (nextVectorLength > EPSINON) {
                 xNextUnitVector /= nextVectorLength;
                 yNextUnitVector /= nextVectorLength;
             }
@@ -395,7 +396,7 @@ std::vector<Pointer> AccessibilityGestureRecognizer::GetPointerPath(std::vector<
         yVector = nextPoint.py_ - firstSeparation.py_;
         vectorLength = hypot(xVector, yVector);
         numSinceFirstSep += 1;
-        if (vectorLength > 0.0f) {
+        if (vectorLength > EPSINON) {
             xUnitVector += xVector / vectorLength;
             yUnitVector += yVector / vectorLength;
         }

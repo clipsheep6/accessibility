@@ -13,15 +13,14 @@
  * limitations under the License.
  */
 
-#include "accessible_ability_client_proxy.h"
-#include <cstdint>
 #include <gtest/gtest.h>
-#include "accessible_ability_connection.h"
-#include "accessible_ability_channel_stub.h"
 #include "accessibility_account_data.h"
-#include "accessible_ability_manager_service.h"
 #include "accessibility_event_info.h"
 #include "accessibility_helper.h"
+#include "accessible_ability_channel_stub.h"
+#include "accessible_ability_client_proxy.h"
+#include "accessible_ability_connection.h"
+#include "accessible_ability_manager_service.h"
 #include "parcel.h"
 
 namespace OHOS {

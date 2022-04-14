@@ -13,9 +13,9 @@
  * limitations under the License.
  */
 
-#include "accessibility_element_operator_stub.h"
 #include "accessibility_element_operator_callback_proxy.h"
 #include "accessibility_element_operator_callback_stub.h"
+#include "accessibility_element_operator_stub.h"
 #include "accessibility_system_ability_client.h"
 #include "hilog_wrapper.h"
 #include "iremote_object.h"
@@ -25,7 +25,8 @@
 
 namespace OHOS {
 namespace Accessibility {
-using AccessibilityElementOperatorCallbacks = std::map<const int32_t, const sptr<IAccessibilityElementOperatorCallback>>;
+using AccessibilityElementOperatorCallbacks =
+    std::map<const int32_t, const sptr<IAccessibilityElementOperatorCallback>>;
 AccessibilityElementOperatorStub::AccessibilityElementOperatorStub()
 {}
 

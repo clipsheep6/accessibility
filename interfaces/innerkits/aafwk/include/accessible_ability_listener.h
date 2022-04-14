@@ -13,8 +13,8 @@
  * limitations under the License.
  */
 
-#ifndef ACCESSIBILITY_ABILITY_LISTENER_H
-#define ACCESSIBILITY_ABILITY_LISTENER_H
+#ifndef ACCESSIBLE_ABILITY_LISTENER_H
+#define ACCESSIBLE_ABILITY_LISTENER_H
 
 #include "accessibility_event_info.h"
 
@@ -57,4 +57,4 @@ public:
 };
 } // namespace Accessibility
 } // namespace OHOS
-#endif // ACCESSIBILITY_ABILITY_LISTENER_H
+#endif // ACCESSIBLE_ABILITY_LISTENER_H

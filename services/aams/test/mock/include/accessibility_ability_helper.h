@@ -16,9 +16,10 @@
 #ifndef ACCESSIBILITY_ABILILTY_HELPER_H
 #define ACCESSIBILITY_ABILILTY_HELPER_H
 
+#include "accessibility_event_info.h"
 #include "hilog/log.h"
 #include "iremote_object.h"
-#include "accessibility_event_info.h"
+
 namespace OHOS {
 namespace Accessibility {
 class AccessibilityAbilityHelper {

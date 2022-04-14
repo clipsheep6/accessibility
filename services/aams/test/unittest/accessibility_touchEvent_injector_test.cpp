@@ -13,10 +13,10 @@
  * limitations under the License.
  */
 
-#include "accessibility_touchEvent_injector.h"
 #include <gtest/gtest.h>
-#include "accessible_ability_client_proxy.h"
 #include "accessibility_ability_helper.h"
+#include "accessibility_touchEvent_injector.h"
+#include "accessible_ability_client_proxy.h"
 #include "mock_accessible_ability_client_stub_impl.h"
 #include "mock_accessible_ability_manager_service.h"
 
@@ -25,6 +25,8 @@ using namespace testing::ext;
 
 namespace OHOS {
 namespace Accessibility {
+#define SLEEP_TIME_2 2
+#define SLEEP_TIME_1 1
 class TouchEventInjectorTest : public testing::Test {
 public:
     TouchEventInjectorTest()
@@ -129,7 +131,7 @@ HWTEST_F(TouchEventInjectorTest, TouchEventInjector_Unittest_TouchEventInjector_
     touchEventInjector_->InjectEvents(getGesturePath, service, 1);
     GTEST_LOG_(INFO) << "TouchEventInjector_Unittest_TouchEventInjector_001 136";
 
-    sleep(2);
+    sleep(SLEEP_TIME_2);
     touchAction = AccessibilityAbilityHelper::GetInstance().GetTouchEventActionVector();
     AccessibilityAbilityHelper::GetInstance().ClearTouchEventActionVector();
     int32_t expectValue = MMI::PointerEvent::POINTER_ACTION_DOWN;
@@ -171,7 +173,7 @@ HWTEST_F(TouchEventInjectorTest, TouchEventInjector_Unittest_TouchEventInjector_
     MMI::PointerEvent touchevent = CreateTouchEvent(MMI::PointerEvent::POINTER_ACTION_DOWN);
     touchEventInjector_->OnPointerEvent(touchevent);
     int32_t expectValue = MMI::PointerEvent::POINTER_ACTION_DOWN;
-    sleep(2);
+    sleep(SLEEP_TIME_2);
     touchAction = AccessibilityAbilityHelper::GetInstance().GetTouchEventActionVector();
     AccessibilityAbilityHelper::GetInstance().ClearTouchEventActionVector();
     EXPECT_EQ(touchAction[1], expectValue);
@@ -196,7 +198,7 @@ HWTEST_F(TouchEventInjectorTest, TouchEventInjector_Unittest_TouchEventInjector_
     CreateGesturePath(startpoint, endpoint, 100000);
 
     touchEventInjector_->InjectEvents(getGesturePath, service, 1);
-    sleep(1);
+    sleep(SLEEP_TIME_1);
     touchAction = AccessibilityAbilityHelper::GetInstance().GetTouchEventActionVector();
     AccessibilityAbilityHelper::GetInstance().ClearTouchEventActionVector();
     touchEventInjector_->DestroyEvents();
@@ -228,7 +230,7 @@ HWTEST_F(TouchEventInjectorTest, TouchEventInjector_Unittest_TouchEventInjector_
     CreateGesturePath(startpoint2, endpoint2, 100);
 
     touchEventInjector_->InjectEvents(getGesturePath, service, 1);
-    sleep(2);
+    sleep(SLEEP_TIME_2);
     touchAction = AccessibilityAbilityHelper::GetInstance().GetTouchEventActionVector();
     AccessibilityAbilityHelper::GetInstance().ClearTouchEventActionVector();
     int32_t expectValue = MMI::PointerEvent::POINTER_ACTION_DOWN;

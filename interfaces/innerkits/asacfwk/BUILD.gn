@@ -47,7 +47,9 @@ ohos_shared_library("accessibilityclient") {
 
   deps = [ "//base/accessibility/services/interface:aams_interface" ]
 
-  public_deps = [ "//base/accessibility/interfaces/innerkits/common:accessibility_common" ]
+  public_deps = [
+    "//base/accessibility/interfaces/innerkits/common:accessibility_common",
+  ]
 
   external_deps = [
     "ability_base:want",

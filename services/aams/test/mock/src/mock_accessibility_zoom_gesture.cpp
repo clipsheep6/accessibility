@@ -13,8 +13,8 @@
  * limitations under the License.
  */
 
-#include "accessibility_zoom_gesture.h"
 #include <complex>
+#include "accessibility_zoom_gesture.h"
 
 namespace OHOS {
 namespace Accessibility {

@@ -16,8 +16,8 @@
 #ifndef NAPI_ACCESSIBILITY_EXTENSION_H
 #define NAPI_ACCESSIBILITY_EXTENSION_H
 
-#include "accessibility_ability_listener.h"
 #include "accessibility_extension.h"
+#include "accessible_ability_listener.h"
 #include "js_runtime.h"
 #include "native_engine/native_reference.h"
 #include "native_engine/native_value.h"
@@ -128,7 +128,7 @@ private:
 
     private:
         NAccessibilityExtension &extension_;
-    }; 
+    };
 
     NativeValue* CallObjectMethod(const char* name, NativeValue * const * argv = nullptr, size_t argc = 0);
 
@@ -150,9 +150,8 @@ struct KeyEventCallbackInfo : public ExtensionCallbackInfo {
 };
 
 struct AccessibilityEventInfoCallbackInfo : public ExtensionCallbackInfo {
-    OHOS::Accessibility::AccessibilityEventInfo eventInfo_; 
+    OHOS::Accessibility::AccessibilityEventInfo eventInfo_;
 };
-
 } // namespace Accessibility
 } // namespace OHOS
 

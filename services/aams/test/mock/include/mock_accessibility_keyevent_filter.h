@@ -16,8 +16,8 @@
 #ifndef MOCK_ACCESSIBILITY_KEYEVENT_FILTER_H
 #define MOCK_ACCESSIBILITY_KEYEVENT_FILTER_H
 
+#include <gmock/gmock.h>
 #include "accessibility_keyevent_filter.h"
-#include "gmock/gmock.h"
 
 namespace OHOS {
 namespace Accessibility {

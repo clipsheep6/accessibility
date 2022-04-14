@@ -14,10 +14,10 @@
  */
 
 #include <gtest/gtest.h>
-#include "accessible_ability_channel.h"
 #include "accessibility_display_manager.h"
 #include "accessibility_element_operator_stub.h"
 #include "accessibility_helper.h"
+#include "accessible_ability_channel.h"
 #include "accessible_ability_manager_service.h"
 #include "iservice_registry.h"
 #include "json.h"
@@ -32,9 +32,10 @@ using namespace Json;
 
 namespace OHOS {
 namespace Accessibility {
-const int32_t timeout = 10000;
-const int32_t testNum_2 = 2;
-const int32_t testNum_3 = 3;
+const static int32_t timeout = 10000;
+const static int32_t testNum_2 = 2;
+const static int32_t testNum_3 = 3;
+
 class AamsAccessibleAbilityChannelTest : public testing::Test {
 public:
     AamsAccessibleAbilityChannelTest()
@@ -54,7 +55,7 @@ public:
     void AddAccessibilityWindowConnection();
     void CreateGesturePath(
         AccessibilityGesturePathPosition startpoint, AccessibilityGesturePathPosition endpoint, int64_t durationTime);
-    std::vector<AccessibilityGesturePath> gestureSteps_{};
+    std::vector<AccessibilityGesturePath> gestureSteps_ {};
     sptr<OHOS::AppExecFwk::BundleMgrService> mock_ = nullptr;
     std::shared_ptr<OHOS::Accessibility::AccessibleAbilityManagerService> aams_ = nullptr;
     sptr<AccessibilityAccountData> accountData_ = nullptr;

@@ -16,8 +16,8 @@
 #ifndef MOCK_ACCESSIBILITY_ELEMENT_OPERATOR_PROXY_H
 #define MOCK_ACCESSIBILITY_ELEMENT_OPERATOR_PROXY_H
 
-#include "accessibility_element_operator_proxy.h"
 #include <gmock/gmock.h>
+#include "accessibility_element_operator_proxy.h"
 
 namespace OHOS {
 namespace Accessibility {

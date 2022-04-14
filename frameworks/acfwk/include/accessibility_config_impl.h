@@ -23,7 +23,6 @@
 
 namespace OHOS {
 namespace AccessibilityConfig {
-
 class AccessibilityConfigImpl : public AccessibilityConfig {
     DECLARE_DELAYED_SINGLETON(AccessibilityConfig)
 public:
@@ -93,7 +92,6 @@ private:
     std::vector<std::shared_ptr<AccessibilityConfigObserver>> audioBalanceObservers_;
     std::vector<std::shared_ptr<AccessibilityConfigObserver>> mouseKeyObservers_;
 };
-
 } // namespace Accessibility
 } // namespace OHOS
-#endif
+#endif // ACCESSIBILITY_CONFIG_IMPL_H

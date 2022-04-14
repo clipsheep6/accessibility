@@ -76,7 +76,7 @@ void AccessibleAbilityChannel::InnerSearchElementInfoByAccessibilityId(const int
         HILOG_ERROR("accountData is nullptr");
         return;
     }
-    int32_t realWindowId = AccessibilityWindowInfoManager::GetInstance().ConvertToRealWindowId(
+    int32_t realWindowId = AccessibilityWindowManager::GetInstance().ConvertToRealWindowId(
         accessibilityWindowId, FOCUS_TYPE_INVALID);
     sptr<AccessibilityWindowConnection> connection = accountData->GetAccessibilityWindowConnection(realWindowId);
     if (!connection || !connection->GetProxy()) {
@@ -118,7 +118,7 @@ void AccessibleAbilityChannel::InnerSearchElementInfosByText(const int32_t acces
         HILOG_ERROR("accountData is nullptr");
         return;
     }
-    int32_t realWindowId = AccessibilityWindowInfoManager::GetInstance().ConvertToRealWindowId(
+    int32_t realWindowId = AccessibilityWindowManager::GetInstance().ConvertToRealWindowId(
         accessibilityWindowId, FOCUS_TYPE_INVALID);
 
     sptr<AccessibilityWindowConnection> connection = accountData->GetAccessibilityWindowConnection(realWindowId);
@@ -160,7 +160,7 @@ void AccessibleAbilityChannel::InnerFindFocusedElementInfo(const int32_t accessi
         HILOG_ERROR("accountData is nullptr");
         return;
     }
-    int32_t realWindowId = AccessibilityWindowInfoManager::GetInstance().ConvertToRealWindowId(
+    int32_t realWindowId = AccessibilityWindowManager::GetInstance().ConvertToRealWindowId(
         accessibilityWindowId, focusType);
 
     sptr<AccessibilityWindowConnection> connection = accountData->GetAccessibilityWindowConnection(realWindowId);
@@ -200,7 +200,7 @@ void AccessibleAbilityChannel::InnerFocusMoveSearch(const int32_t accessibilityW
         HILOG_ERROR("accountData is nullptr");
         return;
     }
-    int32_t realWindowId = AccessibilityWindowInfoManager::GetInstance().ConvertToRealWindowId(
+    int32_t realWindowId = AccessibilityWindowManager::GetInstance().ConvertToRealWindowId(
         accessibilityWindowId, FOCUS_TYPE_INVALID);
 
     sptr<AccessibilityWindowConnection> connection = accountData->GetAccessibilityWindowConnection(realWindowId);
@@ -243,7 +243,7 @@ void AccessibleAbilityChannel::InnerExecuteAction(const int32_t accessibilityWin
         HILOG_ERROR("accountData is nullptr");
         return;
     }
-    int32_t realWindowId = AccessibilityWindowInfoManager::GetInstance().ConvertToRealWindowId(
+    int32_t realWindowId = AccessibilityWindowManager::GetInstance().ConvertToRealWindowId(
         accessibilityWindowId, FOCUS_TYPE_INVALID);
 
     sptr<AccessibilityWindowConnection> connection = accountData->GetAccessibilityWindowConnection(realWindowId);
@@ -291,7 +291,7 @@ void AccessibleAbilityChannel::InnerGetWindows(std::promise<std::vector<Accessib
     }
 
     std::vector<AccessibilityWindowInfo> windowInfos =
-        AccessibilityWindowInfoManager::GetInstance().GetAccessibilityWindows();
+        AccessibilityWindowManager::GetInstance().GetAccessibilityWindows();
     size_t size = windowInfos.size();
     int32_t currentChannelId = connection_.GetChannelId();
     for (size_t i = 0; i < size; i++) {
@@ -532,7 +532,7 @@ bool AccessibleAbilityChannel::SetDisplayResizeScaleAndCenter(const int32_t disp
     return ret;
 }
 
-void AccessibleAbilityChannel::InnerSetDisplayResizeScaleAndCenter(std::promise<bool> &syncPromise, 
+void AccessibleAbilityChannel::InnerSetDisplayResizeScaleAndCenter(std::promise<bool> &syncPromise,
     const int32_t displayId, const float scale, const float centerX, const float centerY, const bool animate)
 {
     HILOG_DEBUG("start");

@@ -18,9 +18,9 @@
 #include "datetime_ex.h"
 #include "errors.h"
 #include "hilog_wrapper.h"
-#include "system_ability_definition.h"
-#include "string_ex.h"
 #include "sam_log.h"
+#include "string_ex.h"
+#include "system_ability_definition.h"
 
 namespace OHOS {
 std::mutex SystemAbilityManager::instanceLock;

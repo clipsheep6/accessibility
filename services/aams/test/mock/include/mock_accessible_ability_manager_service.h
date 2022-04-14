@@ -18,7 +18,6 @@
 
 #include <gmock/gmock.h>
 #include "accessible_ability_manager_service.h"
-#include "accessible_ability_manager_service_stub.h"
 
 namespace OHOS {
 namespace Accessibility {
@@ -57,8 +56,8 @@ public:
     }
 
     MOCK_METHOD1(SetKeyEventFilter, void(const sptr<KeyEventFilter>& keyEventFilter));
-    MOCK_METHOD5(
-        NotifyDisplayResizeStateChanged, void(int32_t displayId, Rect& rect, float scale, float centerX, float centerY));
+    MOCK_METHOD5(NotifyDisplayResizeStateChanged,
+        void(int32_t displayId, Rect& rect, float scale, float centerX, float centerY));
 
     inline int32_t GetCurrentAccountId()
     {
