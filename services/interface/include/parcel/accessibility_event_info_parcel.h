@@ -68,6 +68,6 @@ public:
      */
     static sptr<AccessibilityEventInfoParcel> Unmarshalling(Parcel &parcel);
 };
-} // namesapce Accessibility
+} // namespace Accessibility
 } // namespace OHOS
-#endif
+#endif // ACCESSIBILITY_EVENT_INFO_PARCEL_H

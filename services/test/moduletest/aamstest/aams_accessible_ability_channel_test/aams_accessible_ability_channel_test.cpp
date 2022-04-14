@@ -231,7 +231,7 @@ void AamsAccessibleAbilityChannelTest::AddAccessibilityWindowConnection()
     std::shared_ptr<AccessibilityElementOperator> operation = nullptr;
     int32_t accountId = 0;
 
-    sptr<AccessibilityElementOperatorStub> stub = new AccessibilityElementOperatorImpl(windowId, operation);
+    sptr<AccessibilityElementOperatorStub> stub = new MockAccessibilityElementOperatorImpl(windowId, operation);
     sptr<MockAccessibilityElementOperatorProxy> proxy = new MockAccessibilityElementOperatorProxy(stub);
     proxy_ = proxy;
     aams_->RegisterElementOperator(windowId, proxy, accountId);

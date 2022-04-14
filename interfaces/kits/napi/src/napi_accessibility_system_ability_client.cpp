@@ -49,10 +49,7 @@ napi_value NAccessibilityClient::IsOpenAccessibility(napi_env env, napi_callback
     napi_value resource = nullptr;
     napi_create_string_utf8(env, "IsOpenAccessibility", NAPI_AUTO_LENGTH, &resource);
 
-    napi_create_async_work(
-        env,
-        nullptr,
-        resource,
+    napi_create_async_work(env, nullptr, resource,
         // Execute async to call c++ function
         [](napi_env env, void* data) {
             NAccessibilitySystemAbilityClient* callbackInfo = (NAccessibilitySystemAbilityClient*)data;
@@ -86,8 +83,7 @@ napi_value NAccessibilityClient::IsOpenAccessibility(napi_env env, napi_callback
             delete callbackInfo;
             callbackInfo = nullptr;
         },
-        (void*)callbackInfo,
-        &callbackInfo->work_);
+        (void*)callbackInfo, &callbackInfo->work_);
     napi_queue_async_work(env, callbackInfo->work_);
     return promise;
 }

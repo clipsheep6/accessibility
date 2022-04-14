@@ -16,6 +16,7 @@
 #ifndef ACCESSIBILITY_ELEMENT_INFO_H
 #define ACCESSIBILITY_ELEMENT_INFO_H
 
+#include <map>
 #include <vector>
 #include "accessibility_def.h"
 
@@ -593,6 +594,35 @@ public:
      * @sysCap Accessibility
      */
     int32_t GetTextLengthLimit() const;
+
+    /**
+     * @brief Executes a specified action.
+     *        This API not work, should be deleted.
+     * @param action: the action type
+     * @param actionArguments: The parameter for action type. such as:
+     *      action: ACCESSIBILITY_ACTION_NEXT_HTML_ITEM,
+     *                  actionArguments(ACTION_ARGU_HTML_ELEMENT,HtmlItemType)
+     *      action: ACCESSIBILITY_ACTION_PREVIOUS_HTML_ITEM,
+     *                  actionArguments(ACTION_ARGU_HTML_ELEMENT,HtmlItemType)
+     *      action: ACCESSIBILITY_ACTION_NEXT_TEXT,
+     *                  actionArguments(ACTION_ARGU_MOVE_UNIT,MOVE_UNIT_XXX)
+     *      action: ACCESSIBILITY_ACTION_PREVIOUS_TEXT,
+     *                  actionArguments(ACTION_ARGU_MOVE_UNIT,MOVE_UNIT_XXX)
+     *      action: ACCESSIBILITY_ACTION_SET_SELECTION,
+     *                  actionArguments({ACTION_ARGU_SELECT_TEXT_START,"1"(start location)},
+     *                                  {ACTION_ARGU_SELECT_TEXT_END,"10"(end location)})
+     *      action: ACCESSIBILITY_ACTION_SET_TEXT,
+     *                  actionArguments(ACTION_ARGU_SET_TEXT,"the text of setted")
+     * @return true Perform action succeed, otherwise is not.
+     * @since 3
+     * @sysCap Accessibility
+     */
+    bool ExecuteAction(const ActionType &action, const std::map<std::string, std::string> &actionArguments)
+    {
+        (void)action;
+        (void)actionArguments;
+        return false;
+    }
 
     /**
      * @brief Get the window Id of the component is belongs to the window.

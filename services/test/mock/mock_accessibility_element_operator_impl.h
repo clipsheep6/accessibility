@@ -29,14 +29,14 @@ namespace Accessibility {
  * The class define the interface for UI to implement.
  * It is triggered by ABMS when AA to request the accessibility information.
  */
-class AccessibilityElementOperatorImpl : public AccessibilityElementOperatorStub {
+class MockAccessibilityElementOperatorImpl : public AccessibilityElementOperatorStub {
 public:
     /**
      * @brief construct function
      * @param object The object of IPC
      * @return
      */
-    explicit AccessibilityElementOperatorImpl(
+    explicit MockAccessibilityElementOperatorImpl(
         int32_t windowId, const std::shared_ptr<AccessibilityElementOperator>& operation);
 
     /**
@@ -44,7 +44,7 @@ public:
      * @param
      * @return
      */
-    ~AccessibilityElementOperatorImpl();
+    ~MockAccessibilityElementOperatorImpl();
 
     /**
      * @brief Make the node information by accessibility ID and set the result by callback.

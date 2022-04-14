@@ -194,7 +194,7 @@ void AamsInjectorTest::AddAccessibilityWindowConnection()
     int32_t windowId = 0;
     std::shared_ptr<AccessibilityElementOperator> operation = nullptr;
     int32_t accountId = 0;
-    sptr<AccessibilityElementOperatorStub> stub = new AccessibilityElementOperatorImpl(windowId, operation);
+    sptr<AccessibilityElementOperatorStub> stub = new MockAccessibilityElementOperatorImpl(windowId, operation);
     sptr<IAccessibilityElementOperator> proxy = new MockAccessibilityElementOperatorProxy(stub);
     GTEST_LOG_(INFO) << "aams  RegisterElementOperator";
     ins_->RegisterElementOperator(windowId, proxy, accountId);

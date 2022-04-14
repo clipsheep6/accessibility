@@ -53,11 +53,9 @@ public:
     void SetUp()
     {
         std::shared_ptr<AccessibleAbilityListener> listener = std::make_shared<MockAccessibleAbilityListener>();
-
-
         GTEST_LOG_(INFO) << "AccessibilityUITestAbilityImplTest SetUp()";
         instance_ = std::make_shared<AccessibilityUITestAbilityImpl>();
-    };
+    }
     void TearDown()
     {
         GTEST_LOG_(INFO) << "AccessibilityUITestAbilityImplTest TearDown()";

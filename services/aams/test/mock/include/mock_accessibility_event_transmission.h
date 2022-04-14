@@ -23,8 +23,8 @@ namespace OHOS {
 namespace Accessibility {
 class MockEventTransmission : public EventTransmission {
 public:
-    MockEventTransmission(){};
-    virtual ~MockEventTransmission(){};
+    MockEventTransmission() {}
+    virtual ~MockEventTransmission() {}
 
     MOCK_METHOD1(OnKeyEvent, void(MMI::KeyEvent& event));
     MOCK_METHOD1(OnPointerEvent, void(MMI::KeyEvent& event));

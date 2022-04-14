@@ -16,8 +16,8 @@
 #include <gtest/gtest.h>
 #include <map>
 #include <memory>
-#include "accessible_ability_channel.h"
 #include "accessibility_keyevent_filter.h"
+#include "accessible_ability_channel.h"
 #include "accessible_ability_manager_service.h"
 #include "iservice_registry.h"
 #include "mock_accessible_ability_manager_service.h"
@@ -29,7 +29,7 @@ using namespace testing::ext;
 
 namespace OHOS {
 namespace Accessibility {
-#define SLEEP_TIME_3 3
+const static uint32_t SLEEP_TIME_3 = 3;
 class KeyEventFilterUnitTest : public ::testing::Test {
 public:
     KeyEventFilterUnitTest()

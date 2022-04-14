@@ -54,4 +54,4 @@ public:
 };
 } // namespace Accessibility
 } // namespace OHOS
-#endif
+#endif // ACCESSIBILITY_STATE_EVENT_H

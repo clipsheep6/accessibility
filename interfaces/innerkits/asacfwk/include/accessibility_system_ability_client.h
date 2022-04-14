@@ -358,4 +358,4 @@ public:
 };
 } // namespace Accessibility
 } // namespace OHOS
-#endif
+#endif // ACCESSIBILITY_SYSTEM_ABILITY_CLIENT_H

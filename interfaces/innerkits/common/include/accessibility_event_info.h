@@ -563,6 +563,6 @@ protected:
     NotificationCategory category_ = CATEGORY_INVALID;
     int32_t pageId_ = 0;
 };
-} // namesapce Accessibility
+} // namespace Accessibility
 } // namespace OHOS
 #endif // ACCESSIBILITY_EVENT_INFO_H

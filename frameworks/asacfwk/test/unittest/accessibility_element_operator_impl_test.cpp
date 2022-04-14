@@ -21,13 +21,13 @@
 using namespace testing;
 using namespace testing::ext;
 
-const int32_t ELEMENT_ID = 1;
-const int32_t REQUEST_ID = 1;
-const int32_t MODE = 0;
-const std::string TEST = "test";
-const int32_t FOCUS_TYPE = 1;
-const int32_t DIRECTION = 1;
-const int32_t ACTION = 1;
+const static int32_t ELEMENT_ID = 1;
+const static int32_t REQUEST_ID = 1;
+const static int32_t MODE = 0;
+const static std::string TEST = "test";
+const static int32_t FOCUS_TYPE = 1;
+const static int32_t DIRECTION = 1;
+const static int32_t ACTION = 1;
 
 namespace OHOS {
 namespace Accessibility {

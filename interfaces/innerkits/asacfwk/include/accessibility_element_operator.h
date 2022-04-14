@@ -120,4 +120,4 @@ public:
 };
 } // namespace Accessibility
 } // namespace OHOS
-#endif
+#endif // ACCESSIBILITY_ELEMENT_OPERATOR_H

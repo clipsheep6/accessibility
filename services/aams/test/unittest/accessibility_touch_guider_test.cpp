@@ -22,7 +22,7 @@ using namespace testing::ext;
 
 namespace OHOS {
 namespace Accessibility {
-#define SLEEP_TIME_3 3
+const static uint32_t SLEEP_TIME_3 = 3;
 class TouchGuiderTest : public testing::Test {
 public:
     TouchGuiderTest()

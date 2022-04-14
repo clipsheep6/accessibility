@@ -31,7 +31,7 @@ using namespace testing::ext;
 
 namespace OHOS {
 namespace Accessibility {
-#define SLEEP_TIME_1 1
+const static unsigned int SLEEP_TIME_1 = 1;
 class AccessibilityAccountDataTest : public testing::Test {
 public:
     AccessibilityAccountDataTest()

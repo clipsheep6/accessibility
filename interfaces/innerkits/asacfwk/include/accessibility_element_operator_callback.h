@@ -69,5 +69,5 @@ public:
     virtual void SetExecuteActionResult(const bool succeeded, const int32_t requestId) = 0;
 };
 } // namespace Accessibility
-} // namesapce OHOS
-#endif
+} // namespace OHOS
+#endif // ACCESSIBILITY_ELEMENT_OPERATOR_CALLBACK_H

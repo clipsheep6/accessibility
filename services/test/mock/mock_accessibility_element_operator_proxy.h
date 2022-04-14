@@ -133,6 +133,19 @@ public:
      */
     virtual void OutsideTouch() override;
 
+    int32_t testElementId_ = -1;
+    int32_t testClearFocus_ = -1;
+    int32_t testOutsideTouch_ = -1;
+
+    int32_t testChannelElementId_ = -1;
+    int32_t testChannelRequestId_ = -1;
+    int32_t testChannelMode_ = -1;
+    std::string testText_ = "";
+    int32_t testFocusType_ = 0;
+    int32_t testDirection_ = 0;
+    int32_t testAction_ = 0;
+    std::map<std::string, std::string> testActionArguments_;
+
 private:
     /**
      * @brief Write the descriptor of IPC.
@@ -152,20 +165,6 @@ private:
     bool SendTransactCmd(
         IAccessibilityElementOperator::Message code, MessageParcel& data, MessageParcel& reply, MessageOption& option);
     static inline BrokerDelegator<MockAccessibilityElementOperatorProxy> delegator;
-
-public:
-    int32_t testElementId_ = -1;
-    int32_t testClearFocus_ = -1;
-    int32_t testOutsideTouch_ = -1;
-
-    int32_t testChannelElementId_ = -1;
-    int32_t testChannelRequestId_ = -1;
-    int32_t testChannelMode_ = -1;
-    std::string testText_ = "";
-    int32_t testFocusType_ = 0;
-    int32_t testDirection_ = 0;
-    int32_t testAction_ = 0;
-    std::map<std::string, std::string> testActionArguments_;
 };
 } // namespace Accessibility
 } // namespace OHOS

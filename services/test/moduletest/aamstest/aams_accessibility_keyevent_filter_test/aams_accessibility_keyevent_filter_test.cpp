@@ -110,7 +110,7 @@ void AamsKeyEventFilterTest::SetUp()
     sptr<AccessibleAbilityConnection> connection = new AccessibleAbilityConnection(accountData, 0, *abilityInfo);
     aastub_ = new AccessibleAbilityChannel(*connection);
     connection->OnAbilityConnectDone(elementName, aastub_, 0);
-    sleep(3);
+    sleep(TEST_NUM_3);
     interceptorId_ = std::make_shared<AccessibilityInputEventConsumer>();
     MMI::InputManager::GetInstance()->AddInterceptor(interceptorId_);
 }
@@ -195,7 +195,7 @@ HWTEST_F(AamsKeyEventFilterTest, AamsKeyEventFilterTest_Moduletest_OnKeyEvent001
     GTEST_LOG_(INFO) << "AamsKeyEventFilterTest_Moduletest_OnKeyEvent001 start";
 
     std::shared_ptr<MMI::KeyEvent> keyEvent = CreateOnKeyEvent(MMI::KeyEvent::KEYCODE_VOLUME_UP);
-    sleep(3);
+    sleep(TEST_NUM_3);
     std::map<std::string, sptr<AccessibleAbilityConnection>> connectionMaps =
         DelayedSingleton<AccessibleAbilityManagerService>::GetInstance()
             ->GetCurrentAccountData()
@@ -232,7 +232,7 @@ HWTEST_F(AamsKeyEventFilterTest, AamsKeyEventFilterTest_Moduletest_OnKeyEvent002
     GTEST_LOG_(INFO) << "AamsKeyEventFilterTest_Moduletest_OnKeyEvent002 start";
 
     std::shared_ptr<MMI::KeyEvent> keyEvent = CreateOnKeyEvent(MMI::KeyEvent::KEYCODE_VOLUME_UP);
-    sleep(3);
+    sleep(TEST_NUM_3);
     std::map<std::string, sptr<AccessibleAbilityConnection>> connectionMaps =
         DelayedSingleton<AccessibleAbilityManagerService>::GetInstance()
             ->GetCurrentAccountData()
@@ -271,7 +271,7 @@ HWTEST_F(AamsKeyEventFilterTest, AamsKeyEventFilterTest_Moduletest_OnKeyEvent003
     GTEST_LOG_(INFO) << "AamsKeyEventFilterTest_Moduletest_OnKeyEvent003 start";
 
     std::shared_ptr<MMI::KeyEvent> keyEvent = CreateOnKeyEvent(MMI::KeyEvent::KEYCODE_VOLUME_UP);
-    sleep(3);
+    sleep(TEST_NUM_3);
     std::map<std::string, sptr<AccessibleAbilityConnection>> connectionMaps =
         DelayedSingleton<AccessibleAbilityManagerService>::GetInstance()
             ->GetCurrentAccountData()

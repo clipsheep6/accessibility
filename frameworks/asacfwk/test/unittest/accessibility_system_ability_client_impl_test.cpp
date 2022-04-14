@@ -22,13 +22,13 @@
 using namespace testing;
 using namespace testing::ext;
 
-const int32_t WINDOW_ID = 1;
-const int32_t ACCOUNT_ID = 1;
-const uint32_t ACCESSIBILITY_ABILITY_TYPES = 1;
-const int32_t COMPONENT_ID = 1;
-const uint32_t EVENT_TYPE = 1;
-const int32_t TYPE = 1;
-const uint32_t STATE_TYPE = 1;
+const static int32_t WINDOW_ID = 1;
+const static int32_t ACCOUNT_ID = 1;
+const static uint32_t ACCESSIBILITY_ABILITY_TYPES = 1;
+const static int32_t COMPONENT_ID = 1;
+const static uint32_t EVENT_TYPE = 1;
+const static int32_t TYPE = 1;
+const static uint32_t STATE_TYPE = 1;
 
 namespace OHOS {
 namespace Accessibility {

@@ -28,15 +28,15 @@ namespace OHOS {
 namespace Accessibility {
 using AccessibilityElementOperatorCallbacks =
     std::map<const int32_t, const sptr<IAccessibilityElementOperatorCallback>>;
-AccessibilityElementOperatorImpl::AccessibilityElementOperatorImpl(
+MockAccessibilityElementOperatorImpl::MockAccessibilityElementOperatorImpl(
     int32_t windowId, const std::shared_ptr<AccessibilityElementOperator>& operation)
     : windowId_(windowId), operator_(operation)
 {}
 
-AccessibilityElementOperatorImpl::~AccessibilityElementOperatorImpl()
+MockAccessibilityElementOperatorImpl::~MockAccessibilityElementOperatorImpl()
 {}
 
-void AccessibilityElementOperatorImpl::SearchElementInfoByAccessibilityId(const int32_t elementId,
+void MockAccessibilityElementOperatorImpl::SearchElementInfoByAccessibilityId(const int32_t elementId,
     const int32_t requestId, const sptr<IAccessibilityElementOperatorCallback>& callback, const int32_t mode)
 {
     operatorCallback_.AddRequest(requestId, callback);
@@ -48,7 +48,7 @@ void AccessibilityElementOperatorImpl::SearchElementInfoByAccessibilityId(const 
     return;
 }
 
-void AccessibilityElementOperatorImpl::SearchElementInfosByText(const int32_t elementId, const std::string& text,
+void MockAccessibilityElementOperatorImpl::SearchElementInfosByText(const int32_t elementId, const std::string& text,
     const int32_t requestId, const sptr<IAccessibilityElementOperatorCallback>& callback)
 {
     operatorCallback_.AddRequest(requestId, callback);
@@ -60,7 +60,7 @@ void AccessibilityElementOperatorImpl::SearchElementInfosByText(const int32_t el
     return;
 }
 
-void AccessibilityElementOperatorImpl::FindFocusedElementInfo(const int32_t elementId, const int32_t focusType,
+void MockAccessibilityElementOperatorImpl::FindFocusedElementInfo(const int32_t elementId, const int32_t focusType,
     const int32_t requestId, const sptr<IAccessibilityElementOperatorCallback>& callback)
 {
     operatorCallback_.AddRequest(requestId, callback);
@@ -72,7 +72,7 @@ void AccessibilityElementOperatorImpl::FindFocusedElementInfo(const int32_t elem
     return;
 }
 
-void AccessibilityElementOperatorImpl::FocusMoveSearch(const int32_t elementId, const int32_t direction,
+void MockAccessibilityElementOperatorImpl::FocusMoveSearch(const int32_t elementId, const int32_t direction,
     const int32_t requestId, const sptr<IAccessibilityElementOperatorCallback>& callback)
 {
     operatorCallback_.AddRequest(requestId, callback);
@@ -84,7 +84,7 @@ void AccessibilityElementOperatorImpl::FocusMoveSearch(const int32_t elementId, 
     return;
 }
 
-void AccessibilityElementOperatorImpl::ExecuteAction(const int32_t elementId, const int32_t action,
+void MockAccessibilityElementOperatorImpl::ExecuteAction(const int32_t elementId, const int32_t action,
     const std::map<std::string, std::string> actionArguments, int32_t requestId,
     const sptr<IAccessibilityElementOperatorCallback>& callback)
 {
@@ -97,7 +97,7 @@ void AccessibilityElementOperatorImpl::ExecuteAction(const int32_t elementId, co
     return;
 }
 
-void AccessibilityElementOperatorImpl::ClearFocus()
+void MockAccessibilityElementOperatorImpl::ClearFocus()
 {
     if (operator_) {
         operator_->ClearFocus();
@@ -107,7 +107,7 @@ void AccessibilityElementOperatorImpl::ClearFocus()
     return;
 }
 
-void AccessibilityElementOperatorImpl::OutsideTouch()
+void MockAccessibilityElementOperatorImpl::OutsideTouch()
 {
     if (operator_ != nullptr) {
         operator_->OutsideTouch();
@@ -116,12 +116,12 @@ void AccessibilityElementOperatorImpl::OutsideTouch()
     }
     return;
 }
-int32_t AccessibilityElementOperatorImpl::GetWindowId()
+int32_t MockAccessibilityElementOperatorImpl::GetWindowId()
 {
     return windowId_;
 }
 
-void AccessibilityElementOperatorImpl::OperatorCallbackImpl::AddRequest(
+void MockAccessibilityElementOperatorImpl::OperatorCallbackImpl::AddRequest(
     const int32_t requestId, const sptr<IAccessibilityElementOperatorCallback>& callback)
 {
     std::lock_guard<std::mutex> lock(mutex_);
@@ -132,7 +132,7 @@ void AccessibilityElementOperatorImpl::OperatorCallbackImpl::AddRequest(
     return;
 }
 
-void AccessibilityElementOperatorImpl::OperatorCallbackImpl::SetSearchElementInfoByAccessibilityIdResult(
+void MockAccessibilityElementOperatorImpl::OperatorCallbackImpl::SetSearchElementInfoByAccessibilityIdResult(
     const std::list<AccessibilityElementInfo>& infos, const int32_t requestId)
 {
     std::lock_guard<std::mutex> lock(mutex_);
@@ -149,7 +149,7 @@ void AccessibilityElementOperatorImpl::OperatorCallbackImpl::SetSearchElementInf
     return;
 }
 
-void AccessibilityElementOperatorImpl::OperatorCallbackImpl::SetSearchElementInfoByTextResult(
+void MockAccessibilityElementOperatorImpl::OperatorCallbackImpl::SetSearchElementInfoByTextResult(
     const std::list<AccessibilityElementInfo>& infos, const int32_t requestId)
 {
     std::lock_guard<std::mutex> lock(mutex_);
@@ -166,7 +166,7 @@ void AccessibilityElementOperatorImpl::OperatorCallbackImpl::SetSearchElementInf
     return;
 }
 
-void AccessibilityElementOperatorImpl::OperatorCallbackImpl::SetFindFocusedElementInfoResult(
+void MockAccessibilityElementOperatorImpl::OperatorCallbackImpl::SetFindFocusedElementInfoResult(
     const AccessibilityElementInfo& info, const int32_t requestId)
 {
     std::lock_guard<std::mutex> lock(mutex_);
@@ -182,7 +182,7 @@ void AccessibilityElementOperatorImpl::OperatorCallbackImpl::SetFindFocusedEleme
     return;
 }
 
-void AccessibilityElementOperatorImpl::OperatorCallbackImpl::SetFocusMoveSearchResult(
+void MockAccessibilityElementOperatorImpl::OperatorCallbackImpl::SetFocusMoveSearchResult(
     const AccessibilityElementInfo& info, const int32_t requestId)
 {
     std::lock_guard<std::mutex> lock(mutex_);
@@ -198,7 +198,7 @@ void AccessibilityElementOperatorImpl::OperatorCallbackImpl::SetFocusMoveSearchR
     return;
 }
 
-void AccessibilityElementOperatorImpl::OperatorCallbackImpl::SetExecuteActionResult(
+void MockAccessibilityElementOperatorImpl::OperatorCallbackImpl::SetExecuteActionResult(
     const bool succeeded, const int32_t requestId)
 {
     std::lock_guard<std::mutex> lock(mutex_);
