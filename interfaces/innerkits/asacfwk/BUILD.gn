@@ -53,7 +53,7 @@ ohos_shared_library("accessibilityclient") {
   deps = [
     "//base/miscservices/time/services:time_service",
     "//foundation/aafwk/standard/frameworks/kits/ability/native:abilitykit_native",
-    "//foundation/distributeddatamgr/appdatamgr/interfaces/innerkits/native_preferences:native_preferences",
+    "//foundation/distributeddatamgr/appdatamgr/interfaces/inner_api/native/preferences:native_preferences",
     "//utils/native/base:utils",
   ]
 
