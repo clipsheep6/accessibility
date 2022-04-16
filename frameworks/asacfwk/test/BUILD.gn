@@ -24,7 +24,6 @@ config("module_private_config") {
   }
   include_dirs = [
     "mock",
-    "//third_party/json/include",
     "//utils/native/base/include",
     "//utils/system/safwk/native/include",
     "//base/accessibility/frameworks/aafwk/include",
@@ -99,9 +98,12 @@ ohos_unittest("asac_unit_test") {
     "//foundation/appexecfwk/standard/interfaces/innerkits/libeventhandler:libeventhandler",
     "//third_party/googletest:gmock_main",
     "//third_party/googletest:gtest_main",
+    "//third_party/json:nlohmann_json_static",
     "//third_party/jsoncpp:jsoncpp",
     "//utils/native/base:utils",
   ]
+
+  ldflags = [ "-Wl,--exclude-libs,libnlohmann_json_static.a" ]
 
   external_deps = [
     "bundle_framework:appexecfwk_base",
