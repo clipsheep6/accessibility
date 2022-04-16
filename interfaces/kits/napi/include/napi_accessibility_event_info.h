@@ -42,8 +42,7 @@ public:
 
     static napi_value GetSource(napi_env env, napi_callback_info info);
 
-    static napi_value cons_;
-    static napi_ref consRef_;
+    static thread_local napi_ref consRef_;
 private:
     NAccessibilityEventInfo() = default;
     ~NAccessibilityEventInfo() = default;

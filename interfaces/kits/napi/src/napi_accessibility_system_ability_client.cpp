@@ -21,10 +21,8 @@
 using namespace OHOS;
 using namespace OHOS::Accessibility;
 
-napi_value NAccessibilityClient::aaCons_;
-napi_value NAccessibilityClient::aaStyleCons_;
-napi_ref NAccessibilityClient::aaConsRef_;
-napi_ref NAccessibilityClient::aaStyleConsRef_;
+thread_local napi_ref NAccessibilityClient::aaConsRef_;
+thread_local napi_ref NAccessibilityClient::aaStyleConsRef_;
 
 std::map<std::string, std::vector<std::shared_ptr<StateListener>>> NAccessibilityClient::stateListeners_ = {};
 std::vector<std::shared_ptr<CaptionListener>> NAccessibilityClient::captionListeners_ = {};
@@ -1365,6 +1363,7 @@ void NAccessibilityClient::DefineJSCaptionsManager(napi_env env)
         DECLARE_NAPI_FUNCTION("off", NAccessibilityClient::DeregisterCaptionStateCallback),
     };
 
+    napi_value aaCons = nullptr;
     NAPI_CALL_RETURN_VOID(env,
         napi_define_class(env,
             "NAccessibilityClient",
@@ -1373,10 +1372,9 @@ void NAccessibilityClient::DefineJSCaptionsManager(napi_env env)
             nullptr,
             sizeof(captionsManagerDesc) / sizeof(captionsManagerDesc[0]),
             captionsManagerDesc,
-            &NAccessibilityClient::aaCons_));
+            &aaCons));
 
-    napi_create_reference(env, NAccessibilityClient::aaCons_, 1,
-                          &NAccessibilityClient::aaConsRef_);
+    napi_create_reference(env, aaCons, 1, &NAccessibilityClient::aaConsRef_);
 }
 
 napi_value NAccessibilityClient::AccessibleAbilityConstructor(napi_env env, napi_callback_info info)
@@ -1400,17 +1398,17 @@ napi_value NAccessibilityClient::GetCaptionsManager(napi_env env, napi_callback_
     callbackInfo->captionState_ = instance->GetCaptionState();
     callbackInfo->captionProperty_ = instance->GetCaptionProperty();
 
-    napi_get_reference_value(env, NAccessibilityClient::aaConsRef_,
-                             &NAccessibilityClient::aaCons_);
-    napi_new_instance(env, NAccessibilityClient::aaCons_, 0, nullptr, &result);
+    napi_value aaCons = nullptr;
+    napi_get_reference_value(env, NAccessibilityClient::aaConsRef_, &aaCons);
+    napi_new_instance(env, aaCons, 0, nullptr, &result);
 
     napi_value keyCode;
     napi_get_boolean(env, callbackInfo->captionState_, &keyCode);
     napi_set_named_property(env, result, "enabled", keyCode);
 
-    napi_get_reference_value(env, NAccessibilityClient::aaStyleConsRef_,
-                             &NAccessibilityClient::aaStyleCons_);
-    napi_status status = napi_new_instance(env, NAccessibilityClient::aaStyleCons_, 0, nullptr, &keyCode);
+    napi_value aaStyleCons = nullptr;
+    napi_get_reference_value(env, NAccessibilityClient::aaStyleConsRef_, &aaStyleCons);
+    napi_status status = napi_new_instance(env, aaStyleCons, 0, nullptr, &keyCode);
     HILOG_INFO("napi_new_instance() = %{public}d ", (int32_t)status);
     ConvertCaptionPropertyToJS(env, keyCode, callbackInfo->captionProperty_);
     napi_set_named_property(env, result, "style", keyCode);
@@ -1498,9 +1496,9 @@ napi_value NAccessibilityClient::GetCaptionStyle(napi_env env, napi_callback_inf
     }
     captionProperty = instance->GetCaptionProperty();
 
-    napi_get_reference_value(env, NAccessibilityClient::aaStyleConsRef_,
-                             &NAccessibilityClient::aaStyleCons_);
-    napi_status status = napi_new_instance(env, NAccessibilityClient::aaStyleCons_, 0, nullptr, &captionStyle);
+    napi_value aaStyleCons = nullptr;
+    napi_get_reference_value(env, NAccessibilityClient::aaStyleConsRef_, &aaStyleCons);
+    napi_status status = napi_new_instance(env, aaStyleCons, 0, nullptr, &captionStyle);
     HILOG_INFO("napi_new_instance() = %{public}d ", (int32_t)status);
     ConvertCaptionPropertyToJS(env, captionStyle, captionProperty);
 
@@ -1688,6 +1686,8 @@ void NAccessibilityClient::DefineJSCaptionsStyle(napi_env env)
             NAccessibilityClient::GetCaptionWindowColor, NAccessibilityClient::SetCaptionWindowColor),
     };
 
+    napi_value aaStyleCons = nullptr;
+
     NAPI_CALL_RETURN_VOID(env,
         napi_define_class(env,
             "NAccessibilityClientStyle",
@@ -1696,10 +1696,9 @@ void NAccessibilityClient::DefineJSCaptionsStyle(napi_env env)
             nullptr,
             sizeof(captionsStyleDesc) / sizeof(captionsStyleDesc[0]),
             captionsStyleDesc,
-            &NAccessibilityClient::aaStyleCons_));
+            &aaStyleCons));
 
-    napi_create_reference(env, NAccessibilityClient::aaStyleCons_, 1,
-                          &NAccessibilityClient::aaStyleConsRef_);
+    napi_create_reference(env, aaStyleCons, 1, &NAccessibilityClient::aaStyleConsRef_);
 }
 
 napi_value NAccessibilityClient::AccessibleAbilityConstructorStyle(napi_env env, napi_callback_info info)

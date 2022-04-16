@@ -389,10 +389,12 @@ void ConvertAccessibilityWindowInfosToJS(
     if (accessibilityWindowInfos.empty()) {
         return;
     }
+    napi_value constructor = nullptr;
+    napi_get_reference_value(env, NAccessibilityWindowInfo::consRef_, &constructor);
 
     for (auto& windowInfo : accessibilityWindowInfos) {
         napi_value obj = nullptr;
-        napi_new_instance(env, NAccessibilityWindowInfo::cons_, 0, nullptr, &obj);
+        napi_new_instance(env, constructor, 0, nullptr, &obj);
         ConvertAccessibilityWindowInfoToJS(env, obj, windowInfo);
         napi_set_element(env, result, idx, obj);
         idx++;
@@ -721,9 +723,12 @@ void ConvertElementInfosToJS(
     size_t index = 0;
     HILOG_DEBUG("ConvertElementInfosToJS: elementInfo size(%{public}zu)", elementInfos.size());
 
+    napi_value constructor = nullptr;
+    napi_get_reference_value(env, NElementInfo::consRef_, &constructor);
+
     for (auto& elementInfo : elementInfos) {
         napi_value obj = nullptr;
-        napi_status status = napi_new_instance(env, NElementInfo::cons_, 0, nullptr, &obj);
+        napi_status status = napi_new_instance(env, constructor, 0, nullptr, &obj);
         HILOG_INFO("status is %{public}d", status);
         ConvertElementInfoToJS(env, obj, elementInfo);
         napi_set_element(env, result, index, obj);

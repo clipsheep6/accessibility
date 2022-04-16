@@ -20,8 +20,7 @@
 using namespace OHOS;
 using namespace OHOS::Accessibility;
 
-napi_value NElementInfo::cons_ = nullptr;
-napi_ref NElementInfo::consRef_ = nullptr;
+thread_local napi_ref NElementInfo::consRef_ = nullptr;
 
 void NElementInfo::DefineJSElementInfo(napi_env env)
 {
@@ -34,6 +33,8 @@ void NElementInfo::DefineJSElementInfo(napi_env env)
         DECLARE_NAPI_FUNCTION("getParent", NElementInfo::GetParent),
     };
 
+    napi_value constructor = nullptr;
+
     NAPI_CALL_RETURN_VOID(env,
         napi_define_class(env,
             "AccessibilityElementInfo",
@@ -42,8 +43,8 @@ void NElementInfo::DefineJSElementInfo(napi_env env)
             nullptr,
             sizeof(descForElementInfo) / sizeof(descForElementInfo[0]),
             descForElementInfo,
-            &NElementInfo::cons_));
-    napi_create_reference(env, NElementInfo::cons_, 1, &NElementInfo::consRef_);
+            &constructor));
+    napi_create_reference(env, constructor, 1, &NElementInfo::consRef_);
 }
 
 napi_value NElementInfo::JSConstructor(napi_env env, napi_callback_info info)
@@ -189,7 +190,6 @@ napi_value NElementInfo::GetByContent(napi_env env, napi_callback_info info)
             napi_get_undefined(env, &undefined);
 
             napi_create_array(env, &argv[PARAM1]);
-            napi_get_reference_value(env, NElementInfo::consRef_, &NElementInfo::cons_);
             ConvertElementInfosToJS(env, argv[PARAM1], callbackInfo->nodeInfos_);
 
             argv[PARAM0] = GetErrorValue(env, callbackInfo->ret_ ? CODE_SUCCESS : CODE_FAILED);
@@ -278,8 +278,10 @@ napi_value NElementInfo::GetFocus(napi_env env, napi_callback_info info)
             napi_value undefined = 0;
             napi_get_undefined(env, &undefined);
 
-            napi_get_reference_value(env, NElementInfo::consRef_, &NElementInfo::cons_);
-            napi_new_instance(env, NElementInfo::cons_, 0, nullptr, &argv[PARAM1]);
+            napi_value constructor = nullptr;
+
+            napi_get_reference_value(env, NElementInfo::consRef_, &constructor);
+            napi_new_instance(env, constructor, 0, nullptr, &argv[PARAM1]);
             ConvertElementInfoToJS(env, argv[PARAM1], callbackInfo->nodeInfo_);
 
             argv[PARAM0] = GetErrorValue(env, callbackInfo->ret_ ? CODE_SUCCESS : CODE_FAILED);
@@ -385,8 +387,9 @@ napi_value NElementInfo::GetNext(napi_env env, napi_callback_info info)
             napi_value undefined = 0;
             napi_get_undefined(env, &undefined);
 
-            napi_get_reference_value(env, NElementInfo::consRef_, &NElementInfo::cons_);
-            napi_new_instance(env, NElementInfo::cons_, 0, nullptr, &argv[PARAM1]);
+            napi_value constructor = nullptr;
+            napi_get_reference_value(env, NElementInfo::consRef_, &constructor);
+            napi_new_instance(env, constructor, 0, nullptr, &argv[PARAM1]);
             ConvertElementInfoToJS(env, argv[PARAM1], callbackInfo->nodeInfo_);
 
             argv[PARAM0] = GetErrorValue(env, callbackInfo->ret_ ? CODE_SUCCESS : CODE_FAILED);
@@ -467,8 +470,9 @@ napi_value NElementInfo::GetChild(napi_env env, napi_callback_info info)
             napi_value undefined = 0;
             napi_get_undefined(env, &undefined);
 
-            napi_get_reference_value(env, NElementInfo::consRef_, &NElementInfo::cons_);
-            napi_new_instance(env, NElementInfo::cons_, 0, nullptr, &argv[PARAM1]);
+            napi_value constructor = nullptr;
+            napi_get_reference_value(env, NElementInfo::consRef_, &constructor);
+            napi_new_instance(env, constructor, 0, nullptr, &argv[PARAM1]);
             ConvertElementInfoToJS(env, argv[PARAM1], callbackInfo->nodeInfo_);
 
             argv[PARAM0] = GetErrorValue(env, callbackInfo->ret_ ? CODE_SUCCESS : CODE_FAILED);
@@ -545,9 +549,9 @@ napi_value NElementInfo::GetParent(napi_env env, napi_callback_info info)
             napi_value callback = 0;
             napi_value undefined = 0;
             napi_get_undefined(env, &undefined);
-
-            napi_get_reference_value(env, NElementInfo::consRef_, &NElementInfo::cons_);
-            napi_new_instance(env, NElementInfo::cons_, 0, nullptr, &argv[PARAM1]);
+            napi_value constructor = nullptr;
+            napi_get_reference_value(env, NElementInfo::consRef_, &constructor);
+            napi_new_instance(env, constructor, 0, nullptr, &argv[PARAM1]);
             ConvertElementInfoToJS(env, argv[PARAM1], callbackInfo->nodeInfo_);
 
             argv[PARAM0] = GetErrorValue(env, callbackInfo->ret_ ? CODE_SUCCESS : CODE_FAILED);
