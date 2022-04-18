@@ -41,6 +41,14 @@ void ElementName::SetElementAbilityName(ElementName *element, const char *abilit
     element->SetAbilityName(abilityName);
 }
 
+void ElementName::SetElementModuleName(ElementName *element, const char *moduleName)
+{
+    if (!element) {
+        return;
+    }
+    element->SetModuleName(moduleName);
+}
+
 void ElementName::ClearElement(ElementName *element)
 {
     if (!element) {
@@ -49,10 +57,12 @@ void ElementName::ClearElement(ElementName *element)
     element->SetDeviceID("");
     element->SetBundleName("");
     element->SetAbilityName("");
+    element->SetModuleName("");
 }
 
-ElementName::ElementName(const std::string &deviceId, const std::string &bundleName, const std::string &abilityName)
-    : deviceId_(deviceId), bundleName_(bundleName), abilityName_(abilityName)
+ElementName::ElementName(const std::string &deviceId, const std::string &bundleName,
+    const std::string &abilityName, const std::string &moduleName)
+    : deviceId_(deviceId), bundleName_(bundleName), abilityName_(abilityName), moduleName_(moduleName)
 {
 }
 
@@ -69,10 +79,15 @@ std::string ElementName::GetURI() const
     return deviceId_ + "/" + bundleName_ + "/" + abilityName_;
 }
 
+std::string ElementName::GetElementNameURI() const
+{
+    return deviceId_ + "/" + bundleName_ + "/" + moduleName_ + "/" + abilityName_;
+}
+
 bool ElementName::operator==(const ElementName &element) const
 {
     return (deviceId_ == element.GetDeviceID() && bundleName_ == element.GetBundleName() &&
-            abilityName_ == element.GetAbilityName());
+        abilityName_ == element.GetAbilityName() && moduleName_ == element.GetModuleName());
 }
 
 bool ElementName::ReadFromParcel(Parcel &parcel)
