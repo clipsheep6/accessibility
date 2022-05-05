@@ -70,14 +70,14 @@ void AccessibilityAccountData::AddConnectedAbility(sptr<AccessibleAbilityConnect
     if (!connectedA11yAbilities_.count(connection->GetElementName().GetURI())) {
         connectedA11yAbilities_.insert(std::make_pair(connection->GetElementName().GetURI(), connection));
     }
-    HILOG_DEBUG("Add ConnectedAbility: %{public}d", connectedA11yAbilities_.size());
+    HILOG_DEBUG("Add ConnectedAbility: %{public}zu", connectedA11yAbilities_.size());
 }
 
 // Remove connect ability.
 void AccessibilityAccountData::RemoveConnectedAbility(sptr<AccessibleAbilityConnection>& connection)
 {
     HILOG_DEBUG("URI is %{public}s", connection->GetElementName().GetURI().c_str());
-    HILOG_DEBUG("Remove ConnectedAbility: %{public}d", connectedA11yAbilities_.size());
+    HILOG_DEBUG("Remove ConnectedAbility: %{public}zu", connectedA11yAbilities_.size());
 }
 
 void AccessibilityAccountData::AddStateCallback(const sptr<IAccessibleAbilityManagerStateObserver>& callback)
@@ -128,7 +128,7 @@ void AccessibilityAccountData::AddConnectingA11yAbility(const std::string& bundl
         }
     }
     connectingA11yAbilities_.push_back(bundleName);
-    HILOG_DEBUG("Add ConnectingA11yAbility: %{public}d", connectingA11yAbilities_.size());
+    HILOG_DEBUG("Add ConnectingA11yAbility: %{public}zu", connectingA11yAbilities_.size());
 }
 
 void AccessibilityAccountData::RemoveConnectingA11yAbility(const std::string& bundleName)
@@ -138,7 +138,7 @@ void AccessibilityAccountData::RemoveConnectingA11yAbility(const std::string& bu
         if (*it == bundleName) {
             HILOG_DEBUG("Removed %{public}s from ConnectingA11yAbility: ", bundleName.c_str());
             connectingA11yAbilities_.erase(it);
-            HILOG_DEBUG("Remove ConnectingA11yAbility: %{public}d", connectingA11yAbilities_.size());
+            HILOG_DEBUG("Remove ConnectingA11yAbility: %{public}zu", connectingA11yAbilities_.size());
             return;
         }
     }
@@ -156,7 +156,7 @@ void AccessibilityAccountData::AddEnabledAbility(const std::string& bundleName)
         }
     }
     enabledAbilities_.push_back(bundleName);
-    HILOG_DEBUG("Add EnabledAbility: %{public}d", enabledAbilities_.size());
+    HILOG_DEBUG("Add EnabledAbility: %{public}zu", enabledAbilities_.size());
 }
 
 void AccessibilityAccountData::RemoveEnabledFromPref(const std::string bundleName)
@@ -172,7 +172,7 @@ void AccessibilityAccountData::RemoveEnabledAbility(const std::string& bundleNam
             HILOG_DEBUG("Removed %{public}s from EnabledAbility: ", bundleName.c_str());
             enabledAbilities_.erase(it);
             RemoveEnabledFromPref(bundleName);
-            HILOG_DEBUG("EnabledAbility size(%{public}d)", enabledAbilities_.size());
+            HILOG_DEBUG("EnabledAbility size(%{public}zu)", enabledAbilities_.size());
             return;
         }
     }
@@ -243,7 +243,7 @@ const std::vector<std::string>& AccessibilityAccountData::GetConnectingA11yAbili
 // Get enabledAbilities_.
 const std::vector<std::string>& AccessibilityAccountData::GetEnabledAbilities()
 {
-    HILOG_DEBUG("enabledAbilities_ size is (%{public}d).", enabledAbilities_.size());
+    HILOG_DEBUG("enabledAbilities_ size is (%{public}zu).", enabledAbilities_.size());
     for (auto& ability : enabledAbilities_) {
         HILOG_DEBUG("bundleName = %{public}s ", ability.c_str());
     }
@@ -434,7 +434,7 @@ bool AccessibilityAccountData::DisableAbilities(const std::vector<std::string>& 
             if (*iter == ability) {
                 enabledAbilities_.erase(iter);
                 RemoveEnabledFromPref(ability);
-                HILOG_DEBUG("Removed %{public}s and EnabledAbility size(%{public}d)",
+                HILOG_DEBUG("Removed %{public}s and EnabledAbility size(%{public}zu)",
                     ability.c_str(),
                     enabledAbilities_.size());
             } else {
