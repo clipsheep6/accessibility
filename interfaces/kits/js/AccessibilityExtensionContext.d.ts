@@ -117,7 +117,9 @@ declare interface AccessibilityElement {
     attributeValue<T extends keyof ElementAttributeValues>(attributeName: T): Promise<ElementAttributeValues[T]>;
     actionNames(): Promise<Array<string>>;
     performAction(actionName: string, args?: object): Promise<boolean>;
-    findElement<T extends keyof FindElementCondition>(type: T, condition: FindElementCondition[T]): Promise<AccessibilityElement>;
+    findElement(type: 'content', condition: string): Promise<Array<AccessibilityElement>>;
+    findElement(type: 'focusType', condition: FocusType): Promise<AccessibilityElement>;
+    findElement(type: 'focusDirection', condition: FocusDirection): Promise<AccessibilityElement>;
 }
 
 type ElementAttributeValues = {
@@ -183,11 +185,7 @@ type ElementAttributeValues = {
     'isFocused': boolean;
     'componentId': number;  //The id of the view which the node in.
 }
-type FindElementCondition = {
-    'content': string;  //Find node list information through text.
-    'focusType': FocusType; //Obtains information about the node that gains accessibility focus.
-    'focusDirection': FocusDirection;  //The information of nodes near focus is retrieved according to the input direction.
-}
+
 type FocusDirection = 'up' | 'down' | 'left' | 'right' | 'forward' | 'backward';
 /**
  * The type of the focus.
