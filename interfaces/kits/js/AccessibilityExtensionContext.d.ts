@@ -116,15 +116,15 @@ declare interface AccessibilityElement {
     attributeNames<T extends keyof ElementAttributeValues>(): Promise<Array<T>>;
     attributeValue<T extends keyof ElementAttributeValues>(attributeName: T): Promise<ElementAttributeValues[T]>;
     actionNames(): Promise<Array<string>>;
-    performAction(actionName: string, args?: object): Promise<void>;
+    performAction(actionName: string, args?: object): Promise<boolean>;
     findElement<T extends keyof FindElementCondition>(type: T, condition: FindElementCondition[T]): Promise<AccessibilityElement>;
 }
 
 type ElementAttributeValues = {
     'windowId': number; //The id of the window which the node in.
     'pageId': number;
-    'accessibilityId': number; //The accessibility id of the node.
-    'componentId': number;  //The id of the view which the node in.
+    'parentId': number; 
+    'inspectorKey': string
     'bundleName': string; //The bundle name.
     'componentType': string;  //The type of the event source component,such as button, chart.
     'inputType': number;  //The type of the input text.
@@ -165,35 +165,30 @@ type ElementAttributeValues = {
     'gridItem': GridItemInfo; //collection item info.
     'activeRegion': number; //The live range of the node.
     'isContentInvalid': boolean;  //Whether the content is invalid.
-    'error': boolean; //error information.
+    'error': string; //error information.
     'label': number;  // The label of the node.
     'beginSelected': number;  //The start position of text selected.
     'endSelected': number;  //The end position of text selected.
     // text move
     'textMoveUnit': accessibility.TextMoveUnit; //The movement step used for reading texts.
-    // WindowInfo
-    'screenRect': Rect;
-    'id': number;
-    'layer': number;
-    'title': string;
-    'type': WindowType;
-    'childIds': Array<number>;
-    'parentId': number;
+    'parent': AccessibilityElement;
+    'childs': Array<AccessibilityElement>;
     'isAccessibilityFocused': boolean;
     'isActive': boolean;
-    'isFocused': boolean;
+    // WindowInfo
+    'screenRect': Rect;
+    'layer': number;
+    'type': WindowType;
     'anchor': AccessibilityElement;
     'rootElement': AccessibilityElement;
-    'childs': Array<AccessibilityElement>;
-
     // common
-    'parent': AccessibilityElement;
+    'isFocused': boolean;
+    'componentId': number;  //The id of the view which the node in.
 }
 type FindElementCondition = {
     'content': string;  //Find node list information through text.
     'focusType': FocusType; //Obtains information about the node that gains accessibility focus.
     'focusDirection': FocusDirection;  //The information of nodes near focus is retrieved according to the input direction.
-    'child': number;  //Obtains information about the child node at a specified index.
 }
 type FocusDirection = 'up' | 'down' | 'left' | 'right' | 'forward' | 'backward';
 /**
