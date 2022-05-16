@@ -138,7 +138,6 @@ type ElementAttributeValues = {
     'checkable': boolean; //Whether the node can be check.
     'checked': boolean;   // Whether the node is checked.
     'focusable': boolean; //Whether the node can be focused.
-    'focused': boolean; //Whether the node is focused.
     'isVisible': boolean; //Whether the node is visible.
     'accessibilityFocused': boolean;  //Whether the node is accessibility focused.
     'selected': boolean;  //Whether the node is selected.
@@ -173,9 +172,8 @@ type ElementAttributeValues = {
     'textMoveUnit': accessibility.TextMoveUnit; //The movement step used for reading texts.
     'parent': AccessibilityElement;
     'childs': Array<AccessibilityElement>;
-    'isAccessibilityFocused': boolean;
-    'isActive': boolean;
     // WindowInfo
+    'isActive': boolean;
     'screenRect': Rect;
     'layer': number;
     'type': WindowType;
