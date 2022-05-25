@@ -11,7 +11,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import("//base/accessibility/accessibility_aafwk.gni")
 import("//build/ohos.gni")
 
 ohos_shared_library("accessibility") {
@@ -49,8 +48,6 @@ ohos_shared_library("accessibility") {
   configs = []
 
   deps = [
-    "${aafwk_kits_path}/ability/native:abilitykit_native",
-    "${aafwk_kits_path}/appkit:appkit_native",
     "//base/accessibility/interfaces/innerkits/aafwk:accessibleability",
     "//base/accessibility/interfaces/innerkits/acfwk:accessibilityconfig",
     "//base/accessibility/interfaces/innerkits/acfwk:accessibilityconfig",
@@ -64,6 +61,7 @@ ohos_shared_library("accessibility") {
   external_deps = [
     "ability_base:want",
     "ability_runtime:ability_manager",
+    "ability_runtime:abilitykit_native",
     "ability_runtime:runtime",
     "bundle_framework:appexecfwk_base",
     "bundle_framework:appexecfwk_core",
