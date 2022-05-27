@@ -57,16 +57,16 @@ napi_value NAccessibilityConfig::EnableAbility(napi_env env, napi_callback_info 
     napi_create_async_work(env, nullptr, resource,
         // Execute async to call c++ function
         [](napi_env env, void* data) {
-            NAccessibilityConfigData* callbackInfo = (NAccessibilityConfigData*)data;
-            auto instance = OHOS::AccessibilityConfig::AccessibilityConfig::GetInstance();
-            if (instance && callbackInfo->capabilities_ != 0) {
-                callbackInfo->ret_ = instance->EnableAbilities(
+            NAccessibilityConfigData* callbackInfo = static_cast<NAccessibilityConfigData*>(data);
+            auto &instance = Singleton<OHOS::AccessibilityConfig::AccessibilityConfig>::GetInstance();
+            if (callbackInfo->capabilities_ != 0) {
+                callbackInfo->ret_ = instance.EnableAbility(
                     callbackInfo->abilityName_, callbackInfo->capabilities_);
             }
         },
         // Execute the complete function
         [](napi_env env, napi_status status, void* data) {
-            NAccessibilityConfigData* callbackInfo = (NAccessibilityConfigData*)data;
+            NAccessibilityConfigData* callbackInfo = static_cast<NAccessibilityConfigData*>(data);
             napi_value result[ARGS_SIZE_TWO] = {0};
             napi_value callback = 0;
             napi_value undefined = 0;
@@ -121,15 +121,15 @@ napi_value NAccessibilityConfig::DisableAbility(napi_env env, napi_callback_info
     napi_create_async_work(env, nullptr, resource,
         // Execute async to call c++ function
         [](napi_env env, void* data) {
-            NAccessibilityConfigData* callbackInfo = (NAccessibilityConfigData*)data;
-            auto instance = OHOS::AccessibilityConfig::AccessibilityConfig::GetInstance();
-            if (instance) {
-                callbackInfo->ret_ = instance->DisableAbilities(callbackInfo->abilityName_);
+            NAccessibilityConfigData* callbackInfo = static_cast<NAccessibilityConfigData*>(data);
+            auto &instance = Singleton<OHOS::AccessibilityConfig::AccessibilityConfig>::GetInstance();
+            if (callbackInfo) {
+                callbackInfo->ret_ = instance.DisableAbility(callbackInfo->abilityName_);
             }
         },
         // Execute the complete function
         [](napi_env env, napi_status status, void* data) {
-            NAccessibilityConfigData* callbackInfo = (NAccessibilityConfigData*)data;
+            NAccessibilityConfigData* callbackInfo = static_cast<NAccessibilityConfigData*>(data);
             napi_value result[ARGS_SIZE_TWO] = {0};
             napi_value undefined = 0;
             napi_get_undefined(env, &undefined);
@@ -156,34 +156,53 @@ napi_value NAccessibilityConfig::DisableAbility(napi_env env, napi_callback_info
     return promise;
 }
 
-napi_value NAccessibilityConfig::SubscribeEnableAbilityListsObserver(napi_env env, napi_value (&args)[ARGS_SIZE_TWO])
+napi_value NAccessibilityConfig::SubscribeState(napi_env env, napi_callback_info info)
 {
     HILOG_INFO("start");
+    size_t argc = ARGS_SIZE_TWO;
+    napi_value args[ARGS_SIZE_TWO] = {0};
+    napi_status status = napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
+    NAPI_ASSERT(env, status == napi_ok, "Failed to get callback info");
+
+    std::string observerType = "";
+    ParseString(env, observerType, args[PARAM0]);
+    if (std::strcmp(observerType.c_str(), "enableAbilityListsStateChanged")) {
+        HILOG_ERROR("args[PARAM0] is wrong[%{public}s]", observerType.c_str());
+        return nullptr;
+    }
+
     std::shared_ptr<EnableAbilityListsObserver> observer = std::make_shared<EnableAbilityListsObserver>();
     napi_ref callback = nullptr;
-    napi_create_reference(env, args[1], 1, &callback);
+    napi_create_reference(env, args[PARAM1], 1, &callback);
     observer->SetCallBack(callback);
     observer->SetEnv(env);
     enableAbilityListsObservers_.push_back(observer);
     HILOG_INFO("observer size%{public}zu", enableAbilityListsObservers_.size());
 
-    auto instance = OHOS::AccessibilityConfig::AccessibilityConfig::GetInstance();
-    if (instance) {
-        instance->SubscribeEnableAbilityListsObserver(observer);
-    }
+    auto &instance = Singleton<OHOS::AccessibilityConfig::AccessibilityConfig>::GetInstance();
+    instance.SubscribeEnableAbilityListsObserver(observer);
     return nullptr;
 }
 
-napi_value NAccessibilityConfig::UnsubscribeEnableAbilityListsObserver(napi_env env)
+napi_value NAccessibilityConfig::UnsubscribeState(napi_env env, napi_callback_info info)
 {
     HILOG_INFO("start and observer size%{public}zu", enableAbilityListsObservers_.size());
+    size_t argc = ARGS_SIZE_TWO;
+    napi_value args[ARGS_SIZE_TWO] = {0};
+    napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
+
+    std::string observerType = "";
+    ParseString(env, observerType, args[PARAM0]);
+    if (std::strcmp(observerType.c_str(), "enableAbilityListsStateChanged")) {
+        HILOG_ERROR("args[PARAM0] is wrong[%{public}s]", observerType.c_str());
+        return nullptr;
+    }
+
     for (auto iter = enableAbilityListsObservers_.begin(); iter != enableAbilityListsObservers_.end();) {
         if ((*iter)->GetEnv() == env) {
-            auto instance = OHOS::AccessibilityConfig::AccessibilityConfig::GetInstance();
-            if (instance) {
-                instance->UnsubscribeEnableAbilityListsObserver(*iter);
-                enableAbilityListsObservers_.erase(iter);
-            }
+            auto &instance = Singleton<OHOS::AccessibilityConfig::AccessibilityConfig>::GetInstance();
+            instance.UnsubscribeEnableAbilityListsObserver(*iter);
+            enableAbilityListsObservers_.erase(iter);
         } else {
             iter ++;
         }
@@ -201,14 +220,14 @@ void EnableAbilityListsObserver::OnEnableAbilityListsStateChanged()
     uv_loop_s *loop = nullptr;
     napi_get_uv_event_loop(env_, &loop);
     uv_work_t *work = new uv_work_t;
-    work->data = (AccessibilityCallbackInfo *)callbackInfo;
+    work->data = static_cast<AccessibilityCallbackInfo*>(callbackInfo);
 
     uv_queue_work(
         loop,
         work,
         [](uv_work_t *work) {},
         [](uv_work_t *work, int status) {
-            AccessibilityCallbackInfo *callbackInfo = (AccessibilityCallbackInfo *)work->data;
+            AccessibilityCallbackInfo *callbackInfo = static_cast<AccessibilityCallbackInfo*>(work->data);
             napi_value handler = nullptr;
             napi_value callResult = nullptr;
             napi_value jsEvent = nullptr;
@@ -247,7 +266,8 @@ napi_value ConfigListener::StartWork(
     return result;
 }
 
-void ConfigListener::NotifyStateChangedJS(napi_env env, bool enabled, std::string eventType, napi_ref handlerRef)
+void ConfigListener::NotifyStateChangedJS(napi_env env, bool enabled,
+    const std::string &eventType, napi_ref handlerRef)
 {
     HILOG_INFO("start");
 
@@ -259,14 +279,14 @@ void ConfigListener::NotifyStateChangedJS(napi_env env, bool enabled, std::strin
         uv_loop_s *loop = nullptr;
         napi_get_uv_event_loop(env, &loop);
         uv_work_t *work = new uv_work_t;
-        work->data = (StateCallbackInfo *)callbackInfo;
+        work->data = static_cast<StateCallbackInfo*>(callbackInfo);
 
         uv_queue_work(
             loop,
             work,
             [](uv_work_t *work) {},
             [](uv_work_t *work, int status) {
-                StateCallbackInfo *callbackInfo = (StateCallbackInfo *)work->data;
+                StateCallbackInfo *callbackInfo = static_cast<StateCallbackInfo*>(work->data);
                 napi_value jsEvent;
                 napi_get_boolean(callbackInfo->env_, callbackInfo->state_, &jsEvent);
 
@@ -332,7 +352,7 @@ void ConfigListener::OnConfigChanged(const CONFIG_ID id, const ConfigValue &valu
 }
 
 void ConfigListener::NotifyPropertyChangedJS(napi_env env,
-    OHOS::AccessibilityConfig::CaptionProperty caption, std::string eventType, napi_ref handlerRef)
+    const OHOS::AccessibilityConfig::CaptionProperty &caption, const std::string &eventType, napi_ref handlerRef)
 {
     HILOG_INFO("start");
 
@@ -344,14 +364,14 @@ void ConfigListener::NotifyPropertyChangedJS(napi_env env,
         uv_loop_s *loop = nullptr;
         napi_get_uv_event_loop(env, &loop);
         uv_work_t *work = new uv_work_t;
-        work->data = (CaptionCallbackInfo *)callbackInfo;
+        work->data = static_cast<CaptionCallbackInfo*>(callbackInfo);
 
         uv_queue_work(
             loop,
             work,
             [](uv_work_t *work) {},
             [](uv_work_t *work, int status) {
-                CaptionCallbackInfo *callbackInfo = (CaptionCallbackInfo *)work->data;
+                CaptionCallbackInfo *callbackInfo = static_cast<CaptionCallbackInfo*>(work->data);
                 napi_value jsEvent;
                 napi_create_object(callbackInfo->env_, &jsEvent);
                 ConvertCaptionPropertyToJS(callbackInfo->env_, jsEvent, callbackInfo->caption_);
@@ -434,14 +454,14 @@ void ConfigListener::NotifyStringChanged2JSInner(
         uv_loop_s *loop = nullptr;
         napi_get_uv_event_loop(env, &loop);
         uv_work_t *work = new uv_work_t;
-        work->data = (StateCallbackInfo *)callbackInfo;
+        work->data = static_cast<StateCallbackInfo*>(callbackInfo);
 
         uv_queue_work(
             loop,
             work,
             [](uv_work_t *work) {},
             [](uv_work_t *work, int status) {
-                StateCallbackInfo *callbackInfo = (StateCallbackInfo *)work->data;
+                StateCallbackInfo *callbackInfo = static_cast<StateCallbackInfo*>(work->data);
                 napi_value jsEvent;
                 napi_create_string_utf8(callbackInfo->env_,
                     callbackInfo->stringValue_.c_str(),
@@ -482,14 +502,14 @@ void ConfigListener::NotifyIntChanged2JSInner(
         uv_loop_s *loop = nullptr;
         napi_get_uv_event_loop(env, &loop);
         uv_work_t *work = new uv_work_t;
-        work->data = (StateCallbackInfo *)callbackInfo;
+        work->data = static_cast<StateCallbackInfo*>(callbackInfo);
 
         uv_queue_work(
             loop,
             work,
             [](uv_work_t *work) {},
             [](uv_work_t *work, int status) {
-                StateCallbackInfo *callbackInfo = (StateCallbackInfo *)work->data;
+                StateCallbackInfo *callbackInfo = static_cast<StateCallbackInfo*>(work->data);
                 napi_value jsEvent;
                 napi_create_int32(callbackInfo->env_, callbackInfo->int32Value_, &jsEvent);
 
@@ -525,14 +545,14 @@ void ConfigListener::NotifyUintChanged2JSInner(
         uv_loop_s *loop = nullptr;
         napi_get_uv_event_loop(env, &loop);
         uv_work_t *work = new uv_work_t;
-        work->data = (StateCallbackInfo *)callbackInfo;
+        work->data = static_cast<StateCallbackInfo*>(callbackInfo);
 
         uv_queue_work(
             loop,
             work,
             [](uv_work_t *work) {},
             [](uv_work_t *work, int status) {
-                StateCallbackInfo *callbackInfo = (StateCallbackInfo *)work->data;
+                StateCallbackInfo *callbackInfo = static_cast<StateCallbackInfo*>(work->data);
                 napi_value jsEvent;
                 napi_create_uint32(callbackInfo->env_, callbackInfo->uint32Value_, &jsEvent);
 
@@ -568,14 +588,14 @@ void ConfigListener::NotifyFloatChanged2JSInner(
         uv_loop_s *loop = nullptr;
         napi_get_uv_event_loop(env, &loop);
         uv_work_t *work = new uv_work_t;
-        work->data = (StateCallbackInfo *)callbackInfo;
+        work->data = static_cast<StateCallbackInfo*>(callbackInfo);
 
         uv_queue_work(
             loop,
             work,
             [](uv_work_t *work) {},
             [](uv_work_t *work, int status) {
-                StateCallbackInfo *callbackInfo = (StateCallbackInfo *)work->data;
+                StateCallbackInfo *callbackInfo = static_cast<StateCallbackInfo*>(work->data);
                 napi_value jsEvent;
                 napi_create_double(callbackInfo->env_, double(callbackInfo->floatValue_), &jsEvent);
 
