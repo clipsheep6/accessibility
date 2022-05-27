@@ -55,9 +55,9 @@ public:
         return handlerRef_;
     }
 private:
-    static void NotifyStateChangedJS(napi_env env, bool enabled, std::string eventType, napi_ref handlerRef);
-    static void NotifyPropertyChangedJS(
-        napi_env env, OHOS::AccessibilityConfig::CaptionProperty caption, std::string eventType, napi_ref handlerRef);
+    static void NotifyStateChangedJS(napi_env env, bool enabled, const std::string &eventType, napi_ref handlerRef);
+    static void NotifyPropertyChangedJS(napi_env env, const OHOS::AccessibilityConfig::CaptionProperty &caption,
+        const std::string &eventType, napi_ref handlerRef);
     static void NotifyStringChanged2JSInner(
         napi_env env, const std::string& value, const std::string& eventType, napi_ref handlerRef);
     static void NotifyIntChanged2JSInner(
@@ -126,8 +126,8 @@ class NAccessibilityConfig {
 public:
     static napi_value EnableAbility(napi_env env, napi_callback_info info);
     static napi_value DisableAbility(napi_env env, napi_callback_info info);
-    static napi_value SubscribeEnableAbilityListsObserver(napi_env env, napi_value (&args)[ARGS_SIZE_TWO]);
-    static napi_value UnsubscribeEnableAbilityListsObserver(napi_env env);
+    static napi_value SubscribeState(napi_env env, napi_callback_info info);
+    static napi_value UnsubscribeState(napi_env env, napi_callback_info info);
     static std::vector<std::shared_ptr<EnableAbilityListsObserver>> enableAbilityListsObservers_;
     static std::vector<std::shared_ptr<ConfigListener>> configListeners_;
 private:

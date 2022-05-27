@@ -34,7 +34,6 @@ ohos_shared_library("accessibility") {
   ]
 
   sources = [
-    "./src/napi_accessibility_config.cpp",
     "./src/napi_accessibility_element.cpp",
     "./src/napi_accessibility_event_info.cpp",
     "./src/napi_accessibility_gesture_path.cpp",
@@ -52,7 +51,6 @@ ohos_shared_library("accessibility") {
     "${aafwk_kits_path}/ability/native:abilitykit_native",
     "${aafwk_kits_path}/appkit:appkit_native",
     "//base/accessibility/interfaces/innerkits/aafwk:accessibleability",
-    "//base/accessibility/interfaces/innerkits/acfwk:accessibilityconfig",
     "//base/accessibility/interfaces/innerkits/acfwk:accessibilityconfig",
     "//base/accessibility/interfaces/innerkits/asacfwk:accessibilityclient",
     "//base/accessibility/interfaces/innerkits/common:accessibility_common",
@@ -80,6 +78,7 @@ ohos_shared_library("accessibility") {
 group("napi_packages") {
   deps = [
     ":accessibility",
+    "//base/accessibility/interfaces/kits/napi/accessibility_config:config_napi",
     "//base/accessibility/interfaces/kits/napi/accessibility_extension:accessibilityextension_napi",
     "//base/accessibility/interfaces/kits/napi/accessibility_extension_context:accessibilityextensioncontext_napi",
     "//base/accessibility/interfaces/kits/napi/accessibility_extension_module_loader:accessibility_extension_module",
