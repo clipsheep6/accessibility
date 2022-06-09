@@ -140,7 +140,7 @@ int32_t AccessibilitySystemAbilityClientImpl::RegisterElementOperator(
     sptr<AccessibilityElementOperatorImpl> aamsInteractionOperator =
         new AccessibilityElementOperatorImpl(windowId, operation);
     interactionOperators_[windowId] = aamsInteractionOperator;
-    HILOG_INFO("The size of interactionOperators is after register %{public}d", interactionOperators_.size());
+    HILOG_INFO("The size of interactionOperators is after register %{public}zu", interactionOperators_.size());
     for (auto &interactionOperator : interactionOperators_) {
         HILOG_INFO("The window id of interactionOperator is %{public}d", interactionOperator.first);
     }
@@ -163,7 +163,7 @@ void AccessibilitySystemAbilityClientImpl::DeregisterElementOperator(const int32
     if (iter != interactionOperators_.end()) {
         HILOG_DEBUG("windowID[%{public}d] is erase", windowId);
         interactionOperators_.erase(iter);
-        HILOG_INFO("The size of interactionOperators after deregister is %{public}d", interactionOperators_.size());
+        HILOG_INFO("The size of interactionOperators after deregister is %{public}zu", interactionOperators_.size());
         for (auto &interactionOperator : interactionOperators_) {
             HILOG_INFO("The window id of interactionOperator is %{public}d", interactionOperator.first);
         }
