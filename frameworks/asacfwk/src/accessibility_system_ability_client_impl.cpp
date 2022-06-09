@@ -120,7 +120,7 @@ void AccessibilitySystemAbilityClientImpl::ResetService(const wptr<IRemoteObject
 int32_t AccessibilitySystemAbilityClientImpl::RegisterElementOperator(
     const int32_t windowId, const std::shared_ptr<AccessibilityElementOperator> &operation)
 {
-    HILOG_INFO();
+    HILOG_INFO("Register windowId[%{public}d] start", windowId);
     std::lock_guard<std::mutex> lock(mutex_);
     if (!operation) {
         HILOG_ERROR("Input operation is null");
@@ -140,6 +140,10 @@ int32_t AccessibilitySystemAbilityClientImpl::RegisterElementOperator(
     sptr<AccessibilityElementOperatorImpl> aamsInteractionOperator =
         new AccessibilityElementOperatorImpl(windowId, operation);
     interactionOperators_[windowId] = aamsInteractionOperator;
+    HILOG_INFO("The size of interactionOperators is after register %{public}d", interactionOperators_.size());
+    for (auto &interactionOperator : interactionOperators_) {
+        HILOG_INFO("The window id of interactionOperator is %{public}d", interactionOperator.first);
+    }
     serviceProxy_->RegisterElementOperator(windowId, aamsInteractionOperator);
 
     return 0;
@@ -147,7 +151,7 @@ int32_t AccessibilitySystemAbilityClientImpl::RegisterElementOperator(
 
 void AccessibilitySystemAbilityClientImpl::DeregisterElementOperator(const int32_t windowId)
 {
-    HILOG_DEBUG("start");
+    HILOG_INFO("Deregister windowId[%{public}d] start", windowId);
     std::lock_guard<std::mutex> lock(mutex_);
 
     if (!serviceProxy_) {
@@ -159,6 +163,10 @@ void AccessibilitySystemAbilityClientImpl::DeregisterElementOperator(const int32
     if (iter != interactionOperators_.end()) {
         HILOG_DEBUG("windowID[%{public}d] is erase", windowId);
         interactionOperators_.erase(iter);
+        HILOG_INFO("The size of interactionOperators after deregister is %{public}d", interactionOperators_.size());
+        for (auto &interactionOperator : interactionOperators_) {
+            HILOG_INFO("The window id of interactionOperator is %{public}d", interactionOperator.first);
+        }
         return;
     }
     HILOG_DEBUG("Not find windowID[%{public}d]", windowId);
