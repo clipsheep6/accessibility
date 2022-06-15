@@ -31,7 +31,7 @@ namespace {
 
 sptr<AccessibleAbilityClient> AccessibleAbilityClient::GetInstance()
 {
-    HILOG_DEBUG("start.");
+    HILOG_DEBUG();
     std::lock_guard<std::mutex> lock(g_Mutex);
     if (!g_Instance) {
         g_Instance = new AccessibleAbilityClientImpl();
@@ -41,7 +41,7 @@ sptr<AccessibleAbilityClient> AccessibleAbilityClient::GetInstance()
 
 AccessibleAbilityClientImpl::AccessibleAbilityClientImpl()
 {
-    HILOG_DEBUG("start.");
+    HILOG_DEBUG();
 
     sptr<ISystemAbilityManager> samgr = SystemAbilityManagerClient::GetInstance().GetSystemAbilityManager();
     if (!samgr) {
@@ -66,7 +66,7 @@ AccessibleAbilityClientImpl::AccessibleAbilityClientImpl()
 
 sptr<IRemoteObject> AccessibleAbilityClientImpl::GetRemoteObject()
 {
-    HILOG_DEBUG("start.");
+    HILOG_DEBUG();
     if (!g_Instance) {
         HILOG_ERROR("instance is nullptr");
         return nullptr;
@@ -76,7 +76,7 @@ sptr<IRemoteObject> AccessibleAbilityClientImpl::GetRemoteObject()
 
 bool AccessibleAbilityClientImpl::RegisterAbilityListener(const std::shared_ptr<AccessibleAbilityListener> &listener)
 {
-    HILOG_DEBUG("start.");
+    HILOG_DEBUG();
     if (listener_) {
         HILOG_DEBUG("listener already exists.");
         return false;
@@ -88,7 +88,7 @@ bool AccessibleAbilityClientImpl::RegisterAbilityListener(const std::shared_ptr<
 
 void AccessibleAbilityClientImpl::Init(const sptr<IAccessibleAbilityChannel> &channel, const int32_t channelId)
 {
-    HILOG_DEBUG("start.");
+    HILOG_DEBUG();
     if (!channel && channelId == INVALID_CHANNEL_ID) {
         HILOG_DEBUG("channel is nullptr, or channelId is invalid");
         return;
@@ -116,7 +116,7 @@ void AccessibleAbilityClientImpl::Init(const sptr<IAccessibleAbilityChannel> &ch
 
 void AccessibleAbilityClientImpl::Disconnect(const int32_t channelId)
 {
-    HILOG_DEBUG("start.");
+    HILOG_DEBUG();
 
     // Delete death recipient
     if (channelClient_ && channelClient_->GetRemote()) {
@@ -135,7 +135,7 @@ void AccessibleAbilityClientImpl::Disconnect(const int32_t channelId)
 
 void AccessibleAbilityClientImpl::OnAccessibilityEvent(const AccessibilityEventInfo &eventInfo)
 {
-    HILOG_DEBUG("start.");
+    HILOG_DEBUG();
     if (!channelClient_) {
         HILOG_ERROR("The channel is invalid.");
         return;
@@ -147,7 +147,7 @@ void AccessibleAbilityClientImpl::OnAccessibilityEvent(const AccessibilityEventI
 
 void AccessibleAbilityClientImpl::OnKeyPressEvent(const MMI::KeyEvent &keyEvent, const int32_t sequence)
 {
-    HILOG_DEBUG("start.");
+    HILOG_DEBUG();
     if (!channelClient_) {
         HILOG_ERROR("The channel is invalid.");
         return;
@@ -161,7 +161,7 @@ void AccessibleAbilityClientImpl::OnKeyPressEvent(const MMI::KeyEvent &keyEvent,
 
 void AccessibleAbilityClientImpl::OnGestureInjectResult(const int32_t sequence, const bool completedSuccessfully)
 {
-    HILOG_DEBUG("start.");
+    HILOG_DEBUG();
     if (!channelClient_) {
         HILOG_ERROR("The channel is invalid.");
         return;
@@ -171,7 +171,7 @@ void AccessibleAbilityClientImpl::OnGestureInjectResult(const int32_t sequence, 
 
 bool AccessibleAbilityClientImpl::GetFocus(const int32_t focusType, AccessibilityElementInfo &elementInfo)
 {
-    HILOG_DEBUG("start.");
+    HILOG_DEBUG();
     if ((focusType != FOCUS_TYPE_INPUT) && (focusType != FOCUS_TYPE_ACCESSIBILITY)) {
         HILOG_ERROR("focusType is not allowed.");
         return false;
@@ -188,7 +188,7 @@ bool AccessibleAbilityClientImpl::GetFocus(const int32_t focusType, Accessibilit
 bool AccessibleAbilityClientImpl::GetFocusByElementInfo(const AccessibilityElementInfo &sourceInfo,
     const int32_t focusType, AccessibilityElementInfo &elementInfo)
 {
-    HILOG_DEBUG("start.");
+    HILOG_DEBUG();
     if (!channelClient_) {
         HILOG_ERROR("The channel is invalid.");
         return false;
@@ -207,7 +207,7 @@ bool AccessibleAbilityClientImpl::InjectGesture(const uint32_t sequence,
     const std::shared_ptr<AccessibilityGestureInjectPath> &gesturePath,
     const std::shared_ptr<AccessibilityGestureResultListener> &listener)
 {
-    HILOG_DEBUG("start.");
+    HILOG_INFO();
 
     if (!gesturePath) {
         HILOG_ERROR("The gesturePath is null.");
@@ -236,7 +236,7 @@ bool AccessibleAbilityClientImpl::InjectGesture(const uint32_t sequence,
 
 bool AccessibleAbilityClientImpl::GetRoot(AccessibilityElementInfo &elementInfo)
 {
-    HILOG_DEBUG("start.");
+    HILOG_DEBUG();
     if (!channelClient_ || !serviceProxy_) {
         HILOG_ERROR("The channel is invalid.");
         return false;
@@ -259,7 +259,7 @@ bool AccessibleAbilityClientImpl::GetRoot(AccessibilityElementInfo &elementInfo)
 bool AccessibleAbilityClientImpl::GetRootByWindow(const AccessibilityWindowInfo &windowInfo,
     AccessibilityElementInfo &elementInfo)
 {
-    HILOG_DEBUG("start.");
+    HILOG_DEBUG();
     if (!channelClient_) {
         HILOG_ERROR("The channel is invalid.");
         return false;
@@ -280,7 +280,7 @@ bool AccessibleAbilityClientImpl::GetRootByWindow(const AccessibilityWindowInfo 
 
 bool AccessibleAbilityClientImpl::GetWindow(const int32_t windowId, AccessibilityWindowInfo &windowInfo)
 {
-    HILOG_DEBUG("start.");
+    HILOG_DEBUG();
     if (!channelClient_) {
         HILOG_ERROR("The channel is invalid.");
         return false;
@@ -290,7 +290,7 @@ bool AccessibleAbilityClientImpl::GetWindow(const int32_t windowId, Accessibilit
 
 bool AccessibleAbilityClientImpl::GetWindows(std::vector<AccessibilityWindowInfo> &windows)
 {
-    HILOG_DEBUG("start.");
+    HILOG_DEBUG();
     if (!channelClient_) {
         HILOG_ERROR("The channel is invalid.");
         return false;
@@ -300,7 +300,7 @@ bool AccessibleAbilityClientImpl::GetWindows(std::vector<AccessibilityWindowInfo
 
 bool AccessibleAbilityClientImpl::GetWindows(const uint64_t displayId, std::vector<AccessibilityWindowInfo> &windows)
 {
-    HILOG_DEBUG("start.");
+    HILOG_DEBUG();
     if (!channelClient_) {
         HILOG_ERROR("The channel is invalid.");
         return false;
@@ -310,7 +310,7 @@ bool AccessibleAbilityClientImpl::GetWindows(const uint64_t displayId, std::vect
 
 bool AccessibleAbilityClientImpl::ExecuteCommonAction(const GlobalAction action)
 {
-    HILOG_DEBUG("start.");
+    HILOG_DEBUG();
     if (!channelClient_) {
         HILOG_ERROR("The channel is invalid.");
         return false;
@@ -338,7 +338,7 @@ bool AccessibleAbilityClientImpl::GetNext(const AccessibilityElementInfo &elemen
 bool AccessibleAbilityClientImpl::GetChildElementInfo(const int32_t index, const AccessibilityElementInfo &parent,
     AccessibilityElementInfo &child)
 {
-    HILOG_DEBUG("start.");
+    HILOG_DEBUG();
     if (!channelClient_) {
         HILOG_ERROR("The channel is invalid.");
         return false;
@@ -364,7 +364,7 @@ bool AccessibleAbilityClientImpl::GetChildElementInfo(const int32_t index, const
 bool AccessibleAbilityClientImpl::GetChildren(const AccessibilityElementInfo &parent,
     std::vector<AccessibilityElementInfo> &children)
 {
-    HILOG_DEBUG("start.");
+    HILOG_DEBUG();
     if (!channelClient_) {
         HILOG_ERROR("The channel is invalid.");
         return false;
@@ -399,7 +399,7 @@ bool AccessibleAbilityClientImpl::GetChildren(const AccessibilityElementInfo &pa
 bool AccessibleAbilityClientImpl::GetByContent(const AccessibilityElementInfo &elementInfo, const std::string &text,
     std::vector<AccessibilityElementInfo> &elementInfos)
 {
-    HILOG_DEBUG("start.");
+    HILOG_DEBUG();
     if (!channelClient_) {
         HILOG_ERROR("The channel is invalid.");
         return false;
@@ -415,7 +415,7 @@ bool AccessibleAbilityClientImpl::GetByContent(const AccessibilityElementInfo &e
 bool AccessibleAbilityClientImpl::GetAnchor(const AccessibilityWindowInfo &windowInfo,
     AccessibilityElementInfo &elementInfo)
 {
-    HILOG_DEBUG("start.");
+    HILOG_DEBUG();
     if (!channelClient_) {
         HILOG_ERROR("The channel is invalid.");
         return false;
@@ -438,7 +438,7 @@ bool AccessibleAbilityClientImpl::GetAnchor(const AccessibilityWindowInfo &windo
 bool AccessibleAbilityClientImpl::GetSource(const AccessibilityEventInfo &eventInfo,
     AccessibilityElementInfo &elementInfo)
 {
-    HILOG_DEBUG("start.");
+    HILOG_DEBUG();
     if (!channelClient_) {
         HILOG_ERROR("The channel is invalid.");
         return false;
@@ -460,7 +460,7 @@ bool AccessibleAbilityClientImpl::GetSource(const AccessibilityEventInfo &eventI
 bool AccessibleAbilityClientImpl::GetParentElementInfo(const AccessibilityElementInfo &child,
     AccessibilityElementInfo &parent)
 {
-    HILOG_DEBUG("start.");
+    HILOG_DEBUG();
     if (!channelClient_) {
         HILOG_ERROR("The channel is invalid.");
         return false;
@@ -482,7 +482,7 @@ bool AccessibleAbilityClientImpl::GetParentElementInfo(const AccessibilityElemen
 bool AccessibleAbilityClientImpl::ExecuteAction(const AccessibilityElementInfo &elementInfo, const ActionType action,
     const std::map<std::string, std::string> &actionArguments)
 {
-    HILOG_DEBUG("start.");
+    HILOG_DEBUG();
     if (!channelClient_) {
         HILOG_ERROR("The channel is invalid.");
         return false;
@@ -498,7 +498,7 @@ bool AccessibleAbilityClientImpl::ExecuteAction(const AccessibilityElementInfo &
 
 bool AccessibleAbilityClientImpl::SetEventTypeFilter(const uint32_t filter)
 {
-    HILOG_DEBUG("start.");
+    HILOG_DEBUG();
     if (!channelClient_) {
         HILOG_ERROR("The channel is invalid.");
         return false;
@@ -508,7 +508,7 @@ bool AccessibleAbilityClientImpl::SetEventTypeFilter(const uint32_t filter)
 
 bool AccessibleAbilityClientImpl::SetTargetBundleName(const std::vector<std::string> &targetBundleNames)
 {
-    HILOG_DEBUG("start.");
+    HILOG_DEBUG();
     if (!channelClient_) {
         HILOG_ERROR("The channel is invalid.");
         return false;
@@ -518,13 +518,13 @@ bool AccessibleAbilityClientImpl::SetTargetBundleName(const std::vector<std::str
 
 void AccessibleAbilityClientImpl::AccessibleAbilityDeathRecipient::OnRemoteDied(const wptr<IRemoteObject>& remote)
 {
-    HILOG_DEBUG("start.");
+    HILOG_DEBUG();
     client_.ResetAAClient(remote);
 }
 
 void AccessibleAbilityClientImpl::ResetAAClient(const wptr<IRemoteObject> &remote)
 {
-    HILOG_DEBUG("start.");
+    HILOG_DEBUG();
     if (channelClient_) {
         sptr<IRemoteObject> object = channelClient_->GetRemote();
         if (object && (remote == object)) {
@@ -537,7 +537,7 @@ void AccessibleAbilityClientImpl::ResetAAClient(const wptr<IRemoteObject> &remot
 
 void AccessibleAbilityClientImpl::DispatchGestureInjectResult(uint32_t sequence, bool result)
 {
-    HILOG_DEBUG("start.");
+    HILOG_DEBUG();
 
     if (gestureResultListenerInfos_.empty()) {
         HILOG_ERROR("There is no information of gestureResultListener");

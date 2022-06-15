@@ -72,6 +72,12 @@ bool AccessibleAbilityChannelClient::FindFocusedElementInfo(int32_t accessibilit
         return false;
     }
 
+    if (elementOperator->accessibilityInfoResult_.GetAccessibilityId() ==
+        AccessibilityElementInfo::UNDEFINED_ACCESSIBILITY_ID) {
+        HILOG_ERROR("The elementInfo from ace is wrong");
+        return false;
+    }
+
     elementInfo = elementOperator->accessibilityInfoResult_;
     elementInfo.SetChannelId(channelId_);
     HILOG_DEBUG("[channelId:%{public}d] end", channelId_);
@@ -141,6 +147,10 @@ bool AccessibleAbilityChannelClient::SearchElementInfosByAccessibilityId(int32_t
     }
 
     for (auto &info : elementOperator->elementInfosResult_) {
+        if (info.GetAccessibilityId() == AccessibilityElementInfo::UNDEFINED_ACCESSIBILITY_ID) {
+            HILOG_ERROR("The elementInfo from ace is wrong");
+            return false;
+        }
         info.SetChannelId(channelId_);
     }
     HILOG_DEBUG("search element info End[size:%{public}zu]", elementOperator->elementInfosResult_.size());
@@ -214,6 +224,10 @@ bool AccessibleAbilityChannelClient::SearchElementInfosByText(int32_t accessibil
     }
 
     for (auto &info : elementOperator->elementInfosResult_) {
+        if (info.GetAccessibilityId() == AccessibilityElementInfo::UNDEFINED_ACCESSIBILITY_ID) {
+            HILOG_ERROR("The elementInfo from ace is wrong");
+            return false;
+        }
         info.SetChannelId(channelId_);
     }
     HILOG_DEBUG("[size:%{public}zu] end", elementOperator->elementInfosResult_.size());
@@ -241,6 +255,12 @@ bool AccessibleAbilityChannelClient::FocusMoveSearch(int32_t accessibilityWindow
     std::future_status wait = promiseFutrue.wait_for(std::chrono::milliseconds(TIME_OUT_OPERATOR));
     if (wait != std::future_status::ready) {
         HILOG_ERROR("Failed to wait result");
+        return false;
+    }
+
+    if (elementOperator->accessibilityInfoResult_.GetAccessibilityId() ==
+        AccessibilityElementInfo::UNDEFINED_ACCESSIBILITY_ID) {
+        HILOG_ERROR("The elementInfo from ace is wrong");
         return false;
     }
 

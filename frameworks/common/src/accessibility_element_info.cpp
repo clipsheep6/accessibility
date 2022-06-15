@@ -76,20 +76,19 @@ bool AccessibilityElementInfo::RemoveChild(const int32_t childId)
 
 const std::vector<AccessibleAction> &AccessibilityElementInfo::GetActionList() const
 {
-    HILOG_DEBUG("start");
+    HILOG_DEBUG();
     return operations_;
 }
 
 void AccessibilityElementInfo::AddAction(AccessibleAction &action)
 {
-    HILOG_DEBUG("start");
+    HILOG_DEBUG("actionType[%{public}d]", action.GetActionType());
     operations_.push_back(action);
-    HILOG_DEBUG("actionType[%{public}d] end", action.GetActionType());
 }
 
 void AccessibilityElementInfo::DeleteAction(AccessibleAction &action)
 {
-    HILOG_DEBUG("start");
+    HILOG_DEBUG();
     for (auto iter = operations_.begin(); iter != operations_.end(); iter++) {
         HILOG_DEBUG("actionType[%{public}d]", action.GetActionType());
         if (iter->GetActionType() == action.GetActionType()) {
@@ -102,7 +101,7 @@ void AccessibilityElementInfo::DeleteAction(AccessibleAction &action)
 
 bool AccessibilityElementInfo::DeleteAction(ActionType &actionType)
 {
-    HILOG_DEBUG("start");
+    HILOG_DEBUG();
     for (auto iter = operations_.begin(); iter != operations_.end(); iter++) {
         HILOG_DEBUG("actionType[%{public}d]", actionType);
         if (iter->GetActionType() == actionType) {
@@ -116,7 +115,7 @@ bool AccessibilityElementInfo::DeleteAction(ActionType &actionType)
 
 void AccessibilityElementInfo::DeleteAllActions()
 {
-    HILOG_DEBUG("start");
+    HILOG_DEBUG();
     operations_.clear();
 }
 
@@ -164,7 +163,7 @@ const Rect &AccessibilityElementInfo::GetRectInScreen() const
 
 void AccessibilityElementInfo::SetRectInScreen(Rect &bounds)
 {
-    HILOG_DEBUG("start");
+    HILOG_DEBUG();
     bounds_.SetLeftTopScreenPostion(bounds.GetLeftTopXScreenPostion(), bounds.GetLeftTopYScreenPostion());
     bounds_.SetRightBottomScreenPostion(bounds.GetRightBottomXScreenPostion(), bounds.GetRightBottomYScreenPostion());
 }
@@ -914,6 +913,43 @@ int32_t AccessibilityElementInfo::GetItemCounts() const
 {
     HILOG_DEBUG("itemCounts_[%{public}d]", itemCounts_);
     return itemCounts_;
+}
+
+void AccessibilityElementInfo::SetTriggerAction(const ActionType action)
+{
+    HILOG_DEBUG("action[%{public}d]", action);
+    triggerAction_ = action;
+}
+
+ActionType AccessibilityElementInfo::GetTriggerAction() const
+{
+    return triggerAction_;
+}
+
+void AccessibilityElementInfo::SetContentList(const std::vector<std::string> &contentList)
+{
+    contentList_.clear();
+    for (auto &content : contentList) {
+        contentList_.emplace_back(content);
+    }
+}
+
+void AccessibilityElementInfo::GetContentList(std::vector<std::string> &contenList) const
+{
+    contenList.clear();
+    for (auto &content : contentList_) {
+        contenList.emplace_back(content);
+    }
+}
+
+void AccessibilityElementInfo::SetLatestContent(const std::string &content)
+{
+    latestConent_ = content;
+}
+
+const std::string &AccessibilityElementInfo::GetLatestContent() const
+{
+    return latestConent_;
 }
 } // namespace Accessibility
 } // namespace OHOS
