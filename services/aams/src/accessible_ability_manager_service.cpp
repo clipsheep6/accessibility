@@ -1792,7 +1792,8 @@ void AccessibleAbilityManagerService::SetAudioBalance(const float balance)
     HILOG_INFO("balance = [%{public}f]", balance);
     if (!handler_) {
         HILOG_ERROR("handler_ is nullptr.");
-        return;    }
+        return;
+    }
 
     std::promise<void> syncPromise;
     std::future syncFuture = syncPromise.get_future();

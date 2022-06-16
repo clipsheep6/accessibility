@@ -100,9 +100,9 @@ const std::string ConvertAccessibilityEventTypeToString(OHOS::Accessibility::Eve
 void ConvertEventTypeToString(const OHOS::Accessibility::AccessibilityEventInfo &eventInfo,
     std::string &eventTypeString);
 void ConvertGesturePathsJSToNAPI(napi_env env, napi_value object,
-        std::shared_ptr<OHOS::Accessibility::AccessibilityGestureInjectPath>& gesturePath,
-        std::vector<std::shared_ptr<OHOS::Accessibility::AccessibilityGestureInjectPath>>& gesturePathArray,
-        bool &isParameterArray);
+    std::shared_ptr<OHOS::Accessibility::AccessibilityGestureInjectPath>& gesturePath,
+    std::vector<std::shared_ptr<OHOS::Accessibility::AccessibilityGestureInjectPath>>& gesturePathArray,
+    bool &isParameterArray);
 
 struct AccessibilityCallbackInfo {
     napi_env env_;

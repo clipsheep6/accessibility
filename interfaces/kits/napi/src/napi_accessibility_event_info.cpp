@@ -37,7 +37,7 @@ napi_value NAccessibilityEventInfo::JSConstructor(napi_env env, napi_callback_in
     napi_valuetype valueType;
     NAPI_CALL(env, napi_get_cb_info(env, info, &argc, argv, nullptr, nullptr));
     if (argc != ARGS_SIZE_ONE) {
-        HILOG_ERROR("argc %{public}d is not 1", argc);
+        HILOG_ERROR("argc %{public}zu is not 1", argc);
         return nullptr;
     }
     NAPI_CALL(env, napi_typeof(env, argv[PARAM0], &valueType));
