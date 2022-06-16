@@ -314,7 +314,7 @@ static napi_module _config_module = {
     .nm_flags = 0,
     .nm_filename = nullptr,
     .nm_register_func = InitConfigModule,
-    .nm_modname = "accessibility.config",
+    .nm_modname = "accessibility",
     .nm_priv = ((void*)0),
     .reserved = {0},
 };
