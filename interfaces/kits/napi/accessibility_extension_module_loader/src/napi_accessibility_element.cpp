@@ -3121,10 +3121,7 @@ napi_value NAccessibilityElement::GetElementInfoByFocusType(NAccessibilityElemen
             sptr<AccessibleAbilityClient> aaClient = AccessibleAbilityClient::GetInstance();
             if (aaClient != nullptr && callbackInfo->accessibilityElement_.elementInfo_ != nullptr) {
                 callbackInfo->ret_ = aaClient->GetFocusByElementInfo(
-                    *(callbackInfo->accessibilityElement_.elementInfo_), focusType, nodeInfo);
-                if (callbackInfo->ret_) {
-                    callbackInfo->nodeInfos_.push_back(nodeInfo);
-                }
+                    *(callbackInfo->accessibilityElement_.elementInfo_), focusType, callbackInfo->nodeInfo_);
             } else {
                 HILOG_ERROR("no client or element info!");
                 callbackInfo->ret_ = false;
@@ -3137,8 +3134,10 @@ napi_value NAccessibilityElement::GetElementInfoByFocusType(NAccessibilityElemen
             
             napi_value result = nullptr;
             if (callbackInfo->ret_) {
-                napi_create_array(env, &result);
-                ConvertElementInfosToJS(env, result, callbackInfo->nodeInfos_);
+                napi_value constructor = nullptr;
+                napi_get_reference_value(env, NAccessibilityElement::consRef_, &constructor);
+                napi_new_instance(env, constructor, 0, nullptr, &result);
+                ConvertElementInfoToJS(env, result, callbackInfo->nodeInfo_);
                 napi_resolve_deferred(env, callbackInfo->deferred_, result);
             } else {
                 HILOG_ERROR("get element info failed!");
@@ -3171,10 +3170,7 @@ napi_value NAccessibilityElement::GetElementInfoByFocusDirection(NAccessibilityE
             sptr<AccessibleAbilityClient> aaClient = AccessibleAbilityClient::GetInstance();
             if (aaClient != nullptr && callbackInfo->accessibilityElement_.elementInfo_ != nullptr) {
                 callbackInfo->ret_ = aaClient->GetNext(*(callbackInfo->accessibilityElement_.elementInfo_),
-                    direction, nodeInfo);
-                if (callbackInfo->ret_) {
-                    callbackInfo->nodeInfos_.push_back(nodeInfo);
-                }
+                    direction, callbackInfo->nodeInfo_);
             } else {
                 HILOG_ERROR("no client or element info!");
                 callbackInfo->ret_ = false;
@@ -3187,8 +3183,10 @@ napi_value NAccessibilityElement::GetElementInfoByFocusDirection(NAccessibilityE
 
             napi_value result = nullptr;
             if (callbackInfo->ret_) {
-                napi_create_array(env, &result);
-                ConvertElementInfosToJS(env, result, callbackInfo->nodeInfos_);
+                napi_value constructor = nullptr;
+                napi_get_reference_value(env, NAccessibilityElement::consRef_, &constructor);
+                napi_new_instance(env, constructor, 0, nullptr, &result);
+                ConvertElementInfoToJS(env, result, callbackInfo->nodeInfo_);
                 napi_resolve_deferred(env, callbackInfo->deferred_, result);
             } else {
                 HILOG_ERROR("get element info failed!");

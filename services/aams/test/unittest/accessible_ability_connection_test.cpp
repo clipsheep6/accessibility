@@ -72,6 +72,7 @@ void AccessibleAbilityConnectionUnitTest::SetUp()
     // Start AAMS
     Singleton<AccessibleAbilityManagerService>::GetInstance().OnStart();
     AccessibilityAbilityHelper::GetInstance().WaitForServicePublish();
+    Singleton<AccessibleAbilityManagerService>::GetInstance().SwitchedUser(AccessibilityAbilityHelper::accountId_);
 
     // new Interaction proxy
     sptr<AccessibilityElementOperatorStub> stub = new MockAccessibilityElementOperatorStub();

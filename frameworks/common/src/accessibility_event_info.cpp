@@ -45,7 +45,7 @@ int32_t AccessibilityMemo::GetViewId() const
 
 int32_t AccessibilityMemo::GetAccessibilityId() const
 {
-    HILOG_INFO("called] elementId_[%{public}d]", elementId_);
+    HILOG_DEBUG("called] elementId_[%{public}d]", elementId_);
     return elementId_;
 }
 
@@ -247,7 +247,6 @@ int64_t AccessibilityEventInfo::GetTimeStamp() const
 
 void AccessibilityEventInfo::SetTimeStamp(int64_t timeStamp)
 {
-    HILOG_DEBUG();
     timeStamp_ = timeStamp;
     HILOG_DEBUG("timeStamp_[%{public}ju]", timeStamp_);
 }

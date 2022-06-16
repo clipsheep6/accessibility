@@ -317,7 +317,11 @@ const sptr<AccessibleAbilityConnection> AccessibilityAccountData::GetAccessibleA
 const sptr<AccessibilityWindowConnection> AccessibilityAccountData::GetAccessibilityWindowConnection(
     const int32_t windowId)
 {
-    HILOG_DEBUG("windowId(%{public}d).", windowId);
+    HILOG_DEBUG("windowId[%{public}d] interactionOperators's size[%{public}zu]", windowId, asacConnections_.size());
+    for (auto &asacConnection : asacConnections_) {
+        HILOG_DEBUG("The window id of asacConnection is %{public}d", asacConnection.first);
+    }
+
     if (asacConnections_.count(windowId) > 0) {
         return asacConnections_[windowId];
     }
