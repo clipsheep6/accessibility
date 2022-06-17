@@ -221,6 +221,10 @@ public:
 
     void SetDecorEnable(const bool isDecorEnable);
 
+    std::string GetWindowName() const;
+
+    void SetWindowName(const std::string& name);
+
 protected:
     uint64_t displayId_ = 0;
     uint32_t windowMode_ = 0;
@@ -235,6 +239,7 @@ protected:
     bool accessibilityFocused_ = false;
     Rect boundsInScreen_ {};
     bool isDecorEnable_ = false;
+    std::string windowName_ = "";
 };
 } // namespace Accessibility
 } // namespace OHOS
