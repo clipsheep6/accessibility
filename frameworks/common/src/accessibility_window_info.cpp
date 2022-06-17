@@ -177,5 +177,17 @@ void AccessibilityWindowInfo::SetDecorEnable(const bool isDecorEnable)
     isDecorEnable_ = isDecorEnable;
     HILOG_DEBUG("isDecorEnable_[%{public}d]", isDecorEnable_);
 }
+
+std::string AccessibilityWindowInfo::GetWindowName() const
+{
+    HILOG_DEBUG("windowName_[%{public}s]", windowName_.c_str());
+    return windowName_;
+}
+
+void AccessibilityWindowInfo::SetWindowName(const std::string& name)
+{
+    windowName_ = name;
+    HILOG_DEBUG("windowName_[%{public}s]", windowName_.c_str());
+}
 } // namespace Accessibility
 } // namespace OHOS
