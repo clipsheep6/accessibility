@@ -72,6 +72,13 @@ bool AccessibleAbilityChannelClient::FindFocusedElementInfo(int32_t accessibilit
         return false;
     }
 
+    if (elementOperator->accessibilityInfoResult_.GetAccessibilityId() ==
+        AccessibilityElementInfo::UNDEFINED_ACCESSIBILITY_ID) {
+        HILOG_ERROR("The elementInfo from ace is wrong");
+        return false;
+    }
+    HILOG_INFO("Get result successfully from ace.");
+
     elementInfo = elementOperator->accessibilityInfoResult_;
     elementInfo.SetChannelId(channelId_);
     HILOG_DEBUG("[channelId:%{public}d] end", channelId_);
@@ -112,7 +119,8 @@ bool AccessibleAbilityChannelClient::ExecuteAction(int32_t accessibilityWindowId
         HILOG_ERROR("Failed to wait result");
         return false;
     }
-
+    HILOG_INFO("Get result successfully from ace. executeActionResult_[%{public}d]",
+        elementOperator->executeActionResult_);
     return elementOperator->executeActionResult_;
 }
 
@@ -141,9 +149,13 @@ bool AccessibleAbilityChannelClient::SearchElementInfosByAccessibilityId(int32_t
     }
 
     for (auto &info : elementOperator->elementInfosResult_) {
+        if (info.GetAccessibilityId() == AccessibilityElementInfo::UNDEFINED_ACCESSIBILITY_ID) {
+            HILOG_ERROR("The elementInfo from ace is wrong");
+            return false;
+        }
         info.SetChannelId(channelId_);
     }
-    HILOG_DEBUG("search element info End[size:%{public}zu]", elementOperator->elementInfosResult_.size());
+    HILOG_INFO("Get result successfully from ace. size[%{public}zu]", elementOperator->elementInfosResult_.size());
     elementInfos = elementOperator->elementInfosResult_;
     return true;
 }
@@ -214,9 +226,13 @@ bool AccessibleAbilityChannelClient::SearchElementInfosByText(int32_t accessibil
     }
 
     for (auto &info : elementOperator->elementInfosResult_) {
+        if (info.GetAccessibilityId() == AccessibilityElementInfo::UNDEFINED_ACCESSIBILITY_ID) {
+            HILOG_ERROR("The elementInfo from ace is wrong");
+            return false;
+        }
         info.SetChannelId(channelId_);
     }
-    HILOG_DEBUG("[size:%{public}zu] end", elementOperator->elementInfosResult_.size());
+    HILOG_INFO("Get result successfully from ace. size[%{public}zu]", elementOperator->elementInfosResult_.size());
     elementInfos = elementOperator->elementInfosResult_;
     return true;
 }
@@ -244,6 +260,13 @@ bool AccessibleAbilityChannelClient::FocusMoveSearch(int32_t accessibilityWindow
         return false;
     }
 
+    if (elementOperator->accessibilityInfoResult_.GetAccessibilityId() ==
+        AccessibilityElementInfo::UNDEFINED_ACCESSIBILITY_ID) {
+        HILOG_ERROR("The elementInfo from ace is wrong");
+        return false;
+    }
+
+    HILOG_INFO("Get result successfully from ace");
     elementInfo = elementOperator->accessibilityInfoResult_;
     elementInfo.SetChannelId(channelId_);
     return true;

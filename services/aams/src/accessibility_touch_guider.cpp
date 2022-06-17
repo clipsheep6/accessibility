@@ -81,7 +81,7 @@ void TGEventHandler::ProcessEvent(const AppExecFwk::InnerEvent::Pointer &event)
 
 void TouchGuider::OnPointerEvent(MMI::PointerEvent &event)
 {
-    HILOG_DEBUG("TouchGuider::OnPointerEvent: start");
+    HILOG_DEBUG();
     switch (event.GetSourceType()) {
         case MMI::PointerEvent::SOURCE_TYPE_TOUCHSCREEN:
             if (event.GetPointerAction() == MMI::PointerEvent::POINTER_ACTION_CANCEL) {
@@ -167,10 +167,21 @@ void TouchGuider::SendAccessibilityEventToAA(EventType eventType)
     }
 }
 
+void TouchGuider::SendGestureEventToAA(GestureType gestureId)
+{
+    HILOG_DEBUG("gestureId is %{public}d.", gestureId);
+
+    AccessibilityEventInfo eventInfo {};
+    int32_t windowsId = Singleton<AccessibilityWindowManager>::GetInstance().activeWindowId_;
+    eventInfo.SetWindowId(windowsId);
+    eventInfo.SetEventType(EventType::TYPE_GESTURE_EVENT);
+    eventInfo.SetGestureType(gestureId);
+    Singleton<AccessibleAbilityManagerService>::GetInstance().SendEvent(eventInfo);
+}
+
 void TouchGuider::SendEventToMultimodal(MMI::PointerEvent &event, int32_t action)
 {
-    HILOG_DEBUG("action is %{public}d.", action);
-    HILOG_DEBUG("SourceType is %{public}d.", event.GetSourceType());
+    HILOG_DEBUG("action:%{public}d, SourceType:%{public}d.", action, event.GetSourceType());
 
     switch (action) {
         case HOVER_MOVE:
@@ -254,7 +265,7 @@ bool TouchGuider::TouchGuideListener::OnStarted()
 
 bool TouchGuider::TouchGuideListener::OnCompleted(GestureType gestureId)
 {
-    HILOG_DEBUG("OnCompleted, gestureId is %{public}d", gestureId);
+    HILOG_DEBUG("gestureId is %{public}d", gestureId);
 
     if (server_.currentState_ != static_cast<int32_t>(TouchGuideState::TRANSMITTING)) {
         HILOG_DEBUG("OnCompleted, state is not transmitting.");
@@ -267,11 +278,7 @@ bool TouchGuider::TouchGuideListener::OnCompleted(GestureType gestureId)
     server_.currentState_ = static_cast<int32_t>(TouchGuideState::TOUCH_GUIDING);
 
     // Send customize gesture type to aa
-    AccessibilityEventInfo eventInfo {};
-    eventInfo.SetEventType(EventType::TYPE_GESTURE_EVENT);
-    eventInfo.SetGestureType(gestureId);
-    Singleton<AccessibleAbilityManagerService>::GetInstance().SendEvent(eventInfo);
-
+    server_.SendGestureEventToAA(gestureId);
     return true;
 }
 
@@ -580,7 +587,7 @@ void TouchGuider::HandleDraggingStateInnerMove(MMI::PointerEvent &event)
     std::vector<int32_t> pIds = event.GetPointersIdList();
     int32_t pointCount = pIds.size();
     if (pointCount == POINTER_COUNT_1) {
-        HILOG_INFO("Only two pointers can be received in the dragging state");
+        HILOG_DEBUG("Only two pointers can be received in the dragging state");
     } else if (pointCount == POINTER_COUNT_2 && IsDragGestureAccept(event)) {
         // Get densityPixels from WMS
         AccessibilityDisplayManager &displayMgr = Singleton<AccessibilityDisplayManager>::GetInstance();
@@ -635,10 +642,10 @@ bool TouchGuider::IsDragGestureAccept(MMI::PointerEvent &event)
     MMI::PointerEvent::PointerItem pointerF = {};
     MMI::PointerEvent::PointerItem pointerS = {};
     if (!event.GetPointerItem(pIds[0], pointerF)) {
-        HILOG_ERROR("GetPointerItem(%d) failed", pIds[0]);
+        HILOG_WARN("GetPointerItem(%d) failed", pIds[0]);
     }
     if (!event.GetPointerItem(pIds[1], pointerS)) {
-        HILOG_ERROR("GetPointerItem(%d) failed", pIds[1]);
+        HILOG_WARN("GetPointerItem(%d) failed", pIds[1]);
     }
 
     float xPointF = pointerF.GetGlobalX();
