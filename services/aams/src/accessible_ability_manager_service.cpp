@@ -386,14 +386,14 @@ bool AccessibleAbilityManagerService::GetAbilityList(const uint32_t abilityTypes
 void AccessibleAbilityManagerService::RegisterElementOperator(
     const int32_t windowId, const sptr<IAccessibilityElementOperator> &operation)
 {
-    HILOG_DEBUG("start");
+    HILOG_INFO("Register windowId[%{public}d] start", windowId);
     if (!handler_) {
         HILOG_ERROR("handler_ is nullptr.");
         return;
     }
 
     handler_->PostTask(std::bind([=]() -> void {
-        HILOG_DEBUG("start");
+        HILOG_INFO("Register windowId[%{public}d]", windowId);
         int32_t osAccountId = GetOsAccountId();
         auto iter = a11yAccountsData_.find(osAccountId);
         if (iter == a11yAccountsData_.end()) {
@@ -441,14 +441,14 @@ void AccessibleAbilityManagerService::RegisterElementOperator(
 
 void AccessibleAbilityManagerService::DeregisterElementOperator(int32_t windowId)
 {
-    HILOG_DEBUG("start");
+    HILOG_INFO("Deregister windowId[%{public}d] start", windowId);
     if (!handler_) {
         HILOG_ERROR("handler_ is nullptr.");
         return;
     }
 
     handler_->PostTask(std::bind([=]() -> void {
-        HILOG_DEBUG("start");
+        HILOG_INFO("Deregister windowId[%{public}d]", windowId);
         sptr<AccessibilityAccountData> accountData = GetCurrentAccountData();
         if (!accountData) {
             HILOG_ERROR("accountData is nullptr.");

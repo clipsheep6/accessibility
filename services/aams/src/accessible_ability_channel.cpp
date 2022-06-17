@@ -76,8 +76,12 @@ void AccessibleAbilityChannel::InnerSearchElementInfoByAccessibilityId(const int
     int32_t realId = Singleton<AccessibilityWindowManager>::GetInstance().ConvertToRealWindowId(
         accessibilityWindowId, FOCUS_TYPE_INVALID);
     sptr<AccessibilityWindowConnection> connection = accountData->GetAccessibilityWindowConnection(realId);
-    if (!connection || !connection->GetProxy()) {
-        HILOG_ERROR("AccessibleAbilityChannel::SearchElementInfoByAccessibilityId failed: no connection");
+    if (!connection) {
+        HILOG_ERROR("SearchElementInfoByAccessibilityId failed: windowId[%{public}d] has no connection", realId);
+        return;
+    }
+    if (!connection->GetProxy()) {
+        HILOG_ERROR("windowId[%{public}d] has no proxy", realId);
         return;
     }
     if (!(connection_.GetAbilityInfo().GetCapabilityValues() & Capability::CAPABILITY_RETRIEVE)) {
@@ -119,8 +123,12 @@ void AccessibleAbilityChannel::InnerSearchElementInfosByText(const int32_t acces
         accessibilityWindowId, FOCUS_TYPE_INVALID);
 
     sptr<AccessibilityWindowConnection> connection = accountData->GetAccessibilityWindowConnection(realId);
-    if (!connection || !connection->GetProxy()) {
-        HILOG_ERROR("SearchElementInfosByText failed");
+    if (!connection) {
+        HILOG_ERROR("SearchElementInfosByText failed: windowId[%{public}d] has no connection", realId);
+        return;
+    }
+    if (!connection->GetProxy()) {
+        HILOG_ERROR("windowId[%{public}d] has no proxy", realId);
         return;
     }
     if (!(connection_.GetAbilityInfo().GetCapabilityValues() & Capability::CAPABILITY_RETRIEVE)) {
@@ -161,8 +169,12 @@ void AccessibleAbilityChannel::InnerFindFocusedElementInfo(const int32_t accessi
         accessibilityWindowId, focusType);
 
     sptr<AccessibilityWindowConnection> connection = accountData->GetAccessibilityWindowConnection(realId);
-    if (!connection || !connection->GetProxy()) {
-        HILOG_ERROR("FindFocusedElementInfo failed");
+    if (!connection) {
+        HILOG_ERROR("FindFocusedElementInfo failed: windowId[%{public}d] has no connection", realId);
+        return;
+    }
+    if (!connection->GetProxy()) {
+        HILOG_ERROR("windowId[%{public}d] has no proxy", realId);
         return;
     }
     if (!(connection_.GetAbilityInfo().GetCapabilityValues() & Capability::CAPABILITY_RETRIEVE)) {
@@ -201,8 +213,12 @@ void AccessibleAbilityChannel::InnerFocusMoveSearch(const int32_t accessibilityW
         accessibilityWindowId, FOCUS_TYPE_INVALID);
 
     sptr<AccessibilityWindowConnection> connection = accountData->GetAccessibilityWindowConnection(realId);
-    if (!connection || !connection->GetProxy()) {
-        HILOG_ERROR("FocusMoveSearch failed");
+    if (!connection) {
+        HILOG_ERROR("FocusMoveSearch failed: windowId[%{public}d] has no connection", realId);
+        return;
+    }
+    if (!connection->GetProxy()) {
+        HILOG_ERROR("windowId[%{public}d] has no proxy", realId);
         return;
     }
     if (!(connection_.GetAbilityInfo().GetCapabilityValues() & Capability::CAPABILITY_RETRIEVE)) {
@@ -244,8 +260,12 @@ void AccessibleAbilityChannel::InnerExecuteAction(const int32_t accessibilityWin
         accessibilityWindowId, FOCUS_TYPE_INVALID);
 
     sptr<AccessibilityWindowConnection> connection = accountData->GetAccessibilityWindowConnection(realId);
-    if (!connection || !connection->GetProxy()) {
-        HILOG_ERROR("ExecuteAction failed");
+    if (!connection) {
+        HILOG_ERROR("ExecuteAction failed: windowId[%{public}d] has no connection", realId);
+        return;
+    }
+    if (!connection->GetProxy()) {
+        HILOG_ERROR("windowId[%{public}d] has no proxy", realId);
         return;
     }
     if (!(connection_.GetAbilityInfo().GetCapabilityValues() & Capability::CAPABILITY_RETRIEVE)) {

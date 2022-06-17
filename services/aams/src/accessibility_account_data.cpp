@@ -176,6 +176,11 @@ void AccessibilityAccountData::AddAccessibilityWindowConnection(
     if (!asacConnections_.count(windowId)) {
         asacConnections_.insert(std::make_pair(windowId, interactionConnection));
     }
+
+    HILOG_INFO("after add connection interactionOperators's size[%{public}zu]", asacConnections_.size());
+    for (auto &asacConnection : asacConnections_) {
+        HILOG_INFO("The window id of asacConnection is %{public}d", asacConnection.first);
+    }
 }
 
 void AccessibilityAccountData::RemoveAccessibilityWindowConnection(const int32_t windowId)
@@ -184,6 +189,10 @@ void AccessibilityAccountData::RemoveAccessibilityWindowConnection(const int32_t
     std::map<int32_t, sptr<AccessibilityWindowConnection>>::iterator it = asacConnections_.find(windowId);
     if (it != asacConnections_.end()) {
         asacConnections_.erase(it);
+    }
+    HILOG_INFO("after remove connection interactionOperators's size[%{public}zu]", asacConnections_.size());
+    for (auto &asacConnection : asacConnections_) {
+        HILOG_INFO("The window id of asacConnection is %{public}d", asacConnection.first);
     }
 }
 
@@ -317,7 +326,11 @@ const sptr<AccessibleAbilityConnection> AccessibilityAccountData::GetAccessibleA
 const sptr<AccessibilityWindowConnection> AccessibilityAccountData::GetAccessibilityWindowConnection(
     const int32_t windowId)
 {
-    HILOG_DEBUG("windowId(%{public}d).", windowId);
+    HILOG_INFO("windowId[%{public}d] interactionOperators's size[%{public}zu]", windowId, asacConnections_.size());
+    for (auto &asacConnection : asacConnections_) {
+        HILOG_INFO("The window id of asacConnection is %{public}d", asacConnection.first);
+    }
+
     if (asacConnections_.count(windowId) > 0) {
         return asacConnections_[windowId];
     }
