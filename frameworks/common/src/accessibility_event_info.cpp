@@ -45,7 +45,7 @@ int32_t AccessibilityMemo::GetViewId() const
 
 int32_t AccessibilityMemo::GetAccessibilityId() const
 {
-    HILOG_INFO("called] elementId_[%{public}d]", elementId_);
+    HILOG_DEBUG("called] elementId_[%{public}d]", elementId_);
     return elementId_;
 }
 
@@ -182,24 +182,24 @@ void AccessibilityEventInfo::SetRecordCount(const int32_t recordCount)
 
 void AccessibilityEventInfo::AddRecord(const AccessibilityEventInfo &record)
 {
-    HILOG_DEBUG("start");
+    HILOG_DEBUG();
     records_.push_back(record);
 }
 
-const AccessibilityEventInfo &AccessibilityEventInfo::GetRecord(const int32_t index) const
+bool AccessibilityEventInfo::GetRecord(const int32_t index, AccessibilityEventInfo &eventInfo) const
 {
-    HILOG_DEBUG("start");
+    HILOG_DEBUG();
     if (index >= recordsCount_ || index < 0) {
-        AccessibilityEventInfo record {};
         HILOG_ERROR("[called] index[%{public}d] is invalid", index);
-        return record;
+        return false;
     }
-    return records_[index];
+    eventInfo = records_[index];
+    return true;
 }
 
 const std::vector<AccessibilityEventInfo> &AccessibilityEventInfo::GetRecords() const
 {
-    HILOG_DEBUG("start");
+    HILOG_DEBUG();
     return records_;
 }
 
@@ -247,7 +247,6 @@ int64_t AccessibilityEventInfo::GetTimeStamp() const
 
 void AccessibilityEventInfo::SetTimeStamp(int64_t timeStamp)
 {
-    HILOG_DEBUG("start");
     timeStamp_ = timeStamp;
     HILOG_DEBUG("timeStamp_[%{public}ju]", timeStamp_);
 }
@@ -303,7 +302,7 @@ ActionType AccessibilityEventInfo::GetTriggerAction() const
 AccessibilityEventInfo::AccessibilityEventInfo(int32_t windowId, WindowUpdateType windowChangeTypes)
     : eventType_(TYPE_WINDOW_UPDATE), windowChangeTypes_(windowChangeTypes)
 {
-    HILOG_DEBUG("start");
+    HILOG_DEBUG();
     SetWindowId(windowId);
 }
 
