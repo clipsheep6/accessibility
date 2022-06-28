@@ -28,7 +28,7 @@
 namespace OHOS {
 namespace Accessibility {
 // tmp: wait for window registing when client connect done
-constexpr int WAIT_WINDOW_REGIST = 300;
+constexpr int WAIT_WINDOW_REGIST = 500;
 namespace {
     constexpr int32_t NONE_ID = -1;
     std::mutex g_Mutex;
