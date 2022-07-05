@@ -39,6 +39,12 @@ bool BundleMgrProxy::GetAbilityInfo(
     return true;
 }
 
+bool BundleMgrProxy::GetAbilityInfo(
+    const std::string &bundleName, const std::string &abilityName, AbilityInfo &abilityInfo)
+{
+    return true;
+}
+
 bool BundleMgrProxy::GetApplicationInfo(
     const std::string& appName, const ApplicationFlag flag, const int userId, ApplicationInfo& appInfo)
 {
