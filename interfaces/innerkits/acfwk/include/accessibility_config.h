@@ -151,8 +151,8 @@ public:
     void SetScreenMagnificationState(const bool state);
     void SetShortKeyState(const bool state);
     void SetMouseKeyState(const bool state);
-    void SetCaptionState(const bool state);
-    void SetCaptionProperty(const CaptionProperty &caption);
+    void SetCaptionsState(const bool state);
+    void SetCaptionsProperty(const CaptionProperty &caption);
     void SetMouseAutoClick(const int32_t time);
     void SetShortkeyTarget(const std::string &name);
     void SetHighContrastTextState(bool state);
@@ -167,8 +167,8 @@ public:
     void GetScreenMagnificationState(bool &state) const;
     void GetShortKeyState(bool &state) const;
     void GetMouseKeyState(bool &state) const;
-    void GetCaptionState(bool &state) const;
-    void GetCaptionProperty(CaptionProperty &caption) const;
+    void GetCaptionsState(bool &state) const;
+    void GetCaptionsProperty(CaptionProperty &caption) const;
     void GetMouseAutoClick(int32_t &time) const;
     void GetShortkeyTarget(std::string &name) const;
     void GetInvertColorState(bool &state) const;
