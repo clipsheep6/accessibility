@@ -17,40 +17,90 @@
 #include "hilog_wrapper.h"
 #include "if_system_ability_manager.h"
 #include "iservice_registry.h"
+#include "parameter.h"
 #include "system_ability_definition.h"
-#include "accessibility_constants.h"
 
 namespace OHOS {
 namespace AccessibilityConfig {
-AccessibilityConfig::Impl::Impl()
+namespace {
+    const std::string SYSTEM_PARAMETER_AAMS_NAME = "accessibility.config.ready";
+    const std::string SYSTEM_PARAMETER_AAMS_VALUE_DEFALUT = "default";
+    const std::string SYSTEM_PARAMETER_AAMS_VALUE_TRUE = "true";
+    const std::string SYSTEM_PARAMETER_AAMS_VALUE_FALSE = "false";
+    constexpr int32_t CONFIG_PARAMETER_VALUE_SIZE = 10;
+} // namespace
+void AccessibilityConfig::Impl::OnParameterChanged(const char *key, const char *value, void *context)
 {
+    HILOG_INFO("Parameter key = [%{public}s] value = [%{public}s]", key, value);
+    if (!key || std::strcmp(key, SYSTEM_PARAMETER_AAMS_NAME.c_str())) {
+        HILOG_WARN("not accessibility.config.ready callback");
+        return;
+    }
+
+    if (!value || std::strcmp(value, SYSTEM_PARAMETER_AAMS_VALUE_TRUE.c_str())) {
+        HILOG_WARN("accessibility.config.ready value not true");
+        return;
+    }
+
+    if (!context) {
+        HILOG_ERROR("accessibility.config.ready context NULL");
+        return;
+    }
+
+    Impl* implPtr = static_cast<Impl*>(context);
+    implPtr->Init();
+}
+
+void AccessibilityConfig::Impl::Init() {
     HILOG_INFO();
+    std::lock_guard<std::mutex> lock(mutex_);
     if (!ConnectToService()) {
         HILOG_ERROR("Failed to connect to aams service");
         return;
     }
-    captionObserver_ = new(std::nothrow) AccessibleAbilityManagerCaptionObserverImpl(*this);
+
     if (!captionObserver_) {
-        HILOG_ERROR("Create captionObserver_ fail.");
-        return;
+        captionObserver_ = new(std::nothrow) AccessibleAbilityManagerCaptionObserverImpl(*this);
+        if (!captionObserver_) {
+            HILOG_ERROR("Create captionObserver_ fail.");
+            return;
+        }
+        serviceProxy_->RegisterCaptionObserver(captionObserver_);
     }
-    serviceProxy_->RegisterCaptionObserver(captionObserver_);
 
-    enableAbilityListsObserverStub_ = new(std::nothrow) AccessibilityEnableAbilityListsObserverStubImpl(*this);
     if (!enableAbilityListsObserverStub_) {
-        HILOG_ERROR("Create enableAbilityListsObserverStub_ fail.");
-        return;
+        enableAbilityListsObserverStub_ = new(std::nothrow) AccessibilityEnableAbilityListsObserverStubImpl(*this);
+        if (!enableAbilityListsObserverStub_) {
+            HILOG_ERROR("Create enableAbilityListsObserverStub_ fail.");
+            return;
+        }
+        serviceProxy_->RegisterEnableAbilityListsObserver(enableAbilityListsObserverStub_);
     }
-    serviceProxy_->RegisterEnableAbilityListsObserver(enableAbilityListsObserverStub_);
 
-    configObserver_ = new(std::nothrow) AccessibleAbilityManagerConfigObserverImpl(*this);
     if (!configObserver_) {
-        HILOG_ERROR("Create configObserver_ fail.");
-        return;
+        configObserver_ = new(std::nothrow) AccessibleAbilityManagerConfigObserverImpl(*this);
+        if (!configObserver_) {
+            HILOG_ERROR("Create configObserver_ fail.");
+            return;
+        }
+        serviceProxy_->RegisterConfigObserver(configObserver_);
     }
-    serviceProxy_->RegisterConfigObserver(configObserver_);
 
-    InitVar();
+    InitConfigValues();
+}
+
+AccessibilityConfig::Impl::Impl()
+{
+    HILOG_INFO();
+    char value[CONFIG_PARAMETER_VALUE_SIZE] = "default";
+    int32_t ret = GetParameter(SYSTEM_PARAMETER_AAMS_NAME.c_str(), SYSTEM_PARAMETER_AAMS_VALUE_FALSE.c_str(),
+                               value, CONFIG_PARAMETER_VALUE_SIZE);
+
+    HILOG_INFO("GetParameter value = [%{public}s] ret = [%{public}d]", value, ret);
+    if (ret >= 0 && !std::strcmp(value, SYSTEM_PARAMETER_AAMS_VALUE_TRUE.c_str())) {
+        Init();
+    }
+    WatchParameter(SYSTEM_PARAMETER_AAMS_NAME.c_str(), &OnParameterChanged, this);
 }
 
 bool AccessibilityConfig::Impl::ConnectToService()
@@ -103,6 +153,9 @@ void AccessibilityConfig::Impl::ResetService(const wptr<IRemoteObject> &remote)
         if (object && (remote == object)) {
             object->RemoveDeathRecipient(deathRecipient_);
             serviceProxy_ = nullptr;
+            captionObserver_ = nullptr;
+            enableAbilityListsObserverStub_ = nullptr;
+            configObserver_ = nullptr;
             HILOG_DEBUG("Reset OK");
         }
     }
@@ -1226,7 +1279,7 @@ void AccessibilityConfig::Impl::OnAccessibleAbilityManagerShortkeyTargetChanged(
     NotifyShortkeyTargetChanged(observers, shortkeyTarget);
 }
 
-void AccessibilityConfig::Impl::InitVar()
+void AccessibilityConfig::Impl::InitConfigValues()
 {
     if (!serviceProxy_) {
         HILOG_ERROR("AAMS Service is not connected");
