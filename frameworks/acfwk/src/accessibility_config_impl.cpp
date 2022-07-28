@@ -130,7 +130,7 @@ bool AccessibilityConfig::Impl::DisableAbility(const std::string &name)
     return serviceProxy_->DisableAbility(name);
 }
 
-void AccessibilityConfig::Impl::GetCaptionState(bool &state)
+void AccessibilityConfig::Impl::GetCaptionsState(bool &state)
 {
     HILOG_INFO();
     std::lock_guard<std::mutex> lock(mutex_);
@@ -142,7 +142,7 @@ void AccessibilityConfig::Impl::GetCaptionState(bool &state)
     state = serviceProxy_->GetCaptionState();
 }
 
-void AccessibilityConfig::Impl::GetCaptionProperty(CaptionProperty &caption)
+void AccessibilityConfig::Impl::GetCaptionsProperty(CaptionProperty &caption)
 {
     HILOG_INFO();
     std::lock_guard<std::mutex> lock(mutex_);
@@ -153,7 +153,7 @@ void AccessibilityConfig::Impl::GetCaptionProperty(CaptionProperty &caption)
     caption = serviceProxy_->GetCaptionProperty();
 }
 
-void AccessibilityConfig::Impl::SetCaptionProperty(const CaptionProperty& caption)
+void AccessibilityConfig::Impl::SetCaptionsProperty(const CaptionProperty& caption)
 {
     HILOG_INFO();
     std::lock_guard<std::mutex> lock(mutex_);
@@ -164,7 +164,7 @@ void AccessibilityConfig::Impl::SetCaptionProperty(const CaptionProperty& captio
     serviceProxy_->SetCaptionProperty(caption);
 }
 
-void AccessibilityConfig::Impl::SetCaptionState(const bool state)
+void AccessibilityConfig::Impl::SetCaptionsState(const bool state)
 {
     HILOG_INFO("state = [%{public}s]", state ? "True" : "False");
     std::lock_guard<std::mutex> lock(mutex_);

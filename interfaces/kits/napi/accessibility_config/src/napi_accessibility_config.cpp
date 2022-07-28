@@ -231,7 +231,11 @@ void NAccessibilityConfig::SetConfigComplete(napi_env env, napi_status status, v
     napi_get_undefined(env, &undefined);
     napi_get_undefined(env, &ret);
     if (callbackInfo->callback_) {
-        result[PARAM0] = GetErrorValue(env, CODE_SUCCESS);
+        if (callbackInfo->ret_) {
+            result[PARAM0] = GetErrorValue(env, CODE_SUCCESS);
+        } else {
+            result[PARAM0] = GetErrorValue(env, CODE_FAILED);
+        }
         result[PARAM1] = ret;
         napi_get_reference_value(env, callbackInfo->callback_, &callback);
         napi_value returnVal;
@@ -239,7 +243,11 @@ void NAccessibilityConfig::SetConfigComplete(napi_env env, napi_status status, v
         napi_delete_reference(env, callbackInfo->callback_);
         HILOG_DEBUG("complete function callback mode");
     } else {
-        napi_resolve_deferred(env, callbackInfo->deferred_, undefined);
+        if (callbackInfo->ret_) {
+            napi_resolve_deferred(env, callbackInfo->deferred_, undefined);
+        } else {
+            napi_reject_deferred(env, callbackInfo->deferred_, undefined);
+        }
         HILOG_DEBUG("complete function promise mode");
     }
     napi_delete_async_work(env, callbackInfo->work_);
@@ -253,6 +261,10 @@ void NAccessibilityConfig::SetConfigExecute(napi_env env, void* data)
     NAccessibilityConfigData* callbackInfo = static_cast<NAccessibilityConfigData*>(data);
     if (!callbackInfo) {
         HILOG_ERROR("callbackInfo is nullptr");
+        return;
+    }
+    if (!callbackInfo->ret_) {
+        HILOG_ERROR("check param error");
         return;
     }
     auto &instance = Singleton<OHOS::AccessibilityConfig::AccessibilityConfig>::GetInstance();
@@ -279,7 +291,7 @@ void NAccessibilityConfig::SetConfigExecute(napi_env env, void* data)
             instance.SetShortKeyState(callbackInfo->boolConfig_);
             break;
         case OHOS::AccessibilityConfig::CONFIG_ID::CONFIG_CAPTION_STATE:
-            instance.SetCaptionState(callbackInfo->boolConfig_);
+            instance.SetCaptionsState(callbackInfo->boolConfig_);
             break;
         case OHOS::AccessibilityConfig::CONFIG_ID::CONFIG_CONTENT_TIMEOUT:
             instance.SetContentTimeout(callbackInfo->uint32Config_);
@@ -303,7 +315,7 @@ void NAccessibilityConfig::SetConfigExecute(napi_env env, void* data)
             instance.SetShortkeyTarget(callbackInfo->stringConfig_);
             break;
         case OHOS::AccessibilityConfig::CONFIG_ID::CONFIG_CAPTION_STYLE:
-            instance.SetCaptionProperty(callbackInfo->captionProperty_);
+            instance.SetCaptionsProperty(callbackInfo->captionProperty_);
             break;
         default:
             break;
@@ -335,8 +347,6 @@ void NAccessibilityConfig::GetConfigComplete(napi_env env, napi_status status, v
             napi_get_boolean(env, callbackInfo->boolConfig_, &result[PARAM1]);
             break;
         case OHOS::AccessibilityConfig::CONFIG_ID::CONFIG_CONTENT_TIMEOUT:
-            napi_create_uint32(env, callbackInfo->uint32Config_, &result[PARAM1]);
-            break;
         case OHOS::AccessibilityConfig::CONFIG_ID::CONFIG_MOUSE_AUTOCLICK:
             napi_create_int32(env, callbackInfo->int32Config_, &result[PARAM1]);
             break;
@@ -403,10 +413,14 @@ void NAccessibilityConfig::GetConfigExecute(napi_env env, void* data)
             instance.GetShortKeyState(callbackInfo->boolConfig_);
             break;
         case OHOS::AccessibilityConfig::CONFIG_ID::CONFIG_CAPTION_STATE:
-            instance.GetCaptionState(callbackInfo->boolConfig_);
+            instance.GetCaptionsState(callbackInfo->boolConfig_);
             break;
         case OHOS::AccessibilityConfig::CONFIG_ID::CONFIG_CONTENT_TIMEOUT:
-            instance.GetContentTimeout(callbackInfo->uint32Config_);
+            {
+                uint32_t timeout = 0;
+                instance.GetContentTimeout(timeout);
+                callbackInfo->int32Config_ = static_cast<int32_t>(timeout);
+            }
             break;
         case OHOS::AccessibilityConfig::CONFIG_ID::CONFIG_MOUSE_AUTOCLICK:
             instance.GetMouseAutoClick(callbackInfo->int32Config_);
@@ -428,7 +442,7 @@ void NAccessibilityConfig::GetConfigExecute(napi_env env, void* data)
             instance.GetShortkeyTarget(callbackInfo->stringConfig_);
             break;
         case OHOS::AccessibilityConfig::CONFIG_ID::CONFIG_CAPTION_STYLE:
-            instance.GetCaptionProperty(callbackInfo->captionProperty_);
+            instance.GetCaptionsProperty(callbackInfo->captionProperty_);
             break;
         default:
             break;
@@ -470,21 +484,21 @@ napi_value NAccessibilityConfig::SetConfig(napi_env env, napi_callback_info info
         case OHOS::AccessibilityConfig::CONFIG_ID::CONFIG_CAPTION_STATE:
             {
                 bool state = false;
-                ParseBool(env, state, parameters[PARAM0]);
+                callbackInfo->ret_ = ParseBool(env, state, parameters[PARAM0]);
                 callbackInfo->boolConfig_ = state;
             }
             break;
         case OHOS::AccessibilityConfig::CONFIG_ID::CONFIG_CONTENT_TIMEOUT:
             {
-                uint32_t timeout = 0;
-                ParseUint32(env, timeout, parameters[PARAM0]);
-                callbackInfo->uint32Config_ = timeout;
+                int32_t timeout = 0;
+                callbackInfo->ret_ = ParseInt32(env, timeout, parameters[PARAM0]);
+                callbackInfo->uint32Config_ = static_cast<uint32_t>(timeout);
             }
             break;
         case OHOS::AccessibilityConfig::CONFIG_ID::CONFIG_MOUSE_AUTOCLICK:
             {
                 int32_t time = 0;
-                ParseInt32(env, time, parameters[PARAM0]);
+                callbackInfo->ret_ = ParseInt32(env, time, parameters[PARAM0]);
                 callbackInfo->int32Config_ = time;
             }
             break;
@@ -492,7 +506,7 @@ napi_value NAccessibilityConfig::SetConfig(napi_env env, napi_callback_info info
         case OHOS::AccessibilityConfig::CONFIG_ID::CONFIG_BRIGHTNESS_DISCOUNT:
             {
                 double doubleTemp = 0;
-                napi_get_value_double(env, parameters[PARAM0], &doubleTemp);
+                callbackInfo->ret_ = ParseDouble(env, doubleTemp, parameters[PARAM0]);
                 callbackInfo->floatConfig_ = static_cast<float>(doubleTemp);
             }
             break;
@@ -500,12 +514,12 @@ napi_value NAccessibilityConfig::SetConfig(napi_env env, napi_callback_info info
         case OHOS::AccessibilityConfig::CONFIG_ID::CONFIG_SHORT_KEY_TARGET:
             {
                 std::string target = "";
-                ParseString(env, target, parameters[PARAM0]);
+                callbackInfo->ret_ = ParseString(env, target, parameters[PARAM0]) && target.length() > 0;
                 callbackInfo->stringConfig_ = target;
             }
             break;
         case OHOS::AccessibilityConfig::CONFIG_ID::CONFIG_CAPTION_STYLE:
-            ConvertObjToCaptionProperty(env, parameters[PARAM0], &callbackInfo->captionProperty_);
+            callbackInfo->ret_ = ConvertObjToCaptionProperty(env, parameters[PARAM0], &callbackInfo->captionProperty_);
             break;
         default:
             break;
