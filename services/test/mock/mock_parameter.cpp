@@ -17,5 +17,7 @@
 
 int SetParameter(const char *key, const char *value)
 {
+    (void)key;
+    (void)value;
     return 0;
 }

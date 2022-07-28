@@ -51,7 +51,8 @@ void AccessibilityConfig::Impl::OnParameterChanged(const char *key, const char *
     implPtr->Init();
 }
 
-void AccessibilityConfig::Impl::Init() {
+void AccessibilityConfig::Impl::Init()
+{
     HILOG_INFO();
     std::lock_guard<std::mutex> lock(mutex_);
     if (!ConnectToService()) {
