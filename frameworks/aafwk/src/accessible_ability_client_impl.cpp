@@ -595,7 +595,12 @@ void AccessibleAbilityClientImpl::SetCacheMode(const int32_t cacheMode)
     HILOG_INFO("set cache mode: [%{public}d]", cacheMode);
     cacheWindowId_ = -1;
     cacheElementInfos_.clear();
-    cacheMode_ = cacheMode & GET_SOURCE_PREFETCH_MODE;
+    if (cacheMode < 0) {
+        cacheMode_ = 0;
+    } else {
+        uint32_t mode = static_cast<uint32_t>(cacheMode);
+        cacheMode_ = mode & static_cast<uint32_t>(GET_SOURCE_PREFETCH_MODE);
+    }
 }
 
 bool AccessibleAbilityClientImpl::GetCacheElementInfo(const int32_t windowId,
@@ -629,7 +634,7 @@ void AccessibleAbilityClientImpl::SetCacheElementInfo(const int32_t windowId,
 }
 
 bool AccessibleAbilityClientImpl::SearchElementInfoFromAce(const int32_t windowId, const int32_t elementId,
-    const int32_t mode, AccessibilityElementInfo &info)
+    const uint32_t mode, AccessibilityElementInfo &info)
 {
     if (!channelClient_) {
         HILOG_ERROR("The channel is invalid.");
@@ -637,7 +642,8 @@ bool AccessibleAbilityClientImpl::SearchElementInfoFromAce(const int32_t windowI
     }
 
     std::vector<AccessibilityElementInfo> elementInfos {};
-    if (!channelClient_->SearchElementInfosByAccessibilityId(windowId, elementId, mode, elementInfos)) {
+    if (!channelClient_->SearchElementInfosByAccessibilityId(
+        windowId, elementId, static_cast<int32_t>(mode), elementInfos)) {
         HILOG_ERROR("search element info failed. windowId[%{public}d] elementId[%{public}d] mode[%{public}d]",
             windowId, elementId, mode);
         return false;
