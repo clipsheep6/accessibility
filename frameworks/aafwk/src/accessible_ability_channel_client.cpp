@@ -200,8 +200,21 @@ bool AccessibleAbilityChannelClient::GetWindows(std::vector<AccessibilityWindowI
     HITRACE_METER(HITRACE_TAG_ACCESSIBILITY_MANAGER);
     if (proxy_) {
         bool ret = proxy_->GetWindows(windows);
+        HILOG_DEBUG("[client window] windows.size[%{public}zu]", windows.size());
         for (auto &window : windows) {
             window.SetChannelId(channelId_);
+            HILOG_DEBUG("[client window] displayId[%{public}" PRIu64 "]", window.GetDisplayId());
+            HILOG_DEBUG("[client window] id[%{public}d]", window.GetWindowId());
+            HILOG_DEBUG("[client window] windowMode[%{public}d]", window.GetWindowMode());
+            HILOG_DEBUG("[client window] windowType[%{public}d]", window.GetWindowType());
+            HILOG_DEBUG("[client window] AccessibilityWindowType[%{public}d]", window.GetAccessibilityWindowType());
+            HILOG_DEBUG("[client window] WindowLayer[%{public}d]", window.GetWindowLayer());
+            HILOG_DEBUG("[client window] anchorId[%{public}d]", window.GetAnchorId());
+            HILOG_DEBUG("[client window] channelId[%{public}d]", window.GetChannelId());
+            HILOG_DEBUG("[client window] active[%{public}d]", window.IsActive());
+            HILOG_DEBUG("[client window] focused[%{public}d]", window.IsFocused());
+            HILOG_DEBUG("[client window] accessibilityFocused[%{public}d]", window.IsAccessibilityFocused());
+            HILOG_DEBUG("[client window] isDecorEnable[%{public}d]", window.IsDecorEnable());
         }
         return ret;
     } else {
@@ -217,8 +230,21 @@ bool AccessibleAbilityChannelClient::GetWindows(const uint64_t displayId,
     HITRACE_METER_NAME(HITRACE_TAG_ACCESSIBILITY_MANAGER, "GetWindowsByDisplayId");
     if (proxy_) {
         bool ret = proxy_->GetWindowsByDisplayId(displayId, windows);
+        HILOG_DEBUG("[client window] windows.size[%{public}zu]", windows.size());
         for (auto &window : windows) {
             window.SetChannelId(channelId_);
+            HILOG_DEBUG("[client window] displayId[%{public}" PRIu64 "]", window.GetDisplayId());
+            HILOG_DEBUG("[client window] id[%{public}d]", window.GetWindowId());
+            HILOG_DEBUG("[client window] windowMode[%{public}d]", window.GetWindowMode());
+            HILOG_DEBUG("[client window] windowType[%{public}d]", window.GetWindowType());
+            HILOG_DEBUG("[client window] AccessibilityWindowType[%{public}d]", window.GetAccessibilityWindowType());
+            HILOG_DEBUG("[client window] WindowLayer[%{public}d]", window.GetWindowLayer());
+            HILOG_DEBUG("[client window] anchorId[%{public}d]", window.GetAnchorId());
+            HILOG_DEBUG("[client window] channelId[%{public}d]", window.GetChannelId());
+            HILOG_DEBUG("[client window] active[%{public}d]", window.IsActive());
+            HILOG_DEBUG("[client window] focused[%{public}d]", window.IsFocused());
+            HILOG_DEBUG("[client window] accessibilityFocused[%{public}d]", window.IsAccessibilityFocused());
+            HILOG_DEBUG("[client window] isDecorEnable[%{public}d]", window.IsDecorEnable());
         }
         return ret;
     } else {
