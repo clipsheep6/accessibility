@@ -168,7 +168,7 @@ int32_t AccessibilityWindowManager::ConvertToRealWindowId(int32_t windowId, int3
             return activeWindowId_;
         }
     }
-    HILOG_DEBUG("After convert windowId[%{public}d]", windowId);
+    HILOG_DEBUG("After convert windowId[%{public}d] and activeId[%{public}d]", windowId, activeWindowId_);
     return windowId;
 }
 
@@ -274,14 +274,25 @@ void AccessibilityWindowManager::SetAccessibilityFocusedWindow(int32_t windowId)
 
 std::vector<AccessibilityWindowInfo> AccessibilityWindowManager::GetAccessibilityWindows()
 {
-    HILOG_DEBUG("a11yWindows_ size[%{public}zu]", a11yWindows_.size());
+    HILOG_DEBUG("a11yWindows_ size[%{public}zu] activeWindowId[%{public}d]", a11yWindows_.size(), activeWindowId_);
     std::vector<AccessibilityWindowInfo> windows;
     for (auto &window : a11yWindows_) {
         windows.emplace_back(window.second);
     }
-    HILOG_DEBUG("window size[%{public}zu]", windows.size());
+    HILOG_DEBUG("[service window] window size[%{public}zu]", windows.size());
     for (auto &logWindow : windows) {
-        HILOG_DEBUG("logWindow id[%{public}d]", logWindow.GetWindowId());
+        HILOG_DEBUG("[service window] displayId[%{public}" PRIu64 "]", logWindow.GetDisplayId());
+        HILOG_DEBUG("[service window] id[%{public}d]", logWindow.GetWindowId());
+        HILOG_DEBUG("[service window] windowMode[%{public}d]", logWindow.GetWindowMode());
+        HILOG_DEBUG("[service window] windowType[%{public}d]", logWindow.GetWindowType());
+        HILOG_DEBUG("[service window] AccessibilityWindowType[%{public}d]", logWindow.GetAccessibilityWindowType());
+        HILOG_DEBUG("[service window] WindowLayer[%{public}d]", logWindow.GetWindowLayer());
+        HILOG_DEBUG("[service window] anchorId[%{public}d]", logWindow.GetAnchorId());
+        HILOG_DEBUG("[service window] channelId[%{public}d]", logWindow.GetChannelId());
+        HILOG_DEBUG("[service window] active[%{public}d]", logWindow.IsActive());
+        HILOG_DEBUG("[service window] focused[%{public}d]", logWindow.IsFocused());
+        HILOG_DEBUG("[service window] accessibilityFocused[%{public}d]", logWindow.IsAccessibilityFocused());
+        HILOG_DEBUG("[service window] isDecorEnable[%{public}d]", logWindow.IsDecorEnable());
     }
     return windows;
 }
