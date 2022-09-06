@@ -98,14 +98,14 @@ public:
     MOCK_METHOD0(UnregisterBundleStatusCallback, bool());
     MOCK_METHOD4(
         DumpInfos, bool(const DumpFlag flag, const std::string& bundleName, int32_t userId, std::string& result));
-    MOCK_METHOD1(IsApplicationEnabled, bool(const std::string& bundleName));
-    MOCK_METHOD3(SetApplicationEnabled, bool(const std::string& bundleName, bool isEnable, int32_t userId));
+    MOCK_METHOD2(IsApplicationEnabled, ErrCode(const std::string& bundleName, bool& isEnable));
+    MOCK_METHOD3(SetApplicationEnabled, ErrCode(const std::string& bundleName, bool isEnable, int32_t userId));
     MOCK_METHOD0(GetBundleInstaller, sptr<IBundleInstaller>());
     MOCK_METHOD2(GetAppIdByBundleName, std::string(const std::string& bundleName, const int userId));
     MOCK_METHOD2(GetBundlesForUid, bool(const int uid, std::vector<std::string>& bundleNames));
     MOCK_METHOD2(GetNameForUid, bool(const int uid, std::string& name));
-    MOCK_METHOD1(IsAbilityEnabled, bool(const AbilityInfo& abilityInfo));
-    MOCK_METHOD3(SetAbilityEnabled, bool(const AbilityInfo& abilityInfo, bool isEnabled, int32_t userId));
+    MOCK_METHOD2(IsAbilityEnabled, ErrCode(const AbilityInfo& abilityInfo, bool& isEnable));
+    MOCK_METHOD3(SetAbilityEnabled, ErrCode(const AbilityInfo& abilityInfo, bool isEnabled, int32_t userId));
     MOCK_METHOD2(GetAbilityIcon, std::string(const std::string& bundleName, const std::string& className));
     MOCK_METHOD3(
         CanRequestPermission, bool(const std::string& bundleName, const std::string& permissionName, const int userId));
