@@ -83,7 +83,7 @@ public:
     MOCK_METHOD2(GetHapModuleInfo, bool(const AbilityInfo& abilityInfo, HapModuleInfo& hapModuleInfo));
     MOCK_METHOD2(GetLaunchWantForBundle, bool(const std::string& bundleName, Want& want));
     MOCK_METHOD2(CheckPublicKeys, int(const std::string& firstBundleName, const std::string& secondBundleName));
-    MOCK_METHOD2(GetPermissionDef, bool(const std::string& permissionName, PermissionDef& permissionDef));
+    MOCK_METHOD2(GetPermissionDef, int32_t(const std::string& permissionName, PermissionDef& permissionDef));
     MOCK_METHOD1(GetAllPermissionGroupDefs, bool(std::vector<PermissionDef>& permissionDefs));
     MOCK_METHOD2(GetAppsGrantedPermissions,
         bool(const std::vector<std::string>& permissions, std::vector<std::string>& appNames));
@@ -151,7 +151,7 @@ public:
     MOCK_METHOD2(GetHapModuleInfo, bool(const AbilityInfo& abilityInfo, HapModuleInfo& hapModuleInfo));
     MOCK_METHOD2(GetLaunchWantForBundle, bool(const std::string& bundleName, Want& want));
     MOCK_METHOD2(CheckPublicKeys, int(const std::string& firstBundleName, const std::string& secondBundleName));
-    MOCK_METHOD2(GetPermissionDef, bool(const std::string& permissionName, PermissionDef& permissionDef));
+    MOCK_METHOD2(GetPermissionDef, int32_t(const std::string& permissionName, PermissionDef& permissionDef));
     MOCK_METHOD1(GetAllPermissionGroupDefs, bool(std::vector<PermissionDef>& permissionDefs));
     MOCK_METHOD2(GetAppsGrantedPermissions,
         bool(const std::vector<std::string>& permissions, std::vector<std::string>& appNames));

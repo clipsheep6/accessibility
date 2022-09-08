@@ -294,11 +294,11 @@ int BundleMgrProxy::CheckPublicKeys(const std::string& firstBundleName, const st
     return 0;
 }
 
-bool BundleMgrProxy::GetPermissionDef(const std::string& permissionName, PermissionDef& permissionDef)
+ErrCode BundleMgrProxy::GetPermissionDef(const std::string& permissionName, PermissionDef& permissionDef)
 {
     (void)permissionName;
     (void)permissionDef;
-    return true;
+    return 1;
 }
 
 bool BundleMgrProxy::HasSystemCapability(const std::string& capName)
