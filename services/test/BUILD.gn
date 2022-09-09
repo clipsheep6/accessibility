@@ -56,7 +56,7 @@ config("module_private_config") {
     "//foundation/systemabilitymgr/safwk/interfaces/innerkits/safwk",
     "//foundation/systemabilitymgr/samgr/interfaces/innerkits/samgr_proxy/include",
     "//foundation/graphic/graphic_2d/rosen/modules/render_service_base/include",
-    "//foundation/multimedia/image_standard/interfaces/kits/native/include",
+    "//foundation/multimedia/image_framework/interfaces/kits/native/include",
     "//foundation/multimodalinput/input/util/common/include",
     "//foundation/window/window_manager/dm/include",
     "//foundation/window/window_manager/interfaces/innerkits/dm",
@@ -153,7 +153,7 @@ ohos_moduletest("aams_accessibility_touch_guider_test") {
   ]
 
   public_deps = [
-    "//foundation/multimedia/image_standard/interfaces/innerkits:image_native",
+    "//foundation/multimedia/image_framework/interfaces/innerkits:image_native",
     "//foundation/window/window_manager/wm:libwm",
   ]
 }
@@ -234,7 +234,7 @@ ohos_moduletest("aams_accessibility_touchEvent_injector_test") {
   ]
 
   public_deps = [
-    "//foundation/multimedia/image_standard/interfaces/innerkits:image_native",
+    "//foundation/multimedia/image_framework/interfaces/innerkits:image_native",
     "//foundation/window/window_manager/wm:libwm",
   ]
 }
@@ -321,7 +321,7 @@ ohos_moduletest("aams_accessible_ability_channel_test") {
   ]
 
   public_deps = [
-    "//foundation/multimedia/image_standard/interfaces/innerkits:image_native",
+    "//foundation/multimedia/image_framework/interfaces/innerkits:image_native",
     "//foundation/window/window_manager/wm:libwm",
   ]
 }
@@ -406,7 +406,7 @@ ohos_moduletest("aams_server_test") {
   ]
 
   public_deps = [
-    "//foundation/multimedia/image_standard/interfaces/innerkits:image_native",
+    "//foundation/multimedia/image_framework/interfaces/innerkits:image_native",
     "//foundation/window/window_manager/wm:libwm",
   ]
 }
@@ -485,7 +485,7 @@ ohos_moduletest("aams_accessibility_keyevent_filter_test") {
   ]
 
   public_deps = [
-    "//foundation/multimedia/image_standard/interfaces/innerkits:image_native",
+    "//foundation/multimedia/image_framework/interfaces/innerkits:image_native",
     "//foundation/window/window_manager/wm:libwm",
   ]
 }
@@ -548,7 +548,7 @@ ohos_moduletest("aams_common_event_registry_test") {
     "//base/global/resource_management/frameworks/resmgr:global_resmgr",
     "//foundation/barrierfree/accessibility/common/interface:accessibility_interface",
     "//foundation/barrierfree/accessibility/interfaces/innerkits/common:accessibility_common",
-    "//foundation/multimedia/image_standard/interfaces/innerkits:image_native",
+    "//foundation/multimedia/image_framework/interfaces/innerkits:image_native",
     "//foundation/window/window_manager/utils:libwmutil",
     "//third_party/googletest:gmock_main",
     "//third_party/googletest:gtest_main",
@@ -570,7 +570,7 @@ ohos_moduletest("aams_common_event_registry_test") {
   ]
 
   public_deps = [
-    "//foundation/multimedia/image_standard/interfaces/innerkits:image_native",
+    "//foundation/multimedia/image_framework/interfaces/innerkits:image_native",
     "//foundation/window/window_manager/wm:libwm",
   ]
 }
