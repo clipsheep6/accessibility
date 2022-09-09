@@ -251,24 +251,24 @@ bool BundleMgrProxy::DumpInfos(const DumpFlag flag, const std::string& bundleNam
     return true;
 }
 
-bool BundleMgrProxy::IsApplicationEnabled(const std::string& bundleName)
+ErrCode BundleMgrProxy::IsApplicationEnabled(const std::string& bundleName, bool& isEnable)
 {
-    return true;
+    return ERR_OK;
 }
 
-bool BundleMgrProxy::SetApplicationEnabled(const std::string& bundleName, bool isEnable, int32_t userId)
+ErrCode BundleMgrProxy::SetApplicationEnabled(const std::string& bundleName, bool isEnable, int32_t userId)
 {
-    return true;
+    return ERR_OK;
 }
 
-bool BundleMgrProxy::IsAbilityEnabled(const AbilityInfo& abilityInfo)
+ErrCode BundleMgrProxy::IsAbilityEnabled(const AbilityInfo& abilityInfo, bool& isEnable)
 {
-    return true;
+    return ERR_OK;
 }
 
-bool BundleMgrProxy::SetAbilityEnabled(const AbilityInfo& abilityInfo, bool isEnabled, int32_t userId)
+ErrCode BundleMgrProxy::SetAbilityEnabled(const AbilityInfo& abilityInfo, bool isEnabled, int32_t userId)
 {
-    return true;
+    return ERR_OK;
 }
 
 sptr<IBundleInstaller> BundleMgrProxy::GetBundleInstaller()
