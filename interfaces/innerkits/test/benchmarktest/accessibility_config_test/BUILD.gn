@@ -17,7 +17,12 @@ ohos_benchmarktest("BenchmarkTestForAccessibilityConfig") {
   module_out_path = "accessibility/acfwk"
   sources = [ "accessibility_config_test.cpp" ]
 
-  cflags = []
+  cflags = [
+    "--coverage"
+  ]
+  ldflags = [
+    "--coverage"
+  ]
   if (target_cpu == "arm") {
     cflags += [ "-DBINDER_IPC_32BIT" ]
   }

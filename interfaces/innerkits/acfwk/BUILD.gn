@@ -17,7 +17,12 @@ acfwk_path = "//foundation/barrierfree/accessibility/frameworks/acfwk"
 
 config("accessibilityconfig_private_config") {
   visibility = [ ":*" ]
-
+  cflags = [
+    "--coverage"
+  ]
+  ldflags = [
+    "--coverage"
+  ]
   include_dirs = [
     "${acfwk_path}/include",
     "//foundation/barrierfree/accessibility/common/log/include",

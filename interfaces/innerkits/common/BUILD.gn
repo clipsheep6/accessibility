@@ -18,6 +18,12 @@ accessibility_common_path =
 
 config("accessibility_common_private_config") {
   visibility = [ ":*" ]
+  cflags = [
+    "--coverage"
+  ]
+  ldflags = [
+    "--coverage"
+  ]
 
   include_dirs = [ "//foundation/barrierfree/accessibility/common/log/include" ]
 

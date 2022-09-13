@@ -21,7 +21,12 @@ module_output_path = "accessibility/framework_test"
 
 config("module_private_config") {
   visibility = [ ":*" ]
-  cflags = []
+  cflags = [
+    "--coverage",
+  ]
+  ldflags = [
+    "--coverage"
+  ]
   if (target_cpu == "arm") {
     cflags += [ "-DBINDER_IPC_32BIT" ]
   }

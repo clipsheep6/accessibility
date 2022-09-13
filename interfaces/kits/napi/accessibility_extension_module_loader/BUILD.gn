@@ -15,7 +15,12 @@ import("//build/ohos.gni")
 
 config("accessibility_extension_module_config") {
   visibility = [ ":*" ]
-
+  cflags = [
+    "--coverage"
+  ]
+  ldflags = [
+    "--coverage"
+  ]
   include_dirs = [
     "//foundation/barrierfree/accessibility/common/log/include",
     "//foundation/barrierfree/accessibility/interfaces/innerkits/acfwk/include",
