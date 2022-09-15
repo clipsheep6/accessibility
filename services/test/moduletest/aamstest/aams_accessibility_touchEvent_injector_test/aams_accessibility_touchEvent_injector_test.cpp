@@ -14,10 +14,11 @@
  */
 
 #include <gtest/gtest.h>
+#include "accessibility_common_helper.h"
 #include "accessibility_display_manager.h"
 #include "accessibility_element_operator_stub.h"
-#include "accessibility_helper.h"
 #include "accessibility_input_interceptor.h"
+#include "accessibility_mt_helper.h"
 #include "accessibility_touch_guider.h"
 #include "accessibility_touchEvent_injector.h"
 #include "accessibility_window_manager.h"
@@ -26,9 +27,10 @@
 #include "accessible_ability_connection.h"
 #include "accessible_ability_manager_service.h"
 #include "iservice_registry.h"
-#include "mock_input_manager.h"
+#include "mock_accessibility_element_operator_callback.h"
 #include "mock_accessibility_element_operator_impl.h"
 #include "mock_accessibility_element_operator_proxy.h"
+#include "mock_input_manager.h"
 
 using namespace testing;
 using namespace testing::ext;
@@ -73,7 +75,7 @@ void AamsInjectorTest::SetUp()
     GTEST_LOG_(INFO) << "AamsInjectorTest SetUp";
 
     Singleton<AccessibleAbilityManagerService>::GetInstance().OnStart();
-    AccessibilityHelper::GetInstance().WaitForServicePublish();
+    AccessibilityCommonHelper::GetInstance().WaitForServicePublish();
     Singleton<AccessibleAbilityManagerService>::GetInstance().SwitchedUser(AccessibilityHelper::accountId_);
     GTEST_LOG_(INFO) << "AccessibleAbilityManagerService is published";
 
@@ -86,8 +88,8 @@ void AamsInjectorTest::SetUp()
     auto accountData = Singleton<AccessibleAbilityManagerService>::GetInstance().GetCurrentAccountData();
     accountData->AddInstalledAbility(*abilityInfo);
     sptr<AccessibleAbilityConnection> connection = new AccessibleAbilityConnection(accountData, 0, *abilityInfo);
-    aastub_ = new AccessibleAbilityChannel(*connection);
-    connection->OnAbilityConnectDoneSync(elementName, aastub_, 0);
+    aastub_ = new AccessibleAbilityChannel(accountData->GetAccountId(), abilityInfo->GetId());
+    connection->OnAbilityConnectDoneSync(elementName, aastub_);
 
     AddAccessibilityWindowConnection();
 
@@ -95,7 +97,10 @@ void AamsInjectorTest::SetUp()
         Singleton<AccessibleAbilityManagerService>::GetInstance().GetCurrentAccountData()->GetConnectedA11yAbilities();
     auto iter = connectionMaps.begin();
     sptr<AccessibleAbilityConnection> ptr_connect = iter->second;
-    aacs_ = new AccessibleAbilityChannel(*ptr_connect);
+    if (ptr_connect && ptr_connect->GetAccountData()) {
+        aacs_ = new AccessibleAbilityChannel(ptr_connect->GetAccountData()->GetAccountId(),
+            ptr_connect->GetAbilityInfo().GetId());
+    }
     GTEST_LOG_(INFO) << "AamsInjectorTest SetUp end";
 }
 
@@ -127,8 +132,10 @@ void AamsInjectorTest::AddAccessibilityWindowConnection()
 {
     GTEST_LOG_(INFO) << "AamsInjectorTest AddAccessibilityWindowConnection";
     int32_t windowId = 0;
-    std::shared_ptr<AccessibilityElementOperator> operation = nullptr;
-    sptr<AccessibilityElementOperatorStub> stub = new MockAccessibilityElementOperatorImpl(windowId, operation);
+    std::shared_ptr<MockAccessibilityElementOperatorCallback> mockCallback =
+        std::make_shared<MockAccessibilityElementOperatorCallback>();
+    sptr<AccessibilityElementOperatorStub> stub =
+        new MockAccessibilityElementOperatorImpl(windowId, nullptr, *mockCallback);
     sptr<IAccessibilityElementOperator> proxy = new MockAccessibilityElementOperatorProxy(stub);
     GTEST_LOG_(INFO) << "aams  RegisterElementOperator";
     Singleton<AccessibleAbilityManagerService>::GetInstance().RegisterElementOperator(windowId, proxy);
