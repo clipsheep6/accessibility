@@ -16,7 +16,12 @@ import("//build/test.gni")
 ohos_benchmarktest("BenchmarkTestForAccessibilitySystemAbilityClient") {
   module_out_path = "accessibility/asacfwk"
 
-  cflags = []
+  cflags = [
+    "--coverage"
+  ]
+  ldflags = [
+    "--coverage"
+  ]
   if (target_cpu == "arm") {
     cflags += [ "-DBINDER_IPC_32BIT" ]
   }

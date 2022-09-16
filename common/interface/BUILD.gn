@@ -26,8 +26,15 @@ config("accessibility_interface_private_config") {
     "AAMS_LOG_DOMAIN = 0xD001D05",
   ]
 
+  cflags = [
+    "--coverage",
+  ]
+  ldflags = [
+    "--coverage"
+  ]
+
   if (target_cpu == "arm") {
-    cflags = [ "-DBINDER_IPC_32BIT" ]
+    cflags += [ "-DBINDER_IPC_32BIT" ]
   }
 }
 

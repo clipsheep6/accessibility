@@ -18,7 +18,12 @@ aafwk_path = "//foundation/barrierfree/accessibility/frameworks/aafwk"
 
 config("accessibleability_private_config") {
   visibility = [ ":*" ]
-
+  cflags = [
+    "--coverage"
+  ]
+  ldflags = [
+    "--coverage"
+  ]
   include_dirs = [
     "${aafwk_path}/include",
     "//foundation/barrierfree/accessibility/common/log/include",

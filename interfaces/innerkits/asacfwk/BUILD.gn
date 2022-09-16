@@ -17,6 +17,12 @@ asacfwk_path = "//foundation/barrierfree/accessibility/frameworks/asacfwk"
 
 config("accessibilityclient_private_config") {
   visibility = [ ":*" ]
+  cflags = [
+    "--coverage"
+  ]
+  ldflags = [
+    "--coverage"
+  ]
 
   include_dirs = [
     "${asacfwk_path}/include",

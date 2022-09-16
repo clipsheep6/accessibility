@@ -20,7 +20,12 @@ ohos_shared_library("config_napi") {
     "//foundation/multimodalinput/input/interfaces/native/innerkits/event/include",
     "./include",
   ]
-
+  cflags = [
+    "--coverage"
+  ]
+  ldflags = [
+    "--coverage"
+  ]
   defines = [
     "AAMS_LOG_TAG = \"accessibility_napi\"",
     "AAMS_LOG_DOMAIN = 0xD001D10",

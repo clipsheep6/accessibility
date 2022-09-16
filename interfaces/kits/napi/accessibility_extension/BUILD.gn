@@ -36,7 +36,12 @@ gen_js_obj("accessibility_extension_abc") {
 
 ohos_shared_library("accessibilityextensionability_napi") {
   sources = [ "accessibility_extension_module.cpp" ]
-
+  cflags = [
+    "--coverage"
+  ]
+  ldflags = [
+    "--coverage"
+  ]
   deps = [
     ":accessibility_extension_abc",
     ":accessibility_extension_js",

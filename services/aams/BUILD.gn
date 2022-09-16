@@ -24,7 +24,12 @@ ohos_prebuilt_etc("accessibility_service.rc") {
 
 config("aams_service_config") {
   visibility = [ ":*" ]
-
+  cflags = [
+    "--coverage"
+  ]
+  ldflags = [
+    "--coverage"
+  ]
   include_dirs = [
     "include",
     "//foundation/barrierfree/accessibility/common/log/include",
