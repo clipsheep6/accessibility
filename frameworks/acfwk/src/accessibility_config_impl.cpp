@@ -85,7 +85,7 @@ bool AccessibilityConfig::Impl::ConnectToService()
         InitConfigValues();
     }
 
-    HILOG_DEBUG("Start watching accessibility service.");
+    HILOG_INFO("Start watching accessibility service.");
     retSysParam = WatchParameter(SYSTEM_PARAMETER_AAMS_NAME.c_str(), &OnParameterChanged, this);
     if (retSysParam) {
         HILOG_ERROR("Watch parameter failed, error = %{public}d", retSysParam);
@@ -104,7 +104,7 @@ bool AccessibilityConfig::Impl::ConnectToServiceAsync()
             if (InitAccessibilityServiceProxy()) {
                 (void)RegisterToService();
                 InitConfigValues();
-                HILOG_INFO("ConnectToService Success");
+                HILOG_DEBUG("ConnectToService Success");
             }
             }), "ConnectToServiceAsync");
         return true;
@@ -1388,7 +1388,7 @@ void AccessibilityConfig::Impl::InitConfigValues()
     if (isInitialized_) {
         NotifyDefaultConfigs();
     }
-    HILOG_INFO("ConnectToService Success");
+    HILOG_DEBUG("ConnectToService Success");
 }
 
 void AccessibilityConfig::Impl::NotifyDefaultConfigs()
