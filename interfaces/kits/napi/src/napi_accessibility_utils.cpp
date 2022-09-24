@@ -27,9 +27,8 @@
 #include "napi/native_node_api.h"
 #include "napi_accessibility_event_info.h"
 
-using namespace OHOS;
-using namespace OHOS::Accessibility;
-using namespace OHOS::AccessibilityConfig;
+namespace OHOS {
+namespace AccessibilityNapi {
 namespace {
     const uint32_t COLOR_TRANSPARENT = 0x00000000;
     const uint32_t COLOR_WHITE = 0xffffffff;
@@ -51,6 +50,9 @@ namespace {
     constexpr int32_t COLOR_MOVE = 8;
     const char UNICODE_BODY = '0';
 } // namespace
+using namespace OHOS::Accessibility;
+using namespace OHOS::AccessibilityConfig;
+
 std::string GetStringFromNAPI(napi_env env, napi_value value)
 {
     std::string result;
@@ -1538,3 +1540,5 @@ void ConvertStringVecToJS(napi_env env, napi_value &result, std::vector<std::str
         index++;
     }
 }
+} // namespace AccessibilityNapi
+} // namespace OHOS
