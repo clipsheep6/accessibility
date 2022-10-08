@@ -20,7 +20,7 @@
 namespace OHOS {
 namespace EventFwk {
 static std::shared_ptr<CommonEventSubscriber> subscriberMOCK = nullptr;
-
+constexpr int32_t ERR_OK = 0;
 bool CommonEventManager::PublishCommonEvent(const CommonEventData& data)
 {
     GTEST_LOG_(INFO) << "MOCK CommonEventManager PublishCommonEvent";
@@ -32,11 +32,11 @@ bool CommonEventManager::PublishCommonEvent(const CommonEventData& data)
     return true;
 }
 
-bool CommonEventManager::PublishCommonEvent(const CommonEventData& data, const CommonEventPublishInfo& publishInfo)
+int32_t CommonEventManager::PublishCommonEvent(const CommonEventData& data, const CommonEventPublishInfo& publishInfo)
 {
     (void)data;
     (void)publishInfo;
-    return true;
+    return ERR_OK;
 }
 
 bool CommonEventManager::PublishCommonEvent(const CommonEventData& data, const CommonEventPublishInfo& publishInfo,
