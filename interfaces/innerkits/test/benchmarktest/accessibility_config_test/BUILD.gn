@@ -27,7 +27,7 @@ ohos_benchmarktest("BenchmarkTestForAccessibilityConfig") {
     "//base/security/access_token/interfaces/innerkits/token_setproc:libtoken_setproc",
     "//foundation/barrierfree/accessibility/interfaces/innerkits/acfwk:accessibilityconfig",
   ]
-  external_deps = [ 
+  external_deps = [
     "access_token:libaccesstoken_sdk",
     "c_utils:utils",
   ]
