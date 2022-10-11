@@ -130,12 +130,6 @@ bool AccessibleAbilityChannel::GetWindow(const int32_t windowId, AccessibilityWi
     return true;
 }
 
-bool AccessibleAbilityChannel::SetEventTypeFilter(const uint32_t filter)
-{
-    (void)filter;
-    return true;
-}
-
 bool AccessibleAbilityChannel::SetTargetBundleName(const std::vector<std::string> &targetBundleNames)
 {
     (void)targetBundleNames;
@@ -146,13 +140,6 @@ bool AccessibleAbilityChannel::GetWindowsByDisplayId(const uint64_t displayId,
     std::vector<AccessibilityWindowInfo> &windows)
 {
     return GetWindows(displayId, windows);
-}
-
-bool AccessibleAbilityChannel::ExecuteCommonAction(int32_t action)
-{
-    (void)action;
-    // temp deal: need external dependence
-    return true;
 }
 
 void AccessibleAbilityChannel::SetOnKeyPressEventResult(const bool handled, const int32_t sequence)
@@ -215,9 +202,11 @@ void AccessibleAbilityConnection::OnAbilityDisconnectDone(const AppExecFwk::Elem
 
 bool AccessibleAbilityConnection::OnKeyPressEvent(const MMI::KeyEvent& keyEvent, const int32_t sequence)
 {
-    (void)keyEvent;
     (void)sequence;
-    return false;
+    if (keyEvent.GetKeyAction() == MMI::KeyEvent::KEY_ACTION_UP) {
+        return false;
+    }
+    return true;
 }
 
 bool AccessibleAbilityConnection::IsWantedEvent(int32_t eventType)
@@ -242,7 +231,7 @@ void AccessibleAbilityConnection::Disconnect()
 void AccessibleAbilityConnection::Connect(const AppExecFwk::ElementName& element)
 {
     HILOG_DEBUG("start");
-    (void)element;
+    elementName_ = element;
 }
 
 int32_t AccessibleAbilityConnection::GetChannelId()
