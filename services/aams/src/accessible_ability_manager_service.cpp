@@ -733,7 +733,11 @@ bool AccessibleAbilityManagerService::GetEnabledAbilities(std::vector<std::strin
             syncPromise.set_value();
             return;
         }
-        enabledAbilities = accountData->GetEnabledAbilities();
+        std::vector<std::string> abilities;
+        abilities = accountData->GetEnabledAbilities();
+        for (auto &ability : abilities) {
+            enabledAbilities.push_back(ability);
+        }
         syncPromise.set_value();
         }), "TASK_GET_ENABLE_ABILITIES");
     syncFuture.get();
