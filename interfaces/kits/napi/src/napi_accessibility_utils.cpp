@@ -964,7 +964,7 @@ static void ConvertGesturePathJSToNAPI(napi_env env, napi_value object,
     }
 }
 
-void ConvertGesturePathsJSToNAPI(napi_env env, napi_value object,
+bool ConvertGesturePathsJSToNAPI(napi_env env, napi_value object,
     std::shared_ptr<AccessibilityGestureInjectPath>& gesturePath,
     std::vector<std::shared_ptr<AccessibilityGestureInjectPath>>& gesturePathArray,
     bool &isParameterArray)
@@ -972,21 +972,21 @@ void ConvertGesturePathsJSToNAPI(napi_env env, napi_value object,
     HILOG_DEBUG();
     if (napi_is_array(env, object, &isParameterArray) != napi_ok) {
         HILOG_ERROR("judge array error.");
-        return;
+        return false;
     }
 
     if (isParameterArray) {
         uint32_t dataLen = 0;
         if (napi_get_array_length(env, object, &dataLen) != napi_ok) {
             HILOG_ERROR("get array length failed.");
-            return;
+            return false;
         }
         napi_value gesturePathJs = nullptr;
         for (uint32_t i = 0; i < dataLen; i++) {
             gesturePathJs = nullptr;
             if (napi_get_element(env, object, i, &gesturePathJs) != napi_ok) {
                 HILOG_ERROR("get element of paths failed and i = %{public}d", i);
-                return;
+                return false;
             }
             std::shared_ptr<AccessibilityGestureInjectPath> path = std::make_shared<AccessibilityGestureInjectPath>();
             ConvertGesturePathJSToNAPI(env, gesturePathJs, path);
@@ -995,6 +995,7 @@ void ConvertGesturePathsJSToNAPI(napi_env env, napi_value object,
     } else {
         ConvertGesturePathJSToNAPI(env, object, gesturePath);
     }
+    return true;
 }
 
 KeyAction TransformKeyActionValue(int32_t keyAction)
@@ -1412,7 +1413,7 @@ bool ConvertObjToCaptionProperty(
     return true;
 }
 
-void ConvertJSToStringVec(napi_env env, napi_value arrayValue, std::vector<std::string>& values)
+bool ConvertJSToStringVec(napi_env env, napi_value arrayValue, std::vector<std::string>& values)
 {
     HILOG_DEBUG();
     values.clear();
@@ -1422,15 +1423,23 @@ void ConvertJSToStringVec(napi_env env, napi_value arrayValue, std::vector<std::
         napi_has_element(env, arrayValue, i, &hasElement);
         if (hasElement) {
             napi_value value = nullptr;
-            napi_get_element(env, arrayValue, i, &value);
+            napi_status status;
+            status = napi_get_element(env, arrayValue, i, &value);
+            if (status != napi_ok) {
+                return false;
+            }
 
             char outBuffer[CHAE_BUFFER_MAX + 1] = {0};
             size_t outSize = 0;
-            napi_get_value_string_utf8(env, value, outBuffer, CHAE_BUFFER_MAX, &outSize);
+            status = napi_get_value_string_utf8(env, value, outBuffer, CHAE_BUFFER_MAX, &outSize);
+            if (status != napi_ok) {
+                return false;
+            }
 
             values.push_back(std::string(outBuffer));
         }
     }
+    return true;
 }
 
 void ConvertJSToEventTypes(napi_env env, napi_value arrayValue, uint32_t &eventTypes)
@@ -1451,7 +1460,7 @@ void ConvertJSToEventTypes(napi_env env, napi_value arrayValue, uint32_t &eventT
     }
 }
 
-void ConvertJSToCapabilities(napi_env env, napi_value arrayValue, uint32_t &capabilities)
+bool ConvertJSToCapabilities(napi_env env, napi_value arrayValue, uint32_t &capabilities)
 {
     HILOG_DEBUG();
     capabilities = 0;
@@ -1463,10 +1472,11 @@ void ConvertJSToCapabilities(napi_env env, napi_value arrayValue, uint32_t &capa
         if (capability == 0) {
             HILOG_ERROR("the capability is invalid");
             capabilities = 0;
-            return;
+            return false;
         }
         capabilities |= capability;
     }
+    return true;
 }
 
 void ConvertStringVecToJS(napi_env env, napi_value &result, std::vector<std::string> values)
@@ -1479,6 +1489,35 @@ void ConvertStringVecToJS(napi_env env, napi_value &result, std::vector<std::str
         napi_set_element(env, result, index, str);
         index++;
     }
+}
+
+AccessibilityErrorCode GetErrorInfo(AccessibilityErrorCode status, std::string &errMsg)
+{
+    switch(status) {
+        case AccessibilityErrorCode::ACCESSIBILITY_INVALID_PARAM:
+            errMsg = "Input parameter is missing or invalid";
+            return AccessibilityErrorCode::ACCESSIBILITY_INVALID_PARAM;
+        default:
+            errMsg = "System general error, please try again later";
+            return AccessibilityErrorCode::ACCESSIBILITY_GENERAL_ERROR;
+    }
+}
+
+napi_value BusinessErrorCreate(napi_env env, AccessibilityErrorCode status)
+{
+
+    std::string errMsg = "";
+    AccessibilityErrorCode ret = GetErrorInfo(status, errMsg);
+    HILOG_INFO("BusinessErrorCreate status %{public}d err %{public}d msg: %{public}s", status,
+        static_cast<int32_t>(ret), errMsg.c_str());
+    napi_value code = nullptr;
+    napi_create_int32(env, static_cast<int32_t>(ret), &code);
+    napi_value msg = nullptr;
+    napi_create_string_utf8(env, errMsg.c_str(), NAPI_AUTO_LENGTH, &msg);
+    napi_value businessError = nullptr;
+    napi_create_error(env, nullptr, msg, &businessError);
+    napi_set_named_property(env, businessError, "code", code);
+    return businessError;
 }
 } // namespace AccessibilityNapi
 } // namespace OHOS
