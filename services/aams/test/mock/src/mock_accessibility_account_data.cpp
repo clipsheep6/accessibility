@@ -162,7 +162,7 @@ void AccessibilityAccountData::AddEnabledAbility(const std::string& bundleName)
             return enabledAbility == bundleName;
         })) {
         HILOG_ERROR("The ability is already enabled, and it's bundle name is %{public}s", bundleName.c_str());
-            return;
+        return;
     }
     enabledAbilities_.push_back(bundleName);
     HILOG_DEBUG("Add EnabledAbility: %{public}zu", enabledAbilities_.size());
