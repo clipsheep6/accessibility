@@ -362,14 +362,26 @@ napi_value NAccessibilityClient::UnsubscribeState(napi_env env, napi_callback_in
     switch (type) {
         case AccessibilityStateEventType::EVENT_ACCESSIBILITY_STATE_CHANGED:
             if (argc >= ARGS_SIZE_TWO) {
-                accessibilityStateListeners_->UnsubscribeObserver(args[PARAM1]);
+                napi_valuetype valueType = napi_null;
+                napi_typeof(env, args[PARAM1], &valueType);
+                if (valueType == napi_function) {
+                    accessibilityStateListeners_->UnsubscribeObserver(env, args[PARAM1]);
+                } else {
+                    accessibilityStateListeners_->UnsubscribeObservers();
+                }
             } else {
                 accessibilityStateListeners_->UnsubscribeObservers();
             }
             break;
         case AccessibilityStateEventType::EVENT_TOUCH_GUIDE_STATE_CHANGED:
             if (argc >= ARGS_SIZE_TWO) {
-                touchGuideStateListeners_->UnsubscribeObserver(args[PARAM1]);
+                napi_valuetype valueType = napi_null;
+                napi_typeof(env, args[PARAM1], &valueType);
+                if (valueType == napi_function) {
+                    touchGuideStateListeners_->UnsubscribeObserver(env, args[PARAM1]);
+                } else {
+                    touchGuideStateListeners_->UnsubscribeObservers();
+                }
             } else {
                 touchGuideStateListeners_->UnsubscribeObservers();
             }
@@ -600,7 +612,13 @@ napi_value NAccessibilityClient::DeregisterCaptionStateCallback(napi_env env, na
     }
 
     if (argc >= ARGS_SIZE_TWO) {
-        captionListeners_->UnsubscribeObserver(type, args[PARAM1]);
+        napi_valuetype valueType = napi_null;
+        napi_typeof(env, args[PARAM1], &valueType);
+        if (valueType == napi_function) {
+            captionListeners_->UnsubscribeObserver(env, type, args[PARAM1]);
+        } else {
+            captionListeners_->UnsubscribeObservers(type);
+        }
     } else {
         captionListeners_->UnsubscribeObservers(type);
     }
@@ -893,21 +911,46 @@ void StateListenerImpl::SubscribeObserver(const std::shared_ptr<StateListener> &
 {
     HILOG_INFO();
     std::lock_guard<std::mutex> lock(mutex_);
+    for (auto iter = observers_.begin(); iter != observers_.end();) {
+        if (observer->env_ != (*iter)->env_) {
+            iter++;
+            continue;
+        }
+        HILOG_DEBUG("Same env, begin check observer equal");
+        napi_value item = nullptr;
+        napi_value observerItem = nullptr;
+        bool equalFlag = false;
+        napi_get_reference_value(observer->env_, observer->handlerRef_, &observerItem);
+        napi_get_reference_value((*iter)->env_, (*iter)->handlerRef_, &item);
+        napi_status status = napi_strict_equals((*iter)->env_, item, observerItem, &equalFlag);
+        if (status == napi_ok && equalFlag) {
+            HILOG_DEBUG("Observer exist");
+            return;
+        } else {
+            iter++;
+        }
+    }
     observers_.emplace_back(observer);
     HILOG_INFO("observer size%{public}zu", observers_.size());
 }
 
-void StateListenerImpl::UnsubscribeObserver(napi_value observer)
+void StateListenerImpl::UnsubscribeObserver(napi_env env, napi_value observer)
 {
     HILOG_INFO();
     std::lock_guard<std::mutex> lock(mutex_);
     for (auto iter = observers_.begin(); iter != observers_.end();) {
+        if (env != (*iter)->env_) {
+            iter++;
+            continue;
+        }
+        HILOG_DEBUG("Same env, begin check observer equal");
         napi_value item = nullptr;
         bool equalFlag = false;
         napi_get_reference_value((*iter)->env_, (*iter)->handlerRef_, &item);
         napi_status status = napi_strict_equals((*iter)->env_, item, observer, &equalFlag);
         if (status == napi_ok && equalFlag) {
-            iter = observers_.erase(iter);
+            observers_.erase(iter);
+            return;
         } else {
             iter++;
         }

@@ -164,8 +164,14 @@ napi_value NAccessibilityConfig::UnsubscribeState(napi_env env, napi_callback_in
         return nullptr;
     }
 
-    if (argc >= ARGS_SIZE_TWO) {
-        enableAbilityListsObservers_->UnsubscribeObserver(args[PARAM1]);
+    if (argc > ARGS_SIZE_TWO - 1) {
+        napi_valuetype valueType = napi_null;
+        napi_typeof(env, args[PARAM1], &valueType);
+        if (valueType == napi_function) {
+            enableAbilityListsObservers_->UnsubscribeObserver(env, args[PARAM1]);
+        } else {
+            enableAbilityListsObservers_->UnsubscribeObservers();
+        }
     } else {
         enableAbilityListsObservers_->UnsubscribeObservers();
     }
@@ -591,7 +597,13 @@ napi_value NAccessibilityConfig::UnSubscribeConfigObserver(napi_env env, napi_ca
         return nullptr;
     }
     if (argc >= ARGS_SIZE_ONE) {
-        configObservers_->UnsubscribeObserver(obj->GetConfigId(), parameters[PARAM0]);
+        napi_valuetype valueType = napi_null;
+        napi_typeof(env, parameters[PARAM0], &valueType);
+        if (valueType == napi_function) {
+            configObservers_->UnsubscribeObserver(env, obj->GetConfigId(), parameters[PARAM0]);
+        } else {
+            configObservers_->UnsubscribeObservers(obj->GetConfigId());
+        }
     } else {
         configObservers_->UnsubscribeObservers(obj->GetConfigId());
     }
@@ -669,22 +681,48 @@ void EnableAbilityListsObserverImpl::SubscribeObserver(const std::shared_ptr<Ena
 {
     HILOG_INFO();
     std::lock_guard<std::mutex> lock(mutex_);
+    for (auto iter = enableAbilityListsObservers_.begin(); iter != enableAbilityListsObservers_.end();) {
+        if (observer->env_ != (*iter)->env_) {
+            iter++;
+            continue;
+        }
+        HILOG_DEBUG("Same env, begin check observer equal");
+        napi_value item = nullptr;
+        napi_value observerItem = nullptr;
+        napi_status status;
+        bool equalFlag = false;
+        napi_get_reference_value((*iter)->env_, (*iter)->callback_, &item);
+        napi_get_reference_value(observer->env_, observer->callback_, &observerItem);
+        status = napi_strict_equals((*iter)->env_, item, observerItem, &equalFlag);
+        if (status == napi_ok && equalFlag) {
+            HILOG_DEBUG("Observer exist");
+            return;
+        } else {
+            iter++;
+        }
+    }
     enableAbilityListsObservers_.emplace_back(observer);
     HILOG_INFO("observer size%{public}zu", enableAbilityListsObservers_.size());
 }
 
-void EnableAbilityListsObserverImpl::UnsubscribeObserver(napi_value observer)
+void EnableAbilityListsObserverImpl::UnsubscribeObserver(napi_env env, napi_value observer)
 {
     HILOG_INFO();
     std::lock_guard<std::mutex> lock(mutex_);
     for (auto iter = enableAbilityListsObservers_.begin(); iter != enableAbilityListsObservers_.end();) {
+        if (env != (*iter)->env_) {
+            iter++;
+            continue;
+        }
+        HILOG_DEBUG("Same env, begin check observer equal");
         napi_value item = nullptr;
         napi_status status;
         bool equalFlag = false;
         napi_get_reference_value((*iter)->env_, (*iter)->callback_, &item);
         status = napi_strict_equals((*iter)->env_, item, observer, &equalFlag);
         if (status == napi_ok && equalFlag) {
-            iter = enableAbilityListsObservers_.erase(iter);
+            enableAbilityListsObservers_.erase(iter);
+            return;
         } else {
             iter++;
         }
