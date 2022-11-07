@@ -14,7 +14,6 @@
  */
 
 #include "mock_power_mgr_client.h"
-#include "power_errors.h"
 
 namespace OHOS {
 namespace PowerMgr {
@@ -34,100 +33,100 @@ void PowerMgrClient::ResetProxy(const wptr<IRemoteObject>& remote)
 void PowerMgrClient::PowerMgrDeathRecipient::OnRemoteDied(const wptr<IRemoteObject>& remote)
 {}
 
-PowerErrors PowerMgrClient::RebootDevice(const std::string& reason)
+Error<void> PowerMgrClient::RebootDevice(const std::string& reason)
 {
-    return PowerErrors::ERR_OK;
+    return Error<void>();
 }
 
-PowerErrors PowerMgrClient::ShutDownDevice(const std::string& reason)
+Error<void> PowerMgrClient::ShutDownDevice(const std::string& reason)
 {
-    return PowerErrors::ERR_OK;
+    return Error<void>();
 }
 
-PowerErrors PowerMgrClient::SuspendDevice(SuspendDeviceType reason, bool suspendImmed)
+Error<void> PowerMgrClient::SuspendDevice(SuspendDeviceType reason, bool suspendImmed)
 {
-    return PowerErrors::ERR_OK;
+    return Error<void>();
 }
 
-PowerErrors PowerMgrClient::WakeupDevice(WakeupDeviceType reason, const std::string& detail)
+Error<void> PowerMgrClient::WakeupDevice(WakeupDeviceType reason, const std::string& detail)
 {
-    return PowerErrors::ERR_OK;
+    return Error<void>();
 }
 
-bool PowerMgrClient::RefreshActivity(UserActivityType type)
+Error<bool> PowerMgrClient::RefreshActivity(UserActivityType type)
 {
-    return true;
+    return Error<bool>();
 }
 
-bool PowerMgrClient::IsRunningLockTypeSupported(uint32_t type)
+Error<bool> PowerMgrClient::IsRunningLockTypeSupported(uint32_t type)
 {
-    return true;
+    return Error<bool>();
 }
 
-bool PowerMgrClient::ForceSuspendDevice()
+Error<bool> PowerMgrClient::ForceSuspendDevice()
 {
-    return true;
+    return Error<bool>();
 }
 
-bool PowerMgrClient::IsScreenOn()
+Error<bool> PowerMgrClient::IsScreenOn()
 {
-    return true;
+    return Error<bool>();
 }
 
-PowerState PowerMgrClient::GetState()
+Error<PowerState> PowerMgrClient::GetState()
 {
-    return PowerState::UNKNOWN;
+    return Error<PowerState>();
 }
 
-std::shared_ptr<RunningLock> PowerMgrClient::CreateRunningLock(const std::string& name, RunningLockType type)
+Error<std::shared_ptr<RunningLock>> PowerMgrClient::CreateRunningLock(const std::string& name, RunningLockType type)
 {
-    return nullptr;
+    return Error<std::shared_ptr<RunningLock>>();
 }
 
-bool PowerMgrClient::RegisterPowerStateCallback(const sptr<IPowerStateCallback>& callback)
+Error<void> PowerMgrClient::RegisterPowerStateCallback(const sptr<IPowerStateCallback>& callback)
 {
-    return true;
+    return Error<void>();
 }
 
-bool PowerMgrClient::UnRegisterPowerStateCallback(const sptr<IPowerStateCallback>& callback)
+Error<void> PowerMgrClient::UnRegisterPowerStateCallback(const sptr<IPowerStateCallback>& callback)
 {
-    return true;
+    return Error<void>();
 }
 
-bool PowerMgrClient::RegisterShutdownCallback(
+Error<void> PowerMgrClient::RegisterShutdownCallback(
     const sptr<IShutdownCallback>& callback, IShutdownCallback::ShutdownPriority priority)
 {
-    return true;
+    return Error<void>();
 }
 
-bool PowerMgrClient::UnRegisterShutdownCallback(const sptr<IShutdownCallback>& callback)
+Error<void> PowerMgrClient::UnRegisterShutdownCallback(const sptr<IShutdownCallback>& callback)
 {
-    return true;
+    return Error<void>();
 }
 
-bool PowerMgrClient::RegisterPowerModeCallback(const sptr<IPowerModeCallback>& callback)
+Error<void> PowerMgrClient::RegisterPowerModeCallback(const sptr<IPowerModeCallback>& callback)
 {
-    return true;
+    return Error<void>();
 }
 
-bool PowerMgrClient::UnRegisterPowerModeCallback(const sptr<IPowerModeCallback>& callback)
+Error<void> PowerMgrClient::UnRegisterPowerModeCallback(const sptr<IPowerModeCallback>& callback)
 {
-    return true;
+    return Error<void>();
 }
 
-bool PowerMgrClient::SetDisplaySuspend(bool enable)
+Error<void> PowerMgrClient::SetDisplaySuspend(bool enable)
 {
-    return true;
+    return Error<void>();
 }
 
-PowerErrors PowerMgrClient::SetDeviceMode(const PowerMode mode)
+Error<void> PowerMgrClient::SetDeviceMode(const PowerMode mode)
 {
-    return PowerErrors::ERR_OK;
+    return Error<void>();
 }
 
-PowerMode PowerMgrClient::GetDeviceMode()
+Error<PowerMode> PowerMgrClient::GetDeviceMode()
 {
-    return PowerMode::NORMAL_MODE;
+    return Error<PowerMode>();
 }
 
 std::string PowerMgrClient::Dump(const std::vector<std::string>& args)

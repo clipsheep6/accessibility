@@ -21,7 +21,6 @@
 #include "hilog_wrapper.h"
 #include "input_event.h"
 #include "key_event.h"
-#include "power_mgr_client.h"
 
 namespace OHOS {
 namespace Accessibility {
