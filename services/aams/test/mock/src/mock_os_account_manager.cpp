@@ -50,7 +50,7 @@ OsAccountSubscribeInfo::OsAccountSubscribeInfo()
     : osAccountSubscribeType_(ACTIVATING), name_("")
 {}
 
-OsAccountSubscribeInfo::OsAccountSubscribeInfo(OS_ACCOUNT_SUBSCRIBE_TYPE &osAccountSubscribeType, std::string &name)
+OsAccountSubscribeInfo::OsAccountSubscribeInfo(const OS_ACCOUNT_SUBSCRIBE_TYPE &osAccountSubscribeType, const std::string &name)
     : osAccountSubscribeType_(osAccountSubscribeType), name_(name)
 {}
 
