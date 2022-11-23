@@ -286,23 +286,23 @@ const std::string CommonEventSupport::COMMON_EVENT_USER_STOPPED = "usual.event.U
  * Indicate the action of a common event about a login of a user with account ID.
  * This is a protected common event, which can be sent only by the system.
  */
-const std::string CommonEventSupport::COMMON_EVENT_HWID_LOGIN = "common.event.HWID_LOGIN";
+const std::string CommonEventSupport::COMMON_EVENT_DISTRIBUTED_ACCOUNT_LOGIN = "common.event.DISTRIBUTED_ACCOUNT_LOGIN";
 /**
  * Indicate the action of a common event about a logout of a user with account ID.
  * This is a protected common event, which can be sent only by the system.
  */
-const std::string CommonEventSupport::COMMON_EVENT_HWID_LOGOUT = "common.event.HWID_LOGOUT";
+const std::string CommonEventSupport::COMMON_EVENT_DISTRIBUTED_ACCOUNT_LOGOUT = "common.event.DISTRIBUTED_ACCOUNT_LOGOUT";
 /**
  * Indicate the action of a common event that the account ID is invalid.
  * This is a protected common event, which can be sent only by the system.
  */
-const std::string CommonEventSupport::COMMON_EVENT_HWID_TOKEN_INVALID = "common.event.HWID_TOKEN_INVALID";
+const std::string CommonEventSupport::COMMON_EVENT_DISTRIBUTED_ACCOUNT_TOKEN_INVALID = "common.event.DISTRIBUTED_ACCOUNT_TOKEN_INVALID";
 
 /**
  * Indicate the action of a common event about a logoff of a account ID.
  * This is a protected common event, which can be sent only by the system.
  */
-const std::string CommonEventSupport::COMMON_EVENT_HWID_LOGOFF = "common.event.HWID_LOGOFF";
+const std::string CommonEventSupport::COMMON_EVENT_DISTRIBUTED_ACCOUNT_LOGOFF = "common.event.DISTRIBUTED_ACCOUNT_LOGOFF";
 
 /**
  * Indicate the action of a common event about the Wi-Fi state, such as enabled and disabled.
