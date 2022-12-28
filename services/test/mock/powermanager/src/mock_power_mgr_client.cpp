@@ -54,7 +54,7 @@ PowerErrors PowerMgrClient::WakeupDevice(WakeupDeviceType reason, const std::str
     return PowerErrors::ERR_OK;
 }
 
-bool PowerMgrClient::RefreshActivity(UserActivityType type)
+bool PowerMgrClient::RefreshActivity(UserActivityType type, uint32_t displayId)
 {
     return true;
 }
@@ -69,7 +69,7 @@ bool PowerMgrClient::ForceSuspendDevice()
     return true;
 }
 
-bool PowerMgrClient::IsScreenOn()
+bool PowerMgrClient::IsScreenOn(uint32_t displayId)
 {
     return true;
 }
