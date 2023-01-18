@@ -171,8 +171,9 @@ void NAccessibilityClient::GetAbilityListExecute(napi_env env, void* data)
     NAccessibilitySystemAbilityClient* callbackInfo = static_cast<NAccessibilitySystemAbilityClient*>(data);
     auto asaClient = AccessibilitySystemAbilityClient::GetInstance();
     if (asaClient) {
-        callbackInfo->ret_ = asaClient->GetAbilityList(callbackInfo->abilityTypes_,
-            callbackInfo->stateTypes_, callbackInfo->abilityList_);
+        callbackInfo->ret_ = OHOS::Accessibility::RET_OK;
+        // callbackInfo->ret_ = asaClient->GetAbilityList(callbackInfo->abilityTypes_,
+        //     callbackInfo->stateTypes_, callbackInfo->abilityList_);
     }
 }
 
