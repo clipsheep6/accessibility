@@ -186,13 +186,14 @@ void AccessibleAbilityManagerService::OnAddSystemAbility(int32_t systemAbilityId
 
 void AccessibleAbilityManagerService::OnRemoveSystemAbility(int32_t systemAbilityId, const std::string &deviceId)
 {
-    HILOG_DEBUG("systemAbilityId:%{public}d removed!", systemAbilityId);
+    HILOG_INFO("systemAbilityId:%{public}d removed!", systemAbilityId);
     if (!handler_) {
         HILOG_DEBUG("Event handler is nullptr.");
         return;
     }
 
     handler_->PostTask(std::bind([=]() -> void {
+        HILOG_INFO("Remove system ability start");
         auto iter = dependentServicesStatus_.find(systemAbilityId);
         if (iter == dependentServicesStatus_.end()) {
             HILOG_ERROR("SystemAbilityId is not found!");
@@ -216,14 +217,23 @@ void AccessibleAbilityManagerService::OnRemoveSystemAbility(int32_t systemAbilit
 int AccessibleAbilityManagerService::Dump(int fd, const std::vector<std::u16string>& args)
 {
     HILOG_DEBUG("dump AccessibilityManagerServiceInfo");
-    if (!accessibilityDumper_) {
-        accessibilityDumper_ = new(std::nothrow) AccessibilityDumper();
-        if (!accessibilityDumper_) {
-            HILOG_ERROR("accessibilityDumper_ is nullptr");
-            return -1;
-        }
+    if (!handler_) {
+        HILOG_ERROR("Parameters check failed!");
+        return RET_ERR_NULLPTR;
     }
-    return accessibilityDumper_->Dump(fd, args);
+    std::promise<int> syncPromise;
+    std::future syncFuture = syncPromise.get_future();
+    handler_->PostTask(std::bind([this, &syncPromise, fd, args]() -> void {
+        if (!accessibilityDumper_) {
+            accessibilityDumper_ = new(std::nothrow) AccessibilityDumper();
+            if (!accessibilityDumper_) {
+                HILOG_ERROR("accessibilityDumper_ is nullptr");
+                syncPromise.set_value(-1);
+            }
+        }
+        syncPromise.set_value(accessibilityDumper_->Dump(fd, args));
+        }), "TASK_DUMP_INFO");
+    return syncFuture.get();
 }
 
 RetError AccessibleAbilityManagerService::SendEvent(const AccessibilityEventInfo &uiEvent)
