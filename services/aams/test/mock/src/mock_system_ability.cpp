@@ -143,7 +143,15 @@ void SystemAbility::OnStart()
 {}
 
 // The details should be implemented by subclass
+void SystemAbility::OnStart(const std::unordered_map<std::string, std::string>& startReason)
+{}
+
+// The details should be implemented by subclass
 void SystemAbility::OnStop()
+{}
+
+// The details should be implemented by subclass
+void SystemAbility::OnStop(const std::unordered_map<std::string, std::string>& stopReason)
 {}
 
 // The details should be implemented by subclass
