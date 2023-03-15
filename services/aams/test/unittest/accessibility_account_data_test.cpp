@@ -726,6 +726,8 @@ HWTEST_F(AccessibilityAccountDataTest, AccessibilityAccountData_Unittest_OnAccou
     // new accountData
     auto accountData = Singleton<AccessibleAbilityManagerService>::GetInstance().GetCurrentAccountData();
     accountData->Init();
+    EXPECT_EQ(1, (int)accountData->GetConnectedA11yAbilities().size());
+    GTEST_LOG_(INFO) << "AccessibilityAccountData_Unittest_OnAccountSwitched001 check size";
     // new abilityInfo
     AccessibilityAbilityInitParams initParams;
     std::shared_ptr<AccessibilityAbilityInfo> abilityInfo = std::make_shared<AccessibilityAbilityInfo>(initParams);
