@@ -75,11 +75,6 @@ const std::string CommonEventSupport::COMMON_EVENT_SCREEN_OFF = "usual.event.SCR
  * This common event can only be published by the system.
  */
 const std::string CommonEventSupport::COMMON_EVENT_SCREEN_ON = "usual.event.SCREEN_ON";
-/**
- * Indicate the action of a common event that the user unlocks the device.
- * This common event can only be published by the system.
- */
-const std::string CommonEventSupport::COMMON_EVENT_USER_PRESENT = "usual.event.USER_PRESENT";
 
 /**
  * Indicate the action of a common event that the system time has changed.
@@ -955,6 +950,18 @@ const std::string CommonEventSupport::COMMON_EVENT_SIM_CARD_DEFAULT_VOICE_SUBSCR
  * This is a protected common event that can only be sent by system.
  */
 const std::string CommonEventSupport::COMMON_EVENT_SIM_STATE_CHANGED = "usual.event.SIM.CARD_STATE_CHANGED";
+
+/**
+ * Indicates the action of a common event that the screen lock.
+ * This is a protected common event that can only be sent by system.
+ */
+const std::string CommonEventSupport::COMMON_EVENT_SCREEN_LOCKED = "usual.event.SCREEN_LOCKED";
+
+/**
+ * Indicates the action of a common event that the screen unlock.
+ * This is a protected common event that can only be sent by system.
+ */
+const std::string CommonEventSupport::COMMON_EVENT_SCREEN_UNLOCKED = "usual.event.SCREEN_UNLOCKED";
 
 /**
  * Indicate the action of a common event that the airplane mode of the device has changed.
