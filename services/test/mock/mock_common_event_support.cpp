@@ -75,11 +75,6 @@ const std::string CommonEventSupport::COMMON_EVENT_SCREEN_OFF = "usual.event.SCR
  * This common event can only be published by the system.
  */
 const std::string CommonEventSupport::COMMON_EVENT_SCREEN_ON = "usual.event.SCREEN_ON";
-/**
- * Indicate the action of a common event that the user unlocks the device.
- * This common event can only be published by the system.
- */
-const std::string CommonEventSupport::COMMON_EVENT_USER_PRESENT = "usual.event.USER_PRESENT";
 
 /**
  * Indicate the action of a common event that the system time has changed.
@@ -963,6 +958,18 @@ const std::string CommonEventSupport::COMMON_EVENT_SIM_STATE_CHANGED = "usual.ev
 const std::string CommonEventSupport::COMMON_EVENT_AIRPLANE_MODE_CHANGED = "usual.event.AIRPLANE_MODE";
 
 /**
+ * Indicates the action of a common event that the screen lock.
+ * This is a protected common event that can only be sent by system.
+ */
+const std::string CommonEventSupport::COMMON_EVENT_SCREEN_LOCKED = "usual.event.SCREEN_LOCKED";
+
+/**
+ * Indicates the action of a common event that the screen unlock.
+ * This is a protected common event that can only be sent by system.
+ */
+const std::string CommonEventSupport::COMMON_EVENT_SCREEN_UNLOCKED = "usual.event.SCREEN_UNLOCKED";
+
+/**
  * Only for test case.
  */
 const std::string CommonEventSupport::COMMON_EVENT_TEST_ACTION1 = "usual.event.test1";
@@ -982,7 +989,8 @@ CommonEventSupport::~CommonEventSupport()
 
 void CommonEventSupport::Init()
 {
-    commonEventSupport_.emplace_back(CommonEventSupport::COMMON_EVENT_USER_PRESENT);
+    commonEventSupport_.emplace_back(CommonEventSupport::COMMON_EVENT_SCREEN_LOCKED);
+    commonEventSupport_.emplace_back(CommonEventSupport::COMMON_EVENT_SCREEN_UNLOCKED);
     commonEventSupport_.emplace_back(CommonEventSupport::COMMON_EVENT_PACKAGE_ADDED);
     commonEventSupport_.emplace_back(CommonEventSupport::COMMON_EVENT_PACKAGE_REPLACED);
     commonEventSupport_.emplace_back(CommonEventSupport::COMMON_EVENT_PACKAGE_REMOVED);
