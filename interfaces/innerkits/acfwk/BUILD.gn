@@ -35,8 +35,8 @@ config("accessibilityconfig_public_config") {
 
 acfwk_src = [
   "${acfwk_path}/src/accessibility_config_impl.cpp",
-  "${acfwk_path}/src/accessibility_config_observer.cpp",
   "${acfwk_path}/src/accessibility_config.cpp",
+  "//foundation/barrierfree/accessibility/interfaces/kits/napi/src/napi_accessibility_config_observer.cpp",
 ]
 
 ohos_shared_library("accessibilityconfig") {

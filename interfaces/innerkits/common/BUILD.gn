@@ -39,7 +39,7 @@ accessibility_common_src = [
   "${accessibility_common_path}/src/accessibility_event_info.cpp",
   "${accessibility_common_path}/src/accessibility_window_info.cpp",
   "${accessibility_common_path}/src/accessibility_gesture_inject_path.cpp",
-  "${accessibility_common_path}/src/accessibility_utils.cpp",
+  "//foundation/barrierfree/accessibility/interfaces/kits/napi/src/napi_accessibility_utils.cpp",
 ]
 
 ohos_shared_library("accessibility_common") {
