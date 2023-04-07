@@ -39,7 +39,7 @@ int BundleMgrStub::OnRemoteRequest(uint32_t code, MessageParcel& data, MessagePa
 }
 
 bool BundleMgrService::GetBundleInfo(
-    const std::string& bundleName, const BundleFlag flag, BundleInfo& bundleInfo, int32_t userId)
+    const std::string& bundleName, int32_t flag, BundleInfo& bundleInfo, int32_t userId)
 {
     (void)bundleName;
     (void)flag;
@@ -123,7 +123,7 @@ bool BundleMgrService::QueryAbilityInfoByUri(const std::string& uri, AbilityInfo
 }
 
 bool BundleMgrService::GetApplicationInfo(
-    const std::string& appName, const ApplicationFlag flag, const int userId, ApplicationInfo& appInfo)
+    const std::string& appName, int32_t flag, const int userId, ApplicationInfo& appInfo)
 {
     (void)flag;
     (void)userId;
