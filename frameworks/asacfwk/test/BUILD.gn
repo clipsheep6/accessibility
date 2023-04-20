@@ -69,6 +69,7 @@ ohos_unittest("asac_unit_test") {
     "ability_base:want",
     "ability_runtime:ability_manager",
     "c_utils:utils",
+    "common_event_service:cesfwk_innerkits",
     "eventhandler:libeventhandler",
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
