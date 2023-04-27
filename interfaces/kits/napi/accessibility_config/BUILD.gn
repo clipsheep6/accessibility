@@ -15,9 +15,8 @@ import("//build/ohos.gni")
 
 ohos_shared_library("config_napi") {
   include_dirs = [
-    "//foundation/barrierfree/accessibility/common/log/include",
-    "//foundation/barrierfree/accessibility/interfaces/kits/napi/include",
-    "//foundation/multimodalinput/input/interfaces/native/innerkits/event/include",
+    "../../../../common/log/include",
+    "../include",
     "./include",
   ]
 
@@ -31,11 +30,11 @@ ohos_shared_library("config_napi") {
     "./src/native_module.cpp",
   ]
 
-  configs = [ "//foundation/barrierfree/accessibility/resources/config/build:coverage_flags" ]
+  configs = [ "../../../../resources/config/build:coverage_flags" ]
 
   deps = [
     "./../../../innerkits/common:accessibility_common",
-    "//foundation/barrierfree/accessibility/interfaces/innerkits/acfwk:accessibilityconfig",
+    "../../../innerkits/acfwk:accessibilityconfig",
   ]
 
   external_deps = [
@@ -43,6 +42,7 @@ ohos_shared_library("config_napi") {
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
     "napi:ace_napi",
+    "input:libmmi-client",
   ]
 
   relative_install_dir = "module/accessibility"
