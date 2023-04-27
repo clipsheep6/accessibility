@@ -14,12 +14,12 @@
 import("//build/ohos.gni")
 
 accessibility_common_path =
-    "//foundation/barrierfree/accessibility/frameworks/common"
+    "../../../frameworks/common"
 
 config("accessibility_common_private_config") {
   visibility = [ ":*" ]
 
-  include_dirs = [ "//foundation/barrierfree/accessibility/common/log/include" ]
+  include_dirs = [ "../../../common/log/include" ]
 
   defines = [
     "AAMS_LOG_TAG = \"accessibility_common\"",
@@ -46,7 +46,7 @@ ohos_shared_library("accessibility_common") {
   sources = accessibility_common_src
   configs = [
     ":accessibility_common_private_config",
-    "//foundation/barrierfree/accessibility/resources/config/build:coverage_flags",
+    "../../../resources/config/build:coverage_flags",
   ]
 
   public_configs = [ ":accessibility_common_public_config" ]
