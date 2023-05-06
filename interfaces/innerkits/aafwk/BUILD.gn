@@ -43,7 +43,6 @@ aafwk_files = [
 
 ohos_shared_library("accessibleability") {
   sources = aafwk_files
-  version_script = "libaccessibility_aafwk.map"
   configs = [ ":accessibleability_private_config" ]
 
   public_configs = [
