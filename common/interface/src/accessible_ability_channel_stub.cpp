@@ -314,6 +314,7 @@ ErrCode AccessibleAbilityChannelStub::HandleSetTargetBundleName(MessageParcel &d
     HILOG_DEBUG();
     std::vector<std::string> targetBundleNames;
     int32_t size = data.ReadInt32();
+    READ_PARCEL_AND_RETURN_FALSE_IF_FAIL(Int32, parcel, size);
     for (int32_t i = 0; i < size; i++) {
         std::string temp = data.ReadString();
         targetBundleNames.emplace_back(temp);
