@@ -26,6 +26,7 @@ config("module_private_config") {
   include_dirs = [
     "//foundation/barrierfree/accessibility/common/log/include",
     "//foundation/barrierfree/accessibility/frameworks/aafwk/include",
+    "//foundation/barrierfree/accessibility/frameworks/aafwk/test/mock/include",
     "//foundation/barrierfree/accessibility/frameworks/acfwk/include",
     "//foundation/barrierfree/accessibility/frameworks/asacfwk/include",
     "//foundation/barrierfree/accessibility/frameworks/asacfwk/test/mock/include",
