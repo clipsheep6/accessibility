@@ -278,6 +278,7 @@ private:
 
     std::shared_ptr<AppExecFwk::EventRunner> runner_;
     std::shared_ptr<AAMSEventHandler> handler_;
+    std::mutex mutex_;
 
     sptr<IRemoteObject::DeathRecipient> stateCallbackDeathRecipient_ = nullptr;
     std::map<int32_t, sptr<IRemoteObject::DeathRecipient>> interactionOperationDeathRecipients_ {};
