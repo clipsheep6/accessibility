@@ -23,6 +23,7 @@
 #include "accessible_ability_manager_state_observer_proxy.h"
 #include "accessible_ability_manager_state_observer_stub.h"
 #include "iservice_registry.h"
+#include <windows.h>
 
 using namespace testing;
 using namespace testing::ext;
@@ -172,7 +173,10 @@ HWTEST_F(AAMSServerTest, GetAbilityList_001, TestSize.Level1)
 HWTEST_F(AAMSServerTest, GetAbilityList_002, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "AAMSServerTest GetAbilityList_002 start";
+    GTEST_LOG_(INFO) << "GetAbilityList_002times00";
+    Sleep(100);
     AddAccessibleAbilityConnection();
+    GTEST_LOG_(INFO) << "GetAbilityList_002times01";
 
     std::vector<OHOS::Accessibility::AccessibilityAbilityInfo> infos;
     Singleton<AccessibleAbilityManagerService>::GetInstance().GetAbilityList(
@@ -193,8 +197,10 @@ HWTEST_F(AAMSServerTest, GetAbilityList_002, TestSize.Level1)
 HWTEST_F(AAMSServerTest, GetAbilityList_003, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "AAMSServerTest GetAbilityList_003 start";
-
+    GTEST_LOG_(INFO) << "GetAbilityList_003times00";
+    Sleep(100);
     AddAccessibleAbilityConnection();
+    GTEST_LOG_(INFO) << "GetAbilityList_003times00";
 
     AccessibilityAbilityInitParams initParams;
     std::shared_ptr<AccessibilityAbilityInfo> installAbilityInfo =
@@ -229,7 +235,7 @@ HWTEST_F(AAMSServerTest, GetAbilityList_003, TestSize.Level1)
 HWTEST_F(AAMSServerTest, GetAbilityList_004, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "AAMSServerTest GetAbilityList_004 start";
-
+    Sleep(100);
     AddAccessibleAbilityConnection();
     int32_t stateType = AbilityStateType::ABILITY_STATE_DISABLE;
     std::vector<OHOS::Accessibility::AccessibilityAbilityInfo> infos;

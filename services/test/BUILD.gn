@@ -346,7 +346,7 @@ ohos_moduletest("aams_server_test") {
     "./mock/mock_parameter.c",
     "./mock/mock_service_registry.cpp",
     "./mock/mock_system_ability.cpp",
-    "moduletest/aamstest/aams_server_test/aams_server_test.cpp",
+    "./moduletest/aamstest/aams_server_test/aams_server_test.cpp",
   ]
 
   sources += aams_mock_distributeddatamgr_src
