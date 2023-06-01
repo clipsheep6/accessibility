@@ -425,6 +425,8 @@ void AccessibilityWindowManager::WindowUpdateProperty(const std::vector<sptr<Ros
         if (a11yWindows_.count(windowInfo->wid_)) {
             UpdateAccessibilityWindowInfo(a11yWindows_[windowInfo->wid_], windowInfo);
         }
+        AccessibilityEventInfo evtInfProperty(windowInfo->wid_, WINDOW_UPDATE_PROPERTY);
+        aams.SendEvent(evtInfProperty);
     }
 }
 
