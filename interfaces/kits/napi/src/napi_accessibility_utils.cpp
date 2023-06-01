@@ -565,7 +565,8 @@ static WindowUpdateType ConvertStringToWindowUpdateTypes(std::string type)
         {"layer", WindowUpdateType::WINDOW_UPDATE_LAYER},
         {"parent", WindowUpdateType::WINDOW_UPDATE_PARENT},
         {"children", WindowUpdateType::WINDOW_UPDATE_CHILDREN},
-        {"pip", WindowUpdateType::WINDOW_UPDATE_PIP}};
+        {"pip", WindowUpdateType::WINDOW_UPDATE_PIP},
+        {"property", WindowUpdateType::WINDOW_UPDATE_PROPERTY}};
 
     if (windowsUpdateTypesTable.find(type) == windowsUpdateTypesTable.end()) {
         HILOG_WARN("invalid key[%{public}s]", type.c_str());
