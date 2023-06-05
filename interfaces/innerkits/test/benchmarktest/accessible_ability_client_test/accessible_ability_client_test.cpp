@@ -126,7 +126,7 @@ namespace {
             std::vector<AccessibilityWindowInfo> windows;
             int32_t result = AccessibilityUITestAbility::GetInstance()->GetWindows(windows);
             if (result != 0) {
-                state.SkipWithError("GetWindows failed. Maybe there is no command to set ace");
+                state.SkipWithError("GetWindows failed. ");
             }
         }
     }
@@ -165,7 +165,7 @@ namespace {
             gesturePath->AddPosition(position);
             int32_t result = AccessibilityUITestAbility::GetInstance()->InjectGesture(gesturePath);
             if (result != 0) {
-                state.SkipWithError("GetWindow failed. Maybe there is no command to set ace");
+                state.SkipWithError("InjectGesture failed. ");
             }
         }
     }
