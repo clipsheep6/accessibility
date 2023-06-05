@@ -164,7 +164,7 @@ namespace {
             AccessibilityGesturePosition position = {200.0f, 200.0f};
             gesturePath->AddPosition(position);
             int32_t result = AccessibilityUITestAbility::GetInstance()->InjectGesture(gesturePath);
-            if (result != 0 ) {
+            if (result != 0) {
                 state.SkipWithError("GetWindow failed. Maybe there is no command to set ace");
             }
         }
