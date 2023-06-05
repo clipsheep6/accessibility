@@ -124,7 +124,7 @@ namespace {
     {
         while (state.KeepRunning()) {
             std::vector<AccessibilityWindowInfo> windows;
-            int32_t AccessibilityUITestAbility::GetInstance()->GetWindows(windows);
+            int32_t result = AccessibilityUITestAbility::GetInstance()->GetWindows(windows);
             if (result != 0) {
                 state.SkipWithError("GetWindows failed. Maybe there is no command to set ace");
             }
