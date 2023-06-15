@@ -686,7 +686,7 @@ const std::string CommonEventSupport::COMMON_EVENT_CHARGING = "usual.event.CHARG
  * Indicate the action of a common event that the system idle mode has changed.
  * This is a protected common event, which can be sent only by the system.
  */
-const std::string CommonEventSupport::COMMON_EVENT_DEVICE_IDLE_MODE_CHANGED = "usual.event.DEVICE_IDLE_MODE_CHANGED";
+const std::string CommonEventSupport::COMMON_EVENT_CHARGE_IDLE_MODE_CHANGED = "usual.event.CHARGE_IDLE_MODE_CHANGED";
 
 /**
  * Indicate the action of a common event that the power save mode of the system has changed.
