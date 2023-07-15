@@ -81,8 +81,8 @@ bool ConvertEventInfoJSToNAPIPart(
 std::string ConvertColorToString(uint32_t color);
 std::string ConvertStringJSToNAPI(napi_env env, napi_value object, napi_value propertyNameValue, bool &hasProperty);
 int32_t ConvertIntJSToNAPI(napi_env env, napi_value object, napi_value propertyNameValue, bool &hasProperty);
-void ConverStringArrayJSToNAPI(napi_env env, napi_value object,
-    napi_value propertyNameValue, bool &hasProperty, std::vector<std::string> &stringArray)
+void ConvertStringArrayJSToNAPI(napi_env env, napi_value object,
+    napi_value propertyNameValue, bool &hasProperty, std::vector<std::string> &stringArray);
 
 OHOS::Accessibility::ActionType ConvertStringToAccessibleOperationType(const std::string &type);
 OHOS::Accessibility::AccessibilityAbilityTypes ConvertStringToAccessibilityAbilityTypes(const std::string &type);

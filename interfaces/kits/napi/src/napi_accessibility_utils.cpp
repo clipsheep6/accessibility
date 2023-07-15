@@ -815,9 +815,10 @@ std::string ConvertStringJSToNAPI(napi_env env, napi_value object, napi_value pr
     return str;
 }
 
-void ConverStringArrayJSToNAPI(napi_env env, napi_value object, 
+void ConvertStringArrayJSToNAPI(napi_env env, napi_value object,
     napi_value propertyNameValue, bool &hasProperty, std::vector<std::string> &stringArray)
 {
+    std::string str = "";
     napi_has_property(env, object, propertyNameValue, &hasProperty);
     if (hasProperty) {
         napi_value contentsValue = nullptr;
@@ -862,10 +863,11 @@ bool ConvertEventInfoJSToNAPI(
     napi_create_string_utf8(env, "bundleName", NAPI_AUTO_LENGTH, &propertyNameValue);
     str = ConvertStringJSToNAPI(env, object, propertyNameValue, hasProperty);
     if (hasProperty) {
-        if (str == "") {
+        if (str != "") {
+            eventInfo.SetBundleName(str);
+        } else {
             return false;
         }
-        eventInfo.SetBundleName(str);
     } else {
         return false;
     }
