@@ -73,7 +73,9 @@ public:
     static napi_value AttributeValue(napi_env env, napi_callback_info info);
     static napi_value ActionNames(napi_env env, napi_callback_info info);
     static napi_value PerformAction(napi_env env, napi_callback_info info);
+    static napi_value PerformActionAsync(napi_env env, size_t argc, napi_value argv, void* data);
     static napi_value FindElement(napi_env env, napi_callback_info info);
+    static napi_value FindElementAsync(napi_env env, size_t argc, napi_value argv, void* data);
     static napi_value ErrorOperation(NAccessibilityElementData *callbackInfo);
 
     // Element info
@@ -137,6 +139,7 @@ private:
     static void ActionNamesComplete(napi_env env, napi_status status, void* data);
     static void PerformActionExecute(napi_env env, void* data);
     static void PerformActionComplete(napi_env env, napi_status status, void* data);
+    static void FindElementCallbackInfo(napi_env env, size_t argc, napi_value argv, void* data);
     static void FindElementExecute(napi_env env, void* data);
     static void FindElementComplete(napi_env env, napi_status status, void* data);
     static void GetElement(NAccessibilityElementData *callbackInfo, napi_value &value);
