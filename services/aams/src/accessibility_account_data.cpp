@@ -269,7 +269,7 @@ void AccessibilityAccountData::RemoveInstalledAbility(const std::string &bundleN
             HILOG_DEBUG("Removed %{public}s from InstalledAbility: ", bundleName.c_str());
             it = installedAbilities_.erase(it);
             std::string targetName = "";
-            if (!config_) { 
+            if (!config_) {
                 continue;
             }
             std::string name = config_->GetShortkeyTarget();
