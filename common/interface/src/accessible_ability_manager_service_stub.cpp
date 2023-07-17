@@ -31,62 +31,66 @@ AccessibleAbilityManagerServiceStub::AccessibleAbilityManagerServiceStub()
 {
     HILOG_DEBUG();
 
-    memberFuncMap_[SEND_EVENT] = HandleSendEvent;
-    memberFuncMap_[REGISTER_STATE_CALLBACK] = HandleRegisterStateCallback;
-    memberFuncMap_[GET_ABILITYLIST] = HandleGetAbilityList;
-    memberFuncMap_[REGISTER_INTERACTION_CONNECTION] = HandleRegisterAccessibilityElementOperator;
-    memberFuncMap_[DEREGISTER_INTERACTION_CONNECTION] = HandleDeregisterAccessibilityElementOperator;
+    memberFuncMap_[AccessibilityInterfaceCode::SEND_EVENT] = HandleSendEvent;
+    memberFuncMap_[AccessibilityInterfaceCode::REGISTER_STATE_CALLBACK] = HandleRegisterStateCallback;
+    memberFuncMap_[AccessibilityInterfaceCode::GET_ABILITYLIST] = HandleGetAbilityList;
+    memberFuncMap_[AccessibilityInterfaceCode::REGISTER_INTERACTION_CONNECTION] =
+        HandleRegisterAccessibilityElementOperator;
+    memberFuncMap_[AccessibilityInterfaceCode::DEREGISTER_INTERACTION_CONNECTION] =
+        HandleDeregisterAccessibilityElementOperator;
 
-    memberFuncMap_[GET_CAPTION_PROPERTY] = HandleGetCaptionProperty;
-    memberFuncMap_[SET_CAPTION_PROPERTY] = HandleSetCaptionProperty;
-    memberFuncMap_[SET_CAPTION_STATE] = HandleSetCaptionState;
-    memberFuncMap_[GET_ENABLED] = HandleGetEnabled;
-    memberFuncMap_[GET_CAPTION_STATE] = HandleGetCaptionState;
-    memberFuncMap_[GET_TOUCH_GUIDE_STATE] = HandleGetTouchGuideState;
-    memberFuncMap_[GET_GESTURE_STATE] = HandleGetGestureState;
-    memberFuncMap_[GET_KEY_EVENT_OBSERVE_STATE] = HandleGetKeyEventObserverState;
-    memberFuncMap_[ENABLE_ABILITIES] = HandleEnableAbility;
-    memberFuncMap_[GET_ENABLED_OBJECT] = HandleGetEnabledAbilities;
-    memberFuncMap_[DISABLE_ABILITIES] = HandleDisableAbility;
-    memberFuncMap_[REGISTER_CAPTION_PROPERTY_CALLBACK] = HandleRegisterCaptionPropertyCallback;
-    memberFuncMap_[ENABLE_UI_TEST_ABILITY] = HandleEnableUITestAbility;
-    memberFuncMap_[DISABLE_UI_TEST_ABILITY] = HandleDisableUITestAbility;
-    memberFuncMap_[GET_ACTIVE_WINDOW] = HandleGetActiveWindow;
-    memberFuncMap_[REGISTER_ENABLE_ABILITY_LISTS_OBSERVER] = HandleRegisterEnableAbilityListsObserver;
+    memberFuncMap_[AccessibilityInterfaceCode::GET_CAPTION_PROPERTY] = HandleGetCaptionProperty;
+    memberFuncMap_[AccessibilityInterfaceCode::SET_CAPTION_PROPERTY] = HandleSetCaptionProperty;
+    memberFuncMap_[AccessibilityInterfaceCode::SET_CAPTION_STATE] = HandleSetCaptionState;
+    memberFuncMap_[AccessibilityInterfaceCode::GET_ENABLED] = HandleGetEnabled;
+    memberFuncMap_[AccessibilityInterfaceCode::GET_CAPTION_STATE] = HandleGetCaptionState;
+    memberFuncMap_[AccessibilityInterfaceCode::GET_TOUCH_GUIDE_STATE] = HandleGetTouchGuideState;
+    memberFuncMap_[AccessibilityInterfaceCode::GET_GESTURE_STATE] = HandleGetGestureState;
+    memberFuncMap_[AccessibilityInterfaceCode::GET_KEY_EVENT_OBSERVE_STATE] = HandleGetKeyEventObserverState;
+    memberFuncMap_[AccessibilityInterfaceCode::ENABLE_ABILITIES] = HandleEnableAbility;
+    memberFuncMap_[AccessibilityInterfaceCode::GET_ENABLED_OBJECT] = HandleGetEnabledAbilities;
+    memberFuncMap_[AccessibilityInterfaceCode::DISABLE_ABILITIES] = HandleDisableAbility;
+    memberFuncMap_[AccessibilityInterfaceCode::REGISTER_CAPTION_PROPERTY_CALLBACK] =
+        HandleRegisterCaptionPropertyCallback;
+    memberFuncMap_[AccessibilityInterfaceCode::ENABLE_UI_TEST_ABILITY] = HandleEnableUITestAbility;
+    memberFuncMap_[AccessibilityInterfaceCode::DISABLE_UI_TEST_ABILITY] = HandleDisableUITestAbility;
+    memberFuncMap_[AccessibilityInterfaceCode::GET_ACTIVE_WINDOW] = HandleGetActiveWindow;
+    memberFuncMap_[AccessibilityInterfaceCode::REGISTER_ENABLE_ABILITY_LISTS_OBSERVER] = 
+        HandleRegisterEnableAbilityListsObserver;
 
     AddConfigHandles();
 }
 
 void AccessibleAbilityManagerServiceStub::AddConfigHandles()
 {
-    memberFuncMap_[SET_SCREENMAGNIFIER_STATE] = HandleSetScreenMagnificationState;
-    memberFuncMap_[SET_SHORTKEY_STATE] = HandleSetShortKeyState;
-    memberFuncMap_[SET_MOUSEKEY_STATE] = HandleSetMouseKeyState;
-    memberFuncMap_[SET_SHORTKEY_TARGET] = HandleSetShortkeyTarget;
-    memberFuncMap_[SET_MOUSEKEY_AUTOCLICK] = HandleSetMouseAutoClick;
-    memberFuncMap_[SET_INVERTCOLOR_STATE] = HandleSetInvertColorState;
-    memberFuncMap_[SET_HIGHCONTRASTTEXT_STATE] = HandleSetHighContrastTextState;
-    memberFuncMap_[SET_AUDIOMONO_STATE] = HandleSetAudioMonoState;
-    memberFuncMap_[SET_ANIMATIONOFF_STATE] = HandleSetAnimationOffState;
-    memberFuncMap_[SET_DALTONIZATION_COLORFILTER] = HandleSetDaltonizationColorFilter;
-    memberFuncMap_[SET_CONTENT_TIMEOUT] = HandleSetContentTimeout;
-    memberFuncMap_[SET_BRIGHTNESS_DISCOUNT] = HandleSetBrightnessDiscount;
-    memberFuncMap_[SET_AUDIO_BALANCE] = HandleSetAudioBalance;
-    memberFuncMap_[GET_SCREENMAGNIFIER_STATE] = HandleGetScreenMagnificationState;
-    memberFuncMap_[GET_SHORTKEY_STATE] = HandleGetShortKeyState;
-    memberFuncMap_[GET_MOUSEKEY_STATE] = HandleGetMouseKeyState;
-    memberFuncMap_[GET_SHORTKEY_TARGET] = HandleGetShortkeyTarget;
-    memberFuncMap_[GET_MOUSEKEY_AUTOCLICK] = HandleGetMouseAutoClick;
-    memberFuncMap_[GET_INVERTCOLOR_STATE] = HandleGetInvertColorState;
-    memberFuncMap_[GET_HIGHCONTRASTTEXT_STATE] = HandleGetHighContrastTextState;
-    memberFuncMap_[GET_AUDIOMONO_STATE] = HandleGetAudioMonoState;
-    memberFuncMap_[GET_ANIMATIONOFF_STATE] = HandleGetAnimationOffState;
-    memberFuncMap_[GET_DALTONIZATION_COLORFILTER] = HandleGetDaltonizationColorFilter;
-    memberFuncMap_[GET_CONTENT_TIMEOUT] = HandleGetContentTimeout;
-    memberFuncMap_[GET_BRIGHTNESS_DISCOUNT] = HandleGetBrightnessDiscount;
-    memberFuncMap_[GET_AUDIO_BALANCE] = HandleGetAudioBalance;
-    memberFuncMap_[GET_ALL_CONFIGS] = HandleGetAllConfigs;
-    memberFuncMap_[REGISTER_CONFIG_CALLBACK] = HandleRegisterConfigCallback;
+    memberFuncMap_[AccessibilityInterfaceCode::SET_SCREENMAGNIFIER_STATE] = HandleSetScreenMagnificationState;
+    memberFuncMap_[AccessibilityInterfaceCode::SET_SHORTKEY_STATE] = HandleSetShortKeyState;
+    memberFuncMap_[AccessibilityInterfaceCode::SET_MOUSEKEY_STATE] = HandleSetMouseKeyState;
+    memberFuncMap_[AccessibilityInterfaceCode::SET_SHORTKEY_TARGET] = HandleSetShortkeyTarget;
+    memberFuncMap_[AccessibilityInterfaceCode::SET_MOUSEKEY_AUTOCLICK] = HandleSetMouseAutoClick;
+    memberFuncMap_[AccessibilityInterfaceCode::SET_INVERTCOLOR_STATE] = HandleSetInvertColorState;
+    memberFuncMap_[AccessibilityInterfaceCode::SET_HIGHCONTRASTTEXT_STATE] = HandleSetHighContrastTextState;
+    memberFuncMap_[AccessibilityInterfaceCode::SET_AUDIOMONO_STATE] = HandleSetAudioMonoState;
+    memberFuncMap_[AccessibilityInterfaceCode::SET_ANIMATIONOFF_STATE] = HandleSetAnimationOffState;
+    memberFuncMap_[AccessibilityInterfaceCode::SET_DALTONIZATION_COLORFILTER] = HandleSetDaltonizationColorFilter;
+    memberFuncMap_[AccessibilityInterfaceCode::SET_CONTENT_TIMEOUT] = HandleSetContentTimeout;
+    memberFuncMap_[AccessibilityInterfaceCode::SET_BRIGHTNESS_DISCOUNT] = HandleSetBrightnessDiscount;
+    memberFuncMap_[AccessibilityInterfaceCode::SET_AUDIO_BALANCE] = HandleSetAudioBalance;
+    memberFuncMap_[AccessibilityInterfaceCode::GET_SCREENMAGNIFIER_STATE] = HandleGetScreenMagnificationState;
+    memberFuncMap_[AccessibilityInterfaceCode::GET_SHORTKEY_STATE] = HandleGetShortKeyState;
+    memberFuncMap_[AccessibilityInterfaceCode::GET_MOUSEKEY_STATE] = HandleGetMouseKeyState;
+    memberFuncMap_[AccessibilityInterfaceCode::GET_SHORTKEY_TARGET] = HandleGetShortkeyTarget;
+    memberFuncMap_[AccessibilityInterfaceCode::GET_MOUSEKEY_AUTOCLICK] = HandleGetMouseAutoClick;
+    memberFuncMap_[AccessibilityInterfaceCode::GET_INVERTCOLOR_STATE] = HandleGetInvertColorState;
+    memberFuncMap_[AccessibilityInterfaceCode::GET_HIGHCONTRASTTEXT_STATE] = HandleGetHighContrastTextState;
+    memberFuncMap_[AccessibilityInterfaceCode::GET_AUDIOMONO_STATE] = HandleGetAudioMonoState;
+    memberFuncMap_[AccessibilityInterfaceCode::GET_ANIMATIONOFF_STATE] = HandleGetAnimationOffState;
+    memberFuncMap_[AccessibilityInterfaceCode::GET_DALTONIZATION_COLORFILTER] = HandleGetDaltonizationColorFilter;
+    memberFuncMap_[AccessibilityInterfaceCode::GET_CONTENT_TIMEOUT] = HandleGetContentTimeout;
+    memberFuncMap_[AccessibilityInterfaceCode::GET_BRIGHTNESS_DISCOUNT] = HandleGetBrightnessDiscount;
+    memberFuncMap_[AccessibilityInterfaceCode::GET_AUDIO_BALANCE] = HandleGetAudioBalance;
+    memberFuncMap_[AccessibilityInterfaceCode::GET_ALL_CONFIGS] = HandleGetAllConfigs;
+    memberFuncMap_[AccessibilityInterfaceCode::REGISTER_CONFIG_CALLBACK] = HandleRegisterConfigCallback;
 }
 
 AccessibleAbilityManagerServiceStub::~AccessibleAbilityManagerServiceStub()
