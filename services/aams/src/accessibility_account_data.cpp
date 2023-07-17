@@ -274,8 +274,6 @@ void AccessibilityAccountData::RemoveInstalledAbility(const std::string &bundleN
             }
             std::string name = config_->GetShortkeyTarget();
             if (it->GetId() == name) {
-                GetConfig()->SetShortkeyTarget(targetName);
-                GetConfig()->SetShortKeyState(false);
                 config_->SetShortkeyTarget(targetName);
                 config_->SetShortKeyState(false);
             }
