@@ -17,6 +17,7 @@
 #define ACCESSIBILITY_ABILITY_MANAGER_SERVICE_CLIENT_STUB_H
 
 #include <map>
+#include "accessibility_ipc_interface_code.h"
 #include "i_accessible_ability_manager_service.h"
 #include "iremote_stub.h"
 
