@@ -17,6 +17,7 @@
 #define ACCESSIBILITY_ABILITY_MANAGER_SERVICE_CLIENT_STUB_H
 
 #include <map>
+#include "accessibility_ipc_interface_code.h"
 #include "i_accessible_ability_manager_service.h"
 #include "iremote_stub.h"
 
@@ -48,6 +49,11 @@ public:
     virtual int OnRemoteRequest(
         uint32_t code, MessageParcel &data, MessageParcel &reply, MessageOption &option) override;
 private:
+    /**
+     * @brief add config handles.
+     */
+    void AddConfigHandles();
+
     /**
      * @brief Check the caller has permissions.
      * @param permission The description of permission
@@ -150,9 +156,8 @@ private:
     ErrCode HandleRegisterEnableAbilityListsObserver(MessageParcel &data, MessageParcel &reply);
     ErrCode HandleRegisterConfigCallback(MessageParcel &data, MessageParcel &reply);
 
-    using AccessibilityAbilityManagerServiceFunc = ErrCode (AccessibleAbilityManagerServiceStub::*)(
-        MessageParcel &data, MessageParcel &reply);
-    std::map<uint32_t, AccessibilityAbilityManagerServiceFunc> memberFuncMap_;
+    using AccessibilityAbilityManagerServiceFunc = ErrCode (*)(MessageParcel &data, MessageParcel &reply);
+    std::map<AccessibilityInterfaceCode, AccessibilityAbilityManagerServiceFunc> memberFuncMap_;
 };
 } // namespace Accessibility
 } // namespace OHOS
