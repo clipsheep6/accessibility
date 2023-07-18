@@ -17,6 +17,7 @@
 #define ACCESSIBILITY_ABILITY_MANAGER_SERVICE_CLIENT_STUB_H
 
 #include <map>
+#include "accessibility_ipc_interface_code.h"
 #include "i_accessible_ability_manager_service.h"
 #include "iremote_stub.h"
 
@@ -48,6 +49,16 @@ public:
     virtual int OnRemoteRequest(
         uint32_t code, MessageParcel &data, MessageParcel &reply, MessageOption &option) override;
 private:
+    /**
+     * @brief add accessibility get config handles.
+     */
+    void AddGetConfigHandles();
+
+    /**
+     * @brief add accessibility set config handles.
+     */
+    void AddSetConfigHandles();
+
     /**
      * @brief Check the caller has permissions.
      * @param permission The description of permission
