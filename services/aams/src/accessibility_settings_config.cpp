@@ -333,8 +333,7 @@ bool AccessibilitySettingsConfig::SetStatePref(int32_t type)
     ret |= SetAudioMonoStatePref(type);
     if (ret) {
         pref_->Flush();
-    } 
-
+    }
     return ret;
 }
 
