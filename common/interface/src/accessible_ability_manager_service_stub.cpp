@@ -20,6 +20,7 @@
 #include "accesstoken_kit.h"
 #include "hilog_wrapper.h"
 #include "ipc_skeleton.h"
+#include "tokenid_kit.h"
 
 namespace OHOS {
 namespace Accessibility {
@@ -190,6 +191,21 @@ bool AccessibleAbilityManagerServiceStub::CheckPermission(const std::string &per
     return true;
 }
 
+bool AccessibleAbilityManagerServiceStub::IsSystemApp() const
+{
+    HILOG_DEBUG();
+
+    AccessTokenID callerToken = IPCSkeleton::GetCallingTokenID();
+    ATokenTypeEnum tokenType = AccessTokenKit::GetTokenTypeFlag(callerToken);
+    if (tokenType != TOKEN_HAP) {
+        HILOG_INFO("Caller is not a application.");
+        return true;
+    }
+    uint64_t accessTokenId = IPCSkeleton::GetCallingFullTokenID();
+    bool isSystemApplication = TokenIdKit::IsSystemAppByFullTokenID(accessTokenId);
+    return isSystemApplication;
+}
+
 ErrCode AccessibleAbilityManagerServiceStub::HandleSendEvent(MessageParcel &data, MessageParcel &reply)
 {
     HILOG_DEBUG();
@@ -285,6 +301,11 @@ ErrCode AccessibleAbilityManagerServiceStub::HandleGetCaptionProperty(MessagePar
 ErrCode AccessibleAbilityManagerServiceStub::HandleSetCaptionProperty(MessageParcel &data, MessageParcel &reply)
 {
     HILOG_DEBUG();
+    if (!IsSystemApp()) {
+        HILOG_WARN("HandleSetCaptionProperty Not system app");
+        reply.WriteInt32(RET_ERR_NOT_SYSTEM_APP);
+        return NO_ERROR;
+    }
     if (!CheckPermission(OHOS_PERMISSION_WRITE_ACCESSIBILITY_CONFIG)) {
         HILOG_WARN("Permission denied!");
         reply.WriteInt32(RET_ERR_NO_PERMISSION);
