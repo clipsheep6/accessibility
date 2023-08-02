@@ -570,8 +570,9 @@ HWTEST_F(AamsTouchGuideTest, AamsTouchGuideTest_Moduletest_OnPointerEvent005, Te
         CreateTouchEvent(MMI::PointerEvent::POINTER_ACTION_DOWN, points, 0, 0, 1);
     auto inputEventConsumer = MMI::MockInputManager::GetInputEventConsumer();
     if (!inputEventConsumer) {
-    bool flag = OnPointerEventOnePointsTest3(points, point1, point2, point3, point4);
-    inputEventConsumer->OnInputEvent(event);
+        bool flag = OnPointerEventOnePointsTest3(points, point1, point2, point3, point4);
+        inputEventConsumer->OnInputEvent(event);
+    }
 
     points.clear();
     points.emplace_back(point2);
