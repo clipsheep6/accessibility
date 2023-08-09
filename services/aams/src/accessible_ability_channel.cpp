@@ -56,6 +56,8 @@ RetError AccessibleAbilityChannel::SearchElementInfoByAccessibilityId(const int3
             syncPromise->set_value(ret);
             return;
         }
+
+        elementId = GetSceneBoardElementId(accessibilityWindowId, elementId);
         elementOperator->SearchElementInfoByAccessibilityId(elementId, requestId, callback, mode);
         HILOG_DEBUG("AccessibleAbilityChannel::SearchElementInfoByAccessibilityId successfully");
         syncPromise->set_value(RET_OK);
