@@ -18,6 +18,7 @@
 
 #include <map>
 #include <memory>
+#include <set>
 #include "accessibility_window_info.h"
 #include "event_handler.h"
 #include "singleton.h"
@@ -25,7 +26,9 @@
 
 namespace OHOS {
 namespace Accessibility {
+
 constexpr int32_t SCENE_BOARD_WINDOW_ID = 1; // default scene board window id 1
+constexpr int32_t INVALID_SCENE_BOARD_WINDOW_ID = -1; // invalid window id 1
 
 class AccessibilityWindowManager {
     DECLARE_SINGLETON(AccessibilityWindowManager)
@@ -45,6 +48,9 @@ public:
     bool IsValidWindow(int32_t windowId);
     void ClearAccessibilityFocused();
     int32_t GetSceneBoardElementId(const int32_t windowId, const int32_t elementId);
+
+    int32_t GetRealWindowId(const sptr<Rosen::AccessibilityWindowInfo> windowInfo);
+    bool IsSceneBoard(const sptr<Rosen::AccessibilityWindowInfo> windowInfo);
 
     // test for ut to resize a window
     void SetWindowSize(int32_t windowId, Rect rect);
