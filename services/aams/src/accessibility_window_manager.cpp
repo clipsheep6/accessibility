@@ -46,6 +46,7 @@ bool AccessibilityWindowManager::Init()
         }
 
         int32_t realWid = GetRealWindowId(window);
+        HILOG_DEBUG("windowInfoswindowInfos1 size is %{public}d, %{public}d", realWid, window->wid_);
         if (!a11yWindows_.count(realWid)) {
             auto a11yWindowInfo = CreateAccessibilityWindowInfo(window);
             a11yWindows_.emplace(realWid, a11yWindowInfo);
@@ -204,6 +205,13 @@ void AccessibilityWindowManager::UpdateAccessibilityWindowInfo(AccessibilityWind
         accWindowInfo.SetWindowId(windowInfo->innerWid_);
         HILOG_INFO("scene board window id 1 convert inner window id[%{public}d]", windowInfo->innerWid_);
     }
+    
+    HILOG_DEBUG("Create WindowInfo Id(%{public}d) type(%{public}d) posX(%{public}d) posY(%{public}d)"
+        "witdth(%{public}d) height(%{public}d) display id(%{public}" PRIu64 ") isDecorEnable(%{public}d)"
+        "innerWid(%{public}d), uiNodeId(%{public}d)",
+        windowInfo->wid_, windowInfo->type_, windowInfo->windowRect_.posX_, windowInfo->windowRect_.posY_,
+        windowInfo->windowRect_.width_, windowInfo->windowRect_.height_, windowInfo->displayId_,
+        windowInfo->isDecorEnable_, windowInfo->innerWid_, windowInfo->uiNodeId_);
 }
 
 int32_t AccessibilityWindowManager::GetRealWindowId(const sptr<Rosen::AccessibilityWindowInfo> windowInfo)
@@ -227,12 +235,6 @@ AccessibilityWindowInfo AccessibilityWindowManager::CreateAccessibilityWindowInf
 {
     AccessibilityWindowInfo info;
     UpdateAccessibilityWindowInfo(info, windowInfo);
-    HILOG_DEBUG("Create WindowInfo Id(%{public}d) type(%{public}d) posX(%{public}d) posY(%{public}d)"
-        "witdth(%{public}d) height(%{public}d) display id(%{public}" PRIu64 ") isDecorEnable(%{public}d)"
-        "innerWid(%{public}d), uiNodeId(%{public}d)",
-        windowInfo->wid_, windowInfo->type_, windowInfo->windowRect_.posX_, windowInfo->windowRect_.posY_,
-        windowInfo->windowRect_.width_, windowInfo->windowRect_.height_, windowInfo->displayId_,
-        windowInfo->isDecorEnable_, windowInfo->innerWid_, windowInfo->uiNodeId_);
     return info;
 }
 
@@ -294,8 +296,13 @@ std::vector<AccessibilityWindowInfo> AccessibilityWindowManager::GetAccessibilit
         return windows;
     }
     for (auto &info : windowInfos) {
+        if (info == nullptr) {
+            continue;
+        }
+
         int32_t realWidId = GetRealWindowId(info);
-        if (info != nullptr && a11yWindows_.count(realWidId)) {
+        HILOG_DEBUG("windowInfoswindowInfos2 size is %{public}d, %{public}d", realWidId, info->wid_);
+        if (a11yWindows_.count(realWidId)) {
             UpdateAccessibilityWindowInfo(a11yWindows_[realWidId], info);
         }
     }
@@ -319,7 +326,12 @@ bool AccessibilityWindowManager::GetAccessibilityWindow(int32_t windowId, Access
         return false;
     }
     for (auto &info : windowInfos) {
+        if (info == nullptr) {
+            continue;
+        }
+
         int32_t realWidId = GetRealWindowId(info);
+        HILOG_DEBUG("windowInfoswindowInfos3 size is %{public}d, %{public}d", realWidId, info->wid_);
         if (info != nullptr && a11yWindows_.count(realWidId)) {
             UpdateAccessibilityWindowInfo(a11yWindows_[realWidId], info);
         }
@@ -367,6 +379,7 @@ void AccessibilityWindowManager::WindowUpdateAdded(const std::vector<sptr<Rosen:
         }
 
         int32_t realWidId = GetRealWindowId(windowInfo);
+        HILOG_DEBUG("windowInfoswindowInfos4 size is %{public}d, %{public}d", realWidId, windowInfo->wid_);
         if (!a11yWindows_.count(realWidId)) {
             auto a11yWindowInfoAdded = CreateAccessibilityWindowInfo(windowInfo);
             a11yWindows_.emplace(realWidId, a11yWindowInfoAdded);
@@ -396,6 +409,7 @@ void AccessibilityWindowManager::WindowUpdateRemoved(const std::vector<sptr<Rose
         }
 
         int32_t realWidId = GetRealWindowId(windowInfo);
+        HILOG_DEBUG("windowInfoswindowInfosRemoved size is %{public}d, %{public}d", realWidId, windowInfo->wid_);
         if (!a11yWindows_.count(realWidId)) {
             return;
         }
@@ -423,6 +437,7 @@ void AccessibilityWindowManager::WindowUpdateFocused(const std::vector<sptr<Rose
         }
 
         int32_t realWidId = GetRealWindowId(windowInfo);
+        HILOG_DEBUG("windowInfoswindowInfos5 size is %{public}d, %{public}d", realWidId, windowInfo->wid_);
         if (!a11yWindows_.count(realWidId)) {
             HILOG_WARN("window not created");
             auto a11yWindowInfoFocused = CreateAccessibilityWindowInfo(windowInfo);
@@ -449,6 +464,11 @@ void AccessibilityWindowManager::WindowUpdateBounds(const std::vector<sptr<Rosen
         }
 
         int32_t realWidId = GetRealWindowId(windowInfo);
+        HILOG_DEBUG("windowInfoswindowInfosBounds size is %{public}d, %{public}d", realWidId, windowInfo->wid_);
+        if (a11yWindows_.count(realWidId)) {
+            UpdateAccessibilityWindowInfo(a11yWindows_[realWidId], windowInfo);
+        }
+
         AccessibilityEventInfo evtInfBounds(realWidId, WINDOW_UPDATE_BOUNDS);
         aams.SendEvent(evtInfBounds);
     }
@@ -464,6 +484,7 @@ void AccessibilityWindowManager::WindowUpdateActive(const std::vector<sptr<Rosen
         }
 
         int32_t realWidId = GetRealWindowId(windowInfo);
+        HILOG_DEBUG("windowInfoswindowInfos6 size is %{public}d, %{public}d", realWidId, windowInfo->wid_);
         if (!a11yWindows_.count(realWidId)) {
             auto a11yWindowInfoActive = CreateAccessibilityWindowInfo(windowInfo);
             a11yWindows_.emplace(realWidId, a11yWindowInfoActive);
@@ -487,6 +508,7 @@ void AccessibilityWindowManager::WindowUpdateProperty(const std::vector<sptr<Ros
         }
 
         int32_t realWidId = GetRealWindowId(windowInfo);
+        HILOG_DEBUG("windowInfoswindowInfosProperty size is %{public}d, %{public}d", realWidId, windowInfo->wid_);
         if (a11yWindows_.count(realWidId)) {
             UpdateAccessibilityWindowInfo(a11yWindows_[realWidId], windowInfo);
         }
