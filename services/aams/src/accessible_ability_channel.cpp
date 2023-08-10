@@ -56,11 +56,13 @@ RetError AccessibleAbilityChannel::SearchElementInfoByAccessibilityId(const int3
             syncPromise->set_value(ret);
             return;
         }
-        elementOperator->SearchElementInfoByAccessibilityId(elementId, requestId, callback, mode);
+
+        int32_t tmpElementId = Singleton<AccessibilityWindowManager>::GetInstance().GetSceneBoardElementId(accessibilityWindowId, elementId);
+        elementOperator->SearchElementInfoByAccessibilityId(tmpElementId, requestId, callback, mode);
         HILOG_DEBUG("AccessibleAbilityChannel::SearchElementInfoByAccessibilityId successfully");
         syncPromise->set_value(RET_OK);
         }, accountId_, clientName_), "SearchElementInfoByAccessibilityId");
-    
+
     std::future_status wait = syncFuture.wait_for(std::chrono::milliseconds(TIME_OUT_OPERATOR));
     if (wait != std::future_status::ready) {
         HILOG_ERROR("Failed to wait SearchElementInfoByAccessibilityId result");
@@ -92,7 +94,9 @@ RetError AccessibleAbilityChannel::SearchElementInfosByText(const int32_t access
             syncPromise->set_value(ret);
             return;
         }
-        elementOperator->SearchElementInfosByText(elementId, text, requestId, callback);
+
+        int32_t tmpElementId = Singleton<AccessibilityWindowManager>::GetInstance().GetSceneBoardElementId(accessibilityWindowId, elementId);
+        elementOperator->SearchElementInfosByText(tmpElementId, text, requestId, callback);
         syncPromise->set_value(RET_OK);
         }, accountId_, clientName_), "SearchElementInfosByText");
 
@@ -127,10 +131,11 @@ RetError AccessibleAbilityChannel::FindFocusedElementInfo(const int32_t accessib
             syncPromise->set_value(ret);
             return;
         }
-        elementOperator->FindFocusedElementInfo(elementId, focusType, requestId, callback);
+        int32_t tmpElementId = Singleton<AccessibilityWindowManager>::GetInstance().GetSceneBoardElementId(accessibilityWindowId, elementId);
+        elementOperator->FindFocusedElementInfo(tmpElementId, focusType, requestId, callback);
         syncPromise->set_value(RET_OK);
         }, accountId_, clientName_), "FindFocusedElementInfo");
-    
+
     std::future_status wait = syncFuture.wait_for(std::chrono::milliseconds(TIME_OUT_OPERATOR));
     if (wait != std::future_status::ready) {
         HILOG_ERROR("Failed to wait FindFocusedElementInfo result");
@@ -161,10 +166,11 @@ RetError AccessibleAbilityChannel::FocusMoveSearch(const int32_t accessibilityWi
             syncPromise->set_value(ret);
             return;
         }
-        elementOperator->FocusMoveSearch(elementId, direction, requestId, callback);
+        int32_t tmpElementId = Singleton<AccessibilityWindowManager>::GetInstance().GetSceneBoardElementId(accessibilityWindowId, elementId);
+        elementOperator->FocusMoveSearch(tmpElementId, direction, requestId, callback);
         syncPromise->set_value(RET_OK);
         }, accountId_, clientName_), "FocusMoveSearch");
-    
+
     std::future_status wait = syncFuture.wait_for(std::chrono::milliseconds(TIME_OUT_OPERATOR));
     if (wait != std::future_status::ready) {
         HILOG_ERROR("Failed to wait FocusMoveSearch result");
@@ -196,10 +202,11 @@ RetError AccessibleAbilityChannel::ExecuteAction(const int32_t accessibilityWind
             syncPromise->set_value(ret);
             return;
         }
-        elementOperator->ExecuteAction(elementId, action, actionArguments, requestId, callback);
+        int tmpElementId = Singleton<AccessibilityWindowManager>::GetInstance().GetSceneBoardElementId(accessibilityWindowId, elementId);
+        elementOperator->ExecuteAction(tmpElementId, action, actionArguments, requestId, callback);
         syncPromise->set_value(RET_OK);
         }, accountId_, clientName_), "ExecuteAction");
-    
+
     std::future_status wait = syncFuture.wait_for(std::chrono::milliseconds(TIME_OUT_OPERATOR));
     if (wait != std::future_status::ready) {
         HILOG_ERROR("Failed to wait ExecuteAction result");
@@ -216,7 +223,7 @@ RetError AccessibleAbilityChannel::GetWindow(const int32_t windowId, Accessibili
         HILOG_ERROR("eventHandler_ is nullptr.");
         return RET_ERR_NULLPTR;
     }
- 
+
     std::shared_ptr<std::promise<RetError>> syncPromise = std::make_shared<std::promise<RetError>>();
     std::shared_ptr<AccessibilityWindowInfo> tmpWindowInfo = std::make_shared<AccessibilityWindowInfo>(windowInfo);
     std::future syncFuture = syncPromise->get_future();
@@ -302,7 +309,7 @@ RetError AccessibleAbilityChannel::GetWindows(uint64_t displayId, std::vector<Ac
         }
         syncPromise->set_value(RET_OK);
         }, accountId_, clientName_), "GetWindows");
-    
+
     std::future_status wait = syncFuture.wait_for(std::chrono::milliseconds(TIME_OUT_OPERATOR));
     if (wait != std::future_status::ready) {
         HILOG_ERROR("Failed to wait GetWindows result");
