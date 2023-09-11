@@ -267,6 +267,38 @@ RetError AccessibleAbilityManagerService::SendEvent(const AccessibilityEventInfo
     return RET_OK;
 }
 
+void AccessibleAbilityManagerService::GetRealWindowAndElementId(int32_t& windowId, int32_t& elementId)
+{
+    HILOG_DEBUG("real windowId %{public}d", windowId);
+    if (!handler_) {
+        HILOG_ERROR("parameters check failed!");
+        return;
+    }
+
+    handler_->PostTask(std::bind([&, this]() -> void {
+        HILOG_DEBUG();
+        Singleton<AccessibilityWindowManager>::GetInstance().GetRealWindowAndElementId(windowId, elementId);
+        }), "GET_REAL_WINDOW_AND_ELEMENT_ID");
+}
+
+void AccessibleAbilityManagerService::GetSceneBoardInnerWinId(int32_t windowId, int32_t elementId,
+    int32_t& innerWid)
+{
+    HILOG_DEBUG("real windowId %{public}d", windowId);
+    if (!handler_) {
+        HILOG_ERROR("parameters check failed!");
+        return;
+    }
+
+    std::promise<RetError> syncPromise;
+    std::future syncFuture = syncPromise.get_future();
+    handler_->PostTask(std::bind([&, this]() -> void {
+        HILOG_DEBUG();
+        Singleton<AccessibilityWindowManager>::GetInstance().GetSceneBoardInnerWinId(windowId, elementId, innerWid);
+        }), "GET_REAL_WINDOW_AND_ELEMENT_ID");
+    return;
+}
+
 uint32_t AccessibleAbilityManagerService::RegisterStateObserver(
     const sptr<IAccessibleAbilityManagerStateObserver>& stateObserver)
 {

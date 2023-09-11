@@ -20,8 +20,10 @@
 #include <thread>
 
 #include "accessible_ability_client.h"
+#include "accesstoken_kit.h"
 #include "hilog_wrapper.h"
 #include "if_system_ability_manager.h"
+#include "ipc_skeleton.h"
 #include "iservice_registry.h"
 #include "parameter.h"
 #include "system_ability_definition.h"
@@ -257,6 +259,9 @@ void AccessibleAbilityClientImpl::OnAccessibilityEvent(const AccessibilityEventI
         }
         listener = listener_;
     }
+
+    RemoveCacheData(eventInfo);
+
     if (listener) {
         listener->OnAccessibilityEvent(eventInfo);
     }
@@ -417,6 +422,222 @@ RetError AccessibleAbilityClientImpl::GetRootByWindow(const AccessibilityWindowI
     return SearchElementInfoFromAce(windowId, ROOT_NONE_ID, cacheMode_, elementInfo);
 }
 
+bool AccessibleAbilityClientImpl::CheckCallingPermission(const std::string& permission)
+{
+    HILOG_DEBUG("permission:%{public}s", permission.c_str());
+    if (Security::AccessToken::AccessTokenKit::VerifyAccessToken(IPCSkeleton::GetCallingTokenID(), permission) !=
+        Security::AccessToken::PermissionState::PERMISSION_GRANTED) {
+        HILOG_DEBUG("permission denied!");
+        return false;
+    }
+
+    HILOG_DEBUG("permission ok!");
+    return true;
+}
+
+bool AccessibleAbilityClientImpl::IsStartByHdcd()
+{
+    Security::AccessToken::NativeTokenInfo info;
+    if (Security::AccessToken::AccessTokenKit::GetNativeTokenInfo(IPCSkeleton::GetCallingTokenID(), info) != 0) {
+        return false;
+    }
+
+    if (info.processName.compare("hdcd") == 0) {
+        return true;
+    }
+
+    return false;
+}
+
+void AccessibleAbilityClientImpl::AddWindowElementMapByWMS(int32_t windowId, int32_t elementId)
+{
+    if (windowElementMap_.IsExistWindowId(windowId) || windowIdSet_.IsExistWindowId(windowId)) {
+        HILOG_INFO("window info is exist");
+    } else {
+        int32_t windowIdConvert = windowId;
+        int32_t elementIdConvert = elementId;
+        serviceProxy_->GetRealWindowAndElementId(windowIdConvert, elementIdConvert);
+        if (windowId != windowIdConvert) {
+            windowElementMap_.AddWindowElementId(windowId, elementIdConvert);
+            windowIdSet_.AddWindowId(windowId);
+        } else {
+            windowIdSet_.AddWindowId(windowId);
+        }
+    }
+}
+
+void AccessibleAbilityClientImpl::AddWindowElementMapByAce(int32_t windowId, int32_t elementId)
+{
+    if (windowId == SCENE_BOARD_WINDOW_ID) {
+        int32_t innerWid = INVALID_SCENE_BOARD_INNER_WINDOW_ID;
+        serviceProxy_->GetSceneBoardInnerWinId(windowId, elementId, innerWid);
+        if (innerWid != INVALID_SCENE_BOARD_INNER_WINDOW_ID) {
+            windowElementMap_.AddWindowElementId(innerWid, elementId);
+        }
+        windowIdSet_.AddWindowId(windowId);
+    } else {
+        windowIdSet_.AddWindowId(windowId);
+    }
+}
+
+RetError AccessibleAbilityClientImpl::GetElementInfoFromCache(int32_t windowId, int32_t elementId,
+    std::vector<AccessibilityElementInfo> &elementInfos)
+{
+    if (windowId == SCENE_BOARD_WINDOW_ID) { // sceneboard window id
+        if (elementCacheInfo_.GetElementByWindowId(windowId, elementId, elementInfos)) {
+            HILOG_DEBUG("get element info from cache");
+            return RET_OK;
+        }
+
+        std::vector<int32_t> windowsList = windowElementMap_.GetWindowIdList();
+        for (auto tmpWindowId : windowsList) {
+            if (elementCacheInfo_.GetElementByWindowId(tmpWindowId, elementId, elementInfos)) {
+                HILOG_DEBUG("get element info from cache");
+                return RET_OK;
+            }
+        }
+        HILOG_DEBUG("get element info from cache");
+    } else {
+        if (elementCacheInfo_.GetElementByWindowId(windowId, elementId, elementInfos)) {
+            HILOG_DEBUG("get element info from cache");
+            return RET_OK;
+        }
+    }
+
+    return RET_ERR_FAILED;
+}
+
+RetError AccessibleAbilityClientImpl::SearchElementInfoReCursive(int32_t windowId, int32_t elementId,
+    std::vector<AccessibilityElementInfo> &elementInfos)
+{
+    RetError ret = channelClient_->SearchElementInfosByAccessibilityId(windowId, elementId,
+        PREFETCH_RECURSIVE_CHILDREN, elementInfos);
+    if (ret != RET_OK) {
+        HILOG_ERROR("search element info failed. windowId %{public}d elementId %{public}d mode %{public}d",
+            windowId, elementId, PREFETCH_RECURSIVE_CHILDREN);
+        return ret;
+    }
+
+    if (elementInfos.empty()) {
+        HILOG_ERROR("elementInfos from ace is empty");
+        return RET_ERR_INVALID_ELEMENT_INFO_FROM_ACE;
+    }
+
+    return RET_OK;
+}
+
+void AccessibleAbilityClientImpl::RemoveCacheData(const AccessibilityEventInfo& eventInfo)
+{
+    EventType type = eventInfo.GetEventType();
+    if (type == TYPE_VIEW_TEXT_UPDATE_EVENT || type == TYPE_PAGE_STATE_UPDATE||
+        type == TYPE_NOTIFICATION_UPDATE_EVENT || type == TYPE_PAGE_CONTENT_UPDATE||
+        type == TYPE_VIEW_TEXT_SELECTION_UPDATE_EVENT || type == TYPE_WINDOW_UPDATE) {
+        int32_t windowId = eventInfo.GetWindowId();
+        //int elementId = eventInfo.GetAccessibilityId();
+        if (windowId == SCENE_BOARD_WINDOW_ID) {
+            elementCacheInfo_.RemoveElementByWindowId(windowId);
+            windowElementMap_.RemovePairByWindowId(windowId);
+            windowIdSet_.RemoveSetByWindowId(windowId);
+
+            auto windowList = windowElementMap_.GetWindowIdList();
+            for(auto window: windowList) {
+                elementCacheInfo_.RemoveElementByWindowId(window);
+            }
+            windowElementMap_.RemovePairByWindowIdList(windowList);
+            windowIdSet_.RemoveSetByWindowIdList(windowList);
+        } else {
+            elementCacheInfo_.RemoveElementByWindowId(windowId);
+            windowElementMap_.RemovePairByWindowId(windowId);
+            windowIdSet_.RemoveSetByWindowId(windowId);
+        }
+    }
+}
+
+RetError AccessibleAbilityClientImpl::GetRootBatch(std::vector<AccessibilityElementInfo>& elementInfos)
+{
+    HILOG_DEBUG();
+    if (!CheckCallingPermission(OHOS_PERMISSION_QUERY_ACCESSIBILITY_ELEMENT) && !IsStartByHdcd()) {
+        HILOG_ERROR("no get element permission");
+        return RET_ERR_NO_CONNECTION;
+    }
+
+    if (!isConnected_) {
+        HILOG_ERROR("connection is broken");
+        return RET_ERR_NO_CONNECTION;
+    }
+
+    std::lock_guard<std::mutex> lock(mutex_);
+    if (!channelClient_) {
+        HILOG_ERROR("channel is invalid.");
+        return RET_ERR_NO_CONNECTION;
+    }
+
+    if (!serviceProxy_) {
+        HILOG_ERROR("failed to connect to aams");
+        return RET_ERR_SAMGR;
+    }
+
+    int32_t windowId = serviceProxy_->GetActiveWindow();
+    int32_t elementId = ROOT_NONE_ID;
+    if (elementCacheInfo_.GetElementByWindowId(windowId, elementId, elementInfos)) {
+        HILOG_DEBUG("get element info from cache");
+        return RET_OK;
+    }
+
+    RetError ret = SearchElementInfoReCursive(windowId, elementId, elementInfos);
+    if (ret != RET_OK) {
+        return ret;
+    }
+
+    HILOG_DEBUG("elementSize %{public}zu", elementInfos.size());
+    AddWindowElementMapByWMS(windowId, elementId);
+    elementCacheInfo_.AddElementCache(windowId, elementInfos);
+    return RET_OK;
+}
+
+RetError AccessibleAbilityClientImpl::GetRootByWindowBatch(const AccessibilityWindowInfo &windowInfo,
+    std::vector<AccessibilityElementInfo>& elementInfos)
+{
+    HILOG_INFO();
+    if (!CheckCallingPermission(OHOS_PERMISSION_QUERY_ACCESSIBILITY_ELEMENT) && !IsStartByHdcd()) {
+        HILOG_ERROR("no get element permission");
+        return RET_ERR_NO_CONNECTION;
+    }
+
+    if (!isConnected_) {
+        HILOG_ERROR("connection is broken");
+        return RET_ERR_NO_CONNECTION;
+    }
+
+    std::lock_guard<std::mutex> lock(mutex_);
+    if (!channelClient_) {
+        HILOG_ERROR("channel is invalid.");
+        return RET_ERR_NO_CONNECTION;
+    }
+
+    if (!serviceProxy_) {
+        HILOG_ERROR("failed to connect to aams");
+        return RET_ERR_SAMGR;
+    }
+
+    int32_t windowId = windowInfo.GetWindowId();
+    int32_t elementId = ROOT_NONE_ID;
+    if (elementCacheInfo_.GetElementByWindowId(windowId, elementId, elementInfos)) {
+        HILOG_DEBUG("get element info from cache");
+        return RET_OK;
+    }
+
+    RetError ret = SearchElementInfoReCursive(windowId, elementId, elementInfos);
+    if (ret != RET_OK) {
+        return ret;
+    }
+
+    HILOG_DEBUG("elementSize %{public}zu", elementInfos.size());
+    AddWindowElementMapByWMS(windowId, elementId);
+    elementCacheInfo_.AddElementCache(windowId, elementInfos);
+    return RET_OK;
+}
+
 RetError AccessibleAbilityClientImpl::GetWindow(const int32_t windowId, AccessibilityWindowInfo &windowInfo)
 {
     HILOG_INFO("windowId[%{public}d]", windowId);
@@ -572,13 +793,46 @@ RetError AccessibleAbilityClientImpl::GetByContent(const AccessibilityElementInf
 
     std::lock_guard<std::mutex> lock(mutex_);
     if (!channelClient_) {
-        HILOG_ERROR("The channel is invalid.");
+        HILOG_ERROR("channel is invalid.");
         return RET_ERR_NO_CONNECTION;
     }
+
+    if (!serviceProxy_) {
+        HILOG_ERROR("failed to connect to aams");
+        return RET_ERR_SAMGR;
+    }
+
     int32_t windowId = elementInfo.GetWindowId();
     int32_t elementId = elementInfo.GetAccessibilityId();
-    HILOG_INFO("windowId[%{public}d], elementId[%{public}d], text[%{public}s]", windowId, elementId, text.c_str());
-    return channelClient_->SearchElementInfosByText(windowId, elementId, text, elementInfos);
+    HILOG_INFO("windowId %{public}d, elementId %{public}d, text %{public}s", windowId, elementId, text.c_str());
+    if (text != "") { // find element condition is null, so we will search all element info
+        return channelClient_->SearchElementInfosByText(windowId, elementId, text, elementInfos);
+    }
+
+    RetError ret = GetElementInfoFromCache(windowId, elementId, elementInfos);
+    if (ret == RET_OK) {
+        HILOG_DEBUG("get element info from cache");
+        return RET_OK;
+    }
+
+    ret = SearchElementInfoReCursive(windowId, elementId, elementInfos);
+    if (ret != RET_OK) {
+        return ret;
+    }
+
+    AddWindowElementMapByAce(windowId, elementId);
+    HILOG_DEBUG("elementSize %{public}zu", elementInfos.size());
+    if (windowId == SCENE_BOARD_WINDOW_ID) {
+        windowId = windowElementMap_.GetWindowIdByElementId(elementId);
+        HILOG_ERROR("windowId convert to %{public}d", windowId);
+        if (windowId == INVALID_SCENE_BOARD_INNER_WINDOW_ID) {
+            elementCacheInfo_.AddElementCache(windowId, elementInfos);
+            return RET_OK;
+        }
+    }
+
+    elementCacheInfo_.AddElementCache(windowId, elementInfos);
+    return RET_OK;
 }
 
 RetError AccessibleAbilityClientImpl::GetSource(const AccessibilityEventInfo &eventInfo,
@@ -821,5 +1075,194 @@ RetError AccessibleAbilityClientImpl::Disconnect()
     }
     return serviceProxy_->DisableUITestAbility();
 }
+
+// void AccessibleAbilityClientImpl::OnWindowInfoUpdate(const int32_t windowId)
+// {
+//     elementCacheInfo_.RemoveElementByWindowId(windowId);
+// }
+
+// window id is false, element id is true
+void AccessibleAbilityClientImpl::ElementCacheInfo::AddElementCache(const int32_t windowId,
+    const std::vector<AccessibilityElementInfo>& elementInfos)
+{
+    std::lock_guard<std::mutex> lock(elementCacheMutex_);
+    if (elementCache_.find(windowId) != elementCache_.end()) {
+        elementCache_.erase(windowId);
+    }
+
+    std::map<int32_t, std::shared_ptr<AccessibilityElementInfo>> cache;
+    for (auto& elementInfo : elementInfos) {
+        int32_t elementId = elementInfo.GetAccessibilityId();
+        cache[elementId] = std::make_shared<AccessibilityElementInfo>(elementInfo);
+    }
+
+    elementCache_[windowId] = std::move(cache);
+}
+
+// window id is true, element id is true
+bool AccessibleAbilityClientImpl::ElementCacheInfo::GetElementByWindowId(const int32_t windowId,
+    const int32_t elementId, std::vector<AccessibilityElementInfo>& elementInfos)
+{
+    elementInfos.clear(); // clear
+    std::lock_guard<std::mutex> lock(elementCacheMutex_);
+    if (elementCache_.find(windowId) == elementCache_.end()) {
+        HILOG_DEBUG("windowId %{public}d is not existed", windowId);
+        return false;
+    }
+
+    auto& cache = elementCache_.find(windowId)->second;
+    if (cache.size() == 0) {
+        HILOG_DEBUG("windowId %{public}d element is null", windowId);
+        return false;
+    }
+
+    if (cache.find(elementId) == cache.end() && elementId != ROOT_NONE_ID) {
+        HILOG_DEBUG("elementId %{public}d is not existed", elementId);
+        return false;
+    }
+
+    int32_t realElementId = elementId;
+    if (elementId == ROOT_NONE_ID) {
+        for (auto iter = cache.begin(); iter != cache.end(); iter++) {
+            if (iter->second->GetParentNodeId() == ROOT_NONE_ID) {
+                realElementId = iter->first;
+                break;
+            }
+        }
+    }
+
+    if (realElementId == ROOT_NONE_ID) {
+        HILOG_DEBUG("elementId %{public}d is not existed", realElementId);
+        return false;
+    }
+
+    std::vector<int32_t> elementList;
+    elementList.push_back(realElementId); //
+    uint32_t index = 0;
+    while (index < elementList.size()) {
+        auto iter = cache.find(elementList[index]);
+        if (iter == cache.end()) {
+            elementInfos.clear();
+            HILOG_DEBUG("element data abnormal, clear elementInfos");
+            return false;
+        }
+
+        elementInfos.push_back(*(iter->second));
+        std::vector<int32_t> childrenNode = iter->second->GetChildIds();
+        for (auto& node : childrenNode) {
+            elementList.push_back(node);
+        }
+        index++;
+    }
+
+    HILOG_DEBUG("get element info success, element size %{public}zu", elementInfos.size());
+    return true;
+}
+
+void AccessibleAbilityClientImpl::ElementCacheInfo::RemoveElementByWindowId(const int32_t windowId)
+{
+    std::lock_guard<std::mutex> lock(elementCacheMutex_);
+    if (elementCache_.find(windowId) == elementCache_.end()) {
+        return;
+    }
+
+    elementCache_.erase(windowId);
+}
+
+int32_t AccessibleAbilityClientImpl::SceneBoardWindowElementMap::GetElementId(int32_t windowId)
+{
+    std::lock_guard<std::mutex> lock(mapMutex_);
+    auto iter = windowElementMap_.find(windowId);
+    if (iter == windowElementMap_.end()) {
+        return -1;
+    }
+
+    return iter->second;
+}
+
+bool AccessibleAbilityClientImpl::SceneBoardWindowElementMap::IsExistWindowId(int32_t windowId)
+{
+    std::lock_guard<std::mutex> lock(mapMutex_);
+    if (windowElementMap_.find(windowId) != windowElementMap_.end()) {
+        return true;
+    }
+
+    return false;
+}
+
+void AccessibleAbilityClientImpl::SceneBoardWindowElementMap::AddWindowElementId(int32_t windowId, int32_t elementId)
+{
+    std::lock_guard<std::mutex> lock(mapMutex_);
+    windowElementMap_[windowId] = elementId;
+}
+
+std::vector<int32_t> AccessibleAbilityClientImpl::SceneBoardWindowElementMap::GetWindowIdList()
+{
+    std::lock_guard<std::mutex> lock(mapMutex_);
+    std::vector<int32_t> windowList;
+    for(auto iter = windowElementMap_.begin(); iter != windowElementMap_.end(); iter++) {
+        windowList.push_back(iter->first);
+    }
+
+    return windowList;
+}
+
+int32_t AccessibleAbilityClientImpl::SceneBoardWindowElementMap::GetWindowIdByElementId(int32_t elementId)
+{
+    std::lock_guard<std::mutex> lock(mapMutex_);
+    for(auto iter = windowElementMap_.begin(); iter != windowElementMap_.end(); iter++) {
+        if (iter->second == elementId) {
+            return iter->second;
+        }
+    }
+
+    return -1;
+}
+
+void AccessibleAbilityClientImpl::SceneBoardWindowElementMap::RemovePairByWindowIdList(
+    std::vector<int32_t>& windowIdList)
+{
+    std::lock_guard<std::mutex> lock(mapMutex_);
+    for(auto windowId : windowIdList) {
+        windowElementMap_.erase(windowId);
+    }
+}
+
+void AccessibleAbilityClientImpl::SceneBoardWindowElementMap::RemovePairByWindowId(int32_t windowId)
+{
+    std::lock_guard<std::mutex> lock(mapMutex_);
+    windowElementMap_.erase(windowId);
+}
+
+bool AccessibleAbilityClientImpl::WindowIdSet::IsExistWindowId(int32_t windowId)
+{
+    std::lock_guard<std::mutex> lock(setMutex_);
+    if (set_.find(windowId) != set_.end()) {
+        return true;
+    }
+
+    return false;
+}
+
+void AccessibleAbilityClientImpl::WindowIdSet::AddWindowId(int32_t windowId)
+{
+    std::lock_guard<std::mutex> lock(setMutex_);
+    set_.insert(windowId);
+}
+
+void AccessibleAbilityClientImpl::WindowIdSet::RemoveSetByWindowIdList(std::vector<int32_t>& windowIdList)
+{
+    std::lock_guard<std::mutex> lock(setMutex_);
+    for(auto windowId : windowIdList) {
+        set_.erase(windowId);
+    }
+}
+
+void AccessibleAbilityClientImpl::WindowIdSet::RemoveSetByWindowId(int32_t windowId)
+{
+    std::lock_guard<std::mutex> lock(setMutex_);
+    set_.erase(windowId);
+}
+
 } // namespace Accessibility
 } // namespace OHOS

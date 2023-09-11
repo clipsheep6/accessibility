@@ -486,5 +486,13 @@ sptr<AccessibilityAccountData> AccessibleAbilityManagerService::AccessibilityAcc
     return nullptr;
 }
 
+void AccessibleAbilityManagerService::GetRealWindowAndElementId(int32_t& windowId, int32_t& elementId)
+{
+}
+
+void AccessibleAbilityManagerService::GetSceneBoardInnerWinId(int32_t windowId, int32_t elementId, int32_t& innerWid)
+{
+}
+
 } // namespace Accessibility
 } // namespace OHOS

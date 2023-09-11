@@ -72,6 +72,13 @@ ohos_shared_library("accessibleabilityms") {
   deps = [
     "../../common/interface:accessibility_interface",
     "../../interfaces/innerkits/common:accessibility_common",
+    "../../interfaces/kits/napi:accessibility",
+    "../../interfaces/kits/napi/accessibility_config:config_napi",
+    "../../interfaces/kits/napi/accessibility_extension:accessibilityextensionability_napi",
+    "../../interfaces/kits/napi/accessibility_extension_context:accessibilityextensioncontext_napi",
+    "../../interfaces/kits/napi/accessibility_extension_module_loader:accessibility_extension_module",
+    "../../interfaces/kits/napi/accessibility_gesture_path:gesturepath_napi",
+    "../../interfaces/kits/napi/accessibility_gesture_point:gesturepoint_napi",
   ]
 
   external_deps = [

@@ -26,6 +26,10 @@
 
 namespace OHOS {
 namespace Accessibility {
+constexpr int32_t SCENE_BOARD_WINDOW_ID = 1; // default scene board window id 1
+constexpr int32_t INVALID_SCENE_BOARD_INNER_WINDOW_ID = -1; // invalid scene board window id -1
+constexpr int32_t INVALID_SCENE_BOARD_ELEMENT_ID = -1; // invalid scene board element id -1
+
 class AccessibleAbilityClientImpl : public AccessibleAbilityClient, public AccessibleAbilityClientStub {
 public:
     /**
@@ -122,6 +126,22 @@ public:
      */
     virtual RetError GetRootByWindow(const AccessibilityWindowInfo &windowInfo,
         AccessibilityElementInfo &elementInfo) override;
+
+    /**
+     * @brief Obtains elementInfos of the accessible root node in batchs.
+     * @param elementInfos ElementInfos of the accessible root node and its recursive subnodes.
+     * @return Return RET_OK if obtains elementInfos successfully, otherwise refer to the RetError for the failure.
+     */
+    virtual RetError GetRootBatch(std::vector<AccessibilityElementInfo>& elementInfos) override;
+
+    /**
+     * @brief Obtains elementInfos of the accessible root node in batchs.
+     * @param windowInfo The source window info to get root.
+     * @param elementInfos ElementInfos of the accessible root node and its recursive subnodes.
+     * @return Return RET_OK if obtains elementInfos successfully, otherwise refer to the RetError for the failure.
+     */
+    virtual RetError GetRootByWindowBatch(const AccessibilityWindowInfo &windowInfo,
+        std::vector<AccessibilityElementInfo>& elementInfos) override;
 
     /**
      * @brief Get the window information related with the event
@@ -272,7 +292,59 @@ public:
      */
     RetError Disconnect();
 
+    bool CheckCallingPermission(const std::string& permission);
+    bool IsStartByHdcd();
+    void AddWindowElementMapByWMS(int32_t windowId, int32_t elementId);
+    void AddWindowElementMapByAce(int32_t windowId, int32_t elementId);
+    RetError GetElementInfoFromCache(int32_t windowId, int32_t elementId,
+        std::vector<AccessibilityElementInfo> &elementInfos);
+    RetError SearchElementInfoReCursive(int32_t windowId, int32_t elementId,
+        std::vector<AccessibilityElementInfo> &elementInfos);
+    void RemoveCacheData(const AccessibilityEventInfo &eventInfo);
+
 private:
+    class ElementCacheInfo {
+    public:
+        ElementCacheInfo() = default;
+        ~ElementCacheInfo() = default;
+        void RemoveElementByWindowId(const int32_t windowId);
+        bool GetElementByWindowId(const int32_t windowId, const int32_t elementId,
+            std::vector<AccessibilityElementInfo>& elementInfos);
+        void AddElementCache(int32_t windowId, const std::vector<AccessibilityElementInfo>& elementInfos);
+    private:
+        std::map<int32_t, std::map<int32_t, std::shared_ptr<AccessibilityElementInfo>>> elementCache_;
+        std::mutex elementCacheMutex_;
+    };
+
+    class SceneBoardWindowElementMap {
+    public:
+        SceneBoardWindowElementMap() = default;
+        ~SceneBoardWindowElementMap() = default;
+        int32_t GetElementId(int32_t windowId);
+        bool IsExistWindowId(int32_t windowId);
+        void AddWindowElementId(int32_t windowId, int32_t elementId);
+        std::vector<int32_t> GetWindowIdList();
+        int32_t GetWindowIdByElementId(int32_t elementId);
+        void RemovePairByWindowIdList(std::vector<int32_t>& windowIdList);
+        void RemovePairByWindowId(int32_t windowId);
+    private:
+        std::map<int32_t, int32_t> windowElementMap_;
+        std::mutex mapMutex_;
+    };
+
+    class WindowIdSet {
+    public:
+        WindowIdSet() = default;
+        ~WindowIdSet() = default;
+        bool IsExistWindowId(int32_t windowId);
+        void AddWindowId(int32_t windowId);
+        void RemoveSetByWindowIdList(std::vector<int32_t>& windowIdList);
+        void RemoveSetByWindowId(int32_t windowId);
+    private:
+        std::set<int32_t> set_;
+        std::mutex setMutex_;
+    };
+
     class AccessibleAbilityDeathRecipient final : public IRemoteObject::DeathRecipient {
     public:
         AccessibleAbilityDeathRecipient(AccessibleAbilityClientImpl &client) : client_(client) {}
@@ -303,6 +375,8 @@ private:
         const uint32_t mode, AccessibilityElementInfo &info);
     bool InitAccessibilityServiceProxy();
     static void OnParameterChanged(const char *key, const char *value, void *context);
+    RetError GetElementInfosBatch(int32_t windowId, int32_t elementId,
+        std::vector<AccessibilityElementInfo>& elementInfos);
 
     sptr<IRemoteObject::DeathRecipient> deathRecipient_ = nullptr;
     sptr<IRemoteObject::DeathRecipient> accessibilityServiceDeathRecipient_ = nullptr;
@@ -314,6 +388,11 @@ private:
     std::map<int32_t, AccessibilityElementInfo> cacheElementInfos_;
     std::mutex mutex_;
     std::atomic<bool> isConnected_ = false;
+
+    // used for query element info in batch
+    ElementCacheInfo elementCacheInfo_;
+    SceneBoardWindowElementMap windowElementMap_; //
+    WindowIdSet windowIdSet_;
 };
 } // namespace Accessibility
 } // namespace OHOS

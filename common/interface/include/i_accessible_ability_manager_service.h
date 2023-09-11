@@ -151,6 +151,8 @@ public:
     virtual void GetAllConfigs(AccessibilityConfigData& configData) = 0;
 
     virtual uint32_t RegisterConfigObserver(const sptr<IAccessibleAbilityManagerConfigObserver> &callback) = 0;
+    virtual void GetRealWindowAndElementId(int32_t& windowId, int& elementId) = 0;
+    virtual void GetSceneBoardInnerWinId(int32_t windowId, int32_t elementId, int32_t& innerWid) = 0;
 };
 } // namespace Accessibility
 } // namespace OHOS

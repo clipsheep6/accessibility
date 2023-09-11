@@ -53,6 +53,7 @@ ohos_shared_library("accessibleability") {
   deps = [ "../../../common/interface:accessibility_interface" ]
 
   external_deps = [
+    "access_token:libaccesstoken_sdk",
     "c_utils:utils",
     "hilog:libhilog",
     "hitrace:hitrace_meter",
