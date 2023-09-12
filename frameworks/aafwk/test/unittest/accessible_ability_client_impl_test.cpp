@@ -613,6 +613,7 @@ HWTEST_F(AccessibleAbilityClientImplTest, ExecuteAction_003, TestSize.Level1)
 HWTEST_F(AccessibleAbilityClientImplTest, ResetAAClient_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "ResetAAClient_001 start";
+    instance_->SetConnectionState(true);
     EXPECT_CALL(*stub_, GetWindows(_)).Times(1).WillOnce(Return(RET_OK));
     Connect();
     wptr<IRemoteObject> remote = nullptr;
