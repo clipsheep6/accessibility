@@ -73,7 +73,7 @@ HWTEST_F(
     std::vector<AccessibilityElementInfo> infos;
     AccessibilityElementInfo info {};
     infos.push_back(info);
-    instance_->SetSearchElementInfoByAccessibilityIdResult(infos, SEQUENCE_NUM);
+    instance_->SetSearchElementInfoByAccessibilityIdResult(infos, SEQUENCE_NUM, 0);
     EXPECT_NE(instance_.get(), nullptr);
     GTEST_LOG_(INFO) << "SetSearchElementInfoByAccessibilityIdResult_001 end";
 }

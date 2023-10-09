@@ -24,6 +24,8 @@ namespace {
     constexpr int32_t REQUEST_WINDOW_ID_MAX = 0x00007FFF;
     constexpr uint32_t REQUEST_ID_MASK = 0x0000FFFF;
     constexpr int32_t REQUEST_ID_MASK_BIT = 16;
+    constexpr int32_t ELEMENT_INFO_END_INDEX = -1;
+    constexpr int32_t MAX_ELEMENT_INFO_NUMBER = 1000;
 } // namespaces
 
 AccessibilityElementOperatorImpl::AccessibilityElementOperatorImpl(int32_t windowId,
@@ -158,14 +160,42 @@ void AccessibilityElementOperatorImpl::SetSearchElementInfoByAccessibilityIdResu
     std::lock_guard<std::mutex> lock(mutex_);
     std::vector<AccessibilityElementInfo> myInfos = TranslateListToVector(infos);
     auto iter = requests_.find(requestId);
-    if (iter != requests_.end()) {
-        if (iter->second != nullptr) {
-            iter->second->SetSearchElementInfoByAccessibilityIdResult(myInfos, requestId);
-        }
-        requests_.erase(iter);
-    } else {
+    if (iter == requests_.end()) {
         HILOG_DEBUG("Can't find the callback [requestId:%d]", requestId);
+        return;
     }
+
+    if (iter->second == nullptr) {
+        HILOG_DEBUG("Can't find the callback object [requestId:%d]", requestId);
+        requests_.erase(iter);
+        return;
+    }
+
+    if (myInfos.size() <= MAX_ELEMENT_INFO_NUMBER) {
+        iter->second->SetSearchElementInfoByAccessibilityIdResult(myInfos, requestId, ELEMENT_INFO_END_INDEX);
+        requests_.erase(iter);
+        return;
+    }
+
+    int32_t index = 0;
+    while (index < myInfos.size()) {
+        std::vector<AccessibilityElementInfo> tmpInfos;
+        int32_t count = 0;
+        while (index < myInfos.size() && count < MAX_ELEMENT_INFO_NUMBER) {
+            tmpInfos.push_back(myInfos[index++]);
+            count++;
+        }
+
+        if (index >= myInfos.size()) {
+            iter->second->SetSearchElementInfoByAccessibilityIdResult(tmpInfos, requestId, ELEMENT_INFO_END_INDEX);
+        } else {
+            iter->second->SetSearchElementInfoByAccessibilityIdResult(tmpInfos, requestId,
+                (index - 1) / MAX_ELEMENT_INFO_NUMBER);
+        }
+    }
+
+    requests_.erase(iter);
+    return;
 }
 
 void AccessibilityElementOperatorImpl::SetSearchElementInfoByTextResult(

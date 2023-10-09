@@ -58,7 +58,7 @@ bool AccessibilityElementOperatorCallbackProxy::SendTransactCmd(AccessibilityInt
 }
 
 void AccessibilityElementOperatorCallbackProxy::SetSearchElementInfoByAccessibilityIdResult(
-    const std::vector<AccessibilityElementInfo> &infos, const int32_t requestId)
+    const std::vector<AccessibilityElementInfo> &infos, const int32_t requestId, const int32_t index)
 {
     HILOG_DEBUG();
     MessageParcel data;
@@ -86,6 +86,11 @@ void AccessibilityElementOperatorCallbackProxy::SetSearchElementInfoByAccessibil
 
     if (!data.WriteInt32(requestId)) {
         HILOG_ERROR("connection write request id failed");
+        return;
+    }
+
+    if (!data.WriteInt32(index)) {
+        HILOG_ERROR("connection write index failed");
         return;
     }
 

@@ -18,6 +18,8 @@
 
 namespace OHOS {
 namespace Accessibility {
+constexpr int32_t ELEMENT_INFO_END_INDEX = -1;
+
 void AccessibilityElementOperatorCallbackImpl::SetFindFocusedElementInfoResult(const AccessibilityElementInfo &info,
     const int32_t requestId)
 {
@@ -35,11 +37,14 @@ void AccessibilityElementOperatorCallbackImpl::SetSearchElementInfoByTextResult(
 }
 
 void AccessibilityElementOperatorCallbackImpl::SetSearchElementInfoByAccessibilityIdResult(
-    const std::vector<AccessibilityElementInfo> &infos, const int32_t requestId)
+    const std::vector<AccessibilityElementInfo> &infos, const int32_t requestId, const int32_t index)
 {
-    HILOG_DEBUG("Response[elementInfoSize:%{public}zu] [requestId:%{public}d]", infos.size(), requestId);
-    elementInfosResult_ = infos;
-    promise_.set_value();
+    elementInfosResult_.insert(elementInfosResult_.end(), infos.begin(), infos.end());
+    HILOG_DEBUG("Response[resultSize:%{public}zu] [requestId:%{public}d] [index:%{public}d] [infosSize:%{public}zu]",
+        elementInfosResult_.size(), requestId, index, infos.size());
+    if (index == ELEMENT_INFO_END_INDEX) {
+        promise_.set_value();
+    }
 }
 
 void AccessibilityElementOperatorCallbackImpl::SetFocusMoveSearchResult(const AccessibilityElementInfo &info,

@@ -274,7 +274,7 @@ private:
         ~ElementOperatorCallbackImpl() = default;
 
         virtual void SetSearchElementInfoByAccessibilityIdResult(const std::vector<AccessibilityElementInfo> &infos,
-            const int32_t requestId) override;
+            const int32_t requestId, const int32_t index) override;
         virtual void SetSearchElementInfoByTextResult(const std::vector<AccessibilityElementInfo> &infos,
             const int32_t requestId) override;
         virtual void SetFindFocusedElementInfoResult(const AccessibilityElementInfo &info,
