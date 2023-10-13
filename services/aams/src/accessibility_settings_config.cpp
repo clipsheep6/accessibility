@@ -314,6 +314,7 @@ bool AccessibilitySettingsConfig::GetScreenMagnificationState() const
 
 bool AccessibilitySettingsConfig::GetShortKeyState() const
 {
+    HILOG_DEBUG("ShortKeyState = [%{public}s]", isShortKeyState_ ? "True" : "False");
     return isShortKeyState_;
 }
 
