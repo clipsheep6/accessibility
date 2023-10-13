@@ -456,7 +456,7 @@ bool AccessibilityAccountData::GetInstalledAbilitiesFromBMS()
         HILOG_ERROR("GetBundleMgrProxy failed.");
         return false;
     }
-    bool ret = bms->QueryExtensionAbilityInfos(AppExecFwk::ExtensionAbilityType::ACCESSIBILITY, id_, extensionInfos);
+    bool ret = bms->QueryExtensionAbilityInfosV9(AppExecFwk::ExtensionAbilityType::ACCESSIBILITY, id_, extensionInfos);
     if (!ret) {
         Utils::RecordUnavailableEvent(A11yUnavailableEvent::QUERY_EVENT, A11yError::ERROR_QUERY_PACKAGE_INFO_FAILED);
         HILOG_ERROR("Query extension ability information failed.");
