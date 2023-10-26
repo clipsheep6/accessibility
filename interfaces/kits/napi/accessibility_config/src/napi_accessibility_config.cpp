@@ -232,6 +232,28 @@ napi_value NAccessibilityConfig::SubscribeState(napi_env env, napi_callback_info
     return nullptr;
 }
 
+bool AccessibleAbilityManagerServiceStub::IsSystemAppByFullTokenID(const uint64_t &tokenid) const
+{
+    HILOG_DEBUG();
+
+    uint32_t callerToken = IPCSkeleton::GetCallingTokenID();
+    int result = TypePermissionState::PERMISSION_GRANTED;
+    ATokenTypeEnum tokenType = AccessTokenKit::GetTokenTypeFlag(callerToken);
+    if (tokenType == TOKEN_INVALID) {
+        HILOG_WARN("AccessToken type:%{private}d, tokenid:%{private}d denied!", tokenType, callerToken);
+        return false;
+    } else {
+        result = AccessTokenKit::VerifyAccessToken(callerToken, tokenid);
+    }
+    if (result == TypePermissionState::PERMISSION_DENIED) {
+        HILOG_WARN("AccessTokenID:%{private}u, tokenid:%{private}s denied!", callerToken, tokenid);
+        return false;
+    }
+    HILOG_DEBUG("tokenType %{private}d dAccessTokenID:%{private}u, tokenid:%{private}s matched!",
+        tokenType, callerToken, tokenid);
+    return true;
+}
+
 napi_value NAccessibilityConfig::UnsubscribeState(napi_env env, napi_callback_info info)
 {
     HILOG_INFO();
