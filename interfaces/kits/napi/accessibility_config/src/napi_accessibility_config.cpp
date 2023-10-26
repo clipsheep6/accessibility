@@ -232,7 +232,7 @@ napi_value NAccessibilityConfig::SubscribeState(napi_env env, napi_callback_info
     return nullptr;
 }
 
-bool AccessibleAbilityManagerServiceStub::IsSystemAppByFullTokenID(const std::string &permission) const
+bool AccessibleAbilityManagerServiceStub::IsSystemAppByFullTokenID(const uint64_t &tokenid) const
 {
     HILOG_DEBUG();
 
@@ -240,17 +240,17 @@ bool AccessibleAbilityManagerServiceStub::IsSystemAppByFullTokenID(const std::st
     int result = TypePermissionState::PERMISSION_GRANTED;
     ATokenTypeEnum tokenType = AccessTokenKit::GetTokenTypeFlag(callerToken);
     if (tokenType == TOKEN_INVALID) {
-        HILOG_WARN("AccessToken type:%{private}d, permission:%{private}d denied!", tokenType, callerToken);
+        HILOG_WARN("AccessToken type:%{private}d, tokenid:%{private}d denied!", tokenType, callerToken);
         return false;
     } else {
-        result = AccessTokenKit::VerifyAccessToken(callerToken, permission);
+        result = AccessTokenKit::VerifyAccessToken(callerToken, tokenid);
     }
     if (result == TypePermissionState::PERMISSION_DENIED) {
-        HILOG_WARN("AccessTokenID:%{private}u, permission:%{private}s denied!", callerToken, permission.c_str());
+        HILOG_WARN("AccessTokenID:%{private}u, tokenid:%{private}s denied!", callerToken, tokenid);
         return false;
     }
-    HILOG_DEBUG("tokenType %{private}d dAccessTokenID:%{private}u, permission:%{private}s matched!",
-        tokenType, callerToken, permission.c_str());
+    HILOG_DEBUG("tokenType %{private}d dAccessTokenID:%{private}u, tokenid:%{private}s matched!",
+        tokenType, callerToken, tokenid);
     return true;
 }
 
