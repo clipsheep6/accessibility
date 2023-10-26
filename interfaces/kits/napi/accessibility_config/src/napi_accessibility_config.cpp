@@ -20,11 +20,13 @@
 #include "ipc_skeleton.h"
 #include "accessibility_utils.h"
 #include "tokenid_kit.h"
+#include "accesstoken_kit.h"
 
 using namespace OHOS;
 using namespace OHOS::Accessibility;
 using namespace OHOS::AccessibilityNapi;
 using namespace OHOS::AccessibilityConfig;
+using namespace Security::AccessToken;
 
 std::shared_ptr<NAccessibilityConfigObserverImpl> NAccessibilityConfig::configObservers_ =
     std::make_shared<NAccessibilityConfigObserverImpl>();
@@ -181,10 +183,51 @@ napi_value NAccessibilityConfig::DisableAbility(napi_env env, napi_callback_info
     return promise;
 }
 
-napi_value NAccessibilityConfig::SubscribeState(napi_env env, napi_callback_info info)
+bool NAccessibilityConfig::CheckReadPermission(const std::string &permission)
+{
+    HILOG_DEBUG();
+    uint32_t tokenId = IPCSkeleton::GetCallingTokenID();
+    int result = TypePermissionState::PERMISSION_GRANTED;
+    ATokenTypeEnum tokenType = AccessTokenKit::GetTokenTypeFlag(tokenId);
+    if (tokenType == TOKEN_INVALID) {
+        HILOG_WARN("AccessToken type:%{private}d, permission:%{private}d denied!", tokenType, tokenId);
+        return false;
+    } else {
+        result = AccessTokenKit::VerifyAccessToken(tokenId, permission);
+    }
+    if (result == TypePermissionState::PERMISSION_DENIED) {
+        HILOG_WARN("AccessTokenID:%{private}u, permission:%{private}s denied!", tokenId, permission.c_str());
+        return false;
+    }
+    HILOG_DEBUG("tokenType %{private}d dAccessTokenID:%{private}u, permission:%{private}s matched!",
+        tokenType, tokenId, permission.c_str());
+    return true;
+}
+
+bool NAccessibilityConfig::IsAvailable(napi_env env, napi_callback_info info)
 {
     HILOG_INFO();
     if (!Security::AccessToken::TokenIdKit::IsSystemAppByFullTokenID(IPCSkeleton::GetCallingFullTokenID())) {
+        napi_value err = CreateBusinessError(env, OHOS::Accessibility::RET_ERR_NOT_SYSTEM_APP);
+        napi_throw(env, err);
+        HILOG_ERROR("is not system app");
+        return false;
+    }
+
+    if (!CheckReadPermission(OHOS_PERMISSION_READ_ACCESSIBILITY_CONFIG)) {
+        napi_value err = CreateBusinessError(env, OHOS::Accessibility::RET_ERR_NO_PERMISSION);
+        napi_throw(env, err);
+        HILOG_ERROR("have no read permission");
+        return false;
+    }
+    
+    return true;
+}
+
+napi_value NAccessibilityConfig::SubscribeState(napi_env env, napi_callback_info info)
+{
+    HILOG_INFO();
+    if (!IsAvailable(env, info)) {
         napi_value err = CreateBusinessError(env, OHOS::Accessibility::RET_ERR_NOT_SYSTEM_APP);
         napi_throw(env, err);
         return nullptr;
@@ -235,7 +278,7 @@ napi_value NAccessibilityConfig::SubscribeState(napi_env env, napi_callback_info
 napi_value NAccessibilityConfig::UnsubscribeState(napi_env env, napi_callback_info info)
 {
     HILOG_INFO();
-    if (!Security::AccessToken::TokenIdKit::IsSystemAppByFullTokenID(IPCSkeleton::GetCallingFullTokenID())) {
+    if (!IsAvailable(env, info)) {
         napi_value err = CreateBusinessError(env, OHOS::Accessibility::RET_ERR_NOT_SYSTEM_APP);
         napi_throw(env, err);
         return nullptr;
@@ -735,7 +778,7 @@ napi_value NAccessibilityConfig::GetConfig(napi_env env, napi_callback_info info
 napi_value NAccessibilityConfig::SubscribeConfigObserver(napi_env env, napi_callback_info info)
 {
     HILOG_INFO();
-    if (!Security::AccessToken::TokenIdKit::IsSystemAppByFullTokenID(IPCSkeleton::GetCallingFullTokenID())) {
+    if (!IsAvailable(env, info)) {
         napi_value err = CreateBusinessError(env, OHOS::Accessibility::RET_ERR_NOT_SYSTEM_APP);
         napi_throw(env, err);
         return nullptr;
@@ -788,7 +831,7 @@ napi_value NAccessibilityConfig::SubscribeConfigObserver(napi_env env, napi_call
 napi_value NAccessibilityConfig::UnSubscribeConfigObserver(napi_env env, napi_callback_info info)
 {
     HILOG_INFO();
-    if (!Security::AccessToken::TokenIdKit::IsSystemAppByFullTokenID(IPCSkeleton::GetCallingFullTokenID())) {
+    if (!IsAvailable(env, info)) {
         napi_value err = CreateBusinessError(env, OHOS::Accessibility::RET_ERR_NOT_SYSTEM_APP);
         napi_throw(env, err);
         return nullptr;
