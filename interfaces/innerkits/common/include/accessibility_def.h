@@ -335,9 +335,9 @@ enum AccessibilityWindowType : int32_t {
     TYPE_SYSTEM = 0x00000010,
 };
 
-constexpr int32_t PARAM0 = 0;
-constexpr int32_t PARAM1 = 1;
-constexpr int32_t PARAM2 = 2;
+constexpr int32_t PARAM_0 = 0;
+constexpr int32_t PARAM_1 = 1;
+constexpr int32_t PARAM_2 = 2;
 } // namespace Accessibility
 } // namespace OHOS
 

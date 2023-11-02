@@ -86,7 +86,7 @@ static bool IsNapiFunction(napi_env env, napi_value param)
     }
 
     if (valueType != napi_function) {
-        HILOG_ERROR("SubscribeState args[PARAM1] format is wrong");
+        HILOG_ERROR("SubscribeState args[PARAM_1] format is wrong");
         return false;
     }
     return true;
@@ -127,20 +127,20 @@ static bool IsNapiNumber(napi_env env, napi_value param)
 static void GetLastParamForTwo(napi_env env, NapiCallbackInfo& info, napi_value& lastParam,
     bool& isAccessibilityFocus)
 {
-    if (info.argv[PARAM0] != nullptr && info.argv[PARAM1] != nullptr &&
-        IsNapiBool(env, info.argv[PARAM0]) && IsNapiFunction(env, info.argv[PARAM1])) {
-        lastParam = ConvertFromJsValue(env, info.argv[PARAM0], isAccessibilityFocus) ?
-            info.argv[PARAM1] : nullptr;
-    } else if (info.argv[PARAM1] != nullptr && IsNapiFunction(env, info.argv[PARAM1])) {
+    if (info.argv[PARAM_0] != nullptr && info.argv[PARAM_1] != nullptr &&
+        IsNapiBool(env, info.argv[PARAM_0]) && IsNapiFunction(env, info.argv[PARAM_1])) {
+        lastParam = ConvertFromJsValue(env, info.argv[PARAM_0], isAccessibilityFocus) ?
+            info.argv[PARAM_1] : nullptr;
+    } else if (info.argv[PARAM_1] != nullptr && IsNapiFunction(env, info.argv[PARAM_1])) {
         HILOG_INFO("argc is more than two, use callback: situation 1");
-        lastParam = info.argv[PARAM1];
-    } else if (info.argv[PARAM0] != nullptr && IsNapiFunction(env, info.argv[PARAM0])) {
+        lastParam = info.argv[PARAM_1];
+    } else if (info.argv[PARAM_0] != nullptr && IsNapiFunction(env, info.argv[PARAM_0])) {
         HILOG_INFO("argc is more than two, use callback: situation 2");
-        lastParam = info.argv[PARAM0];
-    } else if (info.argv[PARAM0] != nullptr && IsNapiBool(env, info.argv[PARAM0])) {
+        lastParam = info.argv[PARAM_0];
+    } else if (info.argv[PARAM_0] != nullptr && IsNapiBool(env, info.argv[PARAM_0])) {
         HILOG_INFO("argc is more than two, use promise: situation 3");
         lastParam = nullptr;
-        ConvertFromJsValue(env, info.argv[PARAM0], isAccessibilityFocus);
+        ConvertFromJsValue(env, info.argv[PARAM_0], isAccessibilityFocus);
     } else {
         lastParam = nullptr;
         HILOG_INFO("argc is more than two, use promise");
@@ -203,7 +203,7 @@ private:
 
         std::vector<std::string> targetBundleNames;
         if (errCode == NAccessibilityErrorCode::ACCESSIBILITY_OK) {
-            if (ConvertJSToStringVec(env, info.argv[PARAM0], targetBundleNames)) {
+            if (ConvertJSToStringVec(env, info.argv[PARAM_0], targetBundleNames)) {
                 HILOG_INFO("targetBundleNames's size = %{public}zu", targetBundleNames.size());
             } else {
                 errCode = NAccessibilityErrorCode::ACCESSIBILITY_ERROR_INVALID_PARAM;
@@ -248,7 +248,7 @@ private:
             };
 
         napi_value lastParam = (info.argc == ARGS_SIZE_ONE) ? nullptr :
-            ((info.argv[PARAM1] != nullptr && IsNapiFunction(env, info.argv[PARAM1])) ? info.argv[PARAM1] : nullptr);
+            ((info.argv[PARAM_1] != nullptr && IsNapiFunction(env, info.argv[PARAM_1])) ? info.argv[PARAM_1] : nullptr);
         napi_value result = nullptr;
         NapiAsyncTask::Schedule("NAccessibilityExtensionContext::OnSetTargetBundleName",
             env, CreateAsyncTaskWithLastParam(env, lastParam, nullptr, std::move(complete), &result));
@@ -263,11 +263,11 @@ private:
         if (info.argc >= ARGS_SIZE_TWO) {
             GetLastParamForTwo(env, info, lastParam, isAccessibilityFocus);
         } else if (info.argc == ARGS_SIZE_ONE) {
-            if (info.argv[PARAM0] != nullptr && IsNapiFunction(env, info.argv[PARAM0])) {
-                lastParam = info.argv[PARAM0];
+            if (info.argv[PARAM_0] != nullptr && IsNapiFunction(env, info.argv[PARAM_0])) {
+                lastParam = info.argv[PARAM_0];
             } else {
-                if (info.argv[PARAM0] != nullptr && IsNapiBool(env, info.argv[PARAM0])) {
-                    ConvertFromJsValue(env, info.argv[PARAM0], isAccessibilityFocus);
+                if (info.argv[PARAM_0] != nullptr && IsNapiBool(env, info.argv[PARAM_0])) {
+                    ConvertFromJsValue(env, info.argv[PARAM_0], isAccessibilityFocus);
                 }
                 lastParam = nullptr;
                 HILOG_INFO("argc is one, use promise");
@@ -326,25 +326,25 @@ private:
         bool isActiveWindow = true;
         napi_value lastParam = nullptr;
         if (info.argc >= ARGS_SIZE_TWO) {
-            if (info.argv[PARAM1] != nullptr && IsNapiFunction(env, info.argv[PARAM1])) {
+            if (info.argv[PARAM_1] != nullptr && IsNapiFunction(env, info.argv[PARAM_1])) {
                 HILOG_INFO("argc is more than two, use callback: situation 1");
-                lastParam = info.argv[PARAM1];
-            } else if (info.argv[PARAM0] != nullptr && IsNapiFunction(env, info.argv[PARAM0])) {
+                lastParam = info.argv[PARAM_1];
+            } else if (info.argv[PARAM_0] != nullptr && IsNapiFunction(env, info.argv[PARAM_0])) {
                 HILOG_INFO("argc is more than two, use callback: situation 2");
-                lastParam = info.argv[PARAM0];
+                lastParam = info.argv[PARAM_0];
             } else {
                 lastParam = nullptr;
                 HILOG_INFO("argc is two, use promise");
             }
-            if (info.argv[PARAM0] != nullptr && IsNapiNumber(env, info.argv[PARAM0])) {
+            if (info.argv[PARAM_0] != nullptr && IsNapiNumber(env, info.argv[PARAM_0])) {
                 HILOG_INFO("argc is more than two, use promise: situation 3");
-                isActiveWindow = !ConvertFromJsValue(env, info.argv[PARAM0], windowId);
+                isActiveWindow = !ConvertFromJsValue(env, info.argv[PARAM_0], windowId);
             }
         } else if (info.argc == ARGS_SIZE_ONE) {
-            if (info.argv[PARAM0] != nullptr && IsNapiFunction(env, info.argv[PARAM0])) {
-                lastParam = info.argv[PARAM0];
-            } else if (info.argv[PARAM0] != nullptr && IsNapiNumber(env, info.argv[PARAM0])) {
-                isActiveWindow = !ConvertFromJsValue(env, info.argv[PARAM0], windowId);
+            if (info.argv[PARAM_0] != nullptr && IsNapiFunction(env, info.argv[PARAM_0])) {
+                lastParam = info.argv[PARAM_0];
+            } else if (info.argv[PARAM_0] != nullptr && IsNapiNumber(env, info.argv[PARAM_0])) {
+                isActiveWindow = !ConvertFromJsValue(env, info.argv[PARAM_0], windowId);
                 lastParam = nullptr;
                 HILOG_INFO("argc is one, use promise");
             }
@@ -410,24 +410,24 @@ private:
         bool hasDisplayId = false;
         napi_value lastParam = nullptr;
         if (info.argc >= ARGS_SIZE_TWO) {
-            if (info.argv[PARAM1] != nullptr && IsNapiFunction(env, info.argv[PARAM1])) {
+            if (info.argv[PARAM_1] != nullptr && IsNapiFunction(env, info.argv[PARAM_1])) {
                 HILOG_INFO("argc is more than two, use callback: situation 1");
-                lastParam = info.argv[PARAM1];
-            } else if (info.argv[PARAM0] != nullptr && IsNapiFunction(env, info.argv[PARAM0])) {
+                lastParam = info.argv[PARAM_1];
+            } else if (info.argv[PARAM_0] != nullptr && IsNapiFunction(env, info.argv[PARAM_0])) {
                 HILOG_INFO("argc is more than two, use callback: situation 2");
-                lastParam = info.argv[PARAM0];
+                lastParam = info.argv[PARAM_0];
             } else {
                 lastParam = nullptr;
             }
-            if (info.argv[PARAM0] != nullptr && IsNapiNumber(env, info.argv[PARAM0])) {
-                hasDisplayId = ConvertFromJsValue(env, info.argv[PARAM0], displayId);
+            if (info.argv[PARAM_0] != nullptr && IsNapiNumber(env, info.argv[PARAM_0])) {
+                hasDisplayId = ConvertFromJsValue(env, info.argv[PARAM_0], displayId);
                 HILOG_INFO("argc is more than two, use promise: situation 3");
             }
         } else if (info.argc == ARGS_SIZE_ONE) {
-            if (info.argv[PARAM0] != nullptr && IsNapiFunction(env, info.argv[PARAM0])) {
-                lastParam = info.argv[PARAM0];
-            } else if (info.argv[PARAM0] != nullptr && IsNapiNumber(env, info.argv[PARAM0])) {
-                hasDisplayId = ConvertFromJsValue(env, info.argv[PARAM0], displayId);
+            if (info.argv[PARAM_0] != nullptr && IsNapiFunction(env, info.argv[PARAM_0])) {
+                lastParam = info.argv[PARAM_0];
+            } else if (info.argv[PARAM_0] != nullptr && IsNapiNumber(env, info.argv[PARAM_0])) {
+                hasDisplayId = ConvertFromJsValue(env, info.argv[PARAM_0], displayId);
                 lastParam = nullptr;
                 HILOG_INFO("argc is one, use promise");
             }
@@ -529,7 +529,7 @@ private:
             errCode = NAccessibilityErrorCode::ACCESSIBILITY_ERROR_INVALID_PARAM;
         }
 
-        napi_value nGesturePaths = reinterpret_cast<napi_value>(info.argv[PARAM0]);
+        napi_value nGesturePaths = reinterpret_cast<napi_value>(info.argv[PARAM_0]);
         std::shared_ptr<AccessibilityGestureInjectPath> gesturePath =
             std::make_shared<AccessibilityGestureInjectPath>();
         if (errCode == NAccessibilityErrorCode::ACCESSIBILITY_OK) {
@@ -569,7 +569,7 @@ private:
             errCode = NAccessibilityErrorCode::ACCESSIBILITY_ERROR_INVALID_PARAM;
         }
 
-        napi_value nGesturePaths = info.argv[PARAM0];
+        napi_value nGesturePaths = info.argv[PARAM_0];
         std::shared_ptr<AccessibilityGestureInjectPath> gesturePath =
             std::make_shared<AccessibilityGestureInjectPath>();
         if (errCode == NAccessibilityErrorCode::ACCESSIBILITY_OK) {
@@ -614,7 +614,7 @@ private:
             };
 
         napi_value lastParam = (info.argc == ARGS_SIZE_ONE) ? nullptr :
-            ((info.argv[PARAM1] != nullptr && IsNapiFunction(env, info.argv[PARAM1])) ? info.argv[PARAM1] : nullptr);
+            ((info.argv[PARAM_1] != nullptr && IsNapiFunction(env, info.argv[PARAM_1])) ? info.argv[PARAM_1] : nullptr);
         napi_value result = nullptr;
         NapiAsyncTask::Schedule("NAccessibilityExtensionContext::OnGestureInject",
             env, CreateAsyncTaskWithLastParam(env, lastParam, nullptr, std::move(complete), &result));
