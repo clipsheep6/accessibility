@@ -289,6 +289,7 @@ HWTEST_F(
     std::shared_ptr<AccessibilityAbilityInfo> abilityInfo = std::make_shared<AccessibilityAbilityInfo>(initParams);
     sptr<AccessibleAbilityConnection> connection =
         new MockAccessibleAbilityConnection(accountId, 0, *abilityInfo);
+    /* add */
     accountData->AddConnectingA11yAbility(bundleName, connection);
     EXPECT_TRUE(accountData->GetConnectingA11yAbility(bundleName));
     /* remove */
