@@ -31,10 +31,11 @@ void DisplayPowerMgrClient::OnRemoteDied(const wptr<IRemoteObject>& remote)
 }
 
 bool DisplayPowerMgrClient::SetDisplayState(DisplayState state,
-    PowerMgr::StateChangeReason reason, uint32_t id)
+    PowerMgr::StateChangeReason reason, bool isCoordinated, uint32_t id)
 {
     (void)state;
     (void)reason;
+    (void)isCoordinated;
     (void)id;
     return true;
 }
