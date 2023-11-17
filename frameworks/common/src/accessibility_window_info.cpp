@@ -148,14 +148,14 @@ void AccessibilityWindowInfo::SetWindowMode(const uint32_t mode)
 
 bool AccessibilityWindowInfo::IsDecorEnable() const
 {
-    HILOG_DEBUG("isDecorEnable_[%{public}d]", isDecorEnable_);
+    HILOG_ERROR("wj675913 isDecorEnable_[%{public}d]", isDecorEnable_);
     return isDecorEnable_;
 }
 
 void AccessibilityWindowInfo::SetDecorEnable(const bool isDecorEnable)
 {
     isDecorEnable_ = isDecorEnable;
-    HILOG_DEBUG("isDecorEnable_[%{public}d]", isDecorEnable_);
+    HILOG_ERROR("wj675913 isDecorEnable_[%{public}d]", isDecorEnable_);
 }
 
 void AccessibilityWindowInfo::SetInnerWid(const int32_t innerWid)

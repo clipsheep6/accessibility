@@ -311,6 +311,11 @@ RetError AccessibleAbilityChannel::GetWindows(uint64_t displayId, std::vector<Ac
         std::vector<AccessibilityWindowInfo> windowInfos =
             Singleton<AccessibilityWindowManager>::GetInstance().GetAccessibilityWindows();
         for (auto &window : windowInfos) {
+            HILOG_ERROR("wj675913  window_id[%{public}d], ltopx[%{public}d], ltopy[%{public}d], rbotx[%{public}d], rboty[%{public}d], isDecorEnable_[%{public}d].",
+                window.GetWindowId(), window.GetRectInScreen().GetLeftTopXScreenPostion(),
+                window.GetRectInScreen().GetLeftTopYScreenPostion(), window.GetRectInScreen().GetRightBottomXScreenPostion(),
+                window.GetRectInScreen().GetRightBottomYScreenPostion(), window.IsDecorEnable());           
+
             if (window.GetDisplayId() == displayId) {
                 tmpWindows->emplace_back(window);
             }
