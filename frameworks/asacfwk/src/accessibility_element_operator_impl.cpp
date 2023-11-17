@@ -155,6 +155,14 @@ void AccessibilityElementOperatorImpl::SetSearchElementInfoByAccessibilityIdResu
     const std::list<AccessibilityElementInfo> &infos, const int32_t requestId)
 {
     HILOG_DEBUG();
+
+    for (auto it = infos.begin(); it != infos.end(); ++it) {
+        HILOG_ERROR("wj675913  window id[%{public}d], ltopx[%{public}d], ltopy[%{public}d], rbotx[%{public}d], rboty[%{public}d], elementId[%{public}d], bundlename[%{public}s].",
+            windowId_, it->GetRectInScreen().GetLeftTopXScreenPostion(),
+            it->GetRectInScreen().GetLeftTopYScreenPostion(), it->GetRectInScreen().GetRightBottomXScreenPostion(),
+            it->GetRectInScreen().GetRightBottomYScreenPostion(), it->GetAccessibilityId(), it->GetBundleName().c_str());
+    }
+
     std::lock_guard<std::mutex> lock(mutex_);
     std::vector<AccessibilityElementInfo> myInfos = TranslateListToVector(infos);
     auto iter = requests_.find(requestId);
