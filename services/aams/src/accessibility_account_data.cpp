@@ -35,6 +35,7 @@ namespace {
 AccessibilityAccountData::AccessibilityAccountData(int32_t accountId)
 {
     id_ = accountId;
+    HILOG_ERROR("wjtest init AccountData accountId(%{public}d)", id_);
 }
 
 AccessibilityAccountData::~AccessibilityAccountData()
@@ -234,8 +235,9 @@ void AccessibilityAccountData::AddInstalledAbility(AccessibilityAbilityInfo& abi
             return;
         }
     }
-    HILOG_ERROR("wjtest pushback installedAbilities_ bundleName = %{public}s.", abilityInfo.GetPackageName().c_str());
     installedAbilities_.push_back(abilityInfo);
+    HILOG_ERROR("wjtest pushback bundleName = %{public}s, installedAbilities_.size(%{public}d), id(%{public}d).",
+        abilityInfo.GetPackageName().c_str(), installedAbilities_.size(), id_);
     HILOG_DEBUG("push back installed ability successfully and installedAbilities_'s size is %{public}zu",
         installedAbilities_.size());
 }
@@ -248,8 +250,9 @@ void AccessibilityAccountData::RemoveInstalledAbility(const std::string &bundleN
         if (it->GetPackageName() == bundleName) {
             HILOG_DEBUG("Removed %{public}s from InstalledAbility: ", bundleName.c_str());
             if (!config_) {
-                HILOG_ERROR("wjtest installedAbilities_ erase %{public}s.", it->GetPackageName().c_str());
                 it = installedAbilities_.erase(it);
+                HILOG_ERROR("wjtest erase %{public}s, installedAbilities_.size(%{public}d), id(%{public}d).",
+                    it->GetPackageName().c_str(), installedAbilities_.size(), id_);
                 continue;
             }
             std::string name = config_->GetShortkeyTarget();
@@ -258,8 +261,9 @@ void AccessibilityAccountData::RemoveInstalledAbility(const std::string &bundleN
                 config_->SetShortkeyTarget(targetName);
                 config_->SetShortKeyState(false);
             }
-            HILOG_ERROR("wjtest installedAbilities_ erase %{public}s.", it->GetPackageName().c_str());
             it = installedAbilities_.erase(it);
+            HILOG_ERROR("wjtest erase %{public}s, installedAbilities_.size(%{public}d), id(%{public}d).",
+                it->GetPackageName().c_str(), installedAbilities_.size(), id_);
         } else {
             ++it;
         }
@@ -268,7 +272,7 @@ void AccessibilityAccountData::RemoveInstalledAbility(const std::string &bundleN
 
 void AccessibilityAccountData::ClearInstalledAbility()
 {
-    HILOG_ERROR("wjtest installedAbilities_ clear.");
+    HILOG_ERROR("wjtest installedAbilities_ clear, id(%{public}d).", id_);
     HILOG_DEBUG("start.");
     installedAbilities_.clear();
 }
@@ -343,6 +347,8 @@ void AccessibilityAccountData::GetAbilitiesByState(AbilityStateType state,
         GetDisableAbilities(abilities);
         HILOG_DEBUG("the size of disable abilities is %{public}zu", abilities.size());
     } else {
+        HILOG_ERROR("wjtest GetAbilitiesByState installedAbilities_.size = %{public}d, id = %{public}d.",
+            installedAbilities_.size(), id_);
         abilities = installedAbilities_;
     }
 }
