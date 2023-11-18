@@ -447,6 +447,7 @@ RetError AccessibleAbilityManagerService::GetAbilityList(const uint32_t abilityT
 
         vector<AccessibilityAbilityInfo> abilities;
         accountData->GetAbilitiesByState(static_cast<AbilityStateType>(stateType), abilities);
+        HILOG_ERROR("wjtest inner abilities count is %{public}zu", abilities.size());
         HILOG_DEBUG("abilityes count is %{public}zu", abilities.size());
         for (auto &ability : abilities) {
             if (abilityTypes == AccessibilityAbilityTypes::ACCESSIBILITY_ABILITY_TYPE_ALL ||
@@ -454,6 +455,7 @@ RetError AccessibleAbilityManagerService::GetAbilityList(const uint32_t abilityT
                 infos.push_back(ability);
             }
         }
+        HILOG_ERROR("wjtest outer infos count is %{public}zu", infos.size());
         HILOG_DEBUG("infos count is %{public}zu", infos.size());
         syncPromise.set_value(RET_OK);
         }), "TASK_GET_ABILITY_LIST");
