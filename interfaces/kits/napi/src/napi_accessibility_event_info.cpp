@@ -40,10 +40,10 @@ napi_value NAccessibilityEventInfo::JSConstructor(napi_env env, napi_callback_in
         HILOG_ERROR("argc %{public}zu is not 1", argc);
         return nullptr;
     }
-    NAPI_CALL(env, napi_typeof(env, argv[PARAM0], &valueType));
+    NAPI_CALL(env, napi_typeof(env, argv[PARAM_0], &valueType));
     if (valueType != napi_object) {
         HILOG_ERROR("valueType %{public}d is not napi_object", valueType);
         return nullptr;
     }
-    return argv[PARAM0];
+    return argv[PARAM_0];
 }

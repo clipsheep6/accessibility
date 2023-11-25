@@ -32,7 +32,7 @@ napi_value NAccessibilityGesturePath::JSConstructor(napi_env env, napi_callback_
         HILOG_ERROR("argc %{public}zu is not 1", argc);
         return nullptr;
     }
-    NAPI_CALL(env, napi_typeof(env, argv[PARAM0], &valueType));
+    NAPI_CALL(env, napi_typeof(env, argv[PARAM_0], &valueType));
     if (valueType != napi_number) {
         HILOG_ERROR("valueType %{public}d is not napi_number", valueType);
         return nullptr;
@@ -40,6 +40,6 @@ napi_value NAccessibilityGesturePath::JSConstructor(napi_env env, napi_callback_
     napi_value points;
     NAPI_CALL(env, napi_create_array(env, &points));
     NAPI_CALL(env, napi_set_named_property(env, jsthis, "points", points));
-    NAPI_CALL(env, napi_set_named_property(env, jsthis, "durationTime", argv[PARAM0]));
+    NAPI_CALL(env, napi_set_named_property(env, jsthis, "durationTime", argv[PARAM_0]));
     return jsthis;
 }

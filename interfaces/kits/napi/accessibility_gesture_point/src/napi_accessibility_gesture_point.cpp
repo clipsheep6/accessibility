@@ -32,17 +32,17 @@ napi_value NAccessibilityGesturePoint::JSConstructor(napi_env env, napi_callback
         HILOG_ERROR("argc %{public}zu is not 2", argc);
         return nullptr;
     }
-    NAPI_CALL(env, napi_typeof(env, argv[PARAM0], &valueType));
+    NAPI_CALL(env, napi_typeof(env, argv[PARAM_0], &valueType));
     if (valueType != napi_number) {
-        HILOG_ERROR("PARAM0's valueType %{public}d is not napi_number", valueType);
+        HILOG_ERROR("PARAM_0's valueType %{public}d is not napi_number", valueType);
         return nullptr;
     }
-    NAPI_CALL(env, napi_typeof(env, argv[PARAM1], &valueType));
+    NAPI_CALL(env, napi_typeof(env, argv[PARAM_1], &valueType));
     if (valueType != napi_number) {
-        HILOG_ERROR("PARAM1's valueType %{public}d is not napi_number", valueType);
+        HILOG_ERROR("PARAM_1's valueType %{public}d is not napi_number", valueType);
         return nullptr;
     }
-    NAPI_CALL(env, napi_set_named_property(env, jsthis, "positionX", argv[PARAM0]));
-    NAPI_CALL(env, napi_set_named_property(env, jsthis, "positionY", argv[PARAM1]));
+    NAPI_CALL(env, napi_set_named_property(env, jsthis, "positionX", argv[PARAM_0]));
+    NAPI_CALL(env, napi_set_named_property(env, jsthis, "positionY", argv[PARAM_1]));
     return jsthis;
 }
