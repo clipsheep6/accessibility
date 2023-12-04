@@ -173,8 +173,9 @@ RetError AccessibleAbilityClientImpl::RegisterAbilityListener(
     HILOG_DEBUG();
     std::lock_guard<std::mutex> lock(mutex_);
     if (listener_) {
-        HILOG_DEBUG("listener already exists.");
-        return RET_ERR_REGISTER_EXIST;
+        listener_ = listener;
+        HILOG_WARN("listener already replaced.");
+        return RET_OK;
     }
 
     listener_ = listener;
