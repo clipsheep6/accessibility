@@ -207,7 +207,7 @@ HWTEST_F(
         sleep(SLEEP_TIME_2);
         connection_->OnAccessibilityEvent(eventInfo);
         sleep(SLEEP_TIME_2);
-        EXPECT_EQ(int(EventType::TYPE_PAGE_STATE_UPDATE), AccessibilityAbilityHelper::GetInstance().GetTestEventType());
+        EXPECT_EQ(int(EventType::TYPE_WINDOW_UPDATE), AccessibilityAbilityHelper::GetInstance().GetTestEventType());
     }
     GTEST_LOG_(INFO) << "AccessibleAbilityConnection_Unittest_OnAccessibilityEvent_001 end";
 }
