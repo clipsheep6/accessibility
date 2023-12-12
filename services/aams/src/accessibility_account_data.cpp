@@ -681,8 +681,10 @@ uint32_t AccessibilityAccountData::GetInputFilterFlag() const
 
     int32_t clickResponseTime = config_->GetClickResponseTime();
     bool ignoreRepeatClickState = config_->GetIgnoreRepeatClickState();
+    HILOG_INFO("jinqi click response time %{public}d", clickResponseTime);
     if (clickResponseTime > 0 || ignoreRepeatClickState == true) {
         flag |= AccessibilityInputInterceptor::FEATURE_SCREEN_TOUCH;
+        HILOG_INFO("jinqi click response time %{public}d", clickResponseTime);
     }
 
     return flag;

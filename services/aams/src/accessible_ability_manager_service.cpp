@@ -1487,7 +1487,7 @@ void AccessibleAbilityManagerService::UpdateInputFilter()
     }
 
     uint32_t flag = accountData->GetInputFilterFlag();
-    HILOG_DEBUG("InputInterceptor flag is %{public}d", flag);
+    HILOG_INFO("jinqi InputInterceptor flag is %{public}d", flag);
 
     inputInterceptor_ = AccessibilityInputInterceptor::GetInstance();
     if (!inputInterceptor_) {
@@ -1822,7 +1822,7 @@ RetError AccessibleAbilityManagerService::SetAudioBalance(const float balance)
 
 RetError AccessibleAbilityManagerService::SetClickResponseTime(const uint32_t time)
 {
-    HILOG_INFO("click response time = [%{public}u]", time);
+    HILOG_INFO("jinqi click response time = [%{public}u]", time);
     HITRACE_METER_NAME(HITRACE_TAG_ACCESSIBILITY_MANAGER, "SetClickResponseTime:" + to_string(time));
 
     if (!handler_) {
@@ -2603,7 +2603,7 @@ void AccessibleAbilityManagerService::UpdateShortkeyMultiTarget()
 void AccessibleAbilityManagerService::UpdateClickResponseTime()
 {
     handler_->PostTask(std::bind([this]() -> void {
-        HILOG_INFO("UpdateClickResponseTime.");
+        HILOG_INFO("jinqi UpdateClickResponseTime.");
         sptr<AccessibilityAccountData> accountData = GetCurrentAccountData();
         if (!accountData) {
             HILOG_ERROR("Account data is null");

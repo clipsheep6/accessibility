@@ -83,6 +83,8 @@ AccessibilityScreenTouch::AccessibilityScreenTouch()
         currentState_ = DEFAULT_STATE;
     }
 
+    HILOG_INFO("jinqi click respons Time %{public}u ignore time %{public}u state %{public}d", clickResponseTime_, ignoreRepeatClickTime_, currentState_);
+
 #ifdef OHOS_BUILD_ENABLE_DISPLAY_MANAGER
     AccessibilityDisplayManager &displayMgr = Singleton<AccessibilityDisplayManager>::GetInstance();
     auto display = displayMgr.GetDefaultDisplay();
@@ -104,6 +106,8 @@ AccessibilityScreenTouch::~AccessibilityScreenTouch()
         drawCircleThread_->join();
     }
     drawCircleThread_ = nullptr;
+
+    AccessibilityCircleDrawingManager::DeleteInstance();
 }
 
 uint32_t AccessibilityScreenTouch::GetRealClickResponseTime()

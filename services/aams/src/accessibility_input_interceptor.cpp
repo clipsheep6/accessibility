@@ -104,7 +104,7 @@ void AccessibilityInputInterceptor::OnMoveMouse(int32_t offsetX, int32_t offsetY
 
 void AccessibilityInputInterceptor::SetAvailableFunctions(uint32_t availableFunctions)
 {
-    HILOG_INFO("function[%{public}d].", availableFunctions);
+    HILOG_INFO("jinqi function[%{public}d].", availableFunctions);
 
     if (availableFunctions_ == availableFunctions && ((availableFunctions & FEATURE_SCREEN_TOUCH) == 0)) {
         return;
@@ -189,8 +189,10 @@ void AccessibilityInputInterceptor::CreatePointerEventTransmitters()
         SetNextEventTransmitter(header, current, touchGuider);
     }
 
+    HILOG_INFO("jinqi build");
     if ((availableFunctions_ & FEATURE_SCREEN_TOUCH) && ((availableFunctions_ & FEATURE_TOUCH_EXPLORATION) == 0)) {
         sptr<AccessibilityScreenTouch> screenTouch = new(std::nothrow) AccessibilityScreenTouch();
+        HILOG_INFO("jinqi build");
         if (!screenTouch) {
             HILOG_ERROR("screenTouch is null");
             return;

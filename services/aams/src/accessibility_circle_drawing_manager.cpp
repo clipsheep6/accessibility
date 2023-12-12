@@ -79,6 +79,12 @@ std::shared_ptr<AccessibilityCircleDrawingManager> AccessibilityCircleDrawingMan
     return pointDrawMgr_;
 }
 
+void AccessibilityCircleDrawingManager::DeleteInstance()
+{
+    HILOG_INFO("jinqi");
+    pointDrawMgr_ = nullptr;
+}
+
 AccessibilityCircleDrawingManager::AccessibilityCircleDrawingManager()
 {
     HILOG_INFO();
@@ -93,12 +99,27 @@ AccessibilityCircleDrawingManager::AccessibilityCircleDrawingManager()
     dispalyDensity_ = static_cast<float>(dpi) / DEFAULT_PIXEL_DENSITY;
 #else
     HILOG_DEBUG("not support display manager");
+    screenId_ = 0;
     dispalyDensity_ = 1;
 #endif
 }
 
+AccessibilityCircleDrawingManager::~AccessibilityCircleDrawingManager()
+{
+    HILOG_INFO("jinqi");
+    if (surfaceNode_ == nullptr) {
+        return;
+    }
+
+    surfaceNode_->ClearChildren();
+    surfaceNode_->DetachToDisplay(screenId_);
+    surfaceNode_ = nullptr;
+    canvasNode_ = nullptr;
+}
+
 void AccessibilityCircleDrawingManager::UpdatePointerVisible(bool state)
 {
+    HILOG_INFO("jinqi Pointer window show start");
     if (surfaceNode_ == nullptr) {
         HILOG_ERROR("surfaceNode_ is nullptr");
         return;
@@ -112,6 +133,7 @@ void AccessibilityCircleDrawingManager::UpdatePointerVisible(bool state)
 void AccessibilityCircleDrawingManager::CreatePointerWindow(int32_t physicalX, int32_t physicalY)
 {
     HILOG_INFO();
+    HILOG_INFO("jinqi CreatePointerWindow start");
     Rosen::RSSurfaceNodeConfig surfaceNodeConfig;
     surfaceNodeConfig.SurfaceNodeName = "screen touch progress";
     Rosen::RSSurfaceNodeType surfaceNodeType = Rosen::RSSurfaceNodeType::SELF_DRAWING_WINDOW_NODE;
@@ -142,12 +164,14 @@ void AccessibilityCircleDrawingManager::CreatePointerWindow(int32_t physicalX, i
     canvasNode_->SetPositionZ(Rosen::RSSurfaceNode::POINTER_WINDOW_POSITION_Z);
     canvasNode_->SetRotation(0);
     Rosen::RSTransaction::FlushImplicitTransaction();
+    HILOG_INFO("jinqi CreatePointerWindow end");
 }
 
 #ifndef USE_ROSEN_DRAWING
 void AccessibilityCircleDrawingManager::DrawingProgressByOpenSource(int32_t physicalX, int32_t physicalY, int32_t angle)
 {
     HILOG_DEBUG();
+    HILOG_INFO("jinqi DrawingProgressByOpenSource start");
     auto canvas = static_cast<Rosen::RSRecordingCanvas *>(canvasNode_->BeginRecording(imageWidth_, imageHeight_));
 
     // outer circle
@@ -200,6 +224,7 @@ void AccessibilityCircleDrawingManager::DrawingProgressByOpenSource(int32_t phys
 
     canvasNode_->FinishRecording();
     Rosen::RSTransaction::FlushImplicitTransaction();
+    HILOG_INFO("jinqi DrawingProgressByOpenSource end");
 }
 #else
 void AccessibilityCircleDrawingManager::DrawingProgressByRosenDrawing(int32_t physicalX, int32_t physicalY,
@@ -278,7 +303,7 @@ void AccessibilityCircleDrawingManager::DrawingProgress(int32_t physicalX, int32
 
 void AccessibilityCircleDrawingManager::SetPointerLocation(int32_t physicalX, int32_t physicalY)
 {
-    HILOG_INFO("Pointer window move, x:%{public}d, y:%{public}d", physicalX, physicalY);
+    HILOG_INFO("jinqi Pointer window move, x:%{public}d, y:%{public}d", physicalX, physicalY);
     if (surfaceNode_ != nullptr) {
         surfaceNode_->SetBounds(physicalX - half_,
             physicalY - half_,
