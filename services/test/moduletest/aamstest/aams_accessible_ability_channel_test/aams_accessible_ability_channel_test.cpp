@@ -45,7 +45,7 @@ public:
 
     void WritefileAll(const char* fname, const char* data);
     void AddAccessibleAbilityConnection(bool isNoCapability = false);
-    void AddAccessibilityWindowConnection();
+    void AddAccessibilityWindowConnection(int32_t windowId = 1);
     sptr<AccessibilityAccountData> accountData_ = nullptr;
     sptr<AccessibleAbilityChannel> aastub_ = nullptr;
     sptr<AppExecFwk::ElementName> elementName_ = nullptr;
@@ -140,11 +140,11 @@ void AamsAccessibleAbilityChannelTest::AddAccessibleAbilityConnection(bool isNoC
     accountData_->AddInstalledAbility(*abilityInfo);
 }
 
-void AamsAccessibleAbilityChannelTest::AddAccessibilityWindowConnection()
+void AamsAccessibleAbilityChannelTest::AddAccessibilityWindowConnection(int32_t windowId)
 {
     GTEST_LOG_(INFO) << "AamsAccessibleAbilityChannelTest AddAccessibilityWindowConnection";
     //   accessibility interaction connection
-    int32_t windowId = 0;
+    
     std::shared_ptr<MockAccessibilityElementOperatorCallback> mockCallback =
         std::make_shared<MockAccessibilityElementOperatorCallback>();
     sptr<AccessibilityElementOperatorStub> stub =
@@ -177,7 +177,7 @@ HWTEST_F(AamsAccessibleAbilityChannelTest, AccessibleAbilityChannel_ModuleTest_S
     GTEST_LOG_(INFO) << "AccessibleAbilityChannel_ModuleTest_SearchElementInfoByAccessibilityId_001 start";
 
     // Add connection
-    AddAccessibilityWindowConnection();
+    AddAccessibilityWindowConnection(1);
     AddAccessibleAbilityConnection();
     ASSERT_TRUE(AccessibilityHelper::GetInstance().GetTestStub());
     RetError result =
@@ -203,7 +203,7 @@ HWTEST_F(AamsAccessibleAbilityChannelTest, AccessibleAbilityChannel_ModuleTest_S
     GTEST_LOG_(INFO) << "AccessibleAbilityChannel_ModuleTest_SearchElementInfoByAccessibilityId_002 start";
 
     // Add connection
-    AddAccessibilityWindowConnection();
+    AddAccessibilityWindowConnection(0);
     AddAccessibleAbilityConnection();
     ASSERT_TRUE(AccessibilityHelper::GetInstance().GetTestStub());
     RetError result = AccessibilityHelper::GetInstance().GetTestStub()->SearchElementInfoByAccessibilityId(
@@ -228,7 +228,7 @@ HWTEST_F(
     GTEST_LOG_(INFO) << "AccessibleAbilityChannel_ModuleTest_SearchElementInfosByText_001 start";
 
     // Add connection
-    AddAccessibilityWindowConnection();
+    AddAccessibilityWindowConnection(1);
     AddAccessibleAbilityConnection();
     ASSERT_TRUE(AccessibilityHelper::GetInstance().GetTestStub());
     string text = "text";
@@ -254,7 +254,7 @@ HWTEST_F(
     GTEST_LOG_(INFO) << "AccessibleAbilityChannel_ModuleTest_SearchElementInfosByText_002 start";
 
     // Add connection
-    AddAccessibilityWindowConnection();
+    AddAccessibilityWindowConnection(0);
     AddAccessibleAbilityConnection();
     ASSERT_TRUE(AccessibilityHelper::GetInstance().GetTestStub());
     string text = "text";
@@ -280,7 +280,7 @@ HWTEST_F(
     GTEST_LOG_(INFO) << "AccessibleAbilityChannel_ModuleTest_FindFocusedElementInfo_001 start";
 
     // Add connection
-    AddAccessibilityWindowConnection();
+    AddAccessibilityWindowConnection(1);
     AddAccessibleAbilityConnection();
     ASSERT_TRUE(AccessibilityHelper::GetInstance().GetTestStub());
     int32_t focusType = OHOS::Accessibility::FOCUS_TYPE_INPUT;
@@ -306,7 +306,7 @@ HWTEST_F(
     GTEST_LOG_(INFO) << "AccessibleAbilityChannel_ModuleTest_FindFocusedElementInfo_002 start";
 
     // Add connection
-    AddAccessibilityWindowConnection();
+    AddAccessibilityWindowConnection(0);
     AddAccessibleAbilityConnection();
     ASSERT_TRUE(AccessibilityHelper::GetInstance().GetTestStub());
     int32_t focusType = OHOS::Accessibility::FOCUS_TYPE_INPUT;
@@ -332,7 +332,7 @@ HWTEST_F(
     GTEST_LOG_(INFO) << "AccessibleAbilityChannel_ModuleTest_FindFocusedElementInfo_003 start";
 
     // Add connection
-    AddAccessibilityWindowConnection();
+    AddAccessibilityWindowConnection(1);
     AddAccessibleAbilityConnection();
     ASSERT_TRUE(AccessibilityHelper::GetInstance().GetTestStub());
     int32_t focusType = OHOS::Accessibility::FOCUS_TYPE_ACCESSIBILITY;
@@ -357,7 +357,7 @@ HWTEST_F(AamsAccessibleAbilityChannelTest, AccessibleAbilityChannel_ModuleTest_F
     GTEST_LOG_(INFO) << "AccessibleAbilityChannel_ModuleTest_FocusMoveSearch_001 start";
 
     // Add connection
-    AddAccessibilityWindowConnection();
+    AddAccessibilityWindowConnection(1);
     AddAccessibleAbilityConnection();
     ASSERT_TRUE(AccessibilityHelper::GetInstance().GetTestStub());
     int32_t direction = FocusMoveDirection::UP;
@@ -381,7 +381,7 @@ HWTEST_F(AamsAccessibleAbilityChannelTest, AccessibleAbilityChannel_ModuleTest_F
     GTEST_LOG_(INFO) << "AccessibleAbilityChannel_ModuleTest_FocusMoveSearch_002 start";
 
     // Add connection
-    AddAccessibilityWindowConnection();
+    AddAccessibilityWindowConnection(0);
     AddAccessibleAbilityConnection();
     ASSERT_TRUE(AccessibilityHelper::GetInstance().GetTestStub());
     int32_t direction = FocusMoveDirection::UP;
@@ -406,7 +406,7 @@ HWTEST_F(AamsAccessibleAbilityChannelTest, AccessibleAbilityChannel_ModuleTest_E
     GTEST_LOG_(INFO) << "AccessibleAbilityChannel_ModuleTest_ExecuteAction_001 start";
 
     // Add connection
-    AddAccessibilityWindowConnection();
+    AddAccessibilityWindowConnection(1);
     AddAccessibleAbilityConnection();
     std::map<std::string, std::string> actionArguments;
     actionArguments.insert(std::make_pair("invalid", "invalid"));
@@ -434,7 +434,7 @@ HWTEST_F(AamsAccessibleAbilityChannelTest, AccessibleAbilityChannel_ModuleTest_E
     GTEST_LOG_(INFO) << "AccessibleAbilityChannel_ModuleTest_ExecuteAction_002 start";
 
     // Add connection
-    AddAccessibilityWindowConnection();
+    AddAccessibilityWindowConnection(0);
     AddAccessibleAbilityConnection();
     std::map<std::string, std::string> actionArguments;
     actionArguments.insert(std::make_pair("invalid", "invalid"));
