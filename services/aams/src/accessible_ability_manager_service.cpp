@@ -340,8 +340,7 @@ uint32_t AccessibleAbilityManagerService::RegisterCaptionObserver(
 {
     HILOG_DEBUG();
     if (!callback || !handler_) {
-        HILOG_ERROR("Parameters check failed! callback:%{public}p, handler:%{public}p",
-            callback.GetRefPtr(), handler_.get());
+        HILOG_ERROR("Parameters check failed!");
         return ERR_INVALID_VALUE;
     }
 
@@ -433,7 +432,7 @@ RetError AccessibleAbilityManagerService::GetAbilityList(const uint32_t abilityT
 {
     HILOG_DEBUG("abilityTypes(%{public}d) stateType(%{public}d)", abilityTypes, stateType);
     if (!handler_ || (stateType > ABILITY_STATE_INSTALLED) || (stateType < ABILITY_STATE_ENABLE)) {
-        HILOG_ERROR("Parameters check failed! stateType:%{public}d, handler:%{public}p", stateType, handler_.get());
+        HILOG_ERROR("Parameters check failed! stateType:%{public}d", stateType);
         return RET_ERR_INVALID_PARAM;
     }
 
@@ -2390,8 +2389,7 @@ uint32_t AccessibleAbilityManagerService::RegisterConfigObserver(
 {
     HILOG_DEBUG();
     if (!callback || !handler_) {
-        HILOG_ERROR("Parameters check failed! callback:%{public}p, handler:%{public}p",
-            callback.GetRefPtr(), handler_.get());
+        HILOG_ERROR("Parameters check failed!");
         return ERR_INVALID_VALUE;
     }
 
