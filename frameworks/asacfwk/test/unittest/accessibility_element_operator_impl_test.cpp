@@ -237,7 +237,7 @@ HWTEST_F(AccessibilityElementOperatorImplUnitTest, SetSearchElementInfoByAccessi
 
     sptr<MockAccessibilityElementOperatorCallbackImpl> elementOperator =
         new(std::nothrow) MockAccessibilityElementOperatorCallbackImpl();
-    EXPECT_CALL(*elementOperator, SetSearchElementInfoByAccessibilityIdResult(_, _)).Times(0);
+    EXPECT_CALL(*elementOperator, SetSearchElementInfoByAccessibilityIdResult(_, _, _)).Times(0);
     std::list<AccessibilityElementInfo> infos;
     AccessibilityElementInfo info {};
     infos.push_back(info);
@@ -260,7 +260,7 @@ HWTEST_F(AccessibilityElementOperatorImplUnitTest, SetSearchElementInfoByAccessi
 
     sptr<MockAccessibilityElementOperatorCallbackImpl> elementOperator =
         new(std::nothrow) MockAccessibilityElementOperatorCallbackImpl();
-    EXPECT_CALL(*elementOperator, SetSearchElementInfoByAccessibilityIdResult(_, _)).Times(1);
+    EXPECT_CALL(*elementOperator, SetSearchElementInfoByAccessibilityIdResult(_, _, _)).Times(1);
     mockStub_->SearchElementInfoByAccessibilityId(ELEMENT_ID, REQUEST_ID_2, elementOperator, MODE);
     std::list<AccessibilityElementInfo> infos;
     AccessibilityElementInfo info {};

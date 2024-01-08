@@ -46,7 +46,7 @@ public:
      * @param requestId The request id from AA, it is used to match with request and response.
      */
     virtual void SetSearchElementInfoByAccessibilityIdResult(const std::vector<AccessibilityElementInfo> &infos,
-        const int32_t requestId) override;
+        const int32_t requestId, const int32_t index) override;
 
     /**
      * @brief Save the elements information searched in ACE side

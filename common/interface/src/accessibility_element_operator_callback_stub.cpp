@@ -84,8 +84,9 @@ ErrCode AccessibilityElementOperatorCallbackStub::HandleSetSearchElementInfoByAc
         infos.emplace_back(*accessibilityInfo);
     }
     int32_t requestId = data.ReadInt32();
+    int32_t index = data.ReadInt32();
 
-    SetSearchElementInfoByAccessibilityIdResult(infos, requestId);
+    SetSearchElementInfoByAccessibilityIdResult(infos, requestId, index);
     return NO_ERROR;
 }
 

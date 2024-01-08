@@ -37,7 +37,7 @@ public:
      * @param requestId The request id from AA, it is used to match with request and response.
      */
     virtual void SetSearchElementInfoByAccessibilityIdResult(const std::vector<AccessibilityElementInfo> &infos,
-        const int32_t requestId) = 0;
+        const int32_t requestId, const int32_t index) = 0;
 
     /**
      * @brief Set the element information matched with text to AA.

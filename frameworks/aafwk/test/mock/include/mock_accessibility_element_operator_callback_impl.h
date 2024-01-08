@@ -26,8 +26,8 @@ public:
     MockAccessibilityElementOperatorCallbackImpl() = default;
     virtual ~MockAccessibilityElementOperatorCallbackImpl() = default;
 
-    MOCK_METHOD2(SetSearchElementInfoByAccessibilityIdResult, void(const std::vector<AccessibilityElementInfo> &infos,
-        const int32_t requestId));
+    MOCK_METHOD3(SetSearchElementInfoByAccessibilityIdResult, void(const std::vector<AccessibilityElementInfo> &infos,
+        const int32_t requestId, const int32_t index));
     MOCK_METHOD2(SetSearchElementInfoByTextResult, void(const std::vector<AccessibilityElementInfo> &infos,
         const int32_t requestId));
     MOCK_METHOD2(SetFindFocusedElementInfoResult, void(const AccessibilityElementInfo &info, const int32_t requestId));

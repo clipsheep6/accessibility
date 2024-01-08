@@ -344,7 +344,7 @@ void TouchGuider::ElementOperatorCallbackImpl::SetSearchElementInfoByTextResult(
 }
 
 void TouchGuider::ElementOperatorCallbackImpl::SetSearchElementInfoByAccessibilityIdResult(
-    const std::vector<AccessibilityElementInfo> &infos, const int32_t requestId)
+    const std::vector<AccessibilityElementInfo> &infos, const int32_t requestId, const int32_t index)
 {
     HILOG_DEBUG("Response [requestId:%{public}d]", requestId);
     elementInfosResult_ = infos;

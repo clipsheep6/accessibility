@@ -156,7 +156,7 @@ void MockAccessibilityElementOperatorImpl::SetSearchElementInfoByAccessibilityId
     auto iterator = requests_.find(requestId);
     if (iterator != requests_.end()) {
         if (iterator->second != nullptr) {
-            iterator->second->SetSearchElementInfoByAccessibilityIdResult(myInfos, requestId);
+            iterator->second->SetSearchElementInfoByAccessibilityIdResult(myInfos, requestId, 0);
         }
         requests_.erase(iterator);
     } else {
