@@ -28,7 +28,7 @@ AbilityManagerClient::~AbilityManagerClient()
 std::shared_ptr<AbilityManagerClient> AbilityManagerClient::GetInstance()
 {
     std::call_once(singletonFlag_, [] () {
-        instance_ = std::shared_ptr<AbilityManagerClient>(new AbilityManagerClient());
+        instance_ = std::make_shared<AbilityManagerClient>();
     });
     return instance_;
 }
