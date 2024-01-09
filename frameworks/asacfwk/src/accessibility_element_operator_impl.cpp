@@ -133,6 +133,7 @@ int32_t AccessibilityElementOperatorImpl::GetWindowId()
 int32_t AccessibilityElementOperatorImpl::AddRequest(int32_t requestId,
     const sptr<IAccessibilityElementOperatorCallback> &callback)
 {
+    HILOG_ERROR("wjtest lock. requestId(%{public}d).", requestId);
     std::lock_guard<std::mutex> lock(mutex_);
     uint32_t compositionRequestId = static_cast<uint32_t>(requestId) & REQUEST_ID_MASK;
 
@@ -149,17 +150,21 @@ int32_t AccessibilityElementOperatorImpl::AddRequest(int32_t requestId,
         requests_[requestId] = callback;
     }
     return requestId;
+    HILOG_ERROR("wjtest unlock. requestId(%{public}d).", requestId);
 }
 
 void AccessibilityElementOperatorImpl::SetSearchElementInfoByAccessibilityIdResult(
     const std::list<AccessibilityElementInfo> &infos, const int32_t requestId)
 {
     HILOG_DEBUG();
+    HILOG_ERROR("wjtest1 before lock. requestId(%{public}d).", requestId);
     std::lock_guard<std::mutex> lock(mutex_);
+    HILOG_ERROR("wjtest1 after lock. requestId(%{public}d).", requestId);
     std::vector<AccessibilityElementInfo> myInfos = TranslateListToVector(infos);
     auto iter = requests_.find(requestId);
     if (iter != requests_.end()) {
         if (iter->second != nullptr) {
+            HILOG_ERROR("wjtest SetSearchElementInfoByAccessibilityIdResult call proxy.");
             iter->second->SetSearchElementInfoByAccessibilityIdResult(myInfos, requestId);
         }
         requests_.erase(iter);
@@ -172,6 +177,7 @@ void AccessibilityElementOperatorImpl::SetSearchElementInfoByTextResult(
     const std::list<AccessibilityElementInfo> &infos, const int32_t requestId)
 {
     HILOG_DEBUG();
+    HILOG_ERROR("wjtest lock. requestId(%{public}d).", requestId);
     std::lock_guard<std::mutex> lock(mutex_);
     std::vector<AccessibilityElementInfo> myInfos = TranslateListToVector(infos);
     auto iter = requests_.find(requestId);
@@ -183,12 +189,14 @@ void AccessibilityElementOperatorImpl::SetSearchElementInfoByTextResult(
     } else {
         HILOG_DEBUG("Can't find the callback [requestId:%d]", requestId);
     }
+    HILOG_ERROR("wjtest unlock. requestId(%{public}d).", requestId);
 }
 
 void AccessibilityElementOperatorImpl::SetFindFocusedElementInfoResult(
     const AccessibilityElementInfo &info, const int32_t requestId)
 {
     HILOG_DEBUG();
+    HILOG_ERROR("wjtest lock. requestId(%{public}d).", requestId);
     std::lock_guard<std::mutex> lock(mutex_);
     auto iter = requests_.find(requestId);
     if (iter != requests_.end()) {
@@ -199,12 +207,14 @@ void AccessibilityElementOperatorImpl::SetFindFocusedElementInfoResult(
     } else {
         HILOG_DEBUG("Can't find the callback [requestId:%d]", requestId);
     }
+    HILOG_ERROR("wjtest unlock. requestId(%{public}d).", requestId);
 }
 
 void AccessibilityElementOperatorImpl::SetFocusMoveSearchResult(
     const AccessibilityElementInfo &info, const int32_t requestId)
 {
     HILOG_DEBUG();
+    HILOG_ERROR("wjtest lock. requestId(%{public}d).", requestId);
     std::lock_guard<std::mutex> lock(mutex_);
     auto iter = requests_.find(requestId);
     if (iter != requests_.end()) {
@@ -215,12 +225,14 @@ void AccessibilityElementOperatorImpl::SetFocusMoveSearchResult(
     } else {
         HILOG_DEBUG("Can't find the callback [requestId:%d]", requestId);
     }
+    HILOG_ERROR("wjtest unlock. requestId(%{public}d).", requestId);
 }
 
 void AccessibilityElementOperatorImpl::SetExecuteActionResult(
     const bool succeeded, const int32_t requestId)
 {
     HILOG_DEBUG();
+    HILOG_ERROR("wjtest lock. requestId(%{public}d).", requestId);
     std::lock_guard<std::mutex> lock(mutex_);
     auto iter = requests_.find(requestId);
     if (iter != requests_.end()) {
@@ -231,6 +243,7 @@ void AccessibilityElementOperatorImpl::SetExecuteActionResult(
     } else {
         HILOG_DEBUG("Can't find the callback [requestId:%d]", requestId);
     }
+    HILOG_ERROR("wjtest unlock. requestId(%{public}d).", requestId);
 }
 } // namespace Accessibility
 } // namespace OHOS
