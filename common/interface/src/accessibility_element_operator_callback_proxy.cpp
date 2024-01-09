@@ -60,7 +60,7 @@ bool AccessibilityElementOperatorCallbackProxy::SendTransactCmd(AccessibilityInt
 void AccessibilityElementOperatorCallbackProxy::SetSearchElementInfoByAccessibilityIdResult(
     const std::vector<AccessibilityElementInfo> &infos, const int32_t requestId)
 {
-    HILOG_DEBUG();
+    HILOG_ERROR("wjtest arrive proxy");
     MessageParcel data;
     MessageParcel reply;
     MessageOption option(MessageOption::TF_ASYNC);

@@ -186,7 +186,7 @@ RetError AccessibleAbilityChannelClient::SearchElementInfosByAccessibilityId(int
         return RET_ERR_NULLPTR;
     }
     std::future<void> promiseFuture = elementOperator->promise_.get_future();
-
+    HILOG_ERROR("wjtest aa search requestId(%{public}).", requestId);
     RetError ret = proxy_->SearchElementInfoByAccessibilityId(accessibilityWindowId, elementId, requestId,
         elementOperator, mode);
     if (ret != RET_OK) {

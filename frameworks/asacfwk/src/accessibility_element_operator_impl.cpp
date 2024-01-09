@@ -147,10 +147,15 @@ int32_t AccessibilityElementOperatorImpl::AddRequest(int32_t requestId,
     requestId = static_cast<int32_t>(compositionRequestId);
     auto iter = requests_.find(requestId);
     if (iter == requests_.end()) {
+        if (callback != nullptr) {
+            HILOG_ERROR("wjtest  AddRequest requestId(%{public}d), callback not null.", requestId);
+        } else {
+            HILOG_ERROR("wjtest  AddRequest requestId(%{public}d), callback is null.", requestId);
+        }
         requests_[requestId] = callback;
     }
-    return requestId;
     HILOG_ERROR("wjtest unlock. requestId(%{public}d).", requestId);
+    return requestId;
 }
 
 void AccessibilityElementOperatorImpl::SetSearchElementInfoByAccessibilityIdResult(
@@ -169,8 +174,9 @@ void AccessibilityElementOperatorImpl::SetSearchElementInfoByAccessibilityIdResu
         }
         requests_.erase(iter);
     } else {
-        HILOG_DEBUG("Can't find the callback [requestId:%d]", requestId);
+        HILOG_ERROR("wjtest Can't find the callback [requestId:%d]", requestId);
     }
+    HILOG_ERROR("wjtest1 set end. requestId(%{public}d).", requestId);
 }
 
 void AccessibilityElementOperatorImpl::SetSearchElementInfoByTextResult(
