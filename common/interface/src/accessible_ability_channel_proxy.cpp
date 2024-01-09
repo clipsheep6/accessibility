@@ -65,7 +65,7 @@ RetError AccessibleAbilityChannelProxy::SearchElementInfoByAccessibilityId(const
 {
     HILOG_DEBUG();
     if (!callback) {
-        HILOG_ERROR("callback is nullptr.");
+        HILOG_ERROR("wjtest callback is nullptr.");
         return RET_ERR_INVALID_PARAM;
     }
 
