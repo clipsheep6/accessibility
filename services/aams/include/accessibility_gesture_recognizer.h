@@ -76,45 +76,45 @@ public:
      * @param event  the touch event received.
      * @return true if the event is consumed, else false
      */
-    virtual bool OnDoubleTap(MMI::PointerEvent &event);
+    virtual bool OnDoubleTap(MMI::PointerEvent &event) = 0;
 
     /**
      * @brief The callback function when recognized an event stream as a gesture.
      * @return true if the event is consumed, else false
      */
-    virtual bool OnStarted();
+    virtual bool OnStarted() = 0;
 
     /**
      * @brief The callback function when recognized an event stream as a multi finger gesture.
      * @param isTwoFingerGesture whether the gesture is triggered by two finger.
      */
-    virtual void MultiFingerGestureOnStarted(bool isTwoFingerGesture);
+    virtual void MultiFingerGestureOnStarted(bool isTwoFingerGesture) = 0;
 
     /**
      * @brief The callback function when decided the event stream is a gesture.
      * @param gestureId the recognized gesture ID.
      * @return true if the event is consumed, else false
      */
-    virtual bool OnCompleted(GestureType gestureId);
+    virtual bool OnCompleted(GestureType gestureId) = 0;
 
     /**
      * @brief The callback function when decided the event stream is a multi finger gesture.
      * @param gestureId the recognized gesture ID.
      */
-    virtual void MultiFingerGestureOnCompleted(GestureType gestureId);
+    virtual void MultiFingerGestureOnCompleted(GestureType gestureId) = 0;
 
     /**
      * @brief The callback function when decided an event stream doesn't match any known gesture.
      * @param event the touch event received.
      * @return true if the event is consumed, else false
      */
-    virtual bool OnCancelled(MMI::PointerEvent &event);
+    virtual bool OnCancelled(MMI::PointerEvent &event) = 0;
 
     /**
      * @brief The callback function when decided an event stream doesn't match any known multi finger gesture.
      * @param isNoDelayFlag whether the gesture recognize process is immediately canceled.
      */
-    virtual void MultiFingerGestureOnCancelled(const bool isNoDelayFlag);
+    virtual void MultiFingerGestureOnCancelled(const bool isNoDelayFlag) = 0;
 };
 
 class AccessibilityGestureRecognizer : public AppExecFwk::EventHandler {
