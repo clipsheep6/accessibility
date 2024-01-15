@@ -17,8 +17,8 @@
 
 namespace OHOS {
 namespace AAFwk {
-std::shared_ptr<AbilityManagerClient> AbilityManagerClient::instance_ = nullptr;
-std::once_flag AbilityManagerClient::singletonFlag_;
+static std::shared_ptr<AbilityManagerClient> AbilityManagerClient::instance_ = nullptr;
+static std::once_flag AbilityManagerClient::singletonFlag_;
 
 AbilityManagerClient::AbilityManagerClient()
 {}
@@ -28,7 +28,7 @@ AbilityManagerClient::~AbilityManagerClient()
 std::shared_ptr<AbilityManagerClient> AbilityManagerClient::GetInstance()
 {
     std::call_once(singletonFlag_, [] () {
-        instance_ = std::shared_ptr<AbilityManagerClient>(new AbilityManagerClient());
+        instance_ = std::make_shared<AbilityManagerClient>();
     });
     return instance_;
 }
