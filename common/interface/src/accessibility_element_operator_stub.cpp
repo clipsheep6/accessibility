@@ -73,8 +73,9 @@ ErrCode AccessibilityElementOperatorStub::HandleSearchElementInfoByAccessibility
     int64_t elementId = data.ReadInt64();
     int32_t requestId = data.ReadInt32();
     sptr<IRemoteObject> remote = data.ReadRemoteObject();
-
+    HILOG_ERROR("wjtest remote is null(%{public}d).", (remote == nullptr));
     sptr<IAccessibilityElementOperatorCallback> callback = iface_cast<IAccessibilityElementOperatorCallback>(remote);
+    HILOG_ERROR("wjtest callback is null(%{public}d).", (callback == nullptr)));
     int32_t mode = data.ReadInt32();
     SearchElementInfoByAccessibilityId(elementId, requestId, callback, mode);
     return NO_ERROR;

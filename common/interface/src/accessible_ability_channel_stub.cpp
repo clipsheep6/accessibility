@@ -91,13 +91,13 @@ ErrCode AccessibleAbilityChannelStub::HandleSearchElementInfoByAccessibilityId(M
 
     sptr<IRemoteObject> remote = data.ReadRemoteObject();
     if (!remote) {
-        HILOG_ERROR("remote is nullptr.");
+        HILOG_ERROR("wjtest remote is nullptr.");
         return ERR_INVALID_VALUE;
     }
     sptr<IAccessibilityElementOperatorCallback> callback =
         iface_cast<IAccessibilityElementOperatorCallback>(remote);
     if (!callback) {
-        HILOG_ERROR("callback is nullptr.");
+        HILOG_ERROR("wjtest callback is nullptr.");
         return ERR_INVALID_VALUE;
     }
 

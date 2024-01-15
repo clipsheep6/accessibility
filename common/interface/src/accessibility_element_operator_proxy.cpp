@@ -74,7 +74,7 @@ void AccessibilityElementOperatorProxy::SearchElementInfoByAccessibilityId(const
     }
 
     if (!callback) {
-        HILOG_ERROR("callback is nullptr");
+        HILOG_ERROR("wjtest callback is nullptr");
         return;
     }
     if (!data.WriteRemoteObject(callback->AsObject())) {

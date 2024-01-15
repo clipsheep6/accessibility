@@ -59,6 +59,8 @@ RetError AccessibleAbilityChannel::SearchElementInfoByAccessibilityId(const int3
 
         auto& awm = Singleton<AccessibilityWindowManager>::GetInstance();
         int64_t realElementId = awm.GetSceneBoardElementId(accessibilityWindowId, elementId);
+        HILOG_ERROR("wjtest aams channel requestId(%{public}d), callback is null(%{public}d).",
+            requestId, (callback == nullptr));
         elementOperator->SearchElementInfoByAccessibilityId(realElementId, requestId, callback, mode);
         HILOG_DEBUG("AccessibleAbilityChannel::SearchElementInfoByAccessibilityId successfully");
         syncPromise->set_value(RET_OK);
