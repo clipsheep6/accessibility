@@ -179,10 +179,8 @@ HWTEST_F(AccessibilityScreenTouchUnitTest, AccessibilityScreenTouch_Unittest_OnP
 
     auto eventDown = SetPointerEvent(TIMESTAMP_1500, MMI::PointerEvent::POINTER_ACTION_DOWN);
     screenTouch_->OnPointerEvent(*eventDown);
-
     auto eventMove = SetPointerEvent(TIMESTAMP_1600, MMI::PointerEvent::POINTER_ACTION_MOVE);
     screenTouch_->OnPointerEvent(*eventMove);
-
     auto eventUp = SetPointerEvent(TIMESTAMP_1700, MMI::PointerEvent::POINTER_ACTION_UP);
     EXPECT_EQ(screenTouch_->OnPointerEvent(*eventUp), true);
     GTEST_LOG_(INFO) << "AccessibilityScreenTouch_Unittest_OnPointerEvent_004 end";

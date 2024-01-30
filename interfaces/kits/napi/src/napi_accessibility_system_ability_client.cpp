@@ -392,6 +392,84 @@ bool NAccessibilityClient::CheckStateType(const std::string& stateType)
     }
 }
 
+napi_value NAccessibilityClient::GetAccessibilityExtensionListSync(napi_env env, napi_callback_info info)
+{
+    NAccessibilitySystemAbilityClient* callbackInfo = new(std::nothrow) NAccessibilitySystemAbilityClient();
+    if (callbackInfo == nullptr) {
+        HILOG_ERROR("Failed to create callbackInfo.");
+        napi_value err = CreateBusinessError(env, OHOS::Accessibility::RET_ERR_NULLPTR);
+        napi_throw(env, err);
+        return nullptr;
+    }
+
+    size_t argc = ARGS_SIZE_THREE;
+    napi_value parameters[ARGS_SIZE_THREE] = {0};
+    napi_get_cb_info(env, info, &argc, parameters, nullptr, nullptr);
+
+    OHOS::Accessibility::RetError errCode = OHOS::Accessibility::RET_OK;
+    do {
+        if (argc < ARGS_SIZE_THREE - 1) {
+            HILOG_ERROR("argc is invalid: %{public}zu", argc);
+            errCode = OHOS::Accessibility::RET_ERR_INVALID_PARAM;
+            break;
+        }
+
+        // parse ability type
+        std::string abilityTypes = "";
+        std::string stateTypes = "";
+        if (!ParseString(env, abilityTypes, parameters[PARAM0]) ||
+            !ParseString(env, stateTypes, parameters[PARAM1])) {
+            errCode = OHOS::Accessibility::RET_ERR_INVALID_PARAM;
+            break;
+        }
+
+        HILOG_INFO("abilityTypes = %{private}s", abilityTypes.c_str());
+        if (CheckAbilityType(abilityTypes)) {
+            callbackInfo->abilityTypes_ = ConvertStringToAccessibilityAbilityTypes(abilityTypes);
+        } else {
+            errCode = OHOS::Accessibility::RET_ERR_INVALID_PARAM;
+            break;
+        }
+        // parse ability state
+        HILOG_INFO("stateTypes = %{private}s", stateTypes.c_str());
+        if (CheckStateType(stateTypes)) {
+            callbackInfo->stateTypes_ = ConvertStringToAbilityStateType(stateTypes);
+        } else {
+            errCode = OHOS::Accessibility::RET_ERR_INVALID_PARAM;
+        }
+    } while (0);
+
+    if (errCode == OHOS::Accessibility::RET_ERR_INVALID_PARAM) {
+        delete callbackInfo;
+        callbackInfo = nullptr;
+        napi_value err = CreateBusinessError(env, errCode);
+        HILOG_ERROR("invalid param");
+        napi_throw(env, err);
+        return nullptr;
+    }
+
+    return GetAccessibilityExtensionListSyncInner(env, callbackInfo);
+}
+
+napi_value NAccessibilityClient::GetAccessibilityExtensionListSyncInner(
+    napi_env env, NAccessibilitySystemAbilityClient* callbackInfo)
+{
+    auto asaClient = AccessibilitySystemAbilityClient::GetInstance();
+    if (asaClient) {
+        callbackInfo->ret_ = asaClient->GetAbilityList(callbackInfo->abilityTypes_,
+            callbackInfo->stateTypes_, callbackInfo->abilityList_);
+    }
+
+    napi_value result;
+    napi_create_array(env, &result);
+    ConvertAccessibleAbilityInfosToJS(env, result, callbackInfo->abilityList_);
+    if (callbackInfo != nullptr) {
+        delete callbackInfo;
+        callbackInfo = nullptr;
+    }
+    return result;
+}
+
 void NAccessibilityClient::SendEventExecute(napi_env env, void* data)
 {
     NAccessibilitySystemAbilityClient* callbackInfo = static_cast<NAccessibilitySystemAbilityClient*>(data);
