@@ -93,6 +93,7 @@ public:
     static napi_value IsOpenTouchExplorationSync(napi_env env, napi_callback_info info);
     static napi_value GetAbilityList(napi_env env, napi_callback_info info);
     static napi_value GetAccessibilityExtensionList(napi_env env, napi_callback_info info);
+    static napi_value GetAccessibilityExtensionListSync(napi_env env, napi_callback_info info);
     static napi_value SubscribeState(napi_env env, napi_callback_info info);
     static napi_value UnsubscribeState(napi_env env, napi_callback_info info);
     static napi_value SendEvent(napi_env env, napi_callback_info info);
@@ -132,6 +133,8 @@ public:
 private:
     static napi_value GetAccessibilityExtensionListAsync(
         napi_env env, size_t argc, napi_value* parameters, NAccessibilitySystemAbilityClient* data);
+    static napi_value GetAccessibilityExtensionListSyncInner(
+        napi_env env, NAccessibilitySystemAbilityClient* callbackInfo);
     static void GetAccessibilityStateEventType(
         napi_env env, napi_value* args, OHOS::Accessibility::RetError& errCode, uint32_t& type);
     static void Completefunction(napi_env env, std::string type, void* data);
