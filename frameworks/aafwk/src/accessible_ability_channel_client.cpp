@@ -15,9 +15,7 @@
 
 #include "accessible_ability_channel_client.h"
 
-#include <cinttypes>
 #include <hitrace_meter.h>
-#include <cinttypes>
 #include "accessibility_element_operator_callback_impl.h"
 #include "hilog_wrapper.h"
 
