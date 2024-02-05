@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Huawei Device Co., Ltd.
+ * Copyright (C) 2022-2024 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -18,6 +18,7 @@
 
 #include <vector>
 #include "accessibility_def.h"
+#include "accessibility_element_info.h"
 
 namespace OHOS {
 namespace Accessibility {
@@ -250,7 +251,7 @@ public:
      * @since 3
      * @sysCap Accessibility
      */
-    AccessibilityEventInfo() {}
+    AccessibilityEventInfo();
 
     /**
      * @brief Construct
@@ -446,6 +447,22 @@ public:
      */
     int32_t GetPageId() const;
 
+    /**
+     * @brief Get the element info associated with the accessibility event.
+     * @return The element info associated with the accessibility event.
+     * @since 12
+     * @sysCap Accessibility
+     */
+    std::shared_ptr<AccessibilityElementInfo> &GetElementInfo();
+
+    /**
+     * @brief Set the element info associated with the accessibility event.
+     * @param elementInfo The element info associated with the accessibility event.
+     * @since 12
+     * @sysCap Accessibility
+     */
+    void SetElementInfo(const AccessibilityElementInfo &elementInfo);
+
 protected:
     EventType eventType_ = TYPE_VIEW_INVALID;
     std::string bundleName_ = "";
@@ -458,6 +475,7 @@ protected:
     NotificationCategory category_ = CATEGORY_INVALID;
     int32_t pageId_ = 0;
     std::string notificationContent_ = "";
+    std::shared_ptr<AccessibilityElementInfo> elementInfo_ = nullptr;
 };
 } // namespace Accessibility
 } // namespace OHOS

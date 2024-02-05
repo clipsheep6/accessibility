@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Huawei Device Co., Ltd.
+ * Copyright (C) 2022-2024 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -260,11 +260,19 @@ AccessibilityEventInfo::AccessibilityEventInfo(int32_t windowId, WindowUpdateTyp
 {
     HILOG_DEBUG();
     SetWindowId(windowId);
+    elementInfo_ = std::make_shared<AccessibilityElementInfo>();
 }
 
 AccessibilityEventInfo::AccessibilityEventInfo(EventType eventType) : eventType_(eventType)
 {
     HILOG_DEBUG("eventType_[%{public}d]", eventType_);
+    elementInfo_ = std::make_shared<AccessibilityElementInfo>();
+}
+
+AccessibilityEventInfo::AccessibilityEventInfo()
+{
+    HILOG_DEBUG("Called.");
+    elementInfo_ = std::make_shared<AccessibilityElementInfo>();
 }
 
 void AccessibilityEventInfo::SetNotificationInfo(const NotificationCategory category)
@@ -301,6 +309,18 @@ int32_t AccessibilityEventInfo::GetPageId() const
 {
     HILOG_DEBUG("pageId_[%{public}d]", pageId_);
     return pageId_;
+}
+
+std::shared_ptr<AccessibilityElementInfo> &AccessibilityEventInfo::GetElementInfo()
+{
+    HILOG_DEBUG("Called.");
+    return elementInfo_;
+}
+
+void AccessibilityEventInfo::SetElementInfo(const AccessibilityElementInfo &elementInfo)
+{
+    HILOG_DEBUG("Called.");
+    *elementInfo_ = elementInfo;
 }
 } // namespace Accessibility
 } // namespace OHOS
