@@ -149,7 +149,9 @@ bool AccessibilityEventInfoParcel::Marshalling(Parcel &parcel) const
     WRITE_PARCEL_AND_RETURN_FALSE_IF_FAIL(Int64, parcel, GetAccessibilityId());
     WRITE_PARCEL_AND_RETURN_FALSE_IF_FAIL(Int32, parcel, GetItemCounts());
     AccessibilityElementInfoParcel elementInfo(*elementInfo_);
-    WRITE_PARCEL_AND_RETURN_FALSE_IF_FAIL(Parcelable, parcel, &elementInfo);
+    if (!(parcel.WriteParcelable(&elementInfo))) {
+        HILOG_WARN("Fail to write AccessibilityElementInfoParcel type from parcel.");
+    }
     return true;
 }
 
