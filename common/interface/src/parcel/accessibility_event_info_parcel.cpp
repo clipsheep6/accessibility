@@ -13,6 +13,7 @@
  * limitations under the License.
  */
 
+#include "accessibility_element_info_parcel.h"
 #include "accessibility_event_info_parcel.h"
 #include "hilog_wrapper.h"
 #include "parcel_util.h"
@@ -100,10 +101,10 @@ bool AccessibilityEventInfoParcel::ReadFromParcelSecondPart(Parcel &parcel)
 
     sptr<AccessibilityElementInfoParcel> elementInfo = parcel.ReadStrongParcelable<AccessibilityElementInfoParcel>();
     if (elementInfo == nullptr) {
-        HILOG_ERROR("Fail to read AccessibilityElementInfoParcel type from parcel.");
-        return false;
+        HILOG_WARN("Fail to read AccessibilityElementInfoParcel type from parcel.");
+    } else {
+        SetElementInfo(*elementInfo);
     }
-    SetElementInfo(*elementInfo);
     return true;
 }
 

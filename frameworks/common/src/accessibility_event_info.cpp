@@ -271,7 +271,6 @@ AccessibilityEventInfo::AccessibilityEventInfo(EventType eventType) : eventType_
 
 AccessibilityEventInfo::AccessibilityEventInfo()
 {
-    HILOG_DEBUG("Called.");
     elementInfo_ = std::make_shared<AccessibilityElementInfo>();
 }
 

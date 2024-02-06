@@ -16,7 +16,6 @@
 #ifndef ACCESSIBILITY_EVENT_INFO_PARCEL_H
 #define ACCESSIBILITY_EVENT_INFO_PARCEL_H
 
-#include "accessibility_element_info_parcel.h"
 #include "accessibility_event_info.h"
 #include "parcel.h"
 
