@@ -2065,7 +2065,7 @@ HWTEST_F(AamsTouchGuideTest, AamsTouchGuideTest_Moduletest_OnPointerEvent029, Te
 
     AccessibilityHelper::GetInstance().GetEventType() = {};
     MMI::MockInputManager::ClearTouchActions();
-
+    // generate
     std::vector<MMI::PointerEvent::PointerItem> points = {};
     MMI::PointerEvent::PointerItem point1 = {};
     TouchGuiderPointSet(point1, 0, 100, 100);
