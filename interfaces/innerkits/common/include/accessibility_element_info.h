@@ -1312,6 +1312,20 @@ public:
      */
     const std::string &GetLatestContent() const;
 
+    /**
+     * @brief Set accessibility text
+     * @param accessibilityText The accessibility text of node
+     * @sysCap Accessibility
+     */
+    void SetAccessibilityText(const std::string &accessibilityText);
+
+    /**
+     * @brief Get accessibility text
+     * @return The accessibility text of node
+     * @sysCap Accessibility
+     */
+    const std::string &GetAccessibilityText() const;
+
 protected:
     int32_t pageId_ = -1;
     int32_t windowId_ = -1;
@@ -1321,6 +1335,7 @@ protected:
     std::string componentType_ = "";
     std::string text_ = "";
     std::string hintText_ = "";
+    std::string accessibilityText_ = "";
     std::string contentDescription_ = "";
     std::string resourceName_ = "";
     std::string inspectorKey_ = "";

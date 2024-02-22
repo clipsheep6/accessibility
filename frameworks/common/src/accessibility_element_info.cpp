@@ -558,6 +558,16 @@ void AccessibilityElementInfo::SetGridItem(const GridItemInfo &gridItem)
     gridItem_ = gridItem;
 }
 
+const std::string &AccessibilityElementInfo::GetAccessibilityText() const
+{
+    return accessibilityText_;
+}
+
+void AccessibilityElementInfo::SetAccessibilityText(const std::string &accessibilityText)
+{
+    accessibilityText_ = accessibilityText;
+}
+
 AccessibilityElementInfo::AccessibilityElementInfo()
 {
 }
