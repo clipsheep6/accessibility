@@ -234,6 +234,16 @@ int32_t SystemAbilityManagerProxy::UnloadAllIdleSystemAbility()
     return -1;
 }
 
+int32_t SystemAbilityManagerProxy::GetExtensionSaIds(SaExtension extension, std::vector<int32_t> &saIds)
+{
+    return -1;
+}
+
+int32_t SystemAbilityManagerProxy::GetExtensionSaList(SaExtension extension, std::vector<sptr<IRemoteObject>>& saList)
+{
+    return -1;
+}
+
 sptr<IRemoteObject> SystemAbilityManagerProxy::Recompute(int32_t systemAbilityId, int32_t code)
 {
     return nullptr;
