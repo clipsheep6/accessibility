@@ -76,6 +76,7 @@ ohos_shared_library("accessibleability") {
   public_deps = [ "../common:accessibility_common" ]
   install_enable = true
 
+  innerapi_tags = [ "platformsdk" ]
   subsystem_name = "barrierfree"
   part_name = "accessibility"
 }
