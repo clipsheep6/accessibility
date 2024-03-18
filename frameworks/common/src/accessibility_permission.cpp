@@ -36,14 +36,14 @@ bool Permission::CheckCallingPermission(const std::string& permission)
 bool Permission::IsStartByHdcd()
 {
     auto id = IPCSkeleton::GetCallingTokenID();
-    Security::AccessToken::NativeTokenInfo info;
-    auto ret = Security::AccessToken::AccessTokenKit::GetNativeTokenInfo(id, info);
+    std::string processName;
+    auto ret = Security::AccessToken::AccessTokenKit::GetNativeTokenName(id, processName);
     if (ret != 0) {
         HILOG_DEBUG("get native token info failed %{public}d", ret);
         return false;
     }
 
-    if (info.processName.compare("hdcd") == 0) {
+    if (processName.compare("hdcd") == 0) {
         HILOG_DEBUG("process name is hdcd");
         return true;
     }
