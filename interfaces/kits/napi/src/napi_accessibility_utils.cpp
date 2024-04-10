@@ -637,6 +637,8 @@ std::string ConvertOperationTypeToString(ActionType type)
         {ActionType::ACCESSIBILITY_ACTION_COMMON, "common"},
         {ActionType::ACCESSIBILITY_ACTION_SET_TEXT, "setText"},
         {ActionType::ACCESSIBILITY_ACTION_DELETED, "delete"},
+        {ActionType::ACCESSIBILITY_ACTION_SET_CURSOR_INDEX, "setCursorIndex"},
+        {ActionType::ACCESSIBILITY_ACTION_GET_CURSOR_INDEX, "getCursorIndex"},
     };
 
     if (triggerActionTable.find(type) == triggerActionTable.end()) {
@@ -732,7 +734,10 @@ ActionType ConvertStringToAccessibleOperationType(const std::string &type)
         {"setSelection", ActionType::ACCESSIBILITY_ACTION_SET_SELECTION},
         {"common", ActionType::ACCESSIBILITY_ACTION_COMMON},
         {"setText", ActionType::ACCESSIBILITY_ACTION_SET_TEXT},
-        {"delete", ActionType::ACCESSIBILITY_ACTION_DELETED}};
+        {"delete", ActionType::ACCESSIBILITY_ACTION_DELETED},
+        {"setCursorIndex", ActionType::ACCESSIBILITY_ACTION_SET_CURSOR_INDEX},
+        {"getCursorIndex", ActionType::ACCESSIBILITY_ACTION_GET_CURSOR_INDEX}};
+        };
 
     if (accessibleOperationTypeTable.find(type) == accessibleOperationTypeTable.end()) {
         HILOG_WARN("invalid key[%{public}s]", type.c_str());
@@ -899,6 +904,13 @@ void ConvertActionArgsJSToNAPI(
             str = ConvertStringJSToNAPI(env, object, propertyNameValue, hasProperty);
             if (hasProperty) {
                 args.insert(std::pair<std::string, std::string>("setText", str.c_str()));
+            }
+            break;
+        case ActionType::ACCESSIBILITY_ACTION_SET_CURSOR_INDEX:
+            napi_create_string_utf8(env, "setCursorIndex", NAPI_AUTO_LENGTH, &propertyNameValue);
+            str = ConvertStringJSToNAPI(env, object, propertyNameValue, hasProperty);
+            if (hasProperty) {
+                args.insert(std::pair<std::string, std::string>("setCursorIndex", str.c_str()));
             }
             break;
         default:
