@@ -32,9 +32,12 @@ extern const std::string MOVE_UNIT_PARAGRAPH;
 extern const std::string ACTION_ARGU_INVALID;
 extern const std::string ACTION_ARGU_SELECT_TEXT_START;
 extern const std::string ACTION_ARGU_SELECT_TEXT_END;
+extern const std::string ACTION_ARGU_SELECT_TEXT_DIR;
 extern const std::string ACTION_ARGU_HTML_ELEMENT;
 extern const std::string ACTION_ARGU_SET_TEXT;
 extern const std::string ACTION_ARGU_MOVE_UNIT;
+extern const std::string ACTION_ARGU_SET_CURSOR_INDEX;
+extern const std::string ACTION_ARGU_GET_CURSOR_INDEX;
 
 // HtmlItemType
 extern const std::string HTML_ITEM_INVALID;
