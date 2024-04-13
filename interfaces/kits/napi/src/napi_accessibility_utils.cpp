@@ -737,6 +737,11 @@ ActionType ConvertStringToAccessibleOperationType(const std::string &type)
         {"delete", ActionType::ACCESSIBILITY_ACTION_DELETED},
         {"setCursorIndex", ActionType::ACCESSIBILITY_ACTION_SET_CURSOR_INDEX},
         {"getCursorIndex", ActionType::ACCESSIBILITY_ACTION_GET_CURSOR_INDEX}};
+        {"home", ActionType::ACCESSIBILITY_ACTION_HOME},
+        {"back", ActionType::ACCESSIBILITY_ACTION_BACK},
+        {"recentTask", ActionType::ACCESSIBILITY_ACTION_RECENTTASK},
+        {"notificationCenter", ActionType::ACCESSIBILITY_ACTION_NOTIFICATIONCENTER},
+        {"controlCenter", ActionType::ACCESSIBILITY_ACTION_CONTROLCENTER}};
 
     if (accessibleOperationTypeTable.find(type) == accessibleOperationTypeTable.end()) {
         HILOG_WARN("invalid key[%{public}s]", type.c_str());
