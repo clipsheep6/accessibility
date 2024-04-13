@@ -917,6 +917,13 @@ void ConvertActionArgsJSToNAPI(
                 args.insert(std::pair<std::string, std::string>("setCursorIndex", str.c_str()));
             }
             break;
+        case ActionType::ACCESSIBILITY_ACTION_GET_CURSOR_INDEX:
+            napi_create_string_utf8(env, "getCursorIndex", NAPI_AUTO_LENGTH, &propertyNameValue);
+            str = ConvertStringJSToNAPI(env, object, propertyNameValue, hasProperty);
+            if (hasProperty) {
+                args.insert(std::pair<std::string, std::string>("getCursorIndex", str.c_str()));
+            }
+            break;
         default:
             break;
     }
