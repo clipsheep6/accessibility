@@ -63,6 +63,8 @@ ohos_shared_library("accessibilityconfig") {
     "../common:accessibility_common",
   ]
 
+  version_script = "libaccessibility_acfwk.map"
+
   external_deps = [
     "c_utils:utils",
     "eventhandler:libeventhandler",

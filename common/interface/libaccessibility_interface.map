@@ -6,10 +6,7 @@
             OHOS::Accessibility::AccessibilityElementOperatorCallbackProxy*;
             virtual?thunk?to?OHOS::Accessibility::AccessibleAbilityManagerCaptionObserverProxy*;
             virtual?thunk?to?OHOS::Accessibility::AccessibilityElementOperatorCallbackStub*;
-            OHOS::IRemoteProxy*;
-            OHOS::IRemoteStub*;
             OHOS::Accessibility::AccessibilityElementOperatorCallbackStub*;
-            non-virtual?thunk?to?OHOS::IRemoteStub*;
             OHOS::Accessibility::AccessibilityElementOperatorProxy*;
             OHOS::Accessibility::AccessibilityElementOperatorStub*;
             OHOS::Accessibility::AccessibilityEnableAbilityListsObserverProxy*;
@@ -43,7 +40,7 @@
             non-virtual?thunk?to?OHOS::Accessibility::RectParcel*;
             non-virtual?thunk?to?OHOS::Accessibility::AccessibilityElementOperatorCallbackStub*;
             non-virtual?thunk?to?OHOS::Accessibility::AccessibleAbilityClientStub*;
-            virtual?thunk?to?OHOS::Accessibility::AccessibleAbilityClientStub*";
+            virtual?thunk?to?OHOS::Accessibility::AccessibleAbilityClientStub*;
             non-virtual?thunk?to?OHOS::Accessibility::AccessibilityElementOperatorStub*;
             virtual?thunk?to?OHOS::Accessibility::AccessibleAbilityClientStub*;
             virtual?thunk?to?OHOS::Accessibility::AccessibilityElementOperatorStub*;
@@ -51,15 +48,6 @@
             virtual?thunk?to?OHOS::Accessibility::AccessibleAbilityManagerServiceStub*;
             virtual?thunk?to?OHOS::Accessibility::AccessibleAbilityChannelStub*;
             OHOS::SystemAbilityLoadCallbackStub*;
-            VTT?for?OHOS::SystemAbilityLoadCallbackStub*;
-            VTT?for?OHOS::Accessibility::*Parcel;
-            VTT?for?OHOS::Accessibility::*Proxy;
-            VTT?for?OHOS::Accessibility::*Stub;
-            vtable?for?OHOS::Accessibility::Rect*;
-            vtable?for?OHOS::Accessibility::*Parcel*;
-            vtable?for?OHOS::Accessibility::*Proxy*;
-            vtable?for?OHOS::Accessibility::*Stub*;
-            vtable?for?OHOS::BrokerDelegator*;
 	    };
     local:
         *;

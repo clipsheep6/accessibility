@@ -95,6 +95,8 @@ ohos_shared_library("accessibleabilityms") {
     "../../resources/config/build:coverage_flags",
   ]
 
+  version_script = "libaccessibilityms.map"
+
   deps = [
     "../../common/interface:accessibility_interface",
     "../../interfaces/innerkits/common:accessibility_common",

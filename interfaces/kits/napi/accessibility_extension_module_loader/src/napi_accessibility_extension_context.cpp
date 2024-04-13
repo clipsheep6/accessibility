@@ -29,6 +29,9 @@ using namespace OHOS::AccessibilityNapi;
 namespace OHOS {
 namespace Accessibility {
 namespace {
+    const std::string ERROR_MESSAGE_SYSTEM_ABNORMALITY = "System abnormality";
+    const std::string ERROR_MESSAGE_PARAMETER_ERROR = "Input parameter error";
+
 static void ConvertAccessibilityWindowInfoToJS(
     napi_env env, napi_value result, const AccessibilityWindowInfo& accessibilityWindowInfo)
 {
@@ -310,8 +313,8 @@ private:
             } else {
                 HILOG_ERROR("Get focus elementInfo failed. ret: %{public}d", *ret);
                 task.Reject(env, CreateJsError(env,
-                    static_cast<int32_t>(ACCESSIBILITY_JS_TO_ERROR_CODE_MAP.at(*ret).errCode),
-                    ACCESSIBILITY_JS_TO_ERROR_CODE_MAP.at(*ret).message));
+                    static_cast<int32_t>(QueryRetMsg(*ret).errCode),
+                    QueryRetMsg(*ret).message));
             }
         };
 
@@ -392,8 +395,8 @@ private:
             } else {
                 HILOG_ERROR("Get root elementInfo failed. ret : %{public}d", *ret);
                 task.Reject(env, CreateJsError(env,
-                    static_cast<int32_t>(ACCESSIBILITY_JS_TO_ERROR_CODE_MAP.at(*ret).errCode),
-                    ACCESSIBILITY_JS_TO_ERROR_CODE_MAP.at(*ret).message));
+                    static_cast<int32_t>(QueryRetMsg(*ret).errCode),
+                    QueryRetMsg(*ret).message));
             }
         };
 
@@ -467,8 +470,8 @@ private:
                 } else {
                     HILOG_ERROR("Get windowInfos failed.");
                     task.Reject(env, CreateJsError(env,
-                        static_cast<int32_t>(ACCESSIBILITY_JS_TO_ERROR_CODE_MAP.at(*ret).errCode),
-                        ACCESSIBILITY_JS_TO_ERROR_CODE_MAP.at(*ret).message));
+                        static_cast<int32_t>(QueryRetMsg(*ret).errCode),
+                        QueryRetMsg(*ret).message));
                 }
         };
 
@@ -509,8 +512,8 @@ private:
                 } else {
                     HILOG_ERROR("Get windowInfosByDisplayId failed.");
                     task.Reject(env, CreateJsError(env,
-                        static_cast<int32_t>(ACCESSIBILITY_JS_TO_ERROR_CODE_MAP.at(*ret).errCode),
-                        ACCESSIBILITY_JS_TO_ERROR_CODE_MAP.at(*ret).message));
+                        static_cast<int32_t>(QueryRetMsg(*ret).errCode),
+                        QueryRetMsg(*ret).message));
                 }
         };
 
@@ -610,8 +613,8 @@ private:
             } else {
                 HILOG_ERROR("Gesture inject failed. ret: %{public}d.", *ret);
                 task.Reject(env, CreateJsError(env,
-                    static_cast<int32_t>(ACCESSIBILITY_JS_TO_ERROR_CODE_MAP.at(*ret).errCode),
-                    ACCESSIBILITY_JS_TO_ERROR_CODE_MAP.at(*ret).message));
+                    static_cast<int32_t>(QueryRetMsg(*ret).errCode),
+                    QueryRetMsg(*ret).message));
             }
         };
 

@@ -62,6 +62,8 @@ ohos_shared_library("accessibilityclient") {
     "../common:accessibility_common",
   ]
 
+  version_script = "libaccessibility_asacfwk.map"
+
   external_deps = [
     "c_utils:utils",
     "hilog:libhilog",

@@ -47,6 +47,16 @@ namespace {
     constexpr int32_t ALPHA_MOVE = 24;
     constexpr int32_t COLOR_MOVE = 8;
     const char UNICODE_BODY = '0';
+
+    const std::string ERROR_MESSAGE_PARAMETER_ERROR = "Input parameter error";
+    const std::string ERROR_MESSAGE_NO_PERMISSION = "Permission denied";
+    const std::string ERROR_MESSAGE_NOT_SYSTEM_APP = "Not system App";
+    const std::string ERROR_MESSAGE_NO_RIGHT = "Do not have accessibility right for this operation";
+    const std::string ERROR_MESSAGE_SYSTEM_ABNORMALITY = "System abnormality";
+    const std::string ERROR_MESSAGE_PROPERTY_NOT_EXIST = "This property does not exist";
+    const std::string ERROR_MESSAGE_ACTION_NOT_SUPPORT = "This action is not supported";
+    const std::string ERROR_MESSAGE_INVALID_BUNDLE_NAME_OR_ABILITY_NAME = "Invalid bundle name or ability name";
+    const std::string ERROR_MESSAGE_TARGET_ABILITY_ALREADY_ENABLED = "Target ability already enabled";
 } // namespace
 using namespace OHOS::Accessibility;
 using namespace OHOS::AccessibilityConfig;
@@ -177,6 +187,56 @@ bool CheckJsFunction(napi_env env, napi_value args)
 
 NAccessibilityErrMsg QueryRetMsg(OHOS::Accessibility::RetError errorCode)
 {
+    static const std::map<OHOS::Accessibility::RetError, NAccessibilityErrMsg> ACCESSIBILITY_JS_TO_ERROR_CODE_MAP {
+        {OHOS::Accessibility::RetError::RET_OK,
+            {NAccessibilityErrorCode::ACCESSIBILITY_OK, ""}},
+        {OHOS::Accessibility::RetError::RET_ERR_FAILED,
+            {NAccessibilityErrorCode::ACCESSIBILITY_ERROR_SYSTEM_ABNORMALITY, ERROR_MESSAGE_SYSTEM_ABNORMALITY}},
+        {OHOS::Accessibility::RetError::RET_ERR_INVALID_PARAM,
+            {NAccessibilityErrorCode::ACCESSIBILITY_ERROR_INVALID_PARAM, ERROR_MESSAGE_PARAMETER_ERROR}},
+        {OHOS::Accessibility::RetError::RET_ERR_NULLPTR,
+            {NAccessibilityErrorCode::ACCESSIBILITY_ERROR_SYSTEM_ABNORMALITY, ERROR_MESSAGE_SYSTEM_ABNORMALITY}},
+        {OHOS::Accessibility::RetError::RET_ERR_IPC_FAILED,
+            {NAccessibilityErrorCode::ACCESSIBILITY_ERROR_SYSTEM_ABNORMALITY, ERROR_MESSAGE_SYSTEM_ABNORMALITY}},
+        {OHOS::Accessibility::RetError::RET_ERR_SAMGR,
+            {NAccessibilityErrorCode::ACCESSIBILITY_ERROR_SYSTEM_ABNORMALITY, ERROR_MESSAGE_SYSTEM_ABNORMALITY}},
+        {OHOS::Accessibility::RetError::RET_ERR_NO_PERMISSION,
+            {NAccessibilityErrorCode::ACCESSIBILITY_ERROR_NO_PERMISSION, ERROR_MESSAGE_NO_PERMISSION}},
+        {OHOS::Accessibility::RetError::RET_ERR_TIME_OUT,
+            {NAccessibilityErrorCode::ACCESSIBILITY_ERROR_SYSTEM_ABNORMALITY, ERROR_MESSAGE_SYSTEM_ABNORMALITY}},
+        {OHOS::Accessibility::RetError::RET_ERR_REGISTER_EXIST,
+            {NAccessibilityErrorCode::ACCESSIBILITY_ERROR_SYSTEM_ABNORMALITY, ERROR_MESSAGE_SYSTEM_ABNORMALITY}},
+        {OHOS::Accessibility::RetError::RET_ERR_NO_REGISTER,
+            {NAccessibilityErrorCode::ACCESSIBILITY_ERROR_SYSTEM_ABNORMALITY, ERROR_MESSAGE_SYSTEM_ABNORMALITY}},
+        {OHOS::Accessibility::RetError::RET_ERR_CONNECTION_EXIST,
+            {NAccessibilityErrorCode::ACCESSIBILITY_ERROR_TARGET_ABILITY_ALREADY_ENABLED,
+            ERROR_MESSAGE_TARGET_ABILITY_ALREADY_ENABLED}},
+        {OHOS::Accessibility::RetError::RET_ERR_NO_CONNECTION,
+            {NAccessibilityErrorCode::ACCESSIBILITY_ERROR_SYSTEM_ABNORMALITY, ERROR_MESSAGE_SYSTEM_ABNORMALITY}},
+        {OHOS::Accessibility::RetError::RET_ERR_NO_WINDOW_CONNECTION,
+            {NAccessibilityErrorCode::ACCESSIBILITY_ERROR_SYSTEM_ABNORMALITY, ERROR_MESSAGE_SYSTEM_ABNORMALITY}},
+        {OHOS::Accessibility::RetError::RET_ERR_NO_CAPABILITY,
+            {NAccessibilityErrorCode::ACCESSIBILITY_ERROR_NO_RIGHT, ERROR_MESSAGE_NO_RIGHT}},
+        {OHOS::Accessibility::RetError::RET_ERR_INVALID_ELEMENT_INFO_FROM_ACE,
+            {NAccessibilityErrorCode::ACCESSIBILITY_ERROR_SYSTEM_ABNORMALITY, ERROR_MESSAGE_SYSTEM_ABNORMALITY}},
+        {OHOS::Accessibility::RetError::RET_ERR_PERFORM_ACTION_FAILED_BY_ACE,
+            {NAccessibilityErrorCode::ACCESSIBILITY_ERROR_SYSTEM_ABNORMALITY, ERROR_MESSAGE_SYSTEM_ABNORMALITY}},
+        {OHOS::Accessibility::RetError::RET_ERR_NO_INJECTOR,
+            {NAccessibilityErrorCode::ACCESSIBILITY_ERROR_SYSTEM_ABNORMALITY, ERROR_MESSAGE_SYSTEM_ABNORMALITY}},
+        {OHOS::Accessibility::RetError::RET_ERR_NOT_INSTALLED,
+            {NAccessibilityErrorCode::ACCESSIBILITY_ERROR_ERROR_EXTENSION_NAME,
+            ERROR_MESSAGE_INVALID_BUNDLE_NAME_OR_ABILITY_NAME}},
+        {OHOS::Accessibility::RetError::RET_ERR_NOT_ENABLED,
+            {NAccessibilityErrorCode::ACCESSIBILITY_ERROR_ERROR_EXTENSION_NAME,
+            ERROR_MESSAGE_INVALID_BUNDLE_NAME_OR_ABILITY_NAME}},
+        {OHOS::Accessibility::RetError::RET_ERR_PROPERTY_NOT_EXIST,
+            {NAccessibilityErrorCode::ACCESSIBILITY_ERROR_PROPERTY_NOT_EXIST, ERROR_MESSAGE_PROPERTY_NOT_EXIST}},
+        {OHOS::Accessibility::RetError::RET_ERR_ACTION_NOT_SUPPORT,
+            {NAccessibilityErrorCode::ACCESSIBILITY_ERROR_ACTION_NOT_SUPPORT, ERROR_MESSAGE_ACTION_NOT_SUPPORT}},
+        {OHOS::Accessibility::RetError::RET_ERR_NOT_SYSTEM_APP,
+            {NAccessibilityErrorCode::ACCESSIBILITY_ERROR_NOT_SYSTEM_APP, ERROR_MESSAGE_NOT_SYSTEM_APP}},
+    };
+
     auto iter = ACCESSIBILITY_JS_TO_ERROR_CODE_MAP.find(errorCode);
     if (iter != ACCESSIBILITY_JS_TO_ERROR_CODE_MAP.end()) {
         return iter->second;
@@ -732,12 +792,7 @@ ActionType ConvertStringToAccessibleOperationType(const std::string &type)
         {"setSelection", ActionType::ACCESSIBILITY_ACTION_SET_SELECTION},
         {"common", ActionType::ACCESSIBILITY_ACTION_COMMON},
         {"setText", ActionType::ACCESSIBILITY_ACTION_SET_TEXT},
-        {"delete", ActionType::ACCESSIBILITY_ACTION_DELETED},
-        {"home", ActionType::ACCESSIBILITY_ACTION_HOME},
-        {"back", ActionType::ACCESSIBILITY_ACTION_BACK},
-        {"recentTask", ActionType::ACCESSIBILITY_ACTION_RECENTTASK},
-        {"notificationCenter", ActionType::ACCESSIBILITY_ACTION_NOTIFICATIONCENTER},
-        {"controlCenter", ActionType::ACCESSIBILITY_ACTION_CONTROLCENTER}};
+        {"delete", ActionType::ACCESSIBILITY_ACTION_DELETED}};
 
     if (accessibleOperationTypeTable.find(type) == accessibleOperationTypeTable.end()) {
         HILOG_WARN("invalid key[%{public}s]", type.c_str());
