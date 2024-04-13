@@ -736,7 +736,7 @@ ActionType ConvertStringToAccessibleOperationType(const std::string &type)
         {"setText", ActionType::ACCESSIBILITY_ACTION_SET_TEXT},
         {"delete", ActionType::ACCESSIBILITY_ACTION_DELETED},
         {"setCursorIndex", ActionType::ACCESSIBILITY_ACTION_SET_CURSOR_INDEX},
-        {"getCursorIndex", ActionType::ACCESSIBILITY_ACTION_GET_CURSOR_INDEX}};
+        {"getCursorIndex", ActionType::ACCESSIBILITY_ACTION_GET_CURSOR_INDEX},
         {"home", ActionType::ACCESSIBILITY_ACTION_HOME},
         {"back", ActionType::ACCESSIBILITY_ACTION_BACK},
         {"recentTask", ActionType::ACCESSIBILITY_ACTION_RECENTTASK},
