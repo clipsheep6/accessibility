@@ -82,6 +82,8 @@ public:
      */
     virtual void OnAccessibilityEvent(const AccessibilityEventInfo &eventInfo) override;
 
+    virtual void EnableScreenCurtain(bool isEnable);
+
     /**
      * @brief Called when a key event occurs.
      * @param keyEvent Indicates the key event to send.

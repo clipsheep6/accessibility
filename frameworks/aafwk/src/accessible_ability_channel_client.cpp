@@ -166,6 +166,34 @@ RetError AccessibleAbilityChannelClient::ExecuteAction(int32_t accessibilityWind
     return elementOperator->executeActionResult_ ? RET_OK : RET_ERR_PERFORM_ACTION_FAILED_BY_ACE;
 }
 
+RetError AccessibleAbilityChannelClient::EnableScreenCurtain(bool isEnable)
+{
+    HILOG_DEBUG("[channelId:%{public}d]", channelId_);
+    HITRACE_METER_NAME(HITRACE_TAG_ACCESSIBILITY_MANAGER, "ExecuteAction");
+    if (!proxy_) {
+        HILOG_ERROR("ExecuteAction Failed to connect to aams [channelId:%{public}d]", channelId_);
+        return RET_ERR_SAMGR;
+    }
+
+    sptr<AccessibilityElementOperatorCallbackImpl> elementOperator =
+        new(std::nothrow) AccessibilityElementOperatorCallbackImpl();
+    if (!elementOperator) {
+        HILOG_ERROR("ExecuteAction Failed to create elementOperator.");
+        return RET_ERR_NULLPTR;
+    }
+    std::future<void> promiseFuture = elementOperator->promise_.get_future();
+
+    std::future_status wait = promiseFuture.wait_for(std::chrono::milliseconds(TIME_OUT_OPERATOR));
+    if (wait != std::future_status::ready) {
+        HILOG_ERROR("Failed to wait result");
+        return RET_ERR_TIME_OUT;
+    }
+    HILOG_INFO("Get result successfully from ace. executeActionResult_[%{public}d]",
+        elementOperator->executeActionResult_);
+
+    return elementOperator->executeActionResult_ ? RET_OK : RET_ERR_PERFORM_ACTION_FAILED_BY_ACE;
+}
+
 RetError AccessibleAbilityChannelClient::SearchElementInfosByAccessibilityId(int32_t accessibilityWindowId,
     int64_t elementId, int32_t mode, std::vector<AccessibilityElementInfo> &elementInfos, bool isFilter)
 {

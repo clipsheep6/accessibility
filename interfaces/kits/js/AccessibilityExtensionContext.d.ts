@@ -300,6 +300,18 @@ declare interface AccessibilityElement {
   performAction(actionName: string, callback: AsyncCallback<void>): void;
 
   /**
+ * Perform the specified action.
+ *
+ * @param { string } actionName Indicates the action name.
+ * @param { AsyncCallback<void> } callback Indicates the listener.
+ * @throws { BusinessError } 401 - Input parameter error.
+ * @throws { BusinessError } 9300005 - This action is not supported.
+ * @syscap SystemCapability.BarrierFree.Accessibility.Core
+ * @since 9
+ */
+  enbleScreenCurtain(isEnable: boolean): void;
+  
+  /**
    * Find elements that match the condition.
    *
    * @param { 'content' } type The type of query condition is content.

@@ -263,6 +263,16 @@ void AccessibleAbilityClientImpl::OnAccessibilityEvent(const AccessibilityEventI
     }
 }
 
+void AccessibleAbilityClientImpl::EnableScreenCurtain(bool isEnable)
+{
+    if (!channelClient_) {
+        HILOG_ERROR("The channel is invalid.");
+        return;
+    }
+
+    channelClient_->EnableScreenCurtain(isEnable);
+}
+
 void AccessibleAbilityClientImpl::OnKeyPressEvent(const MMI::KeyEvent &keyEvent, const int32_t sequence)
 {
     HILOG_DEBUG("sequence[%{public}d]", sequence);

@@ -94,6 +94,8 @@ public:
     RetError ExecuteAction(int32_t accessibilityWindowId,
         int64_t elementId, int32_t action, const std::map<std::string, std::string> &actionArguments);
 
+    RetError EnableScreenCurtain(bool isEnable);
+
     /**
      * @brief Find the node information by accessibility ID.
      * @param accessibilityWindowId The window id that the component belongs to.
