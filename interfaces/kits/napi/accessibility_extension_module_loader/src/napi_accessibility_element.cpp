@@ -1131,23 +1131,17 @@ napi_value NAccessibilityElement::enbleScreenCurtain(napi_env env, napi_callback
 
     //同步解析bool值
     bool isEnable = true;
-    napi_get_boolean(env, isEnable, &thisVar);
-    // napi_get_boolean(env, isEnable, &result);
-
+    napi_get_value_bool(env, thisVar, &isEnable);
+    // napi_get_boolean(env, isEnable, &result)
+    auto asaClient = AccessibleAbilityClient::GetInstance();
+    if (asaClient) {
+        errCode = asaClient->enbleScreenCurtain(isEnable);
+        if (errCode != OHOS::Accessibility::RET_OK) {
+            HILOG_ERROR("fail to get abilityList");
+        }
+    }
     return thisVar;
 }
-
-// napi_value NAccessibilityElement::enbleScreenCurtain(napi_env env, napi_callback_info info)
-// {
-//     //同步解析bool值
-//     bool isEnable = true;
-//     napi_value result;
-//     napi_get_value_boolean(env, isEnable, &result);
-//     return result;
-
-//     AccessibleAbilityClient::GetInstance()->EnableScreenCurtain(isEnable);
-// }
-
 
 napi_value NAccessibilityElement::PerformAction(napi_env env, napi_callback_info info)
 {

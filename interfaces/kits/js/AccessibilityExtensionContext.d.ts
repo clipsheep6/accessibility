@@ -299,17 +299,17 @@ declare interface AccessibilityElement {
    */
   performAction(actionName: string, callback: AsyncCallback<void>): void;
 
-  /**
- * Perform the specified action.
- *
- * @param { string } actionName Indicates the action name.
- * @param { AsyncCallback<void> } callback Indicates the listener.
- * @throws { BusinessError } 401 - Input parameter error.
- * @throws { BusinessError } 9300005 - This action is not supported.
- * @syscap SystemCapability.BarrierFree.Accessibility.Core
- * @since 9
- */
-  enbleScreenCurtain(isEnable: boolean): void;
+ /**
+   * Set the screen curtain enable or disable.
+   *
+   * @param { boolean } isEnable Indicates whether the screen curtain is enabled.
+   * @throws { BusinessError } 401 - Input parameter error.
+   * @throws { BusinessError } 9300003 -  Do not have accessibility right for this operation.
+   * @syscap SystemCapability.BarrierFree.Accessibility.Core
+   * @systemapi
+   * @since 9
+   */
+ enbleScreenCurtain(isEnable: boolean): void;
   
   /**
    * Find elements that match the condition.
