@@ -124,6 +124,15 @@ public:
 
     /**
      * @brief Obtains the list of interactive windows on the device, in the layers they are visible to users.
+     * @param windows The information of windows.
+     * @return Return RET_OK if obtains windowInfo successfully, otherwise refer to the RetError for the failure.
+     */
+    virtual RetError EnableScreenCurtain(const int32_t accessibilityWindowId, const int64_t elementId,
+    const int32_t action, const std::map<std::string, std::string> &actionArguments, const int32_t requestId,
+    bool isEnable);
+
+    /**
+     * @brief Obtains the list of interactive windows on the device, in the layers they are visible to users.
      * @param displayId the id of display
      * @param windows The information of windows.
      * @return Return RET_OK if obtains windowInfo successfully, otherwise refer to the RetError for the failure.

@@ -265,6 +265,20 @@ RetError AccessibleAbilityChannel::TransmitActionToMmi(const int32_t action)
     return RET_OK;
 }
 
+RetError AccessibleAbilityChannel::EnableScreenCurtain(bool isEnable)
+{
+    HILOG_DEBUG();
+
+    if (!eventHandler_) {
+        HILOG_ERROR("eventHandler_ is nullptr.");
+        return RET_ERR_NULLPTR;
+    }
+
+    OHOS::Rosen::RSInterfaces::SetCurtainScreenUsingStatus(isEnable);
+
+    return RET_OK;
+}
+
 RetError AccessibleAbilityChannel::ExecuteAction(const int32_t accessibilityWindowId, const int64_t elementId,
     const int32_t action, const std::map<std::string, std::string> &actionArguments, const int32_t requestId,
     const sptr<IAccessibilityElementOperatorCallback> &callback)
