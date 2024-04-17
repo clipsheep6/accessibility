@@ -83,6 +83,12 @@ public:
     virtual void OnAccessibilityEvent(const AccessibilityEventInfo &eventInfo) override;
 
     /**
+     * @brief Curtain screen ability.
+     * @param isEnable Flag bits for opening or closing.
+     */
+    virtual void EnableScreenCurtain(bool isEnable);
+
+    /**
      * @brief Called when a key event occurs.
      * @param keyEvent Indicates the key event to send.
      * @param sequence The sequence of the key event.

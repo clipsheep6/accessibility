@@ -1114,6 +1114,35 @@ void NAccessibilityElement::ActionNamesComplete(napi_env env, napi_status status
     callbackInfo = nullptr;
 }
 
+napi_value NAccessibilityElement::enbleScreenCurtain(napi_env env, napi_callback_info info)
+{
+    size_t argc = ARGS_SIZE_THREE;
+    napi_value argv[ARGS_SIZE_THREE] = { 0 };
+    napi_value thisVar;
+    void* data = nullptr;
+    napi_status status = napi_get_cb_info(env, info, &argc, argv, &thisVar, &data);
+    if (status != napi_ok) {
+        HILOG_ERROR("Failed to get cb info");
+        napi_value err = CreateBusinessError(env, RetError::RET_ERR_FAILED);
+        napi_throw(env, err);
+        return nullptr;
+    }
+    HILOG_DEBUG("argc = %{public}zu", argc);
+
+    //同步解析bool值
+    bool isEnable = true;
+    napi_get_value_bool(env, thisVar, &isEnable);
+    // napi_get_boolean(env, isEnable, &result)
+    auto asaClient = AccessibleAbilityClient::GetInstance();
+    if (asaClient) {
+        errCode = asaClient->enbleScreenCurtain(isEnable);
+        if (errCode != OHOS::Accessibility::RET_OK) {
+            HILOG_ERROR("fail to get abilityList");
+        }
+    }
+    return thisVar;
+}
+
 napi_value NAccessibilityElement::PerformAction(napi_env env, napi_callback_info info)
 {
     size_t argc = ARGS_SIZE_THREE;

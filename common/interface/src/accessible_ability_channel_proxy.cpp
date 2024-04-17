@@ -244,6 +244,61 @@ RetError AccessibleAbilityChannelProxy::FocusMoveSearch(const int32_t accessibil
     return static_cast<RetError>(reply.ReadInt32());
 }
 
+RetError AccessibleAbilityChannelProxy::EnableScreenCurtain(const int32_t accessibilityWindowId, const int64_t elementId,
+    const int32_t action, const std::map<std::string, std::string> &actionArguments, const int32_t requestId,
+    bool isEnable)
+{
+    HILOG_DEBUG();
+
+    MessageParcel data;
+    MessageParcel reply;
+    MessageOption option;
+
+    if (!WriteInterfaceToken(data)) {
+        return RET_ERR_IPC_FAILED;
+    }
+    if (!data.WriteInt32(accessibilityWindowId)) {
+        HILOG_ERROR("accessibilityWindowId write error: %{public}d, ", accessibilityWindowId);
+        return RET_ERR_IPC_FAILED;
+    }
+    if (!data.WriteInt64(elementId)) {
+        HILOG_ERROR("elementId write error: %{public}" PRId64 "", elementId);
+        return RET_ERR_IPC_FAILED;
+    }
+    if (!data.WriteInt32(action)) {
+        HILOG_ERROR("action write error: %{public}d, ", action);
+        return RET_ERR_IPC_FAILED;
+    }
+
+    std::vector<std::string> actionArgumentsKey {};
+    std::vector<std::string> actionArgumentsValue {};
+    for (auto iter = actionArguments.begin(); iter != actionArguments.end(); iter++) {
+        actionArgumentsKey.push_back(iter->first);
+        actionArgumentsValue.push_back(iter->second);
+    }
+    if (!data.WriteStringVector(actionArgumentsKey)) {
+        HILOG_ERROR("actionArgumentsKey write error");
+        return RET_ERR_IPC_FAILED;
+    }
+    if (!data.WriteStringVector(actionArgumentsValue)) {
+        HILOG_ERROR("actionArgumentsValue write error");
+        return RET_ERR_IPC_FAILED;
+    }
+
+    if (!data.WriteInt32(requestId)) {
+        HILOG_ERROR("requestId write error: %{public}d, ", requestId);
+        return RET_ERR_IPC_FAILED;
+    }
+
+    if (!SendTransactCmd(AccessibilityInterfaceCode::PERFORM_ACTION,
+        data, reply, option)) {
+        HILOG_ERROR("fail to perform accessibility action");
+        return RET_ERR_IPC_FAILED;
+    }
+    AccessibleAbilityChannel::EnableScreenCurtain(isEnable);
+    return static_cast<RetError>(reply.ReadInt32());
+}
+
 RetError AccessibleAbilityChannelProxy::ExecuteAction(const int32_t accessibilityWindowId, const int64_t elementId,
     const int32_t action, const std::map<std::string, std::string> &actionArguments, const int32_t requestId,
     const sptr<IAccessibilityElementOperatorCallback> &callback)
