@@ -114,7 +114,7 @@ void AccessibleAbilityManagerServiceUnitTest::RegisterAbilityConnectionClient(co
  */
 HWTEST_F(AccessibleAbilityManagerServiceUnitTest, GetInstance_001, TestSize.Level1)
 {
-    GTEST_LOG_(INFO) << "AccessibleAbilityManagerServiceUnitTest_Unittest_GetInstance_001 start";
+    GTEST_LOG_(INFO) << "AccessibleAbilityManagerServiceUnitTest_Unittest_GetInstance_001 start.";
 
     auto ins = &Singleton<AccessibleAbilityManagerService>::GetInstance();
     EXPECT_TRUE(ins);

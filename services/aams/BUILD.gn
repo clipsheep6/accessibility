@@ -82,6 +82,7 @@ ohos_shared_library("accessibleabilityms") {
   }
 
   sources = accessibleabilityms_files
+  version_script = "libaccessibilityms.map"
   if (accessibility_feature_power_manager) {
     sources += [ "${services_path}/src/accessibility_power_manager.cpp" ]
   }
