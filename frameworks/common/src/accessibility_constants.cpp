@@ -28,9 +28,12 @@ const std::string MOVE_UNIT_PARAGRAPH = "paragraph";
 const std::string ACTION_ARGU_INVALID = "invalid";
 const std::string ACTION_ARGU_SELECT_TEXT_START = "selectTextBegin";
 const std::string ACTION_ARGU_SELECT_TEXT_END = "selectTextEnd";
+const std::string ACTION_ARGU_SELECT_TEXT_DIR = "selectTextDir";
 const std::string ACTION_ARGU_HTML_ELEMENT = "htmlItem";
 const std::string ACTION_ARGU_SET_TEXT = "setText";
 const std::string ACTION_ARGU_MOVE_UNIT = "textMoveUnit";
+const std::string ACTION_ARGU_SET_CURSOR_INDEX = "setCursorIndex";
+const std::string ACTION_ARGU_GET_CURSOR_INDEX = "getCursorIndex";
 
 // HtmlItemType
 const std::string HTML_ITEM_INVALID = "invalid";
