@@ -60,6 +60,10 @@ public:
     {
         return RET_OK;
     }
+    RetError EnableScreenCurtain(bool isEnable) override
+    {
+        return RET_OK;
+    }
     RetError GetWindow(const int32_t windowId, AccessibilityWindowInfo &windowInfo) override
     {
         return RET_OK;

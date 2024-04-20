@@ -222,6 +222,13 @@ public:
         const std::map<std::string, std::string> &actionArguments) = 0;
 
     /**
+     * @brief Enable status value.
+     * @param isEnable flag Screen Curtain.
+     * @return Return RET_OK if registers listener successfully, otherwise refer to the RetError for the failure.
+     */
+    virtual RetError EnableScreenCurtain(bool isEnable) = 0;
+
+    /**
      * @brief Register ability listener.
      * @param listener The listener to add.
      * @return Return RET_OK if registers listener successfully, otherwise refer to the RetError for the failure.
