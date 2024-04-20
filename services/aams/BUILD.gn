@@ -29,6 +29,7 @@ config("aams_service_config") {
   include_dirs = [
     "include",
     "../../common/log/include",
+    "../../accessibility_graphics/inc",
   ]
 
   defines = [
@@ -68,6 +69,7 @@ accessibleabilityms_files = [
   "${services_path}/src/accessibility_setting_observer.cpp",
   "${services_path}/src/accessibility_setting_provider.cpp",
   "${services_path}/src/accessibility_short_key_dialog.cpp",
+  "${services_path}/src/accessibility_graphic_proxy.cpp",
 ]
 
 ohos_shared_library("accessibleabilityms") {
@@ -113,8 +115,6 @@ ohos_shared_library("accessibleabilityms") {
     "data_share:datashare_consumer",
     "display_manager:displaymgr",
     "eventhandler:libeventhandler",
-    "graphic_2d:2d_graphics",
-    "graphic_2d:librender_service_client",
     "hilog:libhilog",
     "hisysevent:libhisysevent",
     "hitrace:hitrace_meter",
