@@ -273,4 +273,13 @@ void SystemAbility::OnDeviceLevelChanged(int32_t type, int32_t level, std::strin
     (void)level;
     (void)action;
 }
+
+bool SystemAbility::OnExtension(std::string extension, MessageParcel& data, MessageParcel& reply)
+{
+    GTEST_LOG_(INFO) << "MOCK SystemAbility OnExtension";
+    (void)extension;
+    (void)data;
+    (void)reply;
+    return true;
+}
 }
