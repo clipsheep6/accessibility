@@ -182,7 +182,6 @@ private:
 
     int32_t channelId_ = INVALID_CHANNEL_ID;
     int32_t accessibilityFocusedWindowId_ = INVALID_WINDOW_ID;
-    int64_t accessibilityFocusedElementId_ = INVALID_WINDOW_ID;
     sptr<IAccessibleAbilityChannel> proxy_ = nullptr;
     std::atomic<int> requestId_ = 0;
 };
