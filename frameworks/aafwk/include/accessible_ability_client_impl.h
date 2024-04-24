@@ -338,6 +338,9 @@ public:
         std::vector<AccessibilityElementInfo> &elementInfos);
     RetError SearchElementInfoRecursive(int32_t windowId, int64_t elementId, int mode,
         std::vector<AccessibilityElementInfo> &elementInfos, bool isFilter = false);
+    RetError SearchElementInfoRecursiveByWinid(int32_t windowId, int64_t elementId,
+        int mode, std::vector<AccessibilityElementInfo> &elementInfos, bool isFilter = false,
+        AccessibilityElementInfo *parentInfo = nullptr);
     void RemoveCacheData(const AccessibilityEventInfo &eventInfo);
     void AddCacheByWMS(int32_t windowId, int64_t elementId, std::vector<AccessibilityElementInfo>& elementInfos);
     void AddCacheByAce(int32_t windowId, int64_t elementId, std::vector<AccessibilityElementInfo>& elementInfos);

@@ -81,11 +81,30 @@ public:
         const sptr<IAccessibilityElementOperator> &operation, bool isApp) override;
 
     /**
+     * @brief Register the element operator, so the AA can get node info from ACE.
+     * @param windowId Window ID
+     * @param treeId Tree ID
+     * @param operation The callback object.
+     * @param isApp Whether an application.
+     * @return Returns RET_OK if successful, otherwise refer to the RetError for the failure.
+     */
+    virtual RetError RegisterElementOperator(Registration parameter, int32_t  &treeId, int64_t nodeId,
+        const sptr<IAccessibilityElementOperator> &operation, bool isApp) override;
+
+    /**
      * @brief Deregister the element operator.
      * @param windowId Window ID
      * @return Returns RET_OK if successful, otherwise refer to the RetError for the failure.
      */
     virtual RetError DeregisterElementOperator(const int32_t windowId) override;
+
+    /**
+     * @brief Deregister the element operator.
+     * @param windowId Window ID
+     * @param treeId Tree ID
+     * @return Returns RET_OK if successful, otherwise refer to the RetError for the failure.
+     */
+    virtual RetError DeregisterElementOperator(const int32_t windowId, const int32_t treeId) override;
 
     virtual RetError GetCaptionProperty(AccessibilityConfig::CaptionProperty &caption) override;
     virtual RetError SetCaptionProperty(const AccessibilityConfig::CaptionProperty &caption) override;

@@ -25,7 +25,28 @@ AccessibilityWindowConnection::AccessibilityWindowConnection(
     accountId_ = accountId;
 }
 
+AccessibilityWindowConnection::AccessibilityWindowConnection(
+    const int32_t windowId, const int32_t treeId,
+    const sptr<IAccessibilityElementOperator>& connection, const int32_t accountId)
+{
+    windowId_ = windowId;
+    treeId_ = treeId;
+    proxy_ = connection;
+    accountId_ = accountId;
+}
+
 AccessibilityWindowConnection::~AccessibilityWindowConnection()
 {}
+
+RetError AccessibilityWindowConnection::SetCardProxy(const int32_t treeId,
+    sptr<IAccessibilityElementOperator> operation)
+{
+    if (!operation) {
+        return RET_ERR_FAILED;
+    }
+    cardProxy_[treeId] = operation;
+    return RET_OK;
+}
+
 } // namespace Accessibility
 } // namespace OHOS

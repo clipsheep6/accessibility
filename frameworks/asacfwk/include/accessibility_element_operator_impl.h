@@ -146,6 +146,23 @@ public:
     int32_t GetWindowId();
 
     /**
+     * @brief Set the childtree id to AA
+     * @param nodeId The node ID.
+     * @param childWindowId The childwindow ID.
+     * @param childTreeId The childTree ID.
+     * @return The unique id of the window related with operator object.
+     */
+    virtual void SetChildTreeIdAndWinId(const int64_t nodeId, const int32_t childTreeId,
+        const int32_t childWindowId) override;
+
+    /**
+     * @brief Get the belongTree id to AA
+     * @param  treeId The tree ID.
+     * @return The unique id of the window related with operator object.
+     */
+    virtual void SetBelongTreeId(const int32_t treeId) override;
+
+    /**
      * @brief Set the element information by accessibility id to AA.
      * @param infos The element info searched by accessibility id.
      * @param requestId The request id from AA, it is used to match with request and response.
@@ -193,6 +210,7 @@ public:
      * @param requestId The request id from AA, it is used to match with request and response.
      */
     void SetCursorPositionResult(const int32_t cursorPosition, const int32_t requestId);
+    static int32_t GetWindIdByRequestId(const int32_t requestId);
 
 private:
     int32_t AddRequest(int32_t requestId, const sptr<IAccessibilityElementOperatorCallback> &callback);
@@ -202,6 +220,7 @@ private:
     AccessibilityElementOperatorCallback &operatorCallback_;
     std::shared_ptr<AccessibilityElementOperator> operator_ = nullptr;
     std::unordered_map<int32_t, sptr<IAccessibilityElementOperatorCallback>> requests_;
+    static std::unordered_map<int32_t, int32_t> requestWindId_; //key requestid
     DISALLOW_COPY_AND_MOVE(AccessibilityElementOperatorImpl);
 };
 

@@ -100,7 +100,12 @@ public:
     RetError RegisterElementOperator(const int32_t windowId,
         const sptr<IAccessibilityElementOperator> &operation, bool isApp) override;
 
+    RetError RegisterElementOperator(Registration parameter, int32_t &treeId,
+        int64_t nodeId, const sptr<IAccessibilityElementOperator> &operation, bool isApp) override;
+
     RetError DeregisterElementOperator(const int32_t windowId) override;
+
+    RetError DeregisterElementOperator(const int32_t windowId, const int32_t treeId) override;
 
     RetError GetCaptionProperty(AccessibilityConfig::CaptionProperty &caption) override;
     RetError SetCaptionProperty(const AccessibilityConfig::CaptionProperty &caption) override;

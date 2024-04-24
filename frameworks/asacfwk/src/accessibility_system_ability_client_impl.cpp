@@ -24,9 +24,8 @@
 namespace OHOS {
 namespace Accessibility {
 namespace {
-    constexpr int32_t REQUEST_WINDOW_ID_MASK_BIT = 16;
-    constexpr int32_t CONFIG_PARAMETER_VALUE_SIZE = 10;
     const std::string SYSTEM_PARAMETER_AAMS_NAME = "accessibility.config.ready";
+    constexpr int32_t SA_CONNECT_TIMEOUT = 500; // ms
 } // namespaces
 
 static std::mutex g_Mutex;
@@ -219,6 +218,42 @@ RetError AccessibilitySystemAbilityClientImpl::RegisterElementOperator(
     return serviceProxy_->RegisterElementOperator(windowId, aamsInteractionOperator);
 }
 
+RetError AccessibilitySystemAbilityClientImpl::RegisterElementOperator(Registration parameter, int32_t &treeId,
+    const std::shared_ptr<AccessibilityElementOperator> &operation)
+{
+    HILOG_INFO("new Register start");
+    HILOG_INFO("Register parentWindowId[%{public}d], parentTreeId[%{public}d]] start",
+        parameter.parentWindowId, parameter.parentTreeId);
+    HILOG_INFO("Register windowId[%{public}d], nodeId[%{public}" PRId64 "] start",
+        parameter.windowId, parameter.elementId);
+
+    std::lock_guard<std::mutex> lock(mutex_);
+    if (!operation) {
+        HILOG_ERROR("Input operation is null");
+        return RET_ERR_INVALID_PARAM;
+    }
+
+    if (!serviceProxy_) {
+        HILOG_ERROR("Failed to get aams service");
+        return RET_ERR_SAMGR;
+    }
+
+    auto iter = elementOperators_.find(parameter.windowId);
+    if (iter != elementOperators_.end()) {
+        HILOG_ERROR("windowID[%{public}d] is exited", parameter.windowId);
+        return RET_OK;
+    }
+
+    sptr<AccessibilityElementOperatorImpl> aamsInteractionOperator =
+        new(std::nothrow) AccessibilityElementOperatorImpl(parameter.windowId, operation, *this);
+    if (!aamsInteractionOperator) {
+        HILOG_ERROR("Failed to create aamsInteractionOperator.");
+        return RET_ERR_NULLPTR;
+    }
+    elementOperators_[parameter.windowId] = aamsInteractionOperator;
+    return serviceProxy_->RegisterElementOperator(parameter, treeId, parameter.elementId, aamsInteractionOperator);
+}
+
 void AccessibilitySystemAbilityClientImpl::ReregisterElementOperator()
 {
     HILOG_DEBUG();
@@ -227,6 +262,7 @@ void AccessibilitySystemAbilityClientImpl::ReregisterElementOperator()
         HILOG_ERROR("serviceProxy_ is null.");
         return;
     }
+
     for (auto iter = elementOperators_.begin(); iter != elementOperators_.end(); iter++) {
         serviceProxy_->RegisterElementOperator(iter->first, iter->second);
     }
@@ -459,8 +495,9 @@ void AccessibilitySystemAbilityClientImpl::SetSearchElementInfoByAccessibilityId
 {
     std::lock_guard<std::mutex> lock(mutex_);
     HILOG_DEBUG("search element requestId[%{public}d]", requestId);
+    int32_t windId = AccessibilityElementOperatorImpl::GetWindIdByRequestId(requestId);
     if (requestId >= 0) {
-        auto iter = elementOperators_.find(static_cast<uint32_t>(requestId) >> REQUEST_WINDOW_ID_MASK_BIT);
+        auto iter = elementOperators_.find(static_cast<uint32_t>(windId));
         if (iter != elementOperators_.end()) {
             if (iter->second) {
                 iter->second->SetSearchElementInfoByAccessibilityIdResult(infos, requestId);
@@ -474,8 +511,9 @@ void AccessibilitySystemAbilityClientImpl::SetSearchElementInfoByTextResult(
 {
     std::lock_guard<std::mutex> lock(mutex_);
     HILOG_DEBUG("requestId[%{public}d]", requestId);
+    int32_t windId = AccessibilityElementOperatorImpl::GetWindIdByRequestId(requestId);
     if (requestId >= 0) {
-        auto iter = elementOperators_.find(static_cast<uint32_t>(requestId) >> REQUEST_WINDOW_ID_MASK_BIT);
+        auto iter = elementOperators_.find(static_cast<uint32_t>(windId));
         if (iter != elementOperators_.end()) {
             if (iter->second) {
                 iter->second->SetSearchElementInfoByTextResult(infos, requestId);
@@ -489,8 +527,9 @@ void AccessibilitySystemAbilityClientImpl::SetFindFocusedElementInfoResult(
 {
     std::lock_guard<std::mutex> lock(mutex_);
     HILOG_DEBUG("requestId[%{public}d]", requestId);
+    int32_t windId = AccessibilityElementOperatorImpl::GetWindIdByRequestId(requestId);
     if (requestId >= 0) {
-        auto iter = elementOperators_.find(static_cast<uint32_t>(requestId) >> REQUEST_WINDOW_ID_MASK_BIT);
+        auto iter = elementOperators_.find(static_cast<uint32_t>(windId));
         if (iter != elementOperators_.end()) {
             if (iter->second) {
                 iter->second->SetFindFocusedElementInfoResult(info, requestId);
@@ -504,8 +543,9 @@ void AccessibilitySystemAbilityClientImpl::SetFocusMoveSearchResult(
 {
     std::lock_guard<std::mutex> lock(mutex_);
     HILOG_DEBUG("requestId[%{public}d]", requestId);
+    int32_t windId = AccessibilityElementOperatorImpl::GetWindIdByRequestId(requestId);
     if (requestId >= 0) {
-        auto iter = elementOperators_.find(static_cast<uint32_t>(requestId) >> REQUEST_WINDOW_ID_MASK_BIT);
+        auto iter = elementOperators_.find(static_cast<uint32_t>(windId));
         if (iter != elementOperators_.end()) {
             if (iter->second) {
                 iter->second->SetFocusMoveSearchResult(info, requestId);
@@ -519,8 +559,9 @@ void AccessibilitySystemAbilityClientImpl::SetExecuteActionResult(
 {
     std::lock_guard<std::mutex> lock(mutex_);
     HILOG_DEBUG("requestId[%{public}d]", requestId);
+    int32_t windId = AccessibilityElementOperatorImpl::GetWindIdByRequestId(requestId);
     if (requestId >= 0) {
-        auto iter = elementOperators_.find(static_cast<uint32_t>(requestId) >> REQUEST_WINDOW_ID_MASK_BIT);
+        auto iter = elementOperators_.find(static_cast<uint32_t>(windId));
         if (iter != elementOperators_.end()) {
             if (iter->second) {
                 iter->second->SetExecuteActionResult(succeeded, requestId);
@@ -534,8 +575,9 @@ void AccessibilitySystemAbilityClientImpl::SetCursorPositionResult(
 {
     std::lock_guard<std::mutex> lock(mutex_);
     HILOG_DEBUG("requestId[%{public}d]  cursorPosition[%{public}d]", requestId, cursorPosition);
+    int32_t windId = AccessibilityElementOperatorImpl::GetWindIdByRequestId(requestId);
     if (requestId >= 0) {
-        auto iter = elementOperators_.find(static_cast<uint32_t>(requestId) >> REQUEST_WINDOW_ID_MASK_BIT);
+        auto iter = elementOperators_.find(static_cast<uint32_t>(windId));
         if (iter != elementOperators_.end()) {
             if (iter->second) {
                 iter->second->SetCursorPositionResult(cursorPosition, requestId);

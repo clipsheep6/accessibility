@@ -137,8 +137,14 @@ AccessibleAbilityManagerServiceStub::AccessibleAbilityManagerServiceStub()
         AccessibilityInterfaceCode::REGISTER_INTERACTION_CONNECTION)] =
         &AccessibleAbilityManagerServiceStub::HandleRegisterAccessibilityElementOperator;
     memberFuncMap_[static_cast<uint32_t>(
+        AccessibilityInterfaceCode::CARDREGISTER_INTERACTION_CONNECTION)] =
+        &AccessibleAbilityManagerServiceStub::HandleLatestRegisterAccessibilityElementOperator;
+    memberFuncMap_[static_cast<uint32_t>(
         AccessibilityInterfaceCode::DEREGISTER_INTERACTION_CONNECTION)] =
         &AccessibleAbilityManagerServiceStub::HandleDeregisterAccessibilityElementOperator;
+    memberFuncMap_[static_cast<uint32_t>(
+        AccessibilityInterfaceCode::CARDDEREGISTER_INTERACTION_CONNECTION)] =
+        &AccessibleAbilityManagerServiceStub::HandleLatestDeregisterAccessibilityElementOperator;
 
     memberFuncMap_[static_cast<uint32_t>(AccessibilityInterfaceCode::GET_ENABLED)] =
         &AccessibleAbilityManagerServiceStub::HandleGetEnabled;
@@ -334,6 +340,31 @@ ErrCode AccessibleAbilityManagerServiceStub::HandleRegisterAccessibilityElementO
     return NO_ERROR;
 }
 
+ErrCode AccessibleAbilityManagerServiceStub::HandleLatestRegisterAccessibilityElementOperator(
+    MessageParcel &data, MessageParcel &reply)
+{
+    HILOG_DEBUG();
+
+    Registration parameter;
+    parameter.windowId = data.ReadInt32();
+    parameter.parentWindowId = data.ReadInt32();
+    parameter.parentTreeId = data.ReadInt32();
+    parameter.elementId = data.ReadInt64();
+
+    int32_t treeId = data.ReadInt32();
+    int32_t nodeId = data.ReadInt64();
+    sptr<IRemoteObject> obj = data.ReadRemoteObject();
+    sptr<IAccessibilityElementOperator> operation = iface_cast<IAccessibilityElementOperator>(obj);
+    if (operation == nullptr) {
+        HILOG_ERROR("iface_cast obj failed");
+        return TRANSACTION_ERR;
+    }
+    bool isApp = IsApp();
+    RegisterElementOperator(parameter, treeId, nodeId, operation, isApp);
+
+    return NO_ERROR;
+}
+
 ErrCode AccessibleAbilityManagerServiceStub::HandleDeregisterAccessibilityElementOperator(
     MessageParcel &data, MessageParcel &reply)
 {
@@ -341,6 +372,18 @@ ErrCode AccessibleAbilityManagerServiceStub::HandleDeregisterAccessibilityElemen
 
     int32_t windowId = data.ReadInt32();
     DeregisterElementOperator(windowId);
+
+    return NO_ERROR;
+}
+
+ErrCode AccessibleAbilityManagerServiceStub::HandleLatestDeregisterAccessibilityElementOperator(
+    MessageParcel &data, MessageParcel &reply)
+{
+    HILOG_DEBUG();
+
+    int32_t windowId = data.ReadInt32();
+    int32_t treeId = data.ReadInt32();
+    DeregisterElementOperator(windowId, treeId);
 
     return NO_ERROR;
 }
