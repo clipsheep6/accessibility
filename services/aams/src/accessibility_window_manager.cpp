@@ -608,9 +608,9 @@ void AccessibilityWindowManager::WindowUpdateProperty(const std::vector<sptr<Ros
 
 void AccessibilityWindowManager::WindowUpdateAll(const std::vector<sptr<Rosen::AccessibilityWindowInfo>>& infos)
 {
-    HILOG_DEBUG("WindowUpdateAll info size(%{public}u)", infos.size());
+    // HILOG_DEBUG("WindowUpdateAll info size(%{public}u)", infos.size());
     DeInit();
-    HILOG_DEBUG("WindowUpdateAll a11yWindowInfo_ size(%{public}u)", a11yWindows_.size());
+    // HILOG_DEBUG("WindowUpdateAll a11yWindowInfo_ size(%{public}u)", a11yWindows_.size());
     for (auto &window : infos) {
         if (!window) {
             HILOG_ERROR("window is nullptr");
@@ -631,7 +631,7 @@ void AccessibilityWindowManager::WindowUpdateAll(const std::vector<sptr<Rosen::A
             SetActiveWindow(realWid);
         }
     }
-    HILOG_DEBUG("WindowUpdateAll a11yWindowInfo_ size(%{public}u)", a11yWindows_.size());
+   // HILOG_DEBUG("WindowUpdateAll a11yWindowInfo_ size(%{public}u)", a11yWindows_.size());
 }
 
 void AccessibilityWindowManager::ClearOldActiveWindow()
