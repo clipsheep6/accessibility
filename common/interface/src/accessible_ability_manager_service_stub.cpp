@@ -349,11 +349,6 @@ ErrCode AccessibleAbilityManagerServiceStub::HandleGetCaptionProperty(MessagePar
 {
     HILOG_DEBUG();
 
-    if (!IsSystemApp()) {
-        HILOG_WARN("Not system app");
-        reply.WriteInt32(RET_ERR_NOT_SYSTEM_APP);
-        return NO_ERROR;
-    }
     AccessibilityConfig::CaptionProperty caption = {};
     RetError ret = GetCaptionProperty(caption);
     reply.WriteInt32(ret);
@@ -438,11 +433,6 @@ ErrCode AccessibleAbilityManagerServiceStub::HandleGetCaptionState(MessageParcel
 {
     HILOG_DEBUG();
 
-    if (!IsSystemApp()) {
-        HILOG_WARN("Not system app");
-        reply.WriteInt32(RET_ERR_NOT_SYSTEM_APP);
-        return NO_ERROR;
-    }
     bool result = false;
     RetError ret = GetCaptionState(result);
     reply.WriteInt32(ret);
@@ -948,11 +938,6 @@ ErrCode AccessibleAbilityManagerServiceStub::HandleGetShortKeyState(MessageParce
 {
     HILOG_DEBUG();
 
-    if (!IsSystemApp()) {
-        HILOG_WARN("Not system app");
-        reply.WriteInt32(RET_ERR_NOT_SYSTEM_APP);
-        return NO_ERROR;
-    }
     bool result = false;
     RetError ret = GetShortKeyState(result);
     reply.WriteInt32(ret);
@@ -966,11 +951,6 @@ ErrCode AccessibleAbilityManagerServiceStub::HandleGetMouseKeyState(MessageParce
 {
     HILOG_DEBUG();
 
-    if (!IsSystemApp()) {
-        HILOG_WARN("Not system app");
-        reply.WriteInt32(RET_ERR_NOT_SYSTEM_APP);
-        return NO_ERROR;
-    }
     bool result = false;
     RetError ret = GetMouseKeyState(result);
     reply.WriteInt32(ret);
@@ -984,11 +964,6 @@ ErrCode AccessibleAbilityManagerServiceStub::HandleGetShortkeyTarget(MessageParc
 {
     HILOG_DEBUG();
 
-    if (!IsSystemApp()) {
-        HILOG_WARN("Not system app");
-        reply.WriteInt32(RET_ERR_NOT_SYSTEM_APP);
-        return NO_ERROR;
-    }
     std::string result = "";
     RetError ret = GetShortkeyTarget(result);
     reply.WriteInt32(ret);
@@ -1001,12 +976,6 @@ ErrCode AccessibleAbilityManagerServiceStub::HandleGetShortkeyTarget(MessageParc
 ErrCode AccessibleAbilityManagerServiceStub::HandleGetShortkeyMultiTarget(MessageParcel &data, MessageParcel &reply)
 {
     HILOG_DEBUG();
-
-    if (!IsSystemApp()) {
-        HILOG_WARN("Not system app");
-        reply.WriteInt32(RET_ERR_NOT_SYSTEM_APP);
-        return NO_ERROR;
-    }
 
     std::vector<std::string> result;
     RetError ret = GetShortkeyMultiTarget(result);
@@ -1021,11 +990,6 @@ ErrCode AccessibleAbilityManagerServiceStub::HandleGetMouseAutoClick(MessageParc
 {
     HILOG_DEBUG();
 
-    if (!IsSystemApp()) {
-        HILOG_WARN("Not system app");
-        reply.WriteInt32(RET_ERR_NOT_SYSTEM_APP);
-        return NO_ERROR;
-    }
     int32_t result = 0;
     RetError ret = GetMouseAutoClick(result);
     reply.WriteInt32(ret);
@@ -1039,11 +1003,6 @@ ErrCode AccessibleAbilityManagerServiceStub::HandleGetInvertColorState(MessagePa
 {
     HILOG_DEBUG();
 
-    if (!IsSystemApp()) {
-        HILOG_WARN("Not system app");
-        reply.WriteInt32(RET_ERR_NOT_SYSTEM_APP);
-        return NO_ERROR;
-    }
     bool result = false;
     RetError ret = GetInvertColorState(result);
     reply.WriteInt32(ret);
@@ -1056,12 +1015,7 @@ ErrCode AccessibleAbilityManagerServiceStub::HandleGetInvertColorState(MessagePa
 ErrCode AccessibleAbilityManagerServiceStub::HandleGetHighContrastTextState(MessageParcel &data, MessageParcel &reply)
 {
     HILOG_DEBUG();
-
-    if (!IsSystemApp()) {
-        HILOG_WARN("Not system app");
-        reply.WriteInt32(RET_ERR_NOT_SYSTEM_APP);
-        return NO_ERROR;
-    }
+ 
     bool result = false;
     RetError ret = GetHighContrastTextState(result);
     reply.WriteInt32(ret);
@@ -1087,11 +1041,6 @@ ErrCode AccessibleAbilityManagerServiceStub::HandleGetAnimationOffState(MessageP
 {
     HILOG_DEBUG();
 
-    if (!IsSystemApp()) {
-        HILOG_WARN("Not system app");
-        reply.WriteInt32(RET_ERR_NOT_SYSTEM_APP);
-        return NO_ERROR;
-    }
     bool result = false;
     RetError ret = GetAnimationOffState(result);
     reply.WriteInt32(ret);
@@ -1106,11 +1055,6 @@ ErrCode AccessibleAbilityManagerServiceStub::HandleGetDaltonizationState(
 {
     HILOG_DEBUG();
 
-    if (!IsSystemApp()) {
-        HILOG_WARN("Not system app");
-        reply.WriteInt32(RET_ERR_NOT_SYSTEM_APP);
-        return NO_ERROR;
-    }
     bool result = false;
     RetError ret = GetDaltonizationState(result);
     reply.WriteInt32(ret);
@@ -1125,11 +1069,6 @@ ErrCode AccessibleAbilityManagerServiceStub::HandleGetDaltonizationColorFilter(
 {
     HILOG_DEBUG();
 
-    if (!IsSystemApp()) {
-        HILOG_WARN("Not system app");
-        reply.WriteInt32(RET_ERR_NOT_SYSTEM_APP);
-        return NO_ERROR;
-    }
     uint32_t result = 0;
     RetError ret = GetDaltonizationColorFilter(result);
     reply.WriteInt32(ret);
@@ -1143,11 +1082,6 @@ ErrCode AccessibleAbilityManagerServiceStub::HandleGetContentTimeout(MessageParc
 {
     HILOG_DEBUG();
 	
-    if (!IsSystemApp()) {
-        HILOG_WARN("Not system app");
-        reply.WriteInt32(RET_ERR_NOT_SYSTEM_APP);
-        return NO_ERROR;
-    }
     uint32_t result = 0;
     RetError ret = GetContentTimeout(result);
     reply.WriteInt32(ret);
@@ -1161,11 +1095,6 @@ ErrCode AccessibleAbilityManagerServiceStub::HandleGetBrightnessDiscount(Message
 {
     HILOG_DEBUG();
     
-    if (!IsSystemApp()) {
-        HILOG_WARN("Not system app");
-        reply.WriteInt32(RET_ERR_NOT_SYSTEM_APP);
-        return NO_ERROR;
-    }
     float result = 0;
     RetError ret = GetBrightnessDiscount(result);
     reply.WriteInt32(ret);
