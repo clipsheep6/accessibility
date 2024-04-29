@@ -2026,41 +2026,22 @@ HWTEST_F(AccessibleAbilityManagerServiceUnitTest, GetFocusedWindowId_001, TestSi
     GTEST_LOG_(INFO) << "Accessible_Ability_Manager_ServiceUnittest_GetFocusedWindowId_001 end";
 }
 
-/*
- * @tc.number: AccessibleAbilityManagerServiceUnitTest_Unittest_GetRealWindowAndElementId_001
- * @tc.name: GetRealWindowAndElementId
- * @tc.desc: Test function GetRealWindowAndElementId
+/**
+ * @tc.number: Accessible_Ability_Manager_ServiceUnittest_InsertWindowIdEventPair_001
+ * @tc.name: InsertWindowIdEventPair
+ * @tc.desc: Test insert foucus window event.
  */
-HWTEST_F(AccessibleAbilityManagerServiceUnitTest, GetRealWindowAndElementId_001, TestSize.Level1)
+HWTEST_F(AccessibleAbilityManagerServiceUnitTest, InsertWindowIdEventPair_001, TestSize.Level1)
 {
-    GTEST_LOG_(INFO) << "AccessibleAbilityManagerServiceUnitTest_Unittest_GetRealWindowAndElementId_001 start";
-
-    sptr<MockAccessibleAbilityManagerConfigObserverStub> stub = new MockAccessibleAbilityManagerCaptionObserverStub();
-    sptr<IAccessibleAbilityManagerConfigObserver> state = new MockAccessibleAbilityManagerCaptionObserverProxy(stub);
-
-    uint32_t ret = Singleton<AccessibleAbilityManagerService>::GetInstance().GetRealWindowAndElementId(state);
-    EXPECT_EQ(ret, 0);
-
-    GTEST_LOG_(INFO) << "AccessibleAbilityManagerServiceUnitTest_Unittest_GetRealWindowAndElementId_001 end";
+    GTEST_LOG_(INFO) << "Accessible_Ability_Manager_ServiceUnittest_InsertWindowIdEventPair_001 start";
+    AccessibilityEventInfo event;
+    event.SetWindowId(1);
+    event.SetSource(1);
+    int32_t windowId = 1;
+    Singleton<AccessibleAbilityManagerService>::GetInstance().InsertWindowIdEventPair(windowId, event);
+    bool ret = Singleton<AccessibleAbilityManagerService>::GetInstance().CheckWindowIdEventExist(windowId);
+    EXPECT_TRUE(ret);
+    GTEST_LOG_(INFO) << "Accessible_Ability_Manager_ServiceUnittest_InsertWindowIdEventPair_001 end";
 }
-
-/*
- * @tc.number: AccessibleAbilityManagerServiceUnitTest_Unittest_GetSceneBoardInnerWinId_001
- * @tc.name: GetSceneBoardInnerWinId
- * @tc.desc: Test function GetSceneBoardInnerWinId
- */
-HWTEST_F(AccessibleAbilityManagerServiceUnitTest, GetSceneBoardInnerWinId_001, TestSize.Level1)
-{
-    GTEST_LOG_(INFO) << "AccessibleAbilityManagerServiceUnitTest_Unittest_GetSceneBoardInnerWinId_001 start";
-
-    sptr<MockAccessibleAbilityManagerConfigObserverStub> stub = new MockAccessibleAbilityManagerCaptionObserverStub();
-    sptr<IAccessibleAbilityManagerConfigObserver> state = new MockAccessibleAbilityManagerCaptionObserverProxy(stub);
-
-    uint32_t ret = Singleton<AccessibleAbilityManagerService>::GetInstance().GetSceneBoardInnerWinId(state);
-    EXPECT_EQ(ret, 0);
-
-    GTEST_LOG_(INFO) << "AccessibleAbilityManagerServiceUnitTest_Unittest_GetSceneBoardInnerWinId_001 end";
-}
-
 } // namespace Accessibility
 } // namespace OHOS
