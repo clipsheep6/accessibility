@@ -2026,6 +2026,41 @@ HWTEST_F(AccessibleAbilityManagerServiceUnitTest, GetFocusedWindowId_001, TestSi
     GTEST_LOG_(INFO) << "Accessible_Ability_Manager_ServiceUnittest_GetFocusedWindowId_001 end";
 }
 
+/*
+ * @tc.number: AccessibleAbilityManagerServiceUnitTest_Unittest_GetRealWindowAndElementId_001
+ * @tc.name: GetRealWindowAndElementId
+ * @tc.desc: Test function GetRealWindowAndElementId
+ */
+HWTEST_F(AccessibleAbilityManagerServiceUnitTest, GetRealWindowAndElementId_001, TestSize.Level1)
+{
+    GTEST_LOG_(INFO) << "AccessibleAbilityManagerServiceUnitTest_Unittest_GetRealWindowAndElementId_001 start";
+
+    sptr<MockAccessibleAbilityManagerConfigObserverStub> stub = new MockAccessibleAbilityManagerCaptionObserverStub();
+    sptr<IAccessibleAbilityManagerConfigObserver> state = new MockAccessibleAbilityManagerCaptionObserverProxy(stub);
+
+    uint32_t ret = Singleton<AccessibleAbilityManagerService>::GetInstance().GetRealWindowAndElementId(state);
+    EXPECT_EQ(ret, 0);
+
+    GTEST_LOG_(INFO) << "AccessibleAbilityManagerServiceUnitTest_Unittest_GetRealWindowAndElementId_001 end";
+}
+
+/*
+ * @tc.number: AccessibleAbilityManagerServiceUnitTest_Unittest_GetSceneBoardInnerWinId_001
+ * @tc.name: GetSceneBoardInnerWinId
+ * @tc.desc: Test function GetSceneBoardInnerWinId
+ */
+HWTEST_F(AccessibleAbilityManagerServiceUnitTest, GetSceneBoardInnerWinId_001, TestSize.Level1)
+{
+    GTEST_LOG_(INFO) << "AccessibleAbilityManagerServiceUnitTest_Unittest_GetSceneBoardInnerWinId_001 start";
+
+    sptr<MockAccessibleAbilityManagerConfigObserverStub> stub = new MockAccessibleAbilityManagerCaptionObserverStub();
+    sptr<IAccessibleAbilityManagerConfigObserver> state = new MockAccessibleAbilityManagerCaptionObserverProxy(stub);
+
+    uint32_t ret = Singleton<AccessibleAbilityManagerService>::GetInstance().GetSceneBoardInnerWinId(state);
+    EXPECT_EQ(ret, 0);
+
+    GTEST_LOG_(INFO) << "AccessibleAbilityManagerServiceUnitTest_Unittest_GetSceneBoardInnerWinId_001 end";
+}
 
 } // namespace Accessibility
 } // namespace OHOS
