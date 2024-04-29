@@ -197,6 +197,7 @@ int AccessibleAbilityManagerServiceStub::OnRemoteRequest(
     if (memFunc != memberFuncMap_.end()) {
         auto func = memFunc->second;
         if (func != nullptr) {
+            PostDelayUnloadTask(); // try to unload accessibility sa
             return (this->*func)(data, reply);
         }
     }
@@ -1226,6 +1227,13 @@ ErrCode AccessibleAbilityManagerServiceStub::HandleGetIgnoreRepeatClickTime(Mess
 ErrCode AccessibleAbilityManagerServiceStub::HandleGetAllConfigs(MessageParcel &data, MessageParcel &reply)
 {
     HILOG_DEBUG();
+
+    if (!IsSystemApp()) {
+        HILOG_WARN("HandleGetAllConfigs Not system app");
+        reply.WriteInt32(RET_ERR_NOT_SYSTEM_APP);
+        return NO_ERROR;
+    }
+    reply.WriteInt32(RET_OK);
 
     AccessibilityConfigData configData;
     GetAllConfigs(configData);
