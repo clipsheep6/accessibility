@@ -1228,6 +1228,13 @@ ErrCode AccessibleAbilityManagerServiceStub::HandleGetAllConfigs(MessageParcel &
 {
     HILOG_DEBUG();
 
+    if (!IsSystemApp()) {
+        HILOG_WARN("HandleGetAllConfigs Not system app");
+        reply.WriteInt32(RET_ERR_NOT_SYSTEM_APP);
+        return NO_ERROR;
+    }
+    reply.WriteInt32(RET_OK);
+
     AccessibilityConfigData configData;
     GetAllConfigs(configData);
     CaptionPropertyParcel captionParcel(configData.captionProperty_);
