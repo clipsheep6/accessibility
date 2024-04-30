@@ -30,14 +30,14 @@ public:
     AccessibleAbilityChannel(const int32_t accountId, const std::string &clientName);
     ~AccessibleAbilityChannel() = default;
     RetError SearchElementInfoByAccessibilityId(const int32_t accessibilityWindowId, const int64_t elementId,
-        const int32_t requestId, const sptr<IAccessibilityElementOperatorCallback> &callback,
-        const int32_t mode, bool isFilter = false) override;
+	const int32_t treeId, const int32_t requestId, const sptr<IAccessibilityElementOperatorCallback> &callback,
+	const int32_t mode, bool isFilter = false) override;
 
     RetError SearchElementInfosByText(const int32_t accessibilityWindowId, const int64_t elementId,
         const std::string &text, const int32_t requestId,
         const sptr<IAccessibilityElementOperatorCallback> &callback) override;
 
-    RetError FindFocusedElementInfo(const int32_t accessibilityWindowId, const int64_t elementId,
+    RetError FindFocusedElementInfo(const int32_t accessibilityWindowId, const int64_t elementId, const int32_t treeId,
         const int32_t focusType, const int32_t requestId,
         const sptr<IAccessibilityElementOperatorCallback> &callback) override;
 
@@ -68,7 +68,7 @@ public:
 private:
     static sptr<AccessibleAbilityConnection> GetConnection(int32_t accountId, const std::string &clientName);
     static RetError GetElementOperator(int32_t accountId, int32_t windowId, int32_t focusType,
-        const std::string &clientName, sptr<IAccessibilityElementOperator> &elementOperator);
+        const std::string &clientName, sptr<IAccessibilityElementOperator> &elementOperator, int32_t treeId = -1);
     RetError GetWindows(uint64_t displayId, std::vector<AccessibilityWindowInfo> &windows) const;
     RetError TransmitActionToMmi(const int32_t action);
     static void SetKeyCodeMulti(std::shared_ptr<MMI::KeyEvent>& keyEvent,

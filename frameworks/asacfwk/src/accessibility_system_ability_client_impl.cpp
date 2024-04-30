@@ -219,6 +219,47 @@ RetError AccessibilitySystemAbilityClientImpl::RegisterElementOperator(
     return serviceProxy_->RegisterElementOperator(windowId, aamsInteractionOperator);
 }
 
+RetError AccessibilitySystemAbilityClientImpl::RegisterElementOperator(
+    const int32_t windowId, const int32_t parentTreeId, const int64_t nodeId,
+    const std::shared_ptr<AccessibilityElementOperator> &operation)
+{
+    HILOG_INFO("Register windowId[%{public}d] start", windowId);
+    std::lock_guard<std::mutex> lock(mutex_);
+    if (!operation) {
+        HILOG_ERROR("Input operation is null");
+        return RET_ERR_INVALID_PARAM;
+    }
+    if (!serviceProxy_) {
+        HILOG_ERROR("Failed to get aams service");
+        return RET_ERR_SAMGR;
+    }
+    int32_t treeId = 0;
+    auto iter = cardElementOperators_.find(windowId);
+    if (iter != cardElementOperators_.end()) {
+        treeId = cardElementOperators_[windowId].size() + 1;
+        auto itemp = cardElementOperators_[windowId].find(treeId);
+        if (itemp != cardElementOperators_[windowId].end()) {
+            HILOG_ERROR("windowID[%{public}d] is exited", windowId);
+            return RET_OK;
+        }
+    }
+    sptr<AccessibilityElementOperatorImpl> aamsInteractionOperator =
+        new(std::nothrow) AccessibilityElementOperatorImpl(windowId, operation, *this);
+    if (!aamsInteractionOperator) {
+        HILOG_ERROR("Failed to create aamsInteractionOperator.");
+        return RET_ERR_NULLPTR;
+    }
+    cardElementOperators_[windowId][treeId] = aamsInteractionOperator;
+    
+    auto itemp1 = cardElementOperators_[windowId].find(parentTreeId);
+    if (itemp1 != cardElementOperators_[windowId].end()) {
+        cardElementOperators_[windowId][parentTreeId]->SetChildTreeId(nodeId, treeId);
+    }
+    aamsInteractionOperator->SetBelongTreeId(treeId);
+
+    return serviceProxy_->RegisterElementOperator(windowId, treeId, aamsInteractionOperator);
+}
+
 void AccessibilitySystemAbilityClientImpl::ReregisterElementOperator()
 {
     HILOG_DEBUG();

@@ -98,6 +98,16 @@ RetError MockAccessibleAbilityManagerServiceStub::RegisterElementOperator(
     return RET_OK;
 }
 
+RetError MockAccessibleAbilityManagerServiceStub::RegisterElementOperator(const int32_t windowId,
+    const int32_t treeId, const sptr<IAccessibilityElementOperator> &operation, bool isApp)
+{
+    (void)windowId;
+    (void)treeId;
+    (void)operation;
+    (void)isApp;
+    return RET_OK;
+}
+
 RetError MockAccessibleAbilityManagerServiceStub::DeregisterElementOperator(const int32_t windowId)
 {
     (void)windowId;

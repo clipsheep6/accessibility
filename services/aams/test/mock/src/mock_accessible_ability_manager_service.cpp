@@ -125,6 +125,16 @@ RetError AccessibleAbilityManagerService::RegisterElementOperator(
     return RET_OK;
 }
 
+RetError AccessibleAbilityManagerService::RegisterElementOperator(
+    const int32_t windowId, const int32_t treeId, const sptr<IAccessibilityElementOperator>& operation, bool isApp)
+{
+    (void)windowId;
+    (void)treeId;
+    (void)operation;
+    (void)isApp;
+    return RET_OK;
+}
+
 RetError AccessibleAbilityManagerService::DeregisterElementOperator(int32_t windowId)
 {
     (void)windowId;

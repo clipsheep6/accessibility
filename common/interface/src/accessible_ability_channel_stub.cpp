@@ -91,6 +91,7 @@ ErrCode AccessibleAbilityChannelStub::HandleSearchElementInfoByAccessibilityId(M
 
     int32_t accessibilityWindowId = data.ReadInt32();
     int64_t elementId = data.ReadInt64();
+    int32_t treeId = data.ReadInt32();
     int32_t requestId = data.ReadInt32();
 
     sptr<IRemoteObject> remote = data.ReadRemoteObject();
@@ -119,8 +120,8 @@ ErrCode AccessibleAbilityChannelStub::HandleSearchElementInfoByAccessibilityId(M
         mode = PREFETCH_RECURSIVE_CHILDREN;
     }
     bool isFilter = data.ReadBool();
-    RetError result = SearchElementInfoByAccessibilityId(accessibilityWindowId, elementId, requestId, callback, mode,
-    isFilter);
+    RetError result = SearchElementInfoByAccessibilityId(accessibilityWindowId, elementId, treeId, requestId, callback,
+    mode, isFilter);
     HILOG_DEBUG("SearchElementInfoByAccessibilityId ret = %{public}d", result);
     reply.WriteInt32(result);
 
@@ -154,6 +155,7 @@ ErrCode AccessibleAbilityChannelStub::HandleFindFocusedElementInfo(MessageParcel
 
     int32_t accessibilityWindowId = data.ReadInt32();
     int64_t elementId = data.ReadInt64();
+    int64_t treeId = data.ReadInt32();
     int32_t focusType = data.ReadInt32();
     int32_t requestId = data.ReadInt32();
 
@@ -161,7 +163,7 @@ ErrCode AccessibleAbilityChannelStub::HandleFindFocusedElementInfo(MessageParcel
     sptr<IAccessibilityElementOperatorCallback> callback =
         iface_cast<IAccessibilityElementOperatorCallback>(remote);
 
-    RetError result = FindFocusedElementInfo(accessibilityWindowId, elementId, focusType, requestId, callback);
+    RetError result = FindFocusedElementInfo(accessibilityWindowId, elementId, treeId, focusType, requestId, callback);
     HILOG_DEBUG("FindFocusedElementInfo ret = %{public}d", result);
     reply.WriteInt32(result);
 

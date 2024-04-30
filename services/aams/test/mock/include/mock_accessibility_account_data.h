@@ -35,6 +35,8 @@ public:
     MOCK_METHOD1(RemoveCaptionPropertyCallback, void(const wptr<IRemoteObject>& callback));
     MOCK_METHOD2(AddAccessibilityWindowConnection,
         void(const int32_t windowId, const sptr<AccessibilityWindowConnection>& interactionConnection));
+    MOCK_METHOD3(AddAccessibilityWindowConnection, void(const int32_t windowId, const int32_t treeId,
+        const sptr<AccessibilityWindowConnection>& interactionConnection));
     MOCK_METHOD1(RemoveAccessibilityWindowConnection, void(const int32_t windowId));
     MOCK_METHOD1(AddConnectingA11yAbility, void(const AppExecFwk::ElementName& elementName));
     MOCK_METHOD1(AddEnabledAbility, void(const AppExecFwk::ElementName& elementName));

@@ -53,13 +53,14 @@ public:
      * @brief Find the focus element information.
      * @param accessibilityWindowId The window id that the component belongs to.
      * @param elementId: The unique id of the component ID.
+     * @param treeId Tree ID
      * @param focusType The type of focus.
      *                  FOCUS_TYPE_ACCESSIBILITY: accessibility focus
      *                  FOCUS_TYPE_INPUT: text input focus
      * @param elementInfo[out] The components information matched conditions searched.
      * @return Return RET_OK if finds focus element info successfully, otherwise refer to the RetError for the failure.
      */
-    RetError FindFocusedElementInfo(int32_t accessibilityWindowId, int64_t elementId,
+    RetError FindFocusedElementInfo(int32_t accessibilityWindowId, int64_t elementId, const int32_t treeId,
         int32_t focusType, AccessibilityElementInfo &elementInfo);
 
     /**
@@ -114,6 +115,7 @@ public:
      * @brief Find the node information by accessibility ID.
      * @param accessibilityWindowId The window id that the component belongs to.
      * @param elementId: The unique id of the component ID.
+     * @param treeId Tree ID
      * @param mode PREFETCH_PREDECESSORS: Need to make the parent node info also.
      *              PREFETCH_SIBLINGS: Need to make the sister/brothers node info also.
      *              PREFETCH_CHILDREN: Need to make the child node info also.
@@ -122,7 +124,8 @@ public:
      * @return Return RET_OK if search element info successfully, otherwise refer to the RetError for the failure.
      */
     RetError SearchElementInfosByAccessibilityId(int32_t accessibilityWindowId, int64_t elementId,
-        int32_t mode, std::vector<AccessibilityElementInfo> &elementInfos, bool isFilter = false);
+        const int32_t treeId, int32_t mode, std::vector<AccessibilityElementInfo> &elementInfos,
+        bool isFilter = false);
 
     /**
      * @brief Get the window information related with the event

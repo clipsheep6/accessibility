@@ -806,5 +806,30 @@ const std::string &AccessibilityElementInfo::GetLatestContent() const
 {
     return latestContent_;
 }
+bool AccessibilityElementInfo::GetIsTreeNode() const
+{
+    return isTree_;
+}
+
+void AccessibilityElementInfo::SetChildTreeId(const int32_t iChildTreeId)
+{
+    childTreeId_ = iChildTreeId;
+}
+
+int32_t AccessibilityElementInfo::GetChildTreeId() const
+{
+    return childTreeId_;
+}
+
+void AccessibilityElementInfo::SetBelongTreeId(const int32_t iBelongTreeId)
+{
+    belongTreeId_ = iBelongTreeId;
+}
+
+int32_t AccessibilityElementInfo::GetBelongTreeId() const
+{
+    return belongTreeId_;
+}
+
 } // namespace Accessibility
 } // namespace OHOS

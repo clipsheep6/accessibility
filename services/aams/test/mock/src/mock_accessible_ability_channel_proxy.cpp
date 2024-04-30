@@ -40,11 +40,12 @@ bool AccessibleAbilityChannelProxy::SendTransactCmd(
 }
 
 RetError AccessibleAbilityChannelProxy::SearchElementInfoByAccessibilityId(const int32_t accessibilityWindowId,
-    const int64_t elementId, const int32_t requestId, const sptr<IAccessibilityElementOperatorCallback>& callback,
-    const int32_t mode, bool isFilter)
+    const int64_t elementId, const int32_t treeId, const int32_t requestId,
+    const sptr<IAccessibilityElementOperatorCallback>& callback, const int32_t mode, bool isFilter)
 {
     (void)accessibilityWindowId;
     (void)elementId;
+    (void)treeId;
     (void)requestId;
     (void)callback;
     (void)mode;
@@ -65,11 +66,12 @@ RetError AccessibleAbilityChannelProxy::SearchElementInfosByText(const int32_t a
 }
 
 RetError AccessibleAbilityChannelProxy::FindFocusedElementInfo(const int32_t accessibilityWindowId,
-    const int64_t elementId, const int32_t focusType, const int32_t requestId,
+    const int64_t elementId, const int32_t treeId, const int32_t focusType, const int32_t requestId,
     const sptr<IAccessibilityElementOperatorCallback>& callback)
 {
     (void)accessibilityWindowId;
     (void)elementId;
+    (void)treeId;
     (void)requestId;
     (void)callback;
     (void)focusType;

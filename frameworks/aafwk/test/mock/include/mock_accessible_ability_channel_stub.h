@@ -28,15 +28,17 @@ public:
 
     MOCK_METHOD4(OnRemoteRequest, int(uint32_t code, MessageParcel& data,
         MessageParcel& reply, MessageOption& option));
-    MOCK_METHOD6(SearchElementInfoByAccessibilityId,
-        RetError(const int32_t accessibilityWindowId, const int64_t elementId, const int32_t requestId,
-            const sptr<IAccessibilityElementOperatorCallback>& callback, const int32_t mode, bool isFilter));
+    MOCK_METHOD7(SearchElementInfoByAccessibilityId,
+        RetError(const int32_t accessibilityWindowId, const int64_t elementId, const int32_t treeId,
+        const int32_t requestId, const sptr<IAccessibilityElementOperatorCallback>& callback,
+        const int32_t mode, bool isFilter));
     MOCK_METHOD5(SearchElementInfosByText,
         RetError(const int32_t accessibilityWindowId, const int64_t elementId, const std::string& text,
             const int32_t requestId, const sptr<IAccessibilityElementOperatorCallback>& callback));
-    MOCK_METHOD5(FindFocusedElementInfo,
-        RetError(const int32_t accessibilityWindowId, const int64_t elementId, const int32_t focusType,
-            const int32_t requestId, const sptr<IAccessibilityElementOperatorCallback>& callback));
+    MOCK_METHOD6(FindFocusedElementInfo,
+        RetError(const int32_t accessibilityWindowId, const int64_t elementId, const int32_t treeId,
+            const int32_t focusType, const int32_t requestId,
+            const sptr<IAccessibilityElementOperatorCallback>& callback));
     MOCK_METHOD5(FocusMoveSearch, RetError(const int32_t accessibilityWindowId, const int64_t elementId,
         const int32_t direction, const int32_t requestId,
         const sptr<IAccessibilityElementOperatorCallback>& callback));

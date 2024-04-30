@@ -145,6 +145,16 @@ int32_t AccessibilityElementOperatorImpl::GetWindowId()
     return windowId_;
 }
 
+void AccessibilityElementOperatorImpl::SetChildTreeId(const int64_t nodeId, const int32_t childTreeId)
+{
+    operator_->SetChildTreeId(nodeId, childTreeId);
+}
+
+void AccessibilityElementOperatorImpl::SetBelongTreeId(const int32_t treeId)
+{
+    operator_->SetBelongTreeId(treeId);
+}
+
 int32_t AccessibilityElementOperatorImpl::AddRequest(int32_t requestId,
     const sptr<IAccessibilityElementOperatorCallback> &callback)
 {

@@ -20,10 +20,13 @@
 
 namespace OHOS {
 namespace Accessibility {
+#define ROOT_TREE_ID -3
 class AccessibilityWindowConnection : public RefBase {
 public:
     AccessibilityWindowConnection(const int32_t windowId, const sptr<IAccessibilityElementOperator> &connection,
         const int32_t accountId);
+    AccessibilityWindowConnection(const int32_t windowId, const int32_t treeId,
+        const sptr<IAccessibilityElementOperator> &connection, const int32_t accountId);
     ~AccessibilityWindowConnection();
 
     inline sptr<IAccessibilityElementOperator> GetProxy()
@@ -31,9 +34,28 @@ public:
         return proxy_;
     }
 
+    sptr<IAccessibilityElementOperator> GetCardProxy(const int32_t treeId)
+    {
+        if (treeId != ROOT_TREE_ID) {
+            auto iter = cardProxy_.find(treeId);
+            if (iter != cardProxy_.end()) {
+                return nullptr;
+            }
+            return cardProxy_[treeId];
+        }
+        if (cardProxy_.empty()) {
+            return nullptr;
+        }
+        return cardProxy_.begin()->second;
+    }
+
+    RetError SetCardProxy(const int32_t treeId, sptr<IAccessibilityElementOperator> operation);
+
 private:
     int32_t windowId_;
     int32_t accountId_;
+    int32_t treeId_;
+    std::map<int32_t, sptr<IAccessibilityElementOperator>> cardProxy_;
     sptr<IAccessibilityElementOperator> proxy_;
 };
 } // namespace Accessibility

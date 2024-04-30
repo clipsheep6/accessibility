@@ -35,6 +35,7 @@ public:
      * @brief Searches elementInfo by accessibility id and set the result by callback.
      * @param accessibilityWindowId The id of accessibility window.
      * @param elementId The unique id of the component ID.
+     * @param treeId Tree ID
      * @param requestId Matched the request and response. It needn't cared by ACE, transfer it by callback only.
      * @param callback To transfer the element info to ASAC.
      * @param mode PREFETCH_PREDECESSORS: Need to make the parent element info also.
@@ -44,8 +45,8 @@ public:
      * @return Return RET_OK if search elementInfo successfully, otherwise refer to the RetError for the failure.
      */
     virtual RetError SearchElementInfoByAccessibilityId(const int32_t accessibilityWindowId,
-        const int64_t elementId, const int32_t requestId, const sptr<IAccessibilityElementOperatorCallback> &callback,
-        const int32_t mode, bool isFilter = false) = 0;
+        const int64_t elementId, const int32_t treeId, const int32_t requestId,
+        const sptr<IAccessibilityElementOperatorCallback> &callback, const int32_t mode, bool isFilter = false) = 0;
 
     /**
      * @brief Make the child element information by accessibility ID and filtered by text and
@@ -72,7 +73,7 @@ public:
      * @return Return RET_OK if find elementInfo successfully, otherwise refer to the RetError for the failure.
      */
     virtual RetError FindFocusedElementInfo(const int32_t accessibilityWindowId, const int64_t elementId,
-        const int32_t focusType, const int32_t requestId,
+        int32_t terrId, const int32_t focusType, const int32_t requestId,
         const sptr<IAccessibilityElementOperatorCallback> &callback) = 0;
 
     /**

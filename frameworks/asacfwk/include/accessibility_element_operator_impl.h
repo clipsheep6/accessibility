@@ -146,6 +146,21 @@ public:
     int32_t GetWindowId();
 
     /**
+     * @brief Get the window id related with operator object
+     * @param nodeId Node Id
+     * @param childTreeId Child Tree ID
+     * @return The unique id of the window related with operator object.
+     */
+    void SetChildTreeId(const int64_t nodeId, const int32_t childTreeId);
+
+    /**
+     * @brief Get the window id related with operator object
+     * @param treeId Tree ID
+     * @return The unique id of the window related with operator object.
+     */
+    void SetBelongTreeId(const int32_t treeId);
+
+    /**
      * @brief Set the element information by accessibility id to AA.
      * @param infos The element info searched by accessibility id.
      * @param requestId The request id from AA, it is used to match with request and response.
