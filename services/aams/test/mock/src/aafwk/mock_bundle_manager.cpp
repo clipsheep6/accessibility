@@ -102,10 +102,11 @@ bool BundleMgrService::QueryAbilityInfo(const Want& want, int32_t flags, int32_t
     return true;
 }
 
-int BundleMgrService::GetUidByBundleName(const std::string& bundleName, const int userId)
+int BundleMgrService::GetUidByBundleName(const std::string& bundleName, const int userId, int32_t appIndex)
 {
     (void)bundleName;
     (void)userId;
+    (void)appIndex;
     return 0;
 }
 
