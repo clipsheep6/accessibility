@@ -16,8 +16,6 @@
             vtable?for?OHOS::Accessibility::AccessibilitySystemAbilityClientImpl;
             vtable?for?OHOS::Accessibility::AccessibilityElementOperatorImpl*;
             vtable?for?OHOS::Accessibility::AccessibilitySystemAbilityClientImpl::DeathRecipient*;
-            OHOS::ISystemAbilityManager::SAMANAGER_INTERFACE_TOKEN;
-            OHOS::IRemoteStub*;
             VTT?for?OHOS::Accessibility::AccessibilityElementOperatorImpl;
             non-virtual?thunk?to?OHOS::IRemoteStub*;
             VTT?for?OHOS::Accessibility::AccessibilitySystemAbilityClientImpl::AccessibleAbilityManagerStateObserverImpl*;

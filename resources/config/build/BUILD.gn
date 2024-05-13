@@ -20,4 +20,10 @@ config("coverage_flags") {
     cflags = [ "--coverage" ]
     ldflags = [ "--coverage" ]
   }
+
+  cflags = [
+    "-Os",
+    "-fdata-sections",
+    "-ffunction-sections"
+  ]
 }

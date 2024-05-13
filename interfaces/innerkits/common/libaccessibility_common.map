@@ -22,6 +22,7 @@
             OHOS::Accessibility::ACTIVE_WINDOW_ID;
             OHOS::Accessibility::ACTION_ARGU_*;
             OHOS::Accessibility::PREFETCH_*;
+            OHOS::Accessibility::GET_SOURCE_MODE;
             OHOS::Accessibility::HTML_ITEM_*;
             OHOS::Accessibility::HOST_VIEW_ID;
             OHOS::Accessibility::MAX_TEXT_LENGTH;
@@ -38,6 +39,8 @@
             OHOS::AccessibilityNapi::Create*;
             OHOS::AccessibilityNapi::Transform*;
             vtable?for?OHOS::Accessibility::Rect*;
+            OHOS::Accessibility::Permission::CheckCallingPermission*;
+            OHOS::Accessibility::Permission::IsStartByHdcd*;
     };
     local:
         *;

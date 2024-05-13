@@ -14,11 +14,6 @@
             OHOS::Accessibility::AccessibilityElementOperatorCallbackImpl*;
             non-virtual?thunk?to?OHOS::Accessibility::AccessibilityElementOperatorCallbackImpl*;
             vtable?for?OHOS::Accessibility::AccessibilityElementOperatorCallbackImpl*;
-            VTT?for?OHOS::Accessibility::AccessibilityElementOperatorCallbackImpl*;
-            vtable?for?OHOS::Accessibility::Rect*;
-            vtable?for?OHOS::Accessibility::AccessibleAbilityClientImpl::AccessibilityServiceDeathRecipient*;
-            OHOS::IRemoteStub*;
-            OHOS::ISystemAbilityManager::SAMANAGER_INTERFACE_TOKEN;
     };
     local:
         *;

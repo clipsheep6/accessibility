@@ -55,6 +55,8 @@ ohos_shared_library("accessibleability") {
   sources = aafwk_files
   configs = [ ":accessibleability_private_config" ]
 
+  version_script = "libaccessibility_aafwk.map"
+
   public_configs = [
     ":accessibleability_public_config",
     "../../../resources/config/build:coverage_flags",

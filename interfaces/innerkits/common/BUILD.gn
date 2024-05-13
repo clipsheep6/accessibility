@@ -59,6 +59,8 @@ ohos_shared_library("accessibility_common") {
     "../../../resources/config/build:coverage_flags",
   ]
 
+  version_script = "libaccessibility_common.map"
+
   public_configs = [ ":accessibility_common_public_config" ]
 
   install_enable = true
