@@ -34,7 +34,7 @@ namespace {
         "selected", "clickable", "longClickable", "isEnable", "isPassword", "scrollable",
         "editable", "pluralLineSupported", "parent", "children", "isFocused", "accessibilityFocused",
         "error", "isHint", "pageId", "valueMax", "valueMin", "valueNow", "windowId", "accessibilityText",
-        "textType", "offset", "allAttribute"};
+        "textType", "offset", "allAttribute", "childTreeId", "belongTreeId"};
     const std::vector<std::string> WINDOW_INFO_ATTRIBUTE_NAMES = {"isActive", "screenRect", "layer", "type",
         "rootElement", "isFocused", "windowId"};
 
@@ -86,6 +86,8 @@ namespace {
         {"textType", &NAccessibilityElement::GetElementInfoTextType},
         {"offset", &NAccessibilityElement::GetElementInfoOffset},
         {"allAttribute", &NAccessibilityElement::GetElementInfoAllAttribute},
+        {"childTreeId", &NAccessibilityElement::GetElementInfoChildTreeId},
+        {"belongTreeId", &NAccessibilityElement::GetElementInfoBelongTreeId},
     };
     std::map<std::string, AttributeNamesFunc> windowInfoCompleteMap = {
         {"isActive", &NAccessibilityElement::GetWindowInfoIsActive},
@@ -918,6 +920,24 @@ void NAccessibilityElement::GetElementInfoOffset(NAccessibilityElementData *call
     }
     NAPI_CALL_RETURN_VOID(callbackInfo->env_, napi_create_double(callbackInfo->env_,
         callbackInfo->accessibilityElement_.elementInfo_->GetOffset(), &value));
+}
+
+void NAccessibilityElement::GetElementInfoChildTreeId(NAccessibilityElementData *callbackInfo, napi_value &value)
+{
+    if (!CheckElementInfoParameter(callbackInfo, value)) {
+        return;
+    }
+    NAPI_CALL_RETURN_VOID(callbackInfo->env_, napi_create_int32(callbackInfo->env_,
+        callbackInfo->accessibilityElement_.elementInfo_->GetChildTreeId(), &value));
+}
+
+void NAccessibilityElement::GetElementInfoBelongTreeId(NAccessibilityElementData *callbackInfo, napi_value &value)
+{
+    if (!CheckElementInfoParameter(callbackInfo, value)) {
+        return;
+    }
+    NAPI_CALL_RETURN_VOID(callbackInfo->env_, napi_create_int32(callbackInfo->env_,
+        callbackInfo->accessibilityElement_.elementInfo_->GetBelongTreeId(), &value));
 }
 
 void NAccessibilityElement::GetElementInfoAllAttribute(NAccessibilityElementData *callbackInfo, napi_value &value)

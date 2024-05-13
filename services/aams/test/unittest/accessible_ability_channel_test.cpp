@@ -134,7 +134,7 @@ HWTEST_F(AccessibleAbilityChannelUnitTest,
     AccessibleAbilityChannel_Unittest_SearchElementInfoByAccessibilityId_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "AccessibleAbilityChannel_Unittest_SearchElementInfoByAccessibilityId_001 start";
-    channel_->SearchElementInfoByAccessibilityId(WINDOW_ID, ELEMENT_ID, 0, nullptr, 0, true);
+    channel_->SearchElementInfoByAccessibilityId(WINDOW_ID, ELEMENT_ID, -1, 0, nullptr, 0, true);
     bool result = TestElementId();
     EXPECT_TRUE(result);
     GTEST_LOG_(INFO) << "AccessibleAbilityChannel_Unittest_SearchElementInfoByAccessibilityId_001 end";
@@ -164,7 +164,7 @@ HWTEST_F(AccessibleAbilityChannelUnitTest,
     AccessibleAbilityChannel_Unittest_FindFocusedElementInfo_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "AccessibleAbilityChannel_Unittest_FindFocusedElementInfo_001 start";
-    channel_->FindFocusedElementInfo(WINDOW_ID, ELEMENT_ID, FOCUS_TYPE_INPUT, 0, nullptr);
+    channel_->FindFocusedElementInfo(WINDOW_ID, ELEMENT_ID, -1, FOCUS_TYPE_INPUT, 0, nullptr);
     bool result = TestElementId();
     EXPECT_TRUE(result);
     GTEST_LOG_(INFO) << "AccessibleAbilityChannel_Unittest_FindFocusedElementInfo_001 end";

@@ -103,6 +103,17 @@ public:
         const sptr<IAccessibilityElementOperator> &operation, bool isApp = false) = 0;
 
     /**
+     * @brief Register the element operator, so the AA can get node info from ACE.
+     * @param windowId Window ID
+     * @param treeId Tree ID
+     * @param operation The callback object.
+     * @param isApp whether an application.
+     * @return Returns RET_OK if successful, otherwise refer to the RetError for the failure.
+     */
+    virtual RetError RegisterElementOperator(const int32_t windowId, const int32_t treeId,
+        const sptr<IAccessibilityElementOperator> &operation, bool isApp = false) = 0;
+
+    /**
      * @brief Deregister the element operator.
      * @param windowId Window ID
      * @return Returns RET_OK if successful, otherwise refer to the RetError for the failure.

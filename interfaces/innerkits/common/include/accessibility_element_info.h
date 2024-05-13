@@ -1355,11 +1355,55 @@ public:
      */
     float GetOffset() const;
 
+    /* @brief Get the node if tree.
+     * @return is tree
+     * @since 3
+     * @sysCap Accessibility
+    */
+    bool GetIsTreeNode() const;
+
+    /**
+     * @brief Set the child tree Id of the component that belongs to the window.
+     * @param iChildTreeId The child tree Id
+     * @since 3
+     * @sysCap Accessibility
+    */
+    void SetChildTreeId(const int32_t iChildTreeId);
+
+    /**
+     * @brief Get the child tree Id of the component that belongs to the window.
+     * @return The child tree Id
+     * @since 3
+     * @sysCap Accessibility
+    */
+    int32_t GetChildTreeId() const;
+
+    /**
+     * @brief Set the child tree Id of the component that belongs to the window.
+     * @param iChildTreeId The child tree Id
+     * @since 3
+     * @sysCap Accessibility
+    */
+    void SetBelongTreeId(const int32_t iBelongTreeId);
+
+    /**
+     * @brief Get the child tree Id of the component that belongs to the window.
+     * @return The child tree Id
+     * @since 3
+     * @sysCap Accessibility
+    */
+    int32_t GetBelongTreeId() const;
+
 protected:
     int32_t pageId_ = -1;
     int32_t windowId_ = -1;
     int64_t elementId_ = UNDEFINED_ACCESSIBILITY_ID;
     int64_t parentId_ = UNDEFINED_ACCESSIBILITY_ID;
+    /*for tree*/
+    int32_t belongTreeId_ = -1;
+    int32_t childTreeId_ = -1;
+    bool isTree_ = false;
+    /*end for tree   */
     std::string bundleName_ = "";
     std::string componentType_ = "";
     std::string text_ = "";

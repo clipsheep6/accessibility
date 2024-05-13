@@ -110,6 +110,14 @@ private:
     ErrCode HandleRegisterAccessibilityElementOperator(MessageParcel &data, MessageParcel &reply);
 
     /**
+     * @brief Handle the IPC request for the function:HandleCardRegisterAccessibilityElementOperator.
+     * @param data The data of process communication
+     * @param reply The response of IPC request
+     * @return NO_ERROR: successful; otherwise is failed.
+     */
+    ErrCode HandleCardRegisterAccessibilityElementOperator(MessageParcel &data, MessageParcel &reply);
+
+    /**
      * @brief Handle the IPC request for the function:HandleDeregisterAccessibilityElementOperator.
      * @param data The data of process communication
      * @param reply The response of IPC request

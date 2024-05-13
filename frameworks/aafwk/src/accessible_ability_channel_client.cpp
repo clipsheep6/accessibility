@@ -51,7 +51,7 @@ void AccessibleAbilityChannelClient::SetOnKeyPressEventResult(const bool handled
 }
 
 RetError AccessibleAbilityChannelClient::FindFocusedElementInfo(int32_t accessibilityWindowId,
-    int64_t elementId, int32_t focusType, AccessibilityElementInfo &elementInfo)
+    int64_t elementId, const int32_t treeId, int32_t focusType, AccessibilityElementInfo &elementInfo)
 {
     HILOG_DEBUG("[channelId:%{public}d]", channelId_);
     HITRACE_METER_NAME(HITRACE_TAG_ACCESSIBILITY_MANAGER, "FindFocusedElement");
@@ -78,7 +78,7 @@ RetError AccessibleAbilityChannelClient::FindFocusedElementInfo(int32_t accessib
     }
 
     RetError ret = proxy_->FindFocusedElementInfo(windowId,
-        elementId, focusType, requestId, elementOperator);
+        elementId, treeId, focusType, requestId, elementOperator);
     if (ret != RET_OK) {
         HILOG_ERROR("FindFocusedElementInfo failed. ret[%{public}d]", ret);
         return ret;
@@ -219,7 +219,8 @@ RetError AccessibleAbilityChannelClient::EnableScreenCurtain(bool isEnable)
 }
 
 RetError AccessibleAbilityChannelClient::SearchElementInfosByAccessibilityId(int32_t accessibilityWindowId,
-    int64_t elementId, int32_t mode, std::vector<AccessibilityElementInfo> &elementInfos, bool isFilter)
+    int64_t elementId, const int32_t treeId, int32_t mode, std::vector<AccessibilityElementInfo> &elementInfos,
+    bool isFilter)
 {
     int32_t requestId = GenerateRequestId();
     HILOG_DEBUG("channelId:%{public}d, elementId:%{public}" PRId64 ", windowId:%{public}d, requestId:%{public}d",
@@ -239,7 +240,7 @@ RetError AccessibleAbilityChannelClient::SearchElementInfosByAccessibilityId(int
     }
     std::future<void> promiseFuture = elementOperator->promise_.get_future();
 
-    RetError ret = proxy_->SearchElementInfoByAccessibilityId(accessibilityWindowId, elementId, requestId,
+    RetError ret = proxy_->SearchElementInfoByAccessibilityId(accessibilityWindowId, elementId, treeId, requestId,
         elementOperator, mode, isFilter);
     if (ret != RET_OK) {
         HILOG_ERROR("SearchElementInfosByAccessibilityId failed. ret[%{public}d]", ret);

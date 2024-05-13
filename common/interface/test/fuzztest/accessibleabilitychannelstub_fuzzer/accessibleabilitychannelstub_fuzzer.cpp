@@ -32,7 +32,7 @@ public:
     ~AbilityChannelImplFuzzTest() = default;
 
     RetError SearchElementInfoByAccessibilityId(const int32_t accessibilityWindowId, const int64_t elementId,
-        const int32_t requestId, const sptr<IAccessibilityElementOperatorCallback> &callback,
+        const int32_t treeId, const int32_t requestId, const sptr<IAccessibilityElementOperatorCallback> &callback,
         const int32_t mode, bool isFilter) override
     {
         return RET_OK;
@@ -43,7 +43,7 @@ public:
     {
         return RET_OK;
     }
-    RetError FindFocusedElementInfo(const int32_t accessibilityWindowId, const int64_t elementId,
+    RetError FindFocusedElementInfo(const int32_t accessibilityWindowId, const int64_t elementId, const int32_t treeId,
         const int32_t focusType, const int32_t requestId,
         const sptr<IAccessibilityElementOperatorCallback> &callback) override
     {

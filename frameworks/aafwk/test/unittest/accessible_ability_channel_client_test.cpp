@@ -109,10 +109,10 @@ HWTEST_F(AccessibleAbilityChannelClientTest, SetOnKeyPressEventResult, TestSize.
 HWTEST_F(AccessibleAbilityChannelClientTest, FindFocusedElementInfo_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "FindFocusedElementInfo_001 start";
-    EXPECT_CALL(*stub_, FindFocusedElementInfo(_, _, _, _, _)).Times(1).WillOnce(Return(RET_ERR_FAILED));
+    EXPECT_CALL(*stub_, FindFocusedElementInfo(_, _, _, _, _, _)).Times(1).WillOnce(Return(RET_ERR_FAILED));
     AccessibilityElementInfo info {};
     EXPECT_EQ(instance_->FindFocusedElementInfo(ACCESSIBILITY_WINDOW_ID,
-        ELEMENT_ID, FOCUS_TYPE_INPUT, info), RET_ERR_FAILED);
+        ELEMENT_ID, -1, FOCUS_TYPE_INPUT, info), RET_ERR_FAILED);
     GTEST_LOG_(INFO) << "FindFocusedElementInfo_001 end";
 }
 
@@ -129,7 +129,7 @@ HWTEST_F(AccessibleAbilityChannelClientTest, FindFocusedElementInfo_002, TestSiz
     ASSERT_TRUE(client);
     AccessibilityElementInfo info {};
     EXPECT_EQ(client->FindFocusedElementInfo(
-        ACCESSIBILITY_WINDOW_ID, ELEMENT_ID, FOCUS_TYPE_INPUT, info), RET_ERR_SAMGR);
+        ACCESSIBILITY_WINDOW_ID, ELEMENT_ID, -1, FOCUS_TYPE_INPUT, info), RET_ERR_SAMGR);
     GTEST_LOG_(INFO) << "FindFocusedElementInfo_002 end";
 }
 
@@ -141,10 +141,10 @@ HWTEST_F(AccessibleAbilityChannelClientTest, FindFocusedElementInfo_002, TestSiz
 HWTEST_F(AccessibleAbilityChannelClientTest, FindFocusedElementInfo_003, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "FindFocusedElementInfo_003 start";
-    EXPECT_CALL(*stub_, FindFocusedElementInfo(_, _, _, _, _)).Times(1).WillOnce(Return(RET_OK));
+    EXPECT_CALL(*stub_, FindFocusedElementInfo(_, _, _, _, _, _)).Times(1).WillOnce(Return(RET_OK));
     AccessibilityElementInfo info {};
     EXPECT_EQ(instance_->FindFocusedElementInfo(
-        ACCESSIBILITY_WINDOW_ID, ELEMENT_ID, FOCUS_TYPE_INPUT, info), RET_ERR_TIME_OUT);
+        ACCESSIBILITY_WINDOW_ID, ELEMENT_ID, -1, FOCUS_TYPE_INPUT, info), RET_ERR_TIME_OUT);
     GTEST_LOG_(INFO) << "FindFocusedElementInfo_003 end";
 }
 
@@ -444,10 +444,11 @@ HWTEST_F(AccessibleAbilityChannelClientTest, SetTargetBundleName_002, TestSize.L
 HWTEST_F(AccessibleAbilityChannelClientTest, SearchElementInfosByAccessibilityId_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "SearchElementInfosByAccessibilityId_001 start";
-    EXPECT_CALL(*stub_, SearchElementInfoByAccessibilityId(_, _, _, _, _, _)).Times(1).WillOnce(Return(RET_ERR_FAILED));
+    EXPECT_CALL(*stub_,
+        SearchElementInfoByAccessibilityId(_, _, _, _, _, _, _)).Times(1).WillOnce(Return(RET_ERR_FAILED));
     std::vector<AccessibilityElementInfo> infos;
     EXPECT_EQ(instance_->SearchElementInfosByAccessibilityId(ACCESSIBILITY_WINDOW_ID,
-        ELEMENT_ID, MODE, infos), RET_ERR_FAILED);
+        ELEMENT_ID, -1, MODE, infos), RET_ERR_FAILED);
     GTEST_LOG_(INFO) << "SearchElementInfosByAccessibilityId_001 end";
 }
 
@@ -464,7 +465,7 @@ HWTEST_F(AccessibleAbilityChannelClientTest, SearchElementInfosByAccessibilityId
     ASSERT_TRUE(client);
     std::vector<AccessibilityElementInfo> infos;
     EXPECT_EQ(client->SearchElementInfosByAccessibilityId(ACCESSIBILITY_WINDOW_ID,
-        ELEMENT_ID, MODE, infos), RET_ERR_SAMGR);
+        ELEMENT_ID, -1, MODE, infos), RET_ERR_SAMGR);
     GTEST_LOG_(INFO) << "SearchElementInfosByAccessibilityId_002 end";
 }
 
@@ -476,10 +477,10 @@ HWTEST_F(AccessibleAbilityChannelClientTest, SearchElementInfosByAccessibilityId
 HWTEST_F(AccessibleAbilityChannelClientTest, SearchElementInfosByAccessibilityId_003, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "SearchElementInfosByAccessibilityId_003 start";
-    EXPECT_CALL(*stub_, SearchElementInfoByAccessibilityId(_, _, _, _, _, _)).Times(1).WillOnce(Return(RET_OK));
+    EXPECT_CALL(*stub_, SearchElementInfoByAccessibilityId(_, _, _, _, _, _, _)).Times(1).WillOnce(Return(RET_OK));
     std::vector<AccessibilityElementInfo> infos;
     EXPECT_EQ(instance_->SearchElementInfosByAccessibilityId(ACCESSIBILITY_WINDOW_ID,
-        ELEMENT_ID, MODE, infos), RET_ERR_TIME_OUT);
+        ELEMENT_ID, -1, MODE, infos), RET_ERR_TIME_OUT);
     GTEST_LOG_(INFO) << "SearchElementInfosByAccessibilityId_003 end";
 }
 } // namespace Accessibility

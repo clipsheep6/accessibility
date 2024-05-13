@@ -137,6 +137,9 @@ AccessibleAbilityManagerServiceStub::AccessibleAbilityManagerServiceStub()
         AccessibilityInterfaceCode::REGISTER_INTERACTION_CONNECTION)] =
         &AccessibleAbilityManagerServiceStub::HandleRegisterAccessibilityElementOperator;
     memberFuncMap_[static_cast<uint32_t>(
+        AccessibilityInterfaceCode::CARDREGISTER_INTERACTION_CONNECTION)] =
+        &AccessibleAbilityManagerServiceStub::HandleCardRegisterAccessibilityElementOperator;
+    memberFuncMap_[static_cast<uint32_t>(
         AccessibilityInterfaceCode::DEREGISTER_INTERACTION_CONNECTION)] =
         &AccessibleAbilityManagerServiceStub::HandleDeregisterAccessibilityElementOperator;
 
@@ -332,6 +335,25 @@ ErrCode AccessibleAbilityManagerServiceStub::HandleRegisterAccessibilityElementO
     }
     bool isApp = IsApp();
     RegisterElementOperator(windowId, operation, isApp);
+
+    return NO_ERROR;
+}
+
+ErrCode AccessibleAbilityManagerServiceStub::HandleCardRegisterAccessibilityElementOperator(
+    MessageParcel &data, MessageParcel &reply)
+{
+    HILOG_DEBUG();
+
+    int32_t windowId = data.ReadInt32();
+    int32_t treeId = data.ReadInt32();
+    sptr<IRemoteObject> obj = data.ReadRemoteObject();
+    sptr<IAccessibilityElementOperator> operation = iface_cast<IAccessibilityElementOperator>(obj);
+    if (operation == nullptr) {
+        HILOG_ERROR("iface_cast obj failed");
+        return TRANSACTION_ERR;
+    }
+    bool isApp = IsApp();
+    RegisterElementOperator(windowId, treeId, operation, isApp);
 
     return NO_ERROR;
 }

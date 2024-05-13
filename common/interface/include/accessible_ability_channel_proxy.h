@@ -39,6 +39,7 @@ public:
      * @brief Searches elementInfo by accessibility id and set the result by callback through the proxy object.
      * @param accessibilityWindowId The id of accessibility window.
      * @param elementId The unique id of the component ID.
+     * @param treeId Tree ID
      * @param requestId Matched the request and response. It needn't cared by ACE, transfer it by callback only.
      * @param callback To transfer the element info to ASAC.
      * @param mode PREFETCH_PREDECESSORS: Need to make the parent element info also.
@@ -48,8 +49,8 @@ public:
      * @return Return RET_OK if search elementInfo successfully, otherwise refer to the RetError for the failure.
      */
     virtual RetError SearchElementInfoByAccessibilityId(const int32_t accessibilityWindowId,
-        const int64_t elementId, const int32_t requestId, const sptr<IAccessibilityElementOperatorCallback> &callback,
-        const int32_t mode, bool isFilter) override;
+        const int64_t elementId, const int32_t treeId, const int32_t requestId,
+        const sptr<IAccessibilityElementOperatorCallback> &callback, const int32_t mode, bool isFilter) override;
 
     /**
      * @brief Make the child element information by accessibility ID and filtered by text and
@@ -70,6 +71,7 @@ public:
      *        by the focus type specified through the proxy object.
      * @param accessibilityWindowId The id of accessibility window.
      * @param elementId: The unique id of the component ID.
+     * @param treeId Tree ID
      * @param focusType FOCUS_TYPE_ACCESSIBILITY: accessibility focus
      *                  FOCUS_TYPE_INPUT: text input focus
      * @param requestId Matched the request and response. It needn't cared by ACE, transfer it by callback only.
@@ -77,7 +79,7 @@ public:
      * @return Return RET_OK if find elementInfo successfully, otherwise refer to the RetError for the failure.
      */
     virtual RetError FindFocusedElementInfo(const int32_t accessibilityWindowId, const int64_t elementId,
-        const int32_t focusType, const int32_t requestId,
+        const int32_t treeId, const int32_t focusType, const int32_t requestId,
         const sptr<IAccessibilityElementOperatorCallback> &callback) override;
 
     /**

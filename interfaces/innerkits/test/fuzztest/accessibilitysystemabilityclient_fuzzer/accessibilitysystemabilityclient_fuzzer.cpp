@@ -58,6 +58,8 @@ public:
         AccessibilityElementOperatorCallback &callback) override {}
     void ClearFocus() override {}
     void OutsideTouch() override {}
+    void SetChildTreeId(const int64_t nodeId, const int32_t treeId) override {}
+    void SetBelongTreeId(const int32_t treeId) override {}
 };
 
 class StateObserverForFuzzTest : public AccessibilityStateObserver {
@@ -184,6 +186,8 @@ bool RegisterElementOperatorFuzzTest(const uint8_t* data, size_t size)
 
     size_t position = 0;
     int32_t windowId = 0;
+    int32_t parentTreeId = 0;
+    int64_t nodeId = 0;
     position += GetObject<int32_t>(windowId, &data[position], size - position);
     std::shared_ptr<ElementOperatorForFuzzTest> elementOperator = std::make_shared<ElementOperatorForFuzzTest>();
     instance->RegisterElementOperator(windowId, elementOperator);

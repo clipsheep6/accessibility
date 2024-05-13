@@ -103,6 +103,14 @@ void AccessibilityAccountData::AddAccessibilityWindowConnection(
     }
 }
 
+void AccessibilityAccountData::AddAccessibilityWindowConnection(
+    const int32_t windowId, const int32_t treeId, const sptr<AccessibilityWindowConnection>& interactionConnection)
+{
+    HILOG_DEBUG("windowId(%{public}d)", windowId);
+    std::lock_guard lock(asacConnectionsMutex_);
+    asacCardConnections_[windowId][treeId] = interactionConnection;
+}
+
 // remove AccessibilityWindowConnection
 void AccessibilityAccountData::RemoveAccessibilityWindowConnection(const int32_t windowId)
 {

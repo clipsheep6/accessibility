@@ -108,6 +108,17 @@ public:
         const int32_t windowId, const sptr<AccessibilityWindowConnection>& interactionConnection);
 
     /**
+     * @brief Add interface operation interactive connection.
+     * @param windowId Interface operation interactive connection the
+     * corresponding window id.
+     * @param treeId: The tree Id.
+     * @param interactionConnection Interface interface operation
+     * interactive connection.
+     */
+    void AddAccessibilityWindowConnection(
+        const int32_t windowId, const int32_t treeId, const sptr<AccessibilityWindowConnection>& interactionConnection);
+
+    /**
      * @brief Remove interface operation interactive connection.
      * @param windowId Interface operation interactive connection the corresponding window id.
      */
@@ -343,6 +354,8 @@ private:
     std::vector<sptr<IAccessibilityEnableAbilityListsObserver>> enableAbilityListsObservers_;
     std::mutex asacConnectionsMutex_;
     std::map<int32_t, sptr<AccessibilityWindowConnection>> asacConnections_; // key: windowId
+    // key: windowId treeId
+    std::map<int32_t, std::map<int32_t, sptr<AccessibilityWindowConnection>>> asacCardConnections_;
     CaptionPropertyCallbacks captionPropertyCallbacks_;
     std::vector<AccessibilityAbilityInfo> installedAbilities_;
     std::vector<std::string> enabledAbilities_; // bundleName/abilityName

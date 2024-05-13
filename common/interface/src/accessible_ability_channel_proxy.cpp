@@ -60,8 +60,8 @@ bool AccessibleAbilityChannelProxy::SendTransactCmd(AccessibilityInterfaceCode c
 }
 
 RetError AccessibleAbilityChannelProxy::SearchElementInfoByAccessibilityId(const int32_t accessibilityWindowId,
-    const int64_t elementId, const int32_t requestId, const sptr<IAccessibilityElementOperatorCallback> &callback,
-    const int32_t mode, bool isFilter)
+    const int64_t elementId, const int32_t treeId, const int32_t requestId,
+    const sptr<IAccessibilityElementOperatorCallback> &callback, const int32_t mode, bool isFilter)
 {
     HILOG_DEBUG();
     if (!callback) {
@@ -82,6 +82,10 @@ RetError AccessibleAbilityChannelProxy::SearchElementInfoByAccessibilityId(const
     }
     if (!data.WriteInt64(elementId)) {
         HILOG_ERROR("elementId write error: %{public}" PRId64 "", elementId);
+        return RET_ERR_IPC_FAILED;
+    }
+    if (!data.WriteInt32(treeId)) {
+        HILOG_ERROR("treeId write error: %{public}d,", treeId);
         return RET_ERR_IPC_FAILED;
     }
     if (!data.WriteInt32(requestId)) {
@@ -156,7 +160,7 @@ RetError AccessibleAbilityChannelProxy::SearchElementInfosByText(const int32_t a
 }
 
 RetError AccessibleAbilityChannelProxy::FindFocusedElementInfo(const int32_t accessibilityWindowId,
-    const int64_t elementId, const int32_t focusType, const int32_t requestId,
+    const int64_t elementId, const int32_t terrId, const int32_t focusType, const int32_t requestId,
     const sptr<IAccessibilityElementOperatorCallback> &callback)
 {
     HILOG_DEBUG();
@@ -178,6 +182,10 @@ RetError AccessibleAbilityChannelProxy::FindFocusedElementInfo(const int32_t acc
     }
     if (!data.WriteInt64(elementId)) {
         HILOG_ERROR("elementId write error: %{public}" PRId64 "", elementId);
+        return RET_ERR_IPC_FAILED;
+    }
+    if (!data.WriteInt32(terrId)) {
+        HILOG_ERROR("terrId write error: %{public}d, ", terrId);
         return RET_ERR_IPC_FAILED;
     }
     if (!data.WriteInt32(focusType)) {
