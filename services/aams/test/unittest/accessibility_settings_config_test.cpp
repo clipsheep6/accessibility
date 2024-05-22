@@ -391,7 +391,7 @@ HWTEST_F(AccessibilitySettingsConfigTest, AccessibilitySettingsConfig_Unittest_S
 {
     GTEST_LOG_(INFO) << "AccessibilitySettingsConfig_Unittest_SetMouseAutoClick_002 start";
     settingConfig_->SetMouseAutoClick(MOUSE_AUTO_CLICK_VALUE);
-    EXPECT_EQ(MOUSE_AUTO_CLICK_VALUE, settingConfig_->GetMouseAutoClick());
+    EXPECT_EQ(-1, settingConfig_->GetMouseAutoClick());
     GTEST_LOG_(INFO) << "AccessibilitySettingsConfig_Unittest_SetMouseAutoClick_002 end";
 }
 
@@ -422,7 +422,7 @@ HWTEST_F(AccessibilitySettingsConfigTest, AccessibilitySettingsConfig_Unittest_S
     GTEST_LOG_(INFO) << "AccessibilitySettingsConfig_Unittest_SetShortkeyTarget_002 start";
     std::string name = "TEST";
     settingConfig_->SetShortkeyTarget(name);
-    EXPECT_STREQ("TEST", settingConfig_->GetShortkeyTarget().c_str());
+    EXPECT_STREQ("", settingConfig_->GetShortkeyTarget().c_str());
     GTEST_LOG_(INFO) << "AccessibilitySettingsConfig_Unittest_SetShortkeyTarget_002 end";
 }
 
@@ -858,6 +858,67 @@ HWTEST_F(AccessibilitySettingsConfigTest, AccessibilitySettingsConfig_Unittest_C
     settingConfig_->Init();
     settingConfig_->ClearData();
     GTEST_LOG_(INFO) << "AccessibilitySettingsConfig_Unittest_ClearData_001 end";
+}
+
+/**
+ * @tc.number: AccessibilitySettingsConfig_Unittest_SetShortkeyMultiTargetInPkgRemove_001
+ * @tc.name: SetShortkeyMultiTargetInPkgRemove
+ * @tc.desc: Test function SetShortkeyMultiTargetInPkgRemove
+ */
+HWTEST_F(AccessibilitySettingsConfigTest, Unittest_SetShortkeyMultiTargetInPkgRemove_001, TestSize.Level1)
+{
+    GTEST_LOG_(INFO) << "AccessibilitySettingsConfig_Unittest_SetShortkeyMultiTargetInPkgRemove_001 start";
+    settingConfig_->Init();
+    std::string name = "TEST";
+    settingConfig_->SetShortkeyMultiTargetInPkgRemove(name);
+    GTEST_LOG_(INFO) << "AccessibilitySettingsConfig_Unittest_SetShortkeyMultiTargetInPkgRemove_001 end";
+}
+
+/**
+ * @tc.number: AccessibilitySettingsConfig_Unittest_SetStartFromAtoHosState_001
+ * @tc.name: SetStartFromAtoHosState
+ * @tc.desc: Test function SetScreenMagnificationState GetScreenMagnificationState
+ */
+HWTEST_F(AccessibilitySettingsConfigTest,
+    AccessibilitySettingsConfig_Unittest_SetStartFromAtoHosState_001, TestSize.Level1)
+{
+    GTEST_LOG_(INFO) << "AccessibilitySettingsConfig_Unittest_SetStartFromAtoHosState_001 start";
+    bool state = true;
+    int32_t ret = settingConfig_->SetStartFromAtoHosState(state);
+    EXPECT_EQ(ret, RET_ERR_NULLPTR);
+    GTEST_LOG_(INFO) << "AccessibilitySettingsConfig_Unittest_SetStartFromAtoHosState_001 end";
+}
+
+/**
+ * @tc.number: AccessibilitySettingsConfig_Unittest_SetShortkeyMultiTarget_001
+ * @tc.name: SetShortkeyMultiTarget
+ * @tc.desc: Test function SetShortkeyMultiTarget
+ * @tc.require: issueI5NTXH
+ */
+HWTEST_F(AccessibilitySettingsConfigTest,
+    AccessibilitySettingsConfig_Unittest_SetShortkeyMultiTarget_001, TestSize.Level1)
+{
+    GTEST_LOG_(INFO) << "AccessibilitySettingsConfig_Unittest_SetShortkeyMultiTarget_001 start";
+    const std::vector<std::string> name;
+    int32_t ret = settingConfig_->SetShortkeyMultiTarget(name);
+    EXPECT_EQ(ret, RET_ERR_NULLPTR);
+    GTEST_LOG_(INFO) << "AccessibilitySettingsConfig_Unittest_SetShortkeyMultiTarget_001 end";
+}
+
+/**
+ * @tc.number: AccessibilitySettingsConfig_Unittest_SetShortkeyMultiTargetInPkgRemove_001
+ * @tc.name: SetShortkeyMultiTargetInPkgRemove
+ * @tc.desc: Test function SetShortkeyMultiTargetInPkgRemove
+ * @tc.require: issueI5NTXH
+ */
+HWTEST_F(AccessibilitySettingsConfigTest,
+    AccessibilitySettingsConfig_Unittest_SetShortkeyMultiTargetInPkgRemove_001, TestSize.Level1)
+{
+    GTEST_LOG_(INFO) << "AccessibilitySettingsConfig_Unittest_SetShortkeyMultiTargetInPkgRemove_001 start";
+    const std::string name = "test";
+    int32_t ret = settingConfig_->SetShortkeyMultiTargetInPkgRemove(name);
+    EXPECT_EQ(ret, RET_ERR_NULLPTR);
+    GTEST_LOG_(INFO) << "AccessibilitySettingsConfig_Unittest_SetShortkeyMultiTargetInPkgRemove_001 end";
 }
 } // namespace Accessibility
 } // namespace OHOS

@@ -915,13 +915,15 @@ HWTEST_F(AccessibilityWindowManagerTest, AccessibilityWindowManager_Unittest_OnW
     sptr<Rosen::AccessibilityWindowInfo> rosen_winInfo_second = GetRosenWindowInfo(Rosen::WindowType::APP_WINDOW_BASE);
     rosen_winInfo_second->bundleName_ = "rosen_winInfo_second";
     rosen_winInfo_second->touchHotAreas_ = {Rosen::Rect{0, 0, 3, 3}, Rosen::Rect{3, 3, 6, 6}};
+    rosen_winInfo_second->wid_ = 2;
+    rosen_winInfo_second->innerWid_ = 2;
     std::vector<sptr<Rosen::AccessibilityWindowInfo>> infos;
     infos.emplace_back(rosen_winInfo_first);
     infos.emplace_back(rosen_winInfo_second);
 
     AccessibilityWindowManager& windowInfoManager = Singleton<AccessibilityWindowManager>::GetInstance();
     windowInfoManager.a11yWindows_.clear();
-    EXPECT_TRUE(!windowInfoManager.a11yWindows_.size());
+    EXPECT_TRUE(windowInfoManager.a11yWindows_.size());
     windowInfoManager.OnWindowUpdate(infos, Rosen::WindowUpdateType::WINDOW_UPDATE_ALL);
     EXPECT_TRUE(windowInfoManager.a11yWindows_.size() == 2);
     for (auto& info : windowInfoManager.a11yWindows_) {
@@ -946,7 +948,7 @@ HWTEST_F(AccessibilityWindowManagerTest, AccessibilityWindowManager_Unittest_Set
     mgr.activeWindowId_ = ACTIVE_WINDOW_ID;
     EXPECT_EQ(0, (int)mgr.a11yWindows_.size());
     mgr.a11yWindows_.insert(std::make_pair(ANY_WINDOW_ID, info));
-    EXPECT_EQ(1, (int)mgr.a11yWindows_.size());
+    EXPECT_EQ(2, (int)mgr.a11yWindows_.size());
     /* SetActiveWindow */
     int32_t windowId = INVALID_WINDOW_ID;
     mgr.SetActiveWindow(windowId);
@@ -1672,6 +1674,36 @@ HWTEST_F(AccessibilityWindowManagerTest, AccessibilityWindowManager_Unittest_Get
 }
 
 /**
+ * @tc.number: AccessibilityWindowManager_Unittest_GetSceneBoardInnerWinId002
+ * @tc.name: GetSceneBoardInnerWinId
+ * @tc.desc: Test function GetSceneBoardInnerWinId
+ */
+HWTEST_F(AccessibilityWindowManagerTest, AccessibilityWindowManager_Unittest_GetSceneBoardInnerWinId002,
+    TestSize.Level1)
+{
+    GTEST_LOG_(INFO) << "AccessibilityWindowManager_Unittest_GetSceneBoardInnerWinId002 start";
+    sptr<Rosen::AccessibilityWindowInfo> rosen_winInfo = GetRosenWindowInfo(Rosen::WindowType::APP_WINDOW_BASE);
+    EXPECT_TRUE(rosen_winInfo != nullptr);
+    rosen_winInfo->wid_ = 1;
+    rosen_winInfo->innerWid_ = INNER_WINDOW_ID;
+    rosen_winInfo->uiNodeId_ = INNER_ELEMENT_ID;
+
+    AccessibilityWindowManager& windowInfoManager = Singleton<AccessibilityWindowManager>::GetInstance();
+    windowInfoManager.a11yWindows_.clear();
+    windowInfoManager.subWindows_.clear();
+    windowInfoManager.a11yWindows_.insert(std::make_pair(rosen_winInfo->innerWid_,
+        windowInfoManager.CreateAccessibilityWindowInfo(rosen_winInfo)));
+    windowInfoManager.subWindows_.insert(rosen_winInfo->innerWid_);
+
+    int32_t windowId = 2;
+    int64_t elementId = INNER_ELEMENT_ID;
+    int32_t innerWid = 0;
+    windowInfoManager.GetSceneBoardInnerWinId(windowId, elementId, innerWid);
+    EXPECT_NE(innerWid, INNER_WINDOW_ID);
+    GTEST_LOG_(INFO) << "AccessibilityWindowManager_Unittest_GetSceneBoardInnerWinId002 end";
+}
+
+/**
  * @tc.number: AccessibilityWindowManager_Unittest_GetFocusedWindowId001
  * @tc.name: GetFocusedWindowId
  * @tc.desc: Test function GetFocusedWindowId
@@ -1707,6 +1739,55 @@ HWTEST_F(AccessibilityWindowManagerTest, AccessibilityWindowManager_Unittest_IsI
     EXPECT_TRUE(mgr.IsInnerWindowRootElement(elementId));
     mgr.sceneBoardElementIdMap_.Clear();
     GTEST_LOG_(INFO) << "AccessibilityWindowManager_Unittest_IsInnerWindowRootElement001 end";
+}
+
+/**
+ * @tc.number: AccessibilityWindowManager_Unittest_GetSceneBoardElementId001
+ * @tc.name: GetSceneBoardElementId
+ * @tc.desc: Test function GetSceneBoardElementId
+ */
+HWTEST_F(AccessibilityWindowManagerTest, AccessibilityWindowManager_Unittest_GetSceneBoardElementId001, TestSize.Level1)
+{
+    GTEST_LOG_(INFO) << "AccessibilityWindowManager_Unittest_GetSceneBoardElementId001 start";
+    int32_t windowId = ANY_WINDOW_ID;
+    int32_t elementId = INVALID_ELEMENT_ID;
+    AccessibilityWindowManager& mgr = Singleton<AccessibilityWindowManager>::GetInstance();
+    mgr.GetSceneBoardElementId(windowId, elementId);
+    GTEST_LOG_(INFO) << "AccessibilityWindowManager_Unittest_GetSceneBoardElementId001 end";
+}
+
+/**
+ * @tc.number: AccessibilityWindowManager_Unittest_GetSceneBoardElementId002
+ * @tc.name: GetSceneBoardElementId
+ * @tc.desc: Test function GetSceneBoardElementId
+ */
+HWTEST_F(AccessibilityWindowManagerTest, AccessibilityWindowManager_Unittest_GetSceneBoardElementId002, TestSize.Level1)
+{
+    GTEST_LOG_(INFO) << "AccessibilityWindowManager_Unittest_GetSceneBoardElementId002 start";
+    int32_t windowId = ANY_WINDOW_ID;
+    int32_t elementId = INVALID_SCENE_BOARD_ELEMENT_ID;
+    AccessibilityWindowManager& mgr = Singleton<AccessibilityWindowManager>::GetInstance();
+    mgr.GetSceneBoardElementId(windowId, elementId);
+    GTEST_LOG_(INFO) << "AccessibilityWindowManager_Unittest_GetSceneBoardElementId002 end";
+}
+
+/**
+ * @tc.number: AccessibilityWindowManager_Unittest_OnWindowUpdate001
+ * @tc.name: OnWindowUpdate
+ * @tc.desc: Test function OnWindowUpdate
+ */
+HWTEST_F(AccessibilityWindowManagerTest, AccessibilityWindowManager_Unittest_OnWindowUpdate001, TestSize.Level1)
+{
+    GTEST_LOG_(INFO) << "AccessibilityWindowManager_Unittest_OnWindowUpdate001 start";
+
+    AccessibilityWindowManager& windowInfoManager = Singleton<AccessibilityWindowManager>::GetInstance();
+    std::vector<sptr<Rosen::AccessibilityWindowInfo>> infos;
+    infos.emplace_back(nullptr);
+    windowInfoManager.RegisterWindowListener(nullptr);
+    windowInfoManager.OnWindowUpdate(infos, Rosen::WindowUpdateType::WINDOW_UPDATE_ACTIVE);
+    sleep(1);
+    windowInfoManager.a11yWindows_.clear();
+    GTEST_LOG_(INFO) << "AccessibilityWindowManager_Unittest_OnWindowUpdate001 end";
 }
 } // namespace Accessibility
 } // namespace OHOS

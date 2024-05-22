@@ -590,5 +590,9 @@ bool AccessibleAbilityManagerService::CheckWindowRegister(int32_t windowId)
     (void)windowId;
     return true;
 }
+
+void AccessibleAbilityManagerService::PostDelayUnloadTask()
+{
+}
 } // namespace Accessibility
 } // namespace OHOS

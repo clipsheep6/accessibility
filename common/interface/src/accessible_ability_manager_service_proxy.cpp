@@ -32,7 +32,7 @@ AccessibleAbilityManagerServiceProxy::~AccessibleAbilityManagerServiceProxy()
 bool AccessibleAbilityManagerServiceProxy::WriteInterfaceToken(MessageParcel &data)
 {
     HILOG_DEBUG();
-    if (!data.WriteInterfaceToken(IAccessibleAbilityManagerService::GetDescriptor())) {
+    if (!data.WriteInterfaceToken(AccessibleAbilityManagerServiceProxy::GetDescriptor())) {
         HILOG_ERROR("write interface token failed");
         return false;
     }
@@ -1538,6 +1538,12 @@ void AccessibleAbilityManagerServiceProxy::GetAllConfigs(AccessibilityConfigData
     if (!SendTransactCmd(AccessibilityInterfaceCode::GET_ALL_CONFIGS,
         data, reply, option)) {
         HILOG_ERROR("GetAllConfigs fail");
+        return;
+    }
+
+    RetError ret = static_cast<RetError>(reply.ReadInt32());
+    if (ret != RET_OK) {
+        HILOG_ERROR("GetAllConfigs failed %{public}d", ret);
         return;
     }
     std::vector<std::string> tmpMultiTarget;

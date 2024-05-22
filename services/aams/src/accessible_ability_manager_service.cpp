@@ -50,6 +50,8 @@ namespace {
     const std::string ARKUI_ANIMATION_SCALE_NAME = "persist.sys.arkui.animationscale";
     const std::string SCREEN_READER_BUNDLE_ABILITY_NAME = "com.huawei.hmos.screenreader/AccessibilityExtAbility";
     const std::string DEVICE_PROVISIONED = "device_provisioned";
+    const std::string USER_SETUP_COMPLETED = "user_setup_complete";
+    const std::string DELAY_UNLOAD_TASK = "TASK_UNLOAD_ACCESSIBILITY_SA";
     constexpr int32_t QUERY_USER_ID_RETRY_COUNT = 600;
     constexpr int32_t QUERY_USER_ID_SLEEP_TIME = 50;
     constexpr uint32_t TIME_OUT_OPERATOR = 5000;
@@ -103,7 +105,6 @@ void AccessibleAbilityManagerService::OnStart()
             return;
         }
     }
-    SetParameter(SYSTEM_PARAMETER_AAMS_NAME.c_str(), "false");
 
     HILOG_DEBUG("AddAbilityListener!");
     AddSystemAbilityListener(ABILITY_MGR_SERVICE_ID);
@@ -147,15 +148,12 @@ void AccessibleAbilityManagerService::OnStop()
         }), "TASK_ONSTOP");
     syncFuture.wait();
 
-    runner_.reset();
-    handler_.reset();
     for (auto &iter : dependentServicesStatus_) {
         iter.second = false;
     }
 
     isReady_ = false;
     isPublished_ = false;
-    SetParameter(SYSTEM_PARAMETER_AAMS_NAME.c_str(), "false");
     HILOG_INFO("AccessibleAbilityManagerService::OnStop OK.");
 }
 
@@ -197,9 +195,9 @@ void AccessibleAbilityManagerService::OnAddSystemAbility(int32_t systemAbilityId
         InitInnerResource();
 
         isReady_ = true;
-        SetParameter(SYSTEM_PARAMETER_AAMS_NAME.c_str(), "true");
         HILOG_DEBUG("AAMS is ready!");
         RegisterShortKeyEvent();
+        PostDelayUnloadTask();
         }), "OnAddSystemAbility");
 }
 
@@ -228,7 +226,6 @@ void AccessibleAbilityManagerService::OnRemoveSystemAbility(int32_t systemAbilit
             Singleton<AccessibilityWindowManager>::GetInstance().DeInit();
 
             isReady_ = false;
-            SetParameter(SYSTEM_PARAMETER_AAMS_NAME.c_str(), "false");
         }
         }), "OnRemoveSystemAbility");
 }
@@ -258,7 +255,8 @@ int AccessibleAbilityManagerService::Dump(int fd, const std::vector<std::u16stri
 
 RetError AccessibleAbilityManagerService::SendEvent(const AccessibilityEventInfo &uiEvent)
 {
-    HILOG_DEBUG("eventType[%{public}d] gestureId[%{public}d]", uiEvent.GetEventType(), uiEvent.GetGestureType());
+    HILOG_DEBUG("eventType[%{public}d] gestureId[%{public}d] windowId[%{public}d]",
+        uiEvent.GetEventType(), uiEvent.GetGestureType(), uiEvent.GetWindowId());
     if (!handler_) {
         HILOG_ERROR("Parameters check failed!");
         return RET_ERR_NULLPTR;
@@ -1408,6 +1406,7 @@ void AccessibleAbilityManagerService::SwitchedUser(int32_t accountId)
     }
     UpdateAllSetting();
     UpdateAutoStartAbilities();
+    RegisterShortKeyEvent();
 }
 
 void AccessibleAbilityManagerService::PackageRemoved(const std::string &bundleName)
@@ -1579,7 +1578,7 @@ bool AccessibleAbilityManagerService::GetParentElementRecursively(int32_t window
     }
 
     sptr<ElementOperatorCallbackImpl> callBack = new(std::nothrow) ElementOperatorCallbackImpl();
-    if (!callBack) {
+    if (callBack == nullptr) {
         HILOG_ERROR("Failed to create callBack.");
         return false;
     }
@@ -1646,7 +1645,7 @@ void AccessibleAbilityManagerService::UpdateAccessibilityWindowStateByEvent(cons
     switch (evtType) {
         case TYPE_VIEW_HOVER_ENTER_EVENT:
         case TYPE_VIEW_ACCESSIBILITY_FOCUSED_EVENT:
-            Singleton<AccessibilityWindowManager>::GetInstance().SetActiveWindow(windowId);
+            Singleton<AccessibilityWindowManager>::GetInstance().SetActiveWindow(windowId, false);
             Singleton<AccessibilityWindowManager>::GetInstance().SetAccessibilityFocusedWindow(windowId);
             break;
         default:
@@ -2298,17 +2297,20 @@ RetError AccessibleAbilityManagerService::GetFocusedWindowId(int32_t &focusedWin
 void AccessibleAbilityManagerService::OnDeviceProvisioned()
 {
     HILOG_DEBUG();
-    AccessibilitySettingProvider& provider = AccessibilitySettingProvider::GetInstance(POWER_MANAGER_SERVICE_ID);
-    provider.UnregisterObserver(DEVICE_PROVISIONED);
     sptr<AccessibilityAccountData> accountData = GetCurrentAccountData();
     if (!accountData) {
         HILOG_ERROR("accountData is nullptr");
         return;
     }
+    AccessibilitySettingProvider& provider = AccessibilitySettingProvider::GetInstance(POWER_MANAGER_SERVICE_ID);
+    provider.UnregisterObserver(DEVICE_PROVISIONED);
+    if (accountData->GetConfig()->GetDbHandle()) {
+        accountData->GetConfig()->GetDbHandle()->UnregisterObserver(USER_SETUP_COMPLETED);
+    }
     if (accountData->GetScreenReaderState() == false) {
         HILOG_DEBUG();
         accountData->GetConfig()->SetShortKeyState(false);
-        std::vector<std::string> tmpVec { "" };
+        std::vector<std::string> tmpVec;
         accountData->GetConfig()->SetShortkeyMultiTarget(tmpVec);
         UpdateConfigState();
         Singleton<AccessibleAbilityManagerService>::GetInstance().UpdateInputFilter();
@@ -2324,28 +2326,34 @@ void AccessibleAbilityManagerService::RegisterShortKeyEvent()
     }
     handler_->PostTask(std::bind([=]() -> void {
         HILOG_DEBUG();
-        AccessibilitySettingProvider& provider = AccessibilitySettingProvider::GetInstance(POWER_MANAGER_SERVICE_ID);
-        bool oobeState = false;
-        provider.GetBoolValue(DEVICE_PROVISIONED, oobeState);
         sptr<AccessibilityAccountData> accountData = GetCurrentAccountData();
         if (!accountData) {
             HILOG_ERROR("accountData is nullptr");
             return;
         }
-        if (oobeState == false) {
+        AccessibilitySettingProvider& provider = AccessibilitySettingProvider::GetInstance(POWER_MANAGER_SERVICE_ID);
+        bool oobeState = false;
+        bool userSetupState = false;
+        provider.GetBoolValue(DEVICE_PROVISIONED, oobeState);
+        if (accountData->GetConfig()->GetDbHandle()) {
+            accountData->GetConfig()->GetDbHandle()->GetBoolValue(USER_SETUP_COMPLETED, userSetupState);
+        }
+        if (oobeState == false || userSetupState == false) {
             HILOG_DEBUG();
             accountData->GetConfig()->SetShortKeyState(true);
             std::vector<std::string> tmpVec { SCREEN_READER_BUNDLE_ABILITY_NAME };
             accountData->GetConfig()->SetShortkeyMultiTarget(tmpVec);
             UpdateConfigState();
             Singleton<AccessibleAbilityManagerService>::GetInstance().UpdateInputFilter();
-            AccessibilitySettingObserver::UpdateFunc func = [ = ](const std::string &state)
-            {
+            AccessibilitySettingObserver::UpdateFunc func = [ = ](const std::string &state) {
                 Singleton<AccessibleAbilityManagerService>::GetInstance().OnDeviceProvisioned();
             };
             provider.RegisterObserver(DEVICE_PROVISIONED, func);
+            if (accountData->GetConfig()->GetDbHandle()) {
+                accountData->GetConfig()->GetDbHandle()->RegisterObserver(USER_SETUP_COMPLETED, func);
+            }
         }
-    }), "REGISTER_SHORTKEY_OBSERVER");
+        }), "REGISTER_SHORTKEY_OBSERVER");
 }
 
 void AccessibleAbilityManagerService::InsertWindowIdEventPair(int32_t windowId, const AccessibilityEventInfo &event)
@@ -2367,6 +2375,59 @@ bool AccessibleAbilityManagerService::CheckWindowRegister(int32_t windowId)
         return false;
     }
     return accountData->GetAccessibilityWindowConnection(windowId) != nullptr;
+}
+
+void AccessibleAbilityManagerService::PostDelayUnloadTask()
+{
+    auto task = [=]() {
+        sptr<ISystemAbilityManager> systemAbilityManager =
+            SystemAbilityManagerClient::GetInstance().GetSystemAbilityManager();
+        if (systemAbilityManager == nullptr) {
+            HILOG_ERROR("failed to get system ability mgr");
+            return;
+        }
+        if (!IsNeedUnload()) {
+            return;
+        }
+        int32_t ret = systemAbilityManager->UnloadSystemAbility(ACCESSIBILITY_MANAGER_SERVICE_ID);
+        if (ret != ERR_OK) {
+            HILOG_ERROR("unload system ability failed");
+            return;
+        }
+    };
+    handler_->RemoveTask(DELAY_UNLOAD_TASK);
+    handler_->PostTask(task, DELAY_UNLOAD_TASK, UNLOAD_TASK_INTERNAL);
+}
+
+bool AccessibleAbilityManagerService::IsNeedUnload()
+{
+    HILOG_DEBUG();
+    sptr<AccessibilityAccountData> accountData = GetCurrentAccountData();
+    if (!accountData) {
+        HILOG_ERROR("accountData is nullptr");
+        return true;
+    }
+
+    // do not unload when any extension is enabled
+    std::vector<std::string> enableAbilityList = accountData->GetEnabledAbilities();
+    if (enableAbilityList.size() != 0) {
+        return false;
+    }
+    if (!accountData->GetConfig()) {
+        return true;
+    }
+    if (accountData->GetConfig()->GetHighContrastTextState() != false ||
+        accountData->GetConfig()->GetDaltonizationState() != false ||
+        accountData->GetConfig()->GetInvertColorState() != false ||
+        accountData->GetConfig()->GetAnimationOffState() != false ||
+        accountData->GetConfig()->GetMouseKeyState() != false ||
+        accountData->GetConfig()->GetCaptionState() != false ||
+        accountData->GetConfig()->GetScreenMagnificationState() != false ||
+        accountData->GetConfig()->GetShortKeyState() != false ||
+        accountData->GetConfig()->GetBrightnessDiscount() != 1) {
+        return false;
+    }
+    return true;
 }
 } // namespace Accessibility
 } // namespace OHOS

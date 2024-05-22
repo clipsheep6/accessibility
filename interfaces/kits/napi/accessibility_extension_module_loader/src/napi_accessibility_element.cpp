@@ -34,7 +34,7 @@ namespace {
         "selected", "clickable", "longClickable", "isEnable", "isPassword", "scrollable",
         "editable", "pluralLineSupported", "parent", "children", "isFocused", "accessibilityFocused",
         "error", "isHint", "pageId", "valueMax", "valueMin", "valueNow", "windowId", "accessibilityText",
-        "textType", "offset"};
+        "textType", "offset", "allAttribute"};
     const std::vector<std::string> WINDOW_INFO_ATTRIBUTE_NAMES = {"isActive", "screenRect", "layer", "type",
         "rootElement", "isFocused", "windowId"};
 
@@ -85,6 +85,7 @@ namespace {
         {"accessibilityText", &NAccessibilityElement::GetElementInfoAccessibilityText},
         {"textType", &NAccessibilityElement::GetElementInfoTextType},
         {"offset", &NAccessibilityElement::GetElementInfoOffset},
+        {"allAttribute", &NAccessibilityElement::GetElementInfoAllAttribute},
     };
     std::map<std::string, AttributeNamesFunc> windowInfoCompleteMap = {
         {"isActive", &NAccessibilityElement::GetWindowInfoIsActive},
@@ -917,6 +918,243 @@ void NAccessibilityElement::GetElementInfoOffset(NAccessibilityElementData *call
     }
     NAPI_CALL_RETURN_VOID(callbackInfo->env_, napi_create_double(callbackInfo->env_,
         callbackInfo->accessibilityElement_.elementInfo_->GetOffset(), &value));
+}
+
+void NAccessibilityElement::GetElementInfoAllAttribute(NAccessibilityElementData *callbackInfo, napi_value &value)
+{
+    NAPI_CALL_RETURN_VOID(callbackInfo->env_, napi_create_object(callbackInfo->env_, &value));
+    if (CheckElementInfoParameter(callbackInfo, value)) {
+        GetElementInfoAllAttribute1(callbackInfo, value);
+        GetElementInfoAllAttribute2(callbackInfo, value);
+        GetElementInfoAllAttribute3(callbackInfo, value);
+        GetElementInfoAllAttribute4(callbackInfo, value);
+    } else if (CheckWindowInfoParameter(callbackInfo, value)) {
+        GetWindowInfoAllAttribute(callbackInfo, value);
+    } else {
+        return;
+    }
+}
+
+void NAccessibilityElement::GetElementInfoAllAttribute1(NAccessibilityElementData *callbackInfo, napi_value &value)
+{
+    napi_env env = callbackInfo->env_;
+    napi_value componentId = nullptr;
+    GetElementInfoComponentId(callbackInfo, componentId);
+    NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, value, "componentId", componentId));
+
+    napi_value inspectorKey = nullptr;
+    GetElementInfoInspectorKey(callbackInfo, inspectorKey);
+    NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, value, "inspectorKey", inspectorKey));
+
+    napi_value bundleName = nullptr;
+    GetElementInfoBundleName(callbackInfo, bundleName);
+    NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, value, "bundleName", bundleName));
+
+    napi_value componentType = nullptr;
+    GetElementInfoComponentType(callbackInfo, componentType);
+    NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, value, "componentType", componentType));
+
+    napi_value inputType = nullptr;
+    GetElementInfoInputType(callbackInfo, inputType);
+    NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, value, "inputType", inputType));
+
+    napi_value text = nullptr;
+    GetElementInfoText(callbackInfo, text);
+    NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, value, "text", text));
+
+    napi_value hintText = nullptr;
+    GetElementInfoHintText(callbackInfo, hintText);
+    NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, value, "hintText", hintText));
+
+    napi_value description = nullptr;
+    GetElementInfoDescription(callbackInfo, description);
+    NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, value, "description", description));
+
+    napi_value resourceName = nullptr;
+    GetElementInfoResourceName(callbackInfo, resourceName);
+    NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, value, "resourceName", resourceName));
+}
+
+void NAccessibilityElement::GetElementInfoAllAttribute2(NAccessibilityElementData *callbackInfo, napi_value &value)
+{
+    napi_env env = callbackInfo->env_;
+    napi_value textLengthLimit = nullptr;
+    GetElementInfoTextLengthLimit(callbackInfo, textLengthLimit);
+    NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, value, "textLengthLimit", textLengthLimit));
+
+    napi_value rect = nullptr;
+    GetElementInfoRect(callbackInfo, rect);
+    NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, value, "rect", rect));
+
+    napi_value checkable = nullptr;
+    GetElementInfoCheckable(callbackInfo, checkable);
+    NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, value, "checkable", checkable));
+
+    napi_value checked = nullptr;
+    GetElementInfoChecked(callbackInfo, checked);
+    NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, value, "checked", checked));
+
+    napi_value focusable = nullptr;
+    GetElementInfoFocusable(callbackInfo, focusable);
+    NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, value, "focusable", focusable));
+
+    napi_value isVisible = nullptr;
+    GetElementInfoIsVisible(callbackInfo, isVisible);
+    NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, value, "isVisible", isVisible));
+
+    napi_value selected = nullptr;
+    GetElementInfoSelected(callbackInfo, selected);
+    NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, value, "selected", selected));
+
+    napi_value clickable = nullptr;
+    GetElementInfoClickable(callbackInfo, clickable);
+    NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, value, "clickable", clickable));
+
+    napi_value longClickable = nullptr;
+    GetElementInfoLongClickable(callbackInfo, longClickable);
+    NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, value, "longClickable", longClickable));
+
+    napi_value isEnable = nullptr;
+    GetElementInfoIsEnable(callbackInfo, isEnable);
+    NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, value, "isEnable", isEnable));
+
+    napi_value isPassword = nullptr;
+    GetElementInfoIsPassword(callbackInfo, isPassword);
+    NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, value, "isPassword", isPassword));
+}
+
+void NAccessibilityElement::GetElementInfoAllAttribute3(NAccessibilityElementData *callbackInfo, napi_value &value)
+{
+    napi_env env = callbackInfo->env_;
+    napi_value scrollable = nullptr;
+    GetElementInfoScrollable(callbackInfo, scrollable);
+    NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, value, "scrollable", scrollable));
+
+    napi_value editable = nullptr;
+    GetElementInfoEditable(callbackInfo, editable);
+    NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, value, "editable", editable));
+
+    napi_value pluralLineSupported = nullptr;
+    GetElementInfoPluralLineSupported(callbackInfo, pluralLineSupported);
+    NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, value, "pluralLineSupported", pluralLineSupported));
+
+    napi_value itemCount = nullptr;
+    GetElementInfoItemCount(callbackInfo, itemCount);
+    NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, value, "itemCount", itemCount));
+
+    napi_value currentIndex = nullptr;
+    GetElementInfoCurrentIndex(callbackInfo, currentIndex);
+    NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, value, "currentIndex", currentIndex));
+
+    napi_value startIndex = nullptr;
+    GetElementInfoStartIndex(callbackInfo, startIndex);
+    NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, value, "startIndex", startIndex));
+
+    napi_value endIndex = nullptr;
+    GetElementInfoEndIndex(callbackInfo, endIndex);
+    NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, value, "endIndex", endIndex));
+
+    napi_value textMoveUnit = nullptr;
+    GetElementInfoTextMoveUnit(callbackInfo, textMoveUnit);
+    NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, value, "textMoveUnit", textMoveUnit));
+
+    napi_value triggerAction = nullptr;
+    std::string action = ConvertOperationTypeToString(
+        callbackInfo->accessibilityElement_.elementInfo_->GetTriggerAction());
+    if (action == "") {
+        napi_get_undefined(callbackInfo->env_, &triggerAction);
+    } else {
+        NAPI_CALL_RETURN_VOID(env, napi_create_string_utf8(env, action.c_str(), NAPI_AUTO_LENGTH, &triggerAction));
+    }
+    NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, value, "triggerAction", triggerAction));
+
+    napi_value contents = nullptr;
+    GetElementInfoContents(callbackInfo, contents);
+    NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, value, "contents", contents));
+}
+
+void NAccessibilityElement::GetElementInfoAllAttribute4(NAccessibilityElementData *callbackInfo, napi_value &value)
+{
+    napi_env env = callbackInfo->env_;
+    napi_value lastContent = nullptr;
+    GetElementInfoLastContent(callbackInfo, lastContent);
+    NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, value, "lastContent", lastContent));
+
+    napi_value isFocused = nullptr;
+    GetElementInfoIsFocused(callbackInfo, isFocused);
+    NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, value, "isFocused", isFocused));
+
+    napi_value accessibilityFocused = nullptr;
+    GetElementInfoAccessibilityFocused(callbackInfo, accessibilityFocused);
+    NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, value, "accessibilityFocused", accessibilityFocused));
+
+    napi_value error = nullptr;
+    GetElementInfoError(callbackInfo, error);
+    NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, value, "error", error));
+
+    napi_value isHint = nullptr;
+    GetElementInfoIsHint(callbackInfo, isHint);
+    NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, value, "isHint", isHint));
+
+    napi_value pageId = nullptr;
+    GetElementInfoPageId(callbackInfo, pageId);
+    NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, value, "pageId", pageId));
+
+    napi_value valueMax = nullptr;
+    GetElementInfoValueMax(callbackInfo, valueMax);
+    NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, value, "valueMax", valueMax));
+
+    napi_value valueMin = nullptr;
+    GetElementInfoValueMin(callbackInfo, valueMin);
+    NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, value, "valueMin", valueMin));
+
+    napi_value valueNow = nullptr;
+    GetElementInfoValueNow(callbackInfo, valueNow);
+    NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, value, "valueNow", valueNow));
+
+    napi_value windowId = nullptr;
+    GetElementInfoWindowId(callbackInfo, windowId);
+    NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, value, "windowId", windowId));
+
+    napi_value accessibilityText = nullptr;
+    GetElementInfoAccessibilityText(callbackInfo, accessibilityText);
+    NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, value, "accessibilityText", accessibilityText));
+
+    napi_value textType = nullptr;
+    GetElementInfoTextType(callbackInfo, textType);
+    NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, value, "textType", textType));
+
+    napi_value offset = nullptr;
+    GetElementInfoOffset(callbackInfo, offset);
+    NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, value, "offset", offset));
+}
+
+void NAccessibilityElement::GetWindowInfoAllAttribute(NAccessibilityElementData *callbackInfo, napi_value &value)
+{
+    napi_env env = callbackInfo->env_;
+    napi_value isActive = nullptr;
+    GetWindowInfoIsActive(callbackInfo, isActive);
+    NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, value, "isActive", isActive));
+
+    napi_value screenRect = nullptr;
+    GetWindowInfoScreenRect(callbackInfo, screenRect);
+    NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, value, "screenRect", screenRect));
+
+    napi_value layer = nullptr;
+    GetWindowInfoLayer(callbackInfo, layer);
+    NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, value, "layer", layer));
+
+    napi_value type = nullptr;
+    GetWindowInfoType(callbackInfo, type);
+    NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, value, "type", type));
+
+    napi_value isFocused = nullptr;
+    GetWindowInfoIsFocused(callbackInfo, isFocused);
+    NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, value, "isFocused", isFocused));
+
+    napi_value windowId = nullptr;
+    GetWindowInfoWindowId(callbackInfo, windowId);
+    NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, value, "windowId", windowId));
 }
 
 bool NAccessibilityElement::CheckWindowInfoParameter(NAccessibilityElementData *callbackInfo, napi_value &value)
