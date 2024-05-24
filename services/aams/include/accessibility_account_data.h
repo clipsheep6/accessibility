@@ -342,7 +342,7 @@ private:
     AccessibilityAbility connectingA11yAbilities_;  // key: bundleName/abilityName
     std::vector<sptr<IAccessibilityEnableAbilityListsObserver>> enableAbilityListsObservers_;
     std::mutex asacConnectionsMutex_;
-    std::map<int32_t, sptr<AccessibilityWindowConnection>> asacConnections_; // key: windowId
+    std::map<int32_t, sptr<AccessibilityWindowConnection>> asacConnections_;
     CaptionPropertyCallbacks captionPropertyCallbacks_;
     std::vector<AccessibilityAbilityInfo> installedAbilities_;
     std::vector<std::string> enabledAbilities_; // bundleName/abilityName

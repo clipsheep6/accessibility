@@ -24,6 +24,7 @@
 #include "accessibility_state_event.h"
 #include "accessibility_window_info.h"
 
+
 namespace OHOS {
 namespace Accessibility {
 enum AccessibilityControlType : int32_t {
@@ -31,6 +32,10 @@ enum AccessibilityControlType : int32_t {
     CONTENT_ICONS = 0x00000002,
     CONTENT_TEXT = 0x00000004,
 };
+
+constexpr int32_t ELEMENT_MOVE_BIT = 51;
+constexpr int32_t ELEMENT_MOVE_BIT_SPLIT = 13;
+constexpr int32_t CONT_SPLIT_ID = -1;
 
 /*
  * The class register the accessibility service observer to AAMS,and
@@ -58,6 +63,15 @@ public:
      * @return Returns RET_OK if successful, otherwise refer to the RetError for the failure.
      */
     virtual RetError RegisterElementOperator(const int32_t windowId,
+        const std::shared_ptr<AccessibilityElementOperator> &operation) = 0;
+
+    /**
+     * @brief Register the element operator, so the AA can get node info from ACE.
+     * @param parameter The Register parameters.
+     * @param operation The callback object.
+     * @return Returns RET_OK if successful, otherwise refer to the RetError for the failure.
+     */
+    virtual RetError RegisterElementOperator(Registration parameter, int32_t &treeId,
         const std::shared_ptr<AccessibilityElementOperator> &operation) = 0;
 
     /**
@@ -142,6 +156,38 @@ public:
         const int32_t requestId, const int32_t requestCode) = 0;
     virtual void SetPerformActionResult(const bool succeeded, const int32_t requestId) = 0;
     virtual RetError GetFocusedWindowId(int32_t &focusedWindowId) = 0;
+
+    /**
+    * @brief Splic ElementId and TreeId.
+    * @param treeId: The tree Id.
+    * @param elementId: The incoming before splicing elementId,Send out after splicing elementId.
+    */
+    static void SetSplicElementIdTreeId(const int32_t treeId, int64_t &elementId)
+    {
+        int64_t itemp = 0;
+        itemp = treeId;
+        itemp = (itemp << ELEMENT_MOVE_BIT);
+        itemp |= elementId;
+        elementId = itemp;
+    }
+
+    /**
+    * @brief Split ElementId.
+    * @param elementId:Splic ElementId
+    * @param splitElementId: The split ElementId.
+    * @param splitTreeId: The split TreeId.
+    */
+    static void GetTreeIdAndElementIdBySplitElementId(const int64_t elementId, int64_t &splitElementId,
+        int32_t &splitTreeId)
+    {
+        if (elementId == CONT_SPLIT_ID) {
+            splitTreeId = CONT_SPLIT_ID;
+            splitElementId = CONT_SPLIT_ID;
+            return ;
+        }
+        splitTreeId = (elementId >> ELEMENT_MOVE_BIT);
+        splitElementId = (elementId << ELEMENT_MOVE_BIT_SPLIT) >> ELEMENT_MOVE_BIT_SPLIT;
+    }
 };
 } // namespace Accessibility
 } // namespace OHOS

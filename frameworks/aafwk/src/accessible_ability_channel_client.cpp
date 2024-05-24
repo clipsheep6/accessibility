@@ -248,7 +248,8 @@ RetError AccessibleAbilityChannelClient::SearchElementInfosByAccessibilityId(int
 
     std::future_status wait = promiseFuture.wait_for(std::chrono::milliseconds(TIME_OUT_OPERATOR));
     if (wait != std::future_status::ready) {
-        HILOG_ERROR("SearchElementInfosByAccessibilityId Failed to wait result");
+        HILOG_ERROR("SearchElementInfosByAccessibilityId windowId :[%{pubic}d] Failed to wait result, Time out",
+            accessibilityWindowId);
         return RET_ERR_TIME_OUT;
     }
 

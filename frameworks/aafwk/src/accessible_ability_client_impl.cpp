@@ -31,6 +31,7 @@ namespace OHOS {
 namespace Accessibility {
 // tmp: wait for window registing when client connect done
 constexpr int WAIT_WINDOW_REGIST = 500;
+constexpr int64_t ROOT_PARENT_ELEMENT_ID = -2100000;
 namespace {
     constexpr int64_t ROOT_NONE_ID = -1;
     constexpr int64_t NODE_ID_MAX = 0x7FFFFFFE;
@@ -471,12 +472,11 @@ RetError AccessibleAbilityClientImpl::GetRootBatch(std::vector<AccessibilityElem
 
     int32_t windowId = serviceProxy_->GetActiveWindow();
     int64_t elementId = ROOT_NONE_ID;
-    RetError ret = SearchElementInfoRecursive(windowId, elementId, PREFETCH_RECURSIVE_CHILDREN, elementInfos);
+    RetError ret = SearchElementInfoRecursiveByWinid(windowId, elementId, PREFETCH_RECURSIVE_CHILDREN, elementInfos);
     if (ret != RET_OK) {
         HILOG_ERROR("get window element failed.");
         return ret;
     }
-    SortElementInfosIfNecessary(elementInfos);
     return RET_OK;
 }
 
@@ -553,7 +553,8 @@ RetError AccessibleAbilityClientImpl::GetRootByWindowBatch(const AccessibilityWi
 
     int32_t windowId = windowInfo.GetWindowId();
     int64_t elementId = ROOT_NONE_ID;
-    RetError ret = SearchElementInfoRecursive(windowId, elementId, PREFETCH_RECURSIVE_CHILDREN, elementInfos, isFilter);
+    RetError ret = SearchElementInfoRecursiveByWinid(windowId, elementId,
+        PREFETCH_RECURSIVE_CHILDREN, elementInfos, isFilter);
     if (ret != RET_OK) {
         HILOG_ERROR("get window element failed");
         return ret;
@@ -712,7 +713,7 @@ RetError AccessibleAbilityClientImpl::GetByContent(const AccessibilityElementInf
         return channelClient_->SearchElementInfosByText(windowId, elementId, text, elementInfos);
     }
 
-    RetError ret = SearchElementInfoRecursive(windowId, elementId, GET_SOURCE_MODE, elementInfos);
+    RetError ret = SearchElementInfoRecursiveByWinid(windowId, elementId, GET_SOURCE_MODE, elementInfos);
     if (ret != RET_OK) {
         HILOG_ERROR("get window element info failed");
         return ret;
@@ -1140,6 +1141,53 @@ RetError AccessibleAbilityClientImpl::SearchElementInfoRecursive(int32_t windowI
         return RET_ERR_INVALID_ELEMENT_INFO_FROM_ACE;
     }
 
+    return RET_OK;
+}
+
+RetError AccessibleAbilityClientImpl::SearchElementInfoRecursiveByWinid(int32_t windowId, int64_t elementId,
+    int mode, std::vector<AccessibilityElementInfo> &elementInfos, bool isFilter, AccessibilityElementInfo *parentInfo)
+{
+    HILOG_DEBUG();
+    if (windowId <= 0) {
+        HILOG_ERROR("window Id is failed windowId %{public}d}", windowId);
+        return RET_ERR_INVALID_ELEMENT_INFO_FROM_ACE;
+    }
+    HILOG_DEBUG("SearchElementInfoRecursiveByWinid :window Id is success windowId %{public}d}", windowId);
+    std::vector<AccessibilityElementInfo> vecElementInfos = {};
+    RetError ret = channelClient_->SearchElementInfosByAccessibilityId(windowId, elementId,
+        mode, vecElementInfos, isFilter);
+    if (ret != RET_OK) {
+        HILOG_ERROR("search element info failed. windowId %{public}d}", windowId);
+        return ret;
+    }
+    if (vecElementInfos.empty()) {
+        HILOG_ERROR("elementInfos from ace is empty");
+        return RET_ERR_INVALID_ELEMENT_INFO_FROM_ACE;
+    }
+    HILOG_DEBUG("SearchElementInfoRecursiveByWinid : vecElementInfos Search ok");
+    SortElementInfosIfNecessary(vecElementInfos);
+    for (auto info : vecElementInfos) {
+
+        HILOG_DEBUG("SearchElementInfoRecursiveByWinid :search element info success. windowId %{public}d}",
+            info.GetChildWindowId());
+        if (info.GetParentNodeId() == ROOT_PARENT_ELEMENT_ID)
+        {
+            parentInfo->AddChild(info.GetAccessibilityId());
+            info.SetParent(parentInfo->GetAccessibilityId());
+            HILOG_DEBUG("Give the father a child. %{public}" PRId64 ",Give the child a father.  %{public}" PRId64 "",
+               info.GetAccessibilityId(), parentInfo->GetAccessibilityId());
+        }
+        elementInfos.push_back(info);
+        if (info.GetChildWindowId() > 0) {
+            ret = SearchElementInfoRecursiveByWinid(info.GetChildWindowId(),
+                elementId, mode, elementInfos, isFilter, &elementInfos[elementInfos.size()-1]);
+            if (ret != RET_OK) {
+                HILOG_ERROR("search ChildWindowId %{public}d} element info failed. ret:%{public}d",
+                    info.GetChildWindowId(), ret);
+            }
+        }
+
+    }
     return RET_OK;
 }
 

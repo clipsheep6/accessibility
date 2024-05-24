@@ -117,6 +117,27 @@ public:
     virtual void ClearFocus() = 0;
 
     /**
+    * @brief To return the result of nodeId and to return the result of treeId
+    * @param nodeId: The node Id.
+    * @param treeId: The tree Id.
+    */
+    virtual void SetChildTreeIdAndWinId(const int64_t nodeId, const int32_t treeId, const int32_t childWindowId)
+    {
+        (void)nodeId;
+        (void)treeId;
+        (void)childWindowId;
+    }
+
+    /**
+    * @brief To return the result of treeId
+    * @param treeId: The tree Id.
+    */
+    virtual void SetBelongTreeId(const int32_t treeId)
+    {
+        (void)treeId;
+    }
+
+    /**
     * @brief The low layer is notified by the function called while accessibility system execute
     *        the function of executeAction from AS to check the all low windows cared the outside event.
     *        Example: PopupWindow receive the OUTSIDE_EVENT to close itself.

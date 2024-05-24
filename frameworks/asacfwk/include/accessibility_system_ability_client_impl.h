@@ -27,11 +27,13 @@
 #include "system_ability_load_callback_stub.h"
 #include "system_ability_status_change_stub.h"
 
+
 namespace OHOS {
 namespace Accessibility {
 using StateArray = std::array<bool, AccessibilityStateEventType::EVENT_TYPE_MAX>;
 using StateObserverVector = std::vector<std::shared_ptr<AccessibilityStateObserver>>;
 using StateObserversArray = std::array<StateObserverVector, AccessibilityStateEventType::EVENT_TYPE_MAX>;
+
 class AccessibilitySystemAbilityClientImpl
     : public AccessibilitySystemAbilityClient, public AccessibilityElementOperatorCallback {
 public:
@@ -52,6 +54,15 @@ public:
      * @return Returns RET_OK if successful, otherwise refer to the RetError for the failure.
      */
     virtual RetError RegisterElementOperator(const int32_t windowId,
+        const std::shared_ptr<AccessibilityElementOperator> &operation) override;
+
+    /**
+     * @brief Register the element operator, so the AA can get node info from ACE.
+     * @param parameter The Register parameters.
+     * @param operation The callback object.
+     * @return Returns RET_OK if successful, otherwise refer to the RetError for the failure.
+     */
+    virtual RetError RegisterElementOperator(Registration parameter, int32_t &treeId,
         const std::shared_ptr<AccessibilityElementOperator> &operation) override;
 
     /**
@@ -283,6 +294,7 @@ private:
     StateObserversArray stateObserversArray_;
 
     std::map<int32_t, sptr<AccessibilityElementOperatorImpl>> elementOperators_;
+    std::map<int32_t, std::map<int32_t, sptr<AccessibilityElementOperatorImpl>>> cardElementOperators_;
     sptr<IRemoteObject::DeathRecipient> deathRecipient_ = nullptr;
     sptr<IAccessibleAbilityManagerService> serviceProxy_ = nullptr;
     sptr<AccessibleAbilityManagerStateObserverImpl> stateObserver_ = nullptr;

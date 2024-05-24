@@ -407,6 +407,7 @@ protected:
 class AccessibilityElementInfo {
 public:
     static constexpr int64_t UNDEFINED_ACCESSIBILITY_ID = -1;
+    static constexpr int32_t UNDEFINED_TREE_ID = -1;
     static constexpr int32_t MAX_SIZE = 50;
     static constexpr int64_t ROOT_PARENT_ID = -2100000;
 
@@ -1355,11 +1356,56 @@ public:
      */
     float GetOffset() const;
 
+    /**
+     * @brief Set the child tree Id of the component that belongs to the window.
+     * @param iChildTreeId The child tree Id
+     * @since 3
+     * @sysCap Accessibility
+    */
+    void SetChildTreeIdAndWinId(const int32_t iChildTreeId, const int32_t iChildWindowId);
+
+    /**
+     * @brief Get the child tree Id of the component that belongs to the window.
+     * @return The child tree Id
+     * @since 3
+     * @sysCap Accessibility
+    */
+    int32_t GetChildTreeId() const;
+
+    /**
+     * @brief Get the child window Id of the component that belongs to the window.
+     * @return The child window Id
+     * @since 3
+     * @sysCap Accessibility
+    */
+    int32_t GetChildWindowId() const;
+
+    /**
+     * @brief Set the child tree Id of the component that belongs to the window.
+     * @param iChildTreeId The child tree Id
+     * @since 3
+     * @sysCap Accessibility
+    */
+    void SetBelongTreeId(const int32_t iBelongTreeId);
+
+    /**
+     * @brief Get the child tree Id of the component that belongs to the window.
+     * @return The child tree Id
+     * @since 3
+     * @sysCap Accessibility
+    */
+    int32_t GetBelongTreeId() const;
+
 protected:
     int32_t pageId_ = -1;
     int32_t windowId_ = -1;
     int64_t elementId_ = UNDEFINED_ACCESSIBILITY_ID;
     int64_t parentId_ = UNDEFINED_ACCESSIBILITY_ID;
+
+    int32_t belongTreeId_ = UNDEFINED_TREE_ID;
+    int32_t childTreeId_ = UNDEFINED_TREE_ID;
+    int32_t childWindowId_ = -10;
+
     std::string bundleName_ = "";
     std::string componentType_ = "";
     std::string text_ = "";
