@@ -318,13 +318,12 @@ void AccessibilityScreenTouch::HandleIgnoreRepeatClickStateInnerUp(MMI::PointerE
 {
     HILOG_DEBUG();
     std::vector<int32_t> pointerIds{ event.GetPointerIds() };
-    for (const auto &pointerId : pointerIds) {
-        if (pointerId == lastDownPointerId_) {
-            EventTransmission::OnPointerEvent(event);
-            lastUpTime_ = event.GetActionTime();
-            lastDownPointerId_ = -1;
-            return;
-        }
+    if (std::any_of(pointerIds.begin(), pointerIds.end(),
+        [this](auto &pointerId) {return pointerId == lastDownPointerId_;})) {
+        EventTransmission::OnPointerEvent(event);
+        lastUpTime_ = event.GetActionTime();
+        lastDownPointerId_ = -1;
+        return;
     }
 
     if (isInterceptClick_ == false) {
@@ -391,12 +390,10 @@ void AccessibilityScreenTouch::HandleBothStateInnerUp(MMI::PointerEvent &event)
 {
     HILOG_DEBUG();
     std::vector<int32_t> pointerIds{ event.GetPointerIds() };
-    for (const auto &pointerId : pointerIds) {
-        if (pointerId == lastDownPointerId_) {
-            lastUpTime_ = event.GetActionTime();
-            lastDownPointerId_ = -1;
-            break;
-        }
+    if (std::any_of(pointerIds.begin(), pointerIds.end(),
+        [this](auto &pointerId) {return pointerId == lastDownPointerId_;})) {
+        lastUpTime_ = event.GetActionTime();
+        lastDownPointerId_ = -1;
     }
 
     if (isInterceptClick_ == true) {
