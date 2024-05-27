@@ -959,6 +959,26 @@ HWTEST_F(AccessibleAbilityManagerServiceUnitTest, RegisterElementOperator_003, T
 }
 
 /**
+ * @tc.number: Accessible_Ability_ManagerService_UnitTest_RegisterElementOperator_004
+ * @tc.name: RegisterElementOperator
+ * @tc.desc: Test function RegisterElementOperator
+ */
+HWTEST_F(AccessibleAbilityManagerServiceUnitTest, RegisterElementOperator_004, TestSize.Level1)
+{
+    GTEST_LOG_(INFO) << "Accessible_Ability_ManagerService_UnitTest_RegisterElementOperator_004 start";
+    RegisterAbilityConnectionClient(stub_);
+    auto accountData = Singleton<AccessibleAbilityManagerService>::GetInstance().GetCurrentAccountData();
+    ASSERT_TRUE(accountData);
+    sptr<IAccessibilityElementOperator> operation;
+    AccessibilityEventInfo event;
+    Singleton<AccessibleAbilityManagerService>::GetInstance().InsertWindowIdEventPair(0, event);
+    Singleton<AccessibleAbilityManagerService>::GetInstance().RegisterElementOperator(0, operation, true);
+    auto map = accountData->GetAsacConnections();
+    EXPECT_EQ(int(map.size()), 1);
+    GTEST_LOG_(INFO) << "Accessible_Ability_ManagerService_UnitTest_RegisterElementOperator_004 end";
+}
+
+/**
  * @tc.number: AccessibleAbility_ManagerService_UnitTest_UpdateAccessibilityManagerService_001
  * @tc.name: UpdateAccessibilityManagerService
  * @tc.desc: Test function UpdateAccessibilityManagerService
@@ -1022,6 +1042,21 @@ HWTEST_F(AccessibleAbilityManagerServiceUnitTest, RegisterCaptionObserver_003, T
     GTEST_LOG_(INFO) << "AccessibleAbilityManagerServiceUnitTest_Unittest_RegisterCaptionObserver_003 end";
 }
 
+/**
+ * @tc.number: AccessibleAbilityManagerServiceUnitTest_Unittest_RegisterCaptionObserver_004
+ * @tc.name: RegisterCaptionObserver
+ * @tc.desc: Test function RegisterCaptionObserver
+ */
+HWTEST_F(AccessibleAbilityManagerServiceUnitTest, RegisterCaptionObserver_004, TestSize.Level1)
+{
+    GTEST_LOG_(INFO) << "AccessibleAbilityManagerServiceUnitTest_Unittest_RegisterCaptionObserver_004 start";
+    sptr<MockAccessibleAbilityManagerCaptionObserverStub> stub = new MockAccessibleAbilityManagerCaptionObserverStub();
+    sptr<IAccessibleAbilityManagerCaptionObserver> state = new MockAccessibleAbilityManagerCaptionObserverProxy(stub);
+    uint32_t ret = Singleton<AccessibleAbilityManagerService>::GetInstance().RegisterCaptionObserver(state);
+    EXPECT_EQ(ret, 0);
+    GTEST_LOG_(INFO) << "AccessibleAbilityManagerServiceUnitTest_Unittest_RegisterCaptionObserver_004 end";
+}
+
 /*
  * @tc.number: AccessibleAbilityManagerServiceUnitTest_Unittest_RegisterEnableAbilityListsObserver_002
  * @tc.name: RegisterEnableAbilityListsObserver
@@ -1050,6 +1085,20 @@ HWTEST_F(AccessibleAbilityManagerServiceUnitTest, RegisterEnableAbilityListsObse
     Singleton<AccessibleAbilityManagerService>::GetInstance().RegisterEnableAbilityListsObserver(nullptr);
     EXPECT_NE(stub_.GetRefPtr(), nullptr);
     GTEST_LOG_(INFO) << "AccessibleAbilityManagerServiceUnitTest_Unittest_RegisterEnableAbilityListsObserver_003 end";
+}
+
+/*
+ * @tc.number: AccessibleAbilityManagerServiceUnitTest_Unittest_RegisterEnableAbilityListsObserver_004
+ * @tc.name: RegisterEnableAbilityListsObserver
+ * @tc.desc: Test function RegisterEnableAbilityListsObserver
+ */
+HWTEST_F(AccessibleAbilityManagerServiceUnitTest, RegisterEnableAbilityListsObserver_004, TestSize.Level1)
+{
+    GTEST_LOG_(INFO) << "AccessibleAbilityManagerServiceUnitTest_Unittest_RegisterEnableAbilityListsObserver_004 start";
+    Singleton<AccessibleAbilityManagerService>::GetInstance().SwitchedUser(-1);
+    Singleton<AccessibleAbilityManagerService>::GetInstance().RegisterEnableAbilityListsObserver(nullptr);
+    EXPECT_NE(stub_.GetRefPtr(), nullptr);
+    GTEST_LOG_(INFO) << "AccessibleAbilityManagerServiceUnitTest_Unittest_RegisterEnableAbilityListsObserver_004 end";
 }
 
 /**
@@ -1137,6 +1186,23 @@ HWTEST_F(AccessibleAbilityManagerServiceUnitTest, EnableAbility_002, TestSize.Le
     EXPECT_EQ(RET_ERR_NULLPTR,
         Singleton<AccessibleAbilityManagerService>::GetInstance().EnableAbility(name, capabilities));
     GTEST_LOG_(INFO) << "Accessible_Ability_Manager_ServiceUnittest_EnableAbility_002 end";
+}
+
+/**
+ * @tc.number: AccessibleAbility_ManagerService_UnitTest_EnableAbility_003
+ * @tc.name: EnableAbility
+ * @tc.desc: Test function EnableAbility
+ */
+HWTEST_F(AccessibleAbilityManagerServiceUnitTest, EnableAbility_003, TestSize.Level1)
+{
+    GTEST_LOG_(INFO) << "AccessibleAbility_ManagerService_UnitTest_EnableAbility_003 start";
+    TearDownTestCase();
+    std::string name = "test";
+    uint32_t capabilities = 1;
+    EXPECT_EQ(RET_ERR_NULLPTR,
+        Singleton<AccessibleAbilityManagerService>::GetInstance().EnableAbility(name, capabilities));
+    SetUpTestCase();
+    GTEST_LOG_(INFO) << "AccessibleAbility_ManagerService_UnitTest_EnableAbility_003 end";
 }
 
 /*
@@ -1738,6 +1804,21 @@ HWTEST_F(AccessibleAbilityManagerServiceUnitTest, GetAbilityList_003, TestSize.L
 }
 
 /**
+ * @tc.number: AccessibleAbility_ManagerService_UnitTest_GetAbilityList_004
+ * @tc.name: GetAbilityList
+ * @tc.desc: Test function GetAbilityList
+ */
+HWTEST_F(AccessibleAbilityManagerServiceUnitTest, GetAbilityList_004, TestSize.Level1)
+{
+    GTEST_LOG_(INFO) << "AccessibleAbility_ManagerService_UnitTest_GetAbilityList_004 start";
+    std::vector<OHOS::Accessibility::AccessibilityAbilityInfo> infos;
+    Singleton<AccessibleAbilityManagerService>::GetInstance().GetAbilityList(
+        ACCESSIBILITY_ABILITY_TYPE_ALL, ABILITY_STATE_INSTALLED, infos);
+    EXPECT_EQ(infos.size(), 0);
+    GTEST_LOG_(INFO) << "AccessibleAbility_ManagerService_UnitTest_GetAbilityList_004 end";
+}
+
+/**
  * @tc.number: AccessibleAbility_ManagerService_UnitTest_SetTargetAbility_001
  * @tc.name: SetTargetAbility
  * @tc.desc: Test function HIGH_CONTRAST_TEXT
@@ -2101,6 +2182,25 @@ HWTEST_F(AccessibleAbilityManagerServiceUnitTest, GetEnabledState_002, TestSize.
 }
 
 /**
+ * @tc.number: AccessibleAbilityManagerServiceUnitTest_GetEnabledState_003
+ * @tc.name: GetEnabledState
+ * @tc.desc: Test function GetEnabledState
+ */
+HWTEST_F(AccessibleAbilityManagerServiceUnitTest, GetEnabledState_003, TestSize.Level1)
+{
+    GTEST_LOG_(INFO) << "AccessibleAbilityManagerServiceUnitTest_GetEnabledState_003 start";
+    auto &aams = Singleton<AccessibleAbilityManagerService>::GetInstance();
+    aams.OnStop();
+    sptr<AccessibilityAccountData> accountData = aams.GetCurrentAccountData();
+    EXPECT_EQ(accountData.GetRefPtr(), nullptr);
+    bool ret = true;
+    ret = Singleton<AccessibleAbilityManagerService>::GetInstance().GetEnabledState();
+    EXPECT_EQ(ret, false);
+    aams.OnStart();
+    GTEST_LOG_(INFO) << "AccessibleAbilityManagerServiceUnitTest_GetEnabledState_003 end";
+}
+
+/**
  * @tc.number: AccessibleAbilityManagerServiceUnitTest_GetTouchGuideState_003
  * @tc.name: GetTouchGuideState
  * @tc.desc: Test function GetTouchGuideState
@@ -2253,6 +2353,27 @@ HWTEST_F(AccessibleAbilityManagerServiceUnitTest, DisableUITestAbility_003, Test
     GTEST_LOG_(INFO) << "AccessibleAbility_ManagerService_UnitTest_DisableUITestAbility_003 end";
 }
 
+/*
+ * @tc.number: AccessibleAbility_ManagerService_UnitTest_DisableUITestAbility_004
+ * @tc.name: DisableUITestAbility
+ * @tc.desc: Test function DisableUITestAbility
+ */
+HWTEST_F(AccessibleAbilityManagerServiceUnitTest, DisableUITestAbility_004, TestSize.Level1)
+{
+    GTEST_LOG_(INFO) << "Accessible_Ability_Manager_ServiceUnittest_DisableUITestAbility_004 start";
+    auto &aams = Singleton<AccessibleAbilityManagerService>::GetInstance();
+    sptr<AccessibilityAccountData> accountData = aams.GetCurrentAccountData();
+    std::string uiTestUri;
+    sptr<AccessibleAbilityConnection> connection = accountData->GetAccessibleAbilityConnection(uiTestUri);
+    if (!connection) {
+        GTEST_LOG_(INFO) << "connection is null";
+        return;
+    }
+    RetError ret = Singleton<AccessibleAbilityManagerService>::GetInstance().DisableUITestAbility();
+    EXPECT_EQ(ret, RET_OK);
+    GTEST_LOG_(INFO) << "Accessible_Ability_Manager_ServiceUnittest_DisableUITestAbility_004 end";
+}
+
 /**
  * @tc.number: AccessibleAbilityManagerServiceUnitTest_Unittest_RegisterStateObserver_001
  * @tc.name: RegisterStateObserver
@@ -2332,6 +2453,76 @@ HWTEST_F(AccessibleAbilityManagerServiceUnitTest, GetSceneBoardInnerWinId_002, T
     Singleton<AccessibleAbilityManagerService>::GetInstance().GetSceneBoardInnerWinId(windowId, elementId, innerWid);
     SetUpTestCase();
     GTEST_LOG_(INFO) << "AccessibleAbility_ManagerService_UnitTest_GetSceneBoardInnerWinId_002 end";
+}
+
+/*
+ * @tc.number: AccessibleAbility_ManagerService_UnitTest_GetRealIdConnection_001
+ * @tc.name: GetRealIdConnection
+ * @tc.desc: Test function GetRealIdConnection
+ */
+HWTEST_F(AccessibleAbilityManagerServiceUnitTest, GetRealIdConnection_001, TestSize.Level1)
+{
+    GTEST_LOG_(INFO) << "AccessibleAbility_ManagerService_UnitTest_GetRealIdConnection_001 start";
+    Singleton<AccessibleAbilityManagerService>::GetInstance().OnStop();
+    bool ret = Singleton<AccessibleAbilityManagerService>::GetInstance().
+        ExecuteActionOnAccessibilityFocused(ACCESSIBILITY_ACTION_CLEAR_ACCESSIBILITY_FOCUS);
+    EXPECT_EQ(ret, false);
+    Singleton<AccessibleAbilityManagerService>::GetInstance().OnStart();
+    GTEST_LOG_(INFO) << "AccessibleAbility_ManagerService_UnitTest_GetRealIdConnection_001 end";
+}
+
+/*
+ * @tc.number: AccessibleAbility_ManagerService_UnitTest_FindFocusedElementByConnection_001
+ * @tc.name: FindFocusedElementByConnection
+ * @tc.desc: Test function FindFocusedElementByConnection
+ */
+HWTEST_F(AccessibleAbilityManagerServiceUnitTest, FindFocusedElementByConnection_001, TestSize.Level1)
+{
+    GTEST_LOG_(INFO) << "AccessibleAbility_ManagerService_UnitTest_FindFocusedElementByConnection_001 start";
+    AccessibilityElementInfo elementInfo;
+    bool ret = Singleton<AccessibleAbilityManagerService>::GetInstance().FindFocusedElement(elementInfo);
+    EXPECT_EQ(ret, false);
+    GTEST_LOG_(INFO) << "AccessibleAbility_ManagerService_UnitTest_FindFocusedElementByConnection_001 end";
+}
+
+/**
+ * @tc.number: Accessible_Ability_ManagerService_UnitTest_DeleteConnectionAndDeathRecipient_001
+ * @tc.name: DeleteConnectionAndDeathRecipient
+ * @tc.desc: Test function DeleteConnectionAndDeathRecipient
+ */
+HWTEST_F(AccessibleAbilityManagerServiceUnitTest, DeleteConnectionAndDeathRecipient_001, TestSize.Level1)
+{
+    GTEST_LOG_(INFO) << "Accessible_Ability_ManagerService_UnitTest_DeleteConnectionAndDeathRecipient_001 start";
+    RegisterAbilityConnectionClient(stub_);
+    auto accountData = Singleton<AccessibleAbilityManagerService>::GetInstance().GetCurrentAccountData();
+    ASSERT_TRUE(accountData);
+    sptr<IAccessibilityElementOperator> operation;
+    AccessibilityEventInfo event;
+    Singleton<AccessibleAbilityManagerService>::GetInstance().SwitchedUser(-1);
+    Singleton<AccessibleAbilityManagerService>::GetInstance().InsertWindowIdEventPair(0, event);
+    Singleton<AccessibleAbilityManagerService>::GetInstance().RegisterElementOperator(0, operation, true);
+    auto map = accountData->GetAsacConnections();
+    EXPECT_EQ(int(map.size()), 0);
+    GTEST_LOG_(INFO) << "Accessible_Ability_ManagerService_UnitTest_DeleteConnectionAndDeathRecipient_001 end";
+}
+
+/**
+ * @tc.number: Accessible_Ability_ManagerService_UnitTest_DeleteConnectionAndDeathRecipient_002
+ * @tc.name: DeleteConnectionAndDeathRecipient
+ * @tc.desc: Test function DeleteConnectionAndDeathRecipient
+ */
+HWTEST_F(AccessibleAbilityManagerServiceUnitTest, DeleteConnectionAndDeathRecipient_002, TestSize.Level1)
+{
+    GTEST_LOG_(INFO) << "Accessible_Ability_ManagerService_UnitTest_DeleteConnectionAndDeathRecipient_002 start";
+    RegisterAbilityConnectionClient(stub_);
+    auto accountData = Singleton<AccessibleAbilityManagerService>::GetInstance().GetCurrentAccountData();
+    ASSERT_TRUE(accountData);
+    sptr<IAccessibilityElementOperator> operation;
+    Singleton<AccessibleAbilityManagerService>::GetInstance().SwitchedUser(-1);
+    Singleton<AccessibleAbilityManagerService>::GetInstance().RegisterElementOperator(0, operation, true);
+    auto map = accountData->GetAsacConnections();
+    EXPECT_EQ(int(map.size()), 0);
+    GTEST_LOG_(INFO) << "Accessible_Ability_ManagerService_UnitTest_DeleteConnectionAndDeathRecipient_002 end";
 }
 } // namespace Accessibility
 } // namespace OHOS

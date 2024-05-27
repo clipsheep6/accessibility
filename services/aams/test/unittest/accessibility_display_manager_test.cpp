@@ -67,6 +67,20 @@ HWTEST_F(AccessibilityDisplayManagerUnitTest,
 }
 
 /**
+ * @tc.number: AccessibilityDisplayManager_Unittest_RegisterDisplayListener_002
+ * @tc.name: RegisterDisplayListener UnregisterDisplayListener
+ * @tc.desc: Test function RegisterDisplayListener UnregisterDisplayListener
+ */
+HWTEST_F(AccessibilityDisplayManagerUnitTest,
+    AccessibilityDisplayManager_Unittest_RegisterDisplayListener_002, TestSize.Level1)
+{
+    GTEST_LOG_(INFO) << "AccessibilityDisplayManager_Unittest_RegisterDisplayListener_002 start";
+    Singleton<AccessibilityDisplayManager>::GetInstance().UnregisterDisplayListener();
+    Singleton<AccessibilityDisplayManager>::GetInstance().RegisterDisplayListener(nullptr);
+    GTEST_LOG_(INFO) << "AccessibilityDisplayManager_Unittest_RegisterDisplayListener_002 end";
+}
+
+/**
  * @tc.number: AccessibilityDisplayManager_Unittest_UnregisterDisplayListener_001
  * @tc.name: UnregisterDisplayListener
  * @tc.desc: Test function UnregisterDisplayListener
