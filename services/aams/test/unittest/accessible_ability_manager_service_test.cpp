@@ -2417,5 +2417,129 @@ HWTEST_F(AccessibleAbilityManagerServiceUnitTest, RegisterShortKeyEvent_002, Tes
     aams.OnAddSystemAbility(WINDOW_MANAGER_SERVICE_ID, deviceId);
     GTEST_LOG_(INFO) << "Accessible_Ability_ManagerService_UnitTest_RegisterShortKeyEvent_002 end";
 }
+
+/**
+ * @tc.number: Accessible_Ability_ManagerService_UnitTest_SetSearchElementInfoByAccessibilityIdResult_001
+ * @tc.name: SetSearchElementInfoByAccessibilityIdResult
+ * @tc.desc: Test function SetSearchElementInfoByAccessibilityIdResult
+ */
+HWTEST_F(AccessibleAbilityManagerServiceUnitTest, SetSearchElementInfoByAccessibilityIdResult_001, TestSize.Level1)
+{
+    GTEST_LOG_(INFO) << "Accessible_Ability_ManagerService_UnitTest_SetSearchElementInfoByAccessibilityIdResult_001 start";
+    std::vector<AccessibilityElementInfo> infos;
+    int32_t requestId;
+    Singleton<AccessibleAbilityManagerService>::GetInstance().SetSearchElementInfoByAccessibilityIdResult(infos, requestId);
+    GTEST_LOG_(INFO) << "Accessible_Ability_ManagerService_UnitTest_SetSearchElementInfoByAccessibilityIdResult_001 end";
+}
+
+/**
+ * @tc.number: Accessible_Ability_ManagerService_UnitTest_SetSearchElementInfoByTextResult_001
+ * @tc.name: SetSearchElementInfoByTextResult
+ * @tc.desc: Test function SetSearchElementInfoByTextResult
+ */
+HWTEST_F(AccessibleAbilityManagerServiceUnitTest, SetSearchElementInfoByTextResult_001, TestSize.Level1)
+{
+    GTEST_LOG_(INFO) << "Accessible_Ability_ManagerService_UnitTest_SetSearchElementInfoByTextResult_001 start";
+    std::vector<AccessibilityElementInfo> infos;
+    int32_t requestId;
+    Singleton<AccessibleAbilityManagerService>::GetInstance().SetSearchElementInfoByTextResult(infos, requestId);
+    GTEST_LOG_(INFO) << "Accessible_Ability_ManagerService_UnitTest_SetSearchElementInfoByTextResult_001 end";
+}
+
+/**
+ * @tc.number: Accessible_Ability_ManagerService_UnitTest_SetFindFocusedElementInfoResult_001
+ * @tc.name: SetFindFocusedElementInfoResult
+ * @tc.desc: Test function SetFindFocusedElementInfoResult
+ */
+HWTEST_F(AccessibleAbilityManagerServiceUnitTest, SetFindFocusedElementInfoResult_001, TestSize.Level1)
+{
+    GTEST_LOG_(INFO) << "Accessible_Ability_ManagerService_UnitTest_SetFindFocusedElementInfoResult_001 start";
+    AccessibilityElementInfo info;
+    int32_t requestId;
+    Singleton<AccessibleAbilityManagerService>::GetInstance().SetSearchElementInfoByAccessibilityIdResult(info, requestId);
+    GTEST_LOG_(INFO) << "Accessible_Ability_ManagerService_UnitTest_SetFindFocusedElementInfoResult_001 end";
+}
+
+/**
+ * @tc.number: Accessible_Ability_ManagerService_UnitTest_SetFocusMoveSearchResult_001
+ * @tc.name: SetFocusMoveSearchResult
+ * @tc.desc: Test function SetFocusMoveSearchResult
+ */
+HWTEST_F(AccessibleAbilityManagerServiceUnitTest, SetFocusMoveSearchResult_001, TestSize.Level1)
+{
+    GTEST_LOG_(INFO) << "Accessible_Ability_ManagerService_UnitTest_SetFocusMoveSearchResult_001 start";
+    AccessibilityElementInfo info;
+    int32_t requestId;
+    Singleton<AccessibleAbilityManagerService>::GetInstance().SetFocusMoveSearchResult(info, requestId);
+    GTEST_LOG_(INFO) << "Accessible_Ability_ManagerService_UnitTest_SetFocusMoveSearchResult_001 end";
+}
+
+/**
+ * @tc.number: Accessible_Ability_ManagerService_UnitTest_SetExecuteActionResult_001
+ * @tc.name: SetExecuteActionResult
+ * @tc.desc: Test function SetExecuteActionResult
+ */
+HWTEST_F(AccessibleAbilityManagerServiceUnitTest, SetExecuteActionResult_001, TestSize.Level1)
+{
+    GTEST_LOG_(INFO) << "Accessible_Ability_ManagerService_UnitTest_SetExecuteActionResult_001 start";
+    AccessibilityElementInfo info;
+    int32_t requestId;
+    bool succeeded = true;
+    Singleton<AccessibleAbilityManagerService>::GetInstance().SetExecuteActionResult(succeeded, requestId);
+    GTEST_LOG_(INFO) << "Accessible_Ability_ManagerService_UnitTest_SetExecuteActionResult_001 end";
+}
+
+/**
+ * @tc.number: Accessible_Ability_ManagerService_UnitTest_SetCursorPositionResult_001
+ * @tc.name: SetCursorPositionResult
+ * @tc.desc: Test function SetCursorPositionResult
+ */
+HWTEST_F(AccessibleAbilityManagerServiceUnitTest, SetCursorPositionResult_001, TestSize.Level1)
+{
+    GTEST_LOG_(INFO) << "Accessible_Ability_ManagerService_UnitTest_SetCursorPositionResult_001 start";
+    AccessibilityElementInfo info;
+    int32_t requestId;
+    int32_t cursorPosition;
+    Singleton<AccessibleAbilityManagerService>::GetInstance().SetCursorPositionResult(cursorPosition, requestId);
+    GTEST_LOG_(INFO) << "Accessible_Ability_ManagerService_UnitTest_SetCursorPositionResult_001 end";
+}
+
+/**
+ * @tc.number: Accessible_Ability_ManagerService_UnitTest_SetShortkeyMultiTarget_001
+ * @tc.name: SetShortkeyMultiTarget
+ * @tc.desc: Test function SetShortkeyMultiTarget
+ */
+HWTEST_F(AccessibleAbilityManagerServiceUnitTest, SetShortkeyMultiTarget_001, TestSize.Level1)
+{
+    GTEST_LOG_(INFO) << "Accessible_Ability_ManagerService_UnitTest_SetShortkeyMultiTarget_001 start";
+    std::vector<std::string> name = "";
+    Singleton<AccessibleAbilityManagerService>::GetInstance().SetShortkeyMultiTarget(name);
+    GTEST_LOG_(INFO) << "Accessible_Ability_ManagerService_UnitTest_SetShortkeyMultiTarget_001 end";
+}
+
+/**
+ * @tc.number: Accessible_Ability_ManagerService_UnitTest_GetShortkeyMultiTarget_001
+ * @tc.name: GetShortkeyMultiTarget
+ * @tc.desc: Test function GetShortkeyMultiTarget
+ */
+HWTEST_F(AccessibleAbilityManagerServiceUnitTest, SetShortkeyMultiTarget_001, TestSize.Level1)
+{
+    GTEST_LOG_(INFO) << "Accessible_Ability_ManagerService_UnitTest_GetShortkeyMultiTarget_001 start";
+    std::vector<std::string> name = "";
+    Singleton<AccessibleAbilityManagerService>::GetInstance().GetShortkeyMultiTarget(name);
+    GTEST_LOG_(INFO) << "Accessible_Ability_ManagerService_UnitTest_GetShortkeyMultiTarget_001 end";
+}
+
+/**On   ShortKeyProcess
+ * @tc.number: AccessibleAbility_ManagerService_UnitTest_ShortKeyProcess_001
+ * @tc.name: ShortKeyProcess
+ * @tc.desc: Test function ShortKeyProcess
+ */
+HWTEST_F(AccessibleAbilityManagerServiceUnitTest, ShortKeyProcess_001, TestSize.Level1)
+{
+    GTEST_LOG_(INFO) << "AccessibleAbility_ManagerService_UnitTest_ShortKeyProcess_001 start";
+    EXPECT_FALSE(Singleton<AccessibleAbilityManagerService>::GetInstance().ShortKeyProcess());
+    GTEST_LOG_(INFO) << "AccessibleAbility_ManagerService_UnitTest_ShortKeyProcess_001 end";
+}
 } // namespace Accessibility
 } // namespace OHOS

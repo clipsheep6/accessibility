@@ -331,5 +331,31 @@ HWTEST_F(AccessibilityScreenTouchUnitTest,
     EXPECT_EQ(screenTouch_->GetRealIgnoreRepeatClickTime(), IGNORE_REPEAT_CLICK_TIME_SHORTEST);
     GTEST_LOG_(INFO) << "AccessibilityScreenTouch_Unittest_GetRealIgnoreRepeatClickTime end";
 }
+
+/**
+ * @tc.number: AccessibilityScreenTouch_Unittest_ProcessEvent_001
+ * @tc.name: ProcessEvent
+ * @tc.desc: Test function ProcessEvent
+ */
+HWTEST_F(AccessibilityScreenTouchUnitTest, AccessibilityScreenTouch_Unittest_ProcessEvent_001, TestSize.Level1)
+{
+    GTEST_LOG_(INFO) << "AccessibilityScreenTouch_Unittest_ProcessEvent_001 start";
+    AppExecFwk::InnerEvent::Pointer event;
+    screenTouch_->ProcessEvent(event);
+    EXPECT_EQ(event->GetInnerEventId(), FINGER_DOWN_DELAY_MSG);
+    GTEST_LOG_(INFO) << "AccessibilityScreenTouch_Unittest_ProcessEvent_001 end";
+}
+
+/**
+ * @tc.number: AccessibilityScreenTouch_Unittest_SendInterceptedEvent_001
+ * @tc.name: SendInterceptedEvent
+ * @tc.desc: Test function SendInterceptedEvent
+ */
+HWTEST_F(AccessibilityScreenTouchUnitTest, AccessibilityScreenTouch_Unittest_SendInterceptedEvent_001, TestSize.Level1)
+{
+    GTEST_LOG_(INFO) << "AccessibilityScreenTouch_Unittest_SendInterceptedEvent_001 start";
+    screenTouch_->SendInterceptedEvent();
+    GTEST_LOG_(INFO) << "AccessibilityScreenTouch_Unittest_SendInterceptedEvent_001 end";
+}
 } // namespace Accessibility
 } // namespace OHOS
