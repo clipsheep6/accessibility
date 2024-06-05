@@ -251,6 +251,13 @@ void AccessibilityConfig::Impl::ResetService(const wptr<IRemoteObject> &remote)
     }
 }
 
+bool AccessibilityConfig::Impl::CheckSaStatus()
+{
+    std::vector<int> dependentSa = {
+        
+    }
+}
+
 Accessibility::RetError AccessibilityConfig::Impl::EnableAbility(const std::string &name, const uint32_t capabilities)
 {
     HILOG_INFO("name = [%{private}s] capabilities = [%{private}u]", name.c_str(), capabilities);
