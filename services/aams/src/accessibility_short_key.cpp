@@ -85,7 +85,13 @@ void AccessibilityShortKey::RecognizeShortKey(MMI::KeyEvent &event)
 
     int32_t action = event.GetKeyAction();
     size_t pressedKeyCount = event.GetPressedKeys().size();
+    int32_t keyCode = event.GetKeyCode();
     std::shared_ptr<MMI::KeyEvent> keyEvent = std::make_shared<MMI::KeyEvent>(event);
+
+    if (keyCode != MMI::KeyEvent::KEYCODE_POWER && keyCode != MMI::KeyEvent::KEYCODE_VOLUME_UP &&
+        keyCode != MMI::KeyEvent::KEYCODE_VOLUME_DOWN) {
+        EventTransmission::OnKeyEvent(event);
+    }
     AddCachedKeyEvent(keyEvent);
 
     if (action == MMI::KeyEvent::KEY_ACTION_DOWN) {
