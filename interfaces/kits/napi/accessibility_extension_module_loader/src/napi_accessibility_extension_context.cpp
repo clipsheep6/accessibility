@@ -22,6 +22,8 @@
 #include "hilog_wrapper.h"
 #include "napi_accessibility_element.h"
 #include "accessibility_utils.h"
+#include "napi_common_want.h"
+#include "napi_common_start_options.h"
 
 using namespace OHOS::AbilityRuntime;
 using namespace OHOS::AccessibilityNapi;
@@ -147,6 +149,37 @@ static void GetLastParamForTwo(napi_env env, NapiCallbackInfo& info, napi_value&
     }
 }
 
+static bool CheckTypeForNapiValue(napi_env env, napi_value param, napi_valuetype expectType)
+{
+    napi_valuetype valueType = napi_undefined;
+    if (napi_typeof(env, param, &valueType) != napi_ok) {
+        return false;
+    }
+    return valueType == expectType;
+}
+
+static bool CheckStartAbilityInputParam(napi_env env, NapiCallbackInfo& info,
+    AAFwk::Want& want, AAFwk::StartOptions& startOptions, size_t& unwrapArgc)
+{
+    if (info.argc < ARGS_SIZE_ONE) {
+        return false;
+    }
+    unwrapArgc = ARGS_SIZE_ZERO;
+    // Check input want
+    if (!AppExecFwk::UnwrapWant(env, info.argv[PARAM0], want)) {
+        return false;
+    }
+    if (!want.HasParameter(Want::PARAM_BACK_TO_OTHER_MISSION_STACK)) {
+        want.SetParam(Want::PARAM_BACK_TO_OTHER_MISSION_STACK, true);
+    }
+    ++unwrapArgc;
+    if (info.argc > ARGS_SIZE_ONE && CheckTypeForNapiValue(env, info.argv[1], napi_object)) {
+        AppExecFwk::UnwrapStartOptions(env, info.argv[1], startOptions);
+        unwrapArgc++;
+    }
+    return true;
+}
+
 class NAccessibilityExtensionContext final {
 public:
     explicit NAccessibilityExtensionContext(
@@ -157,6 +190,11 @@ public:
     {
         HILOG_INFO();
         std::unique_ptr<NAccessibilityExtensionContext>(static_cast<NAccessibilityExtensionContext*>(data));
+    }
+
+    static napi_value StartAbility(napi_env env, napi_callback_info info)
+    {
+        GET_NAPI_INFO_AND_CALL(env, info, NAccessibilityExtensionContext, OnStartAbility);
     }
 
     static napi_value SetTargetBundleName(napi_env env, napi_callback_info info)
@@ -191,6 +229,57 @@ public:
 
 private:
     std::weak_ptr<AccessibilityExtensionContext> context_;
+
+    napi_value OnStartAbility(napi_env env, NapiCallbackInfo& info)
+    {
+        HILOG_INFO();
+        if (info.argc < ARGS_SIZE_ONE) {
+            HILOG_ERROR("Start ability failed, not enough params.");
+            napi_throw(env, CreateJsError(env,
+                static_cast<int32_t>(NAccessibilityErrorCode::ACCESSIBILITY_ERROR_INVALID_PARAM)));
+            return CreateJsUndefined(env);
+        }
+
+        size_t unwrapArgc = 0;
+        AAFwk::Want want;
+        AAFwk::StartOptions startOptions;
+        if (!CheckStartAbilityInputParam(env, info, want, startOptions, unwrapArgc)) {
+            napi_throw(env, CreateJsError(env,
+                static_cast<int32_t>(NAccessibilityErrorCode::ACCESSIBILITY_ERROR_INVALID_PARAM)));
+            return CreateJsUndefined(env);
+        }
+
+        NapiAsyncTask::CompleteCallback complete =
+        [weak = context_, want, startOptions, unwrapArgc](napi_env env, NapiAsyncTask& task, int32_t status) {
+            HILOG_INFO("startAbility begin");
+            auto context = weak.lock();
+            if (!context) {
+                HILOG_ERROR("context is released");
+                task.Reject(env, CreateJsError(env,
+                    static_cast<int32_t>(NAccessibilityErrorCode::ACCESSIBILITY_ERROR_INVALID_PARAM),
+                    ERROR_MESSAGE_PARAMETER_ERROR));
+                return;
+            }
+
+            auto ret = std::make_shared<RetError>(RET_OK);
+            (unwrapArgc == 1) ? *ret = context->StartAbility(want) :
+                *ret = context->StartAbility(want, startOptions);
+            if (*ret == RET_OK) {
+                task.Resolve(env, CreateJsUndefined(env));
+            } else {
+                HILOG_ERROR("Gesture inject failed. ret: %{public}d.", *ret);
+                task.Reject(env, CreateJsError(env,
+                    static_cast<int32_t>(ACCESSIBILITY_JS_TO_ERROR_CODE_MAP.at(*ret).errCode),
+                    ACCESSIBILITY_JS_TO_ERROR_CODE_MAP.at(*ret).message));
+            }
+        };
+
+        napi_value lastParam = (info.argc == unwrapArgc) ? nullptr : info.argv[unwrapArgc];
+        napi_value result = nullptr;
+        NapiAsyncTask::Schedule("NAccessibilityExtensionContext::OnStartAbility",
+            env, CreateAsyncTaskWithLastParam(env, lastParam, nullptr, std::move(complete), &result));
+        return result;
+    }
 
     napi_value OnSetTargetBundleName(napi_env env, NapiCallbackInfo& info)
     {
@@ -638,6 +727,7 @@ napi_value CreateJsAccessibilityExtensionContext(
     }
     napi_wrap(env, object, jsContext.release(), NAccessibilityExtensionContext::Finalizer, nullptr, nullptr);
     const char *moduleName = "NAccessibilityExtensionContext";
+    BindNativeFunction(env, object, "startAbility", moduleName, NAccessibilityExtensionContext::StartAbility);
     BindNativeFunction(env, object, "setTargetBundleName", moduleName,
         NAccessibilityExtensionContext::SetTargetBundleName);
     BindNativeFunction(env, object, "getFocusElement", moduleName,
