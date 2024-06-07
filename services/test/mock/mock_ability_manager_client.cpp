@@ -37,8 +37,8 @@ std::shared_ptr<AbilityManagerClient> AbilityManagerClient::GetInstance()
     return instance_;
 }
 
-ErrCode AbilityManagerClient::ConnectAbility(
-    const Want& want, sptr<IAbilityConnection> connect, sptr<IRemoteObject> callerToken, int32_t userId)
+ErrCode AbilityManagerClient::ConnectAbility(const Want& want, sptr<IAbilityConnection> connect,
+    sptr<IRemoteObject> callerToken, int32_t userId, bool)
 {
     return NO_ERROR;
 }
