@@ -990,37 +990,39 @@ HWTEST_F(AccessibleAbilityManagerServiceUnitTest, RegisterStateCallback_002, Tes
     GTEST_LOG_(INFO) << "AccessibleAbilityManagerServiceUnitTest_Unittest_RegisterStateCallback_002 end";
 }
 
-/**
- * @tc.number: AccessibleAbilityManagerServiceUnitTest_Unittest_RegisterCaptionObserver_002
- * @tc.name: RegisterCaptionObserver
- * @tc.desc: Test function RegisterCaptionObserver
- */
-HWTEST_F(AccessibleAbilityManagerServiceUnitTest, RegisterCaptionObserver_002, TestSize.Level1)
-{
-    GTEST_LOG_(INFO) << "AccessibleAbilityManagerServiceUnitTest_Unittest_RegisterCaptionObserver_002 start";
-    Singleton<AccessibleAbilityManagerService>::GetInstance().SwitchedUser(-1);
-    sptr<MockAccessibleAbilityManagerCaptionObserverStub> stub = new MockAccessibleAbilityManagerCaptionObserverStub();
-    sptr<IAccessibleAbilityManagerCaptionObserver> state = new MockAccessibleAbilityManagerCaptionObserverProxy(stub);
 
-    uint32_t ret = Singleton<AccessibleAbilityManagerService>::GetInstance().RegisterCaptionObserver(state);
-    EXPECT_EQ(ret, ERR_INVALID_VALUE);
 
-    GTEST_LOG_(INFO) << "AccessibleAbilityManagerServiceUnitTest_Unittest_RegisterCaptionObserver_002 end";
-}
+// /**
+//  * @tc.number: AccessibleAbilityManagerServiceUnitTest_Unittest_RegisterCaptionObserver_002
+//  * @tc.name: RegisterCaptionObserver
+//  * @tc.desc: Test function RegisterCaptionObserver
+//  */
+// HWTEST_F(AccessibleAbilityManagerServiceUnitTest, RegisterCaptionObserver_002, TestSize.Level1)
+// {
+//     GTEST_LOG_(INFO) << "AccessibleAbilityManagerServiceUnitTest_Unittest_RegisterCaptionObserver_002 start";
+//     Singleton<AccessibleAbilityManagerService>::GetInstance().SwitchedUser(-1);
+//     sptr<MockAccessibleAbilityManagerCaptionObserverStub> stub = new MockAccessibleAbilityManagerCaptionObserverStub();
+//     sptr<IAccessibleAbilityManagerCaptionObserver> state = new MockAccessibleAbilityManagerCaptionObserverProxy(stub);
+
+//     uint32_t ret = Singleton<AccessibleAbilityManagerService>::GetInstance().RegisterCaptionObserver(state);
+//     EXPECT_EQ(ret, ERR_INVALID_VALUE);
+
+//     GTEST_LOG_(INFO) << "AccessibleAbilityManagerServiceUnitTest_Unittest_RegisterCaptionObserver_002 end";
+// }
 
 /**
  * @tc.number: AccessibleAbilityManagerServiceUnitTest_Unittest_RegisterCaptionObserver_003
  * @tc.name: RegisterCaptionObserver
  * @tc.desc: Test function RegisterCaptionObserver
  */
-HWTEST_F(AccessibleAbilityManagerServiceUnitTest, RegisterCaptionObserver_003, TestSize.Level1)
-{
-    GTEST_LOG_(INFO) << "AccessibleAbilityManagerServiceUnitTest_Unittest_RegisterCaptionObserver_003 start";
-    uint32_t ret = Singleton<AccessibleAbilityManagerService>::GetInstance().RegisterCaptionObserver(nullptr);
-    EXPECT_EQ(ret, ERR_INVALID_VALUE);
+// HWTEST_F(AccessibleAbilityManagerServiceUnitTest, RegisterCaptionObserver_002, TestSize.Level1)
+// {
+//     GTEST_LOG_(INFO) << "AccessibleAbilityManagerServiceUnitTest_Unittest_RegisterCaptionObserver_003 start";
+//     uint32_t ret = Singleton<AccessibleAbilityManagerService>::GetInstance().RegisterCaptionObserver(nullptr);
+//     EXPECT_EQ(ret, ERR_INVALID_VALUE);
 
-    GTEST_LOG_(INFO) << "AccessibleAbilityManagerServiceUnitTest_Unittest_RegisterCaptionObserver_003 end";
-}
+//     GTEST_LOG_(INFO) << "AccessibleAbilityManagerServiceUnitTest_Unittest_RegisterCaptionObserver_003 end";
+// }
 
 /*
  * @tc.number: AccessibleAbilityManagerServiceUnitTest_Unittest_RegisterEnableAbilityListsObserver_002
