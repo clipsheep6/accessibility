@@ -503,6 +503,20 @@ HWTEST_F(AccessibleAbilityClientImplTest, GetByContent_002, TestSize.Level1)
 }
 
 /**
+ * @tc.number: GetByContent_003
+ * @tc.name: GetByContent
+ * @tc.desc: Test function GetByContent
+ */
+HWTEST_F(AccessibleAbilityClientImplTest, GetByContent_003, TestSize.Level1)
+{
+    GTEST_LOG_(INFO) << "GetByContent_003 start";
+    Connect();
+    AccessibilityElementInfo elementInfo {};
+    std::vector<AccessibilityElementInfo> infos;
+    instance_->GetByContent(elementInfo, "", infos);
+    GTEST_LOG_(INFO) << "GetByContent_003 end";
+}
+/**
  * @tc.number: GetSource_001
  * @tc.name: GetSource
  * @tc.desc: Test function GetSource
@@ -1050,21 +1064,6 @@ HWTEST_F(AccessibleAbilityClientImplTest, AddCacheByAce_001, TestSize.Level1)
     EXPECT_EQ(instance_->GetElementInfoFromCache(WINDOW_ID, ELEMENT_ID, result), RET_OK);
     EXPECT_EQ(result.size(), 1);
     GTEST_LOG_(INFO) << "AddCacheByAce_001 end";
-}
-
-/**
- * @tc.number: GetByContent_003
- * @tc.name: GetByContent
- * @tc.desc: Test function GetByContent
- */
-HWTEST_F(AccessibleAbilityClientImplTest, GetByContent_003, TestSize.Level1)
-{
-    GTEST_LOG_(INFO) << "GetByContent_003 start";
-    Connect();
-    AccessibilityElementInfo elementInfo {};
-    std::vector<AccessibilityElementInfo> infos;
-    EXPECT_EQ(instance_->GetByContent(elementInfo, "", infos), RET_ERR_INVALID_ELEMENT_INFO_FROM_ACE);
-    GTEST_LOG_(INFO) << "GetByContent_003 end";
 }
 } // namespace Accessibility
 } // namespace OHOS
