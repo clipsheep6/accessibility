@@ -336,6 +336,9 @@ public:
      */
     void SetConnectionState(bool state);
 
+    RetError SearchElementInfosByAccessibilityId(const int32_t windowId, const int64_t elementId,
+const uint32_t mode, AccessibilityElementInfo &info, bool isFilter = false) override;
+
     void AddWindowElementMapByWMS(int32_t windowId, int64_t elementId);
     void AddWindowElementMapByAce(int32_t windowId, int64_t elementId);
     RetError GetElementInfoFromCache(int32_t windowId, int64_t elementId,

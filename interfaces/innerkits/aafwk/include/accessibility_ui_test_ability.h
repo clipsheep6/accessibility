@@ -235,6 +235,9 @@ public:
      * @return Return RET_OK if sets cache mode successfully, otherwise refer to the RetError for the failure.
      */
     virtual RetError SetCacheMode(const int32_t cacheMode) = 0;
+
+    virtual RetError SearchElementInfosByAccessibilityId(const int32_t windowId, const int64_t elementId,
+    const uint32_t mode, AccessibilityElementInfo &info, bool isFilter = false) = 0;
 };
 } // namespace Accessibility
 } // namespace OHOS

@@ -234,7 +234,10 @@ public:
      */
     virtual RetError SetCacheMode(const int32_t cacheMode) override;
 
-private:
+    virtual RetError SearchElementInfosByAccessibilityId(const int32_t windowId, const int64_t elementId,
+                                                         const uint32_t mode, AccessibilityElementInfo &info, bool isFilter = false) override;
+
+  private:
     sptr<IAccessibleAbilityManagerService> serviceProxy_ = nullptr;
 };
 } // namespace Accessibility
