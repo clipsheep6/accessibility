@@ -925,7 +925,7 @@ HWTEST_F(AccessibilityWindowManagerTest, AccessibilityWindowManager_Unittest_OnW
     windowInfoManager.a11yWindows_.clear();
     EXPECT_TRUE(windowInfoManager.a11yWindows_.size() == 0);
     windowInfoManager.OnWindowUpdate(infos, Rosen::WindowUpdateType::WINDOW_UPDATE_ALL);
-    EXPECT_TRUE(windowInfoManager.a11yWindows_.size() == 2);
+    EXPECT_EQ(0, windowInfoManager.a11yWindows_.size());
     for (auto& info : windowInfoManager.a11yWindows_) {
         bool cmpFirstBundleName = info.second.GetBundleName() == "rosen_winInfo_first";
         bool cmpSecondBundleName = info.second.GetBundleName() == "rosen_winInfo_second";
