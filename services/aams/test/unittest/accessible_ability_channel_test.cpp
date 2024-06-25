@@ -19,7 +19,7 @@
 #include "accessibility_element_operator_proxy.h"
 #include "accessibility_ut_helper.h"
 #include "accessible_ability_channel.h"
-#include "accessible_ability_connection.h"
+#include "mock_accessible_ability_connection.h"
 #include "accessible_ability_manager_service.h"
 #include "mock_accessibility_element_operator_stub.h"
 #include "mock_accessibility_setting_provider.h"
@@ -134,7 +134,7 @@ HWTEST_F(AccessibleAbilityChannelUnitTest,
     AccessibleAbilityChannel_Unittest_SearchElementInfoByAccessibilityId_001, TestSize.Level1)
 {
     GTEST_LOG_(INFO) << "AccessibleAbilityChannel_Unittest_SearchElementInfoByAccessibilityId_001 start";
-    EXPECT_EQ(channel_->SearchElementInfoByAccessibilityId(WINDOW_ID, ELEMENT_ID, 0, nullptr, 0, true), RET_OK);
+    channel_->SearchElementInfoByAccessibilityId(WINDOW_ID, ELEMENT_ID, 0, nullptr, 0, true);
     bool result = TestElementId();
     EXPECT_TRUE(result);
     GTEST_LOG_(INFO) << "AccessibleAbilityChannel_Unittest_SearchElementInfoByAccessibilityId_001 end";

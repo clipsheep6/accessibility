@@ -16,6 +16,7 @@
 #include <gtest/gtest.h>
 #include <memory>
 #include "accessibility_window_info.h"
+#include "accessibility_element_info.h"
 
 using namespace testing;
 using namespace testing::ext;
@@ -31,6 +32,9 @@ public:
     {}
     ~AccessibilityWindowInfoUnitTest()
     {}
+
+    std::shared_ptr<AccessibilityWindowInfo> windowInfo_ = nullptr;
+
     static void SetUpTestCase()
     {
         GTEST_LOG_(INFO) << "AccessibilityWindowInfoUnitTest Start";
@@ -50,8 +54,6 @@ public:
         GTEST_LOG_(INFO) << "AccessibilityWindowInfoUnitTest TearDown()";
         windowInfo_ = nullptr;
     }
-
-    std::shared_ptr<AccessibilityWindowInfo> windowInfo_ = nullptr;
 };
 
 /**

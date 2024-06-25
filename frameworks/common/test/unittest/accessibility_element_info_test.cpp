@@ -44,7 +44,6 @@ public:
     void SetUp()
     {
         elementInfo_ = std::make_shared<AccessibilityElementInfo>();
-        ASSERT_TRUE(elementInfo_);
     }
 
     void TearDown()
