@@ -842,5 +842,82 @@ int32_t AccessibilityElementInfo::GetParentWindowId() const
 {
     return parentWindowId_;
 }
+
+void AccessibilityElementInfo::AddSpan(const SpanInfo span)
+{
+    spanList_.push_back(span);
+}
+
+void AccessibilityElementInfo::SetSpanList(const std::vector<SpanInfo> &spanList)
+{
+    spanList_.clear();
+    spanList_.resize(spanList.size());
+    std::copy(spanList.begin(), spanList.end(), spanList_.begin());
+}
+
+const std::vector<SpanInfo> &AccessibilityElementInfo::GetSpanList() const
+{
+    return spanList_;
+}
+
+SpanInfo::SpanInfo(const int32_t spanId, const std::string spanText, const std::string accessibilityText,
+    const std::string accessibilityDescription, const std::string accessibilityLevel)
+{
+    spanId_ = spanId;
+    spanText_ = spanText;
+    accessibilityText_ = accessibilityText;
+    accessibilityDescription_ = accessibilityDescription;
+    accessibilityLevel_ = accessibilityLevel;
+}
+
+void SpanInfo::SetSpanId(const int32_t spanId)
+{
+    spanId_ = spanId;
+}
+
+void SpanInfo::SetSpanText(const std::string spanText)
+{
+    spanText_ = spanText;
+}
+
+void SpanInfo::SetAccessibilityText(const std::string accessibilityText)
+{
+    accessibilityText_ = accessibilityText;
+}
+
+void SpanInfo::SetAccessibilityDescription(const std::string accessibilityDescription)
+{
+    accessibilityDescription_ = accessibilityDescription;
+}
+
+void SpanInfo::SetAccessibilityLevel(const std::string accessibilityLevel)
+{
+    accessibilityLevel_ = accessibilityLevel;
+}
+
+int32_t SpanInfo::GetSpanId() const
+{
+    return spanId_;
+}
+
+const std::string &SpanInfo::GetSpanText() const
+{
+    return spanText_;
+}
+
+const std::string &SpanInfo::GetAccessibilityText() const
+{
+    return accessibilityText_;
+}
+
+const std::string &SpanInfo::GetAccessibilityDescription() const
+{
+    return accessibilityDescription_;
+}
+
+const std::string &SpanInfo::GetAccessibilityLevel() const
+{
+    return accessibilityLevel_;
+}
 } // namespace Accessibility
 } // namespace OHOS
