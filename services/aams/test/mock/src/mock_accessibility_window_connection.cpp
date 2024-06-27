@@ -48,6 +48,13 @@ RetError AccessibilityWindowConnection::SetCardProxy(const int32_t treeId,
     return RET_OK;
 }
 
+RetError AccessibilityWindowConnection::SetTokenIdMap(const int32_t treeId,
+    const uint32_t tokenId)
+{
+    tokenIdMap_[treeId] = tokenId;
+    return RET_OK;
+}
+
 sptr<IAccessibilityElementOperator> AccessibilityWindowConnection::GetCardProxy(const int32_t treeId)
 {
     auto iter = cardProxy_.find(treeId);
@@ -57,6 +64,12 @@ sptr<IAccessibilityElementOperator> AccessibilityWindowConnection::GetCardProxy(
     }
     HILOG_DEBUG("GetCardProxy : operation is no");
     return proxy_;
+}
+
+uint32_t AccessibilityWindowConnection::GetTokenIdMap(const int32_t treeId)
+{
+    HILOG_DEBUG("tokenId : %{public}d", tokenIdMap_[treeId]);
+    return tokenIdMap_[treeId];
 }
 } // namespace Accessibility
 } // namespace OHOS

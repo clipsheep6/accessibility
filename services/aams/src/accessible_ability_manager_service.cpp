@@ -36,6 +36,7 @@
 #include "system_ability_definition.h"
 #include "utils.h"
 #include "accessibility_short_key_dialog.h"
+#include <ipc_skeleton.h>
 
 using namespace std;
 
@@ -264,7 +265,26 @@ RetError AccessibleAbilityManagerService::SendEvent(const AccessibilityEventInfo
         HILOG_ERROR("Parameters check failed!");
         return RET_ERR_NULLPTR;
     }
-
+    uint32_t tokenId = IPCSkeleton::GetCallingTokenID();
+    int32_t treeId = (static_cast<uint64_t>(uiEvent.GetAccessibilityId()) >> ELEMENT_MOVE_BIT);
+    HILOG_DEBUG("treeId[%{public}d] tokenId[%{public}d]", treeId, tokenId);
+    sptr<AccessibilityAccountData> accountData = GetCurrentAccountData();
+    if (accountData == nullptr) {
+        Utils::RecordUnavailableEvent(A11yUnavailableEvent::CONNECT_EVENT,
+            A11yError::ERROR_CONNECT_TARGET_APPLICATION_FAILED);
+        HILOG_ERROR("Get current account data failed!!");
+        return RET_ERR_REGISTER_EXIST;
+    }
+    sptr<AccessibilityWindowConnection> oldConnection =
+        accountData->GetAccessibilityWindowConnection(uiEvent.GetWindowId());
+    if (oldConnection == nullptr) {
+        HILOG_ERROR("oldConnection is empty.");
+        return RET_ERR_REGISTER_EXIST;
+    }
+    if (tokenId != oldConnection->GetTokenIdMap(treeId)) {
+        HILOG_DEBUG("tokenId[%{public}d] get tokenId[%{public}d]", tokenId, oldConnection->GetTokenIdMap(treeId));
+        return RET_ERR_FAILED;
+    }
     UpdateAccessibilityWindowStateByEvent(uiEvent);
     handler_->PostTask(std::bind([this](AccessibilityEventInfo &event) -> void {
         HILOG_DEBUG();
@@ -666,7 +686,9 @@ RetError AccessibleAbilityManagerService::RegisterElementOperatorChildWork(const
             HILOG_WARN("no need to register again.");
             return RET_ERR_REGISTER_EXIST;
         } else {
+            uint32_t tokenId = IPCSkeleton::GetCallingTokenID();
             oldConnection->SetCardProxy(treeId, operation);
+            oldConnection->SetTokenIdMap(treeId, tokenId);
             isParentConectionExist = true;
         }
     }
