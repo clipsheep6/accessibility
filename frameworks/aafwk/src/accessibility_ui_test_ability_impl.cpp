@@ -286,5 +286,13 @@ RetError AccessibilityUITestAbilityImpl::SetCacheMode(const int32_t cacheMode)
     HILOG_DEBUG();
     return AccessibleAbilityClient::GetInstance()->SetCacheMode(cacheMode);
 }
+
+RetError AccessibilityUITestAbilityImpl::SearchElementInfosByAccessibilityId(const int32_t windowId,
+                                                                             const int64_t elementId, const uint32_t mode, AccessibilityElementInfo &info, bool isFilter)
+{
+    HILOG_DEBUG();
+    return AccessibleAbilityClient::GetInstance()->SearchElementInfosByAccessibilityId(windowId,
+                                                                                       elementId, mode, info, isFilter);
+}
 } // namespace Accessibility
 } // namespace OHOS
