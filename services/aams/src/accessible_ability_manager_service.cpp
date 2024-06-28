@@ -77,6 +77,7 @@ AccessibleAbilityManagerService::AccessibleAbilityManagerService()
     dependentServicesStatus_[DISPLAY_MANAGER_SERVICE_SA_ID] = false;
     dependentServicesStatus_[SUBSYS_ACCOUNT_SYS_ABILITY_ID_BEGIN] = false;
     dependentServicesStatus_[WINDOW_MANAGER_SERVICE_ID] = false;
+    dependentServicesStatus_[DISTRIBUTED_KV_DATA_SERVICE_ABILITY_ID] = false;
 
     accessibilitySettings_ = std::make_shared<AccessibilitySettings>();
 }
@@ -117,6 +118,7 @@ void AccessibleAbilityManagerService::OnStart()
     AddSystemAbilityListener(DISPLAY_MANAGER_SERVICE_SA_ID);
     AddSystemAbilityListener(SUBSYS_ACCOUNT_SYS_ABILITY_ID_BEGIN);
     AddSystemAbilityListener(WINDOW_MANAGER_SERVICE_ID);
+    AddSystemAbilityListener(DISTRIBUTED_KV_DATA_SERVICE_ABILITY_ID);
 
     accessibilitySettings_->RegisterSettingsHandler(handler_);
 }
@@ -2044,6 +2046,7 @@ void AccessibleAbilityManagerService::GetAllConfigs(AccessibilityConfigData &con
 bool AccessibleAbilityManagerService::EnableShortKeyTargetAbility(const std::string &name)
 {
     HILOG_DEBUG();
+    HILOG_INFO("EnableShortKeyTargetAbility name = %{public}s", name.c_str());
     HITRACE_METER_NAME(HITRACE_TAG_ACCESSIBILITY_MANAGER, "EnableShortKeyTargetAbility");
 
     sptr<AccessibilityAccountData> accountData = GetCurrentAccountData();
@@ -2363,7 +2366,7 @@ void AccessibleAbilityManagerService::OnDeviceProvisioned()
     if (accountData->GetConfig()->GetDbHandle()) {
         accountData->GetConfig()->GetDbHandle()->UnregisterObserver(USER_SETUP_COMPLETED);
     }
-    if (accountData->GetScreenReaderState() == false) {
+    if (accountData->GetDefaultUserScreenReaderState() == false) {
         HILOG_DEBUG();
         accountData->GetConfig()->SetShortKeyState(false);
         std::vector<std::string> tmpVec;
@@ -2540,10 +2543,9 @@ void AccessibleAbilityManagerService::StopCallbackWait(int32_t windowId)
         HILOG_DEBUG("windowId not exists");
         return;
     }
-    for (auto iter = windowRequestIdMap_[windowId].begin(); iter != windowRequestIdMap_[windowId].end();) {
-        HILOG_DEBUG("stop callback wait windowId: %{public}d, requestId: %{public}d", windowId, iter->first);
+    for (auto iter = windowRequestIdMap_[windowId].begin(); iter != windowRequestIdMap_[windowId].end(); ++iter) {
+        HILOG_DEBUG("stop callback wait windowId: %{public}d, treeId: %{public}d", windowId, iter->first);
         StopCallbackWait(windowId, iter->first);
-        ++iter;
     }
 }
 
@@ -2558,15 +2560,18 @@ void AccessibleAbilityManagerService::StopCallbackWait(int32_t windowId, int32_t
         return;
     }
     auto requestIds = windowRequestIdMap_[windowId][treeId];
-    for (auto iter = requestIds.begin(); iter != requestIds.end();) {
-        HILOG_DEBUG("stop callback wait windowId: %{public}d, requestId: %{public}d", windowId, *iter);
-        requestIdMap_[*iter]->SetExecuteActionResult(false, *iter);
-        auto ite = requestIdMap_.find(*iter);
-        if (ite != requestIdMap_.end()) {
-            HILOG_DEBUG("requestIdMap_.erase requestId:%{public}d", *iter);
-            requestIdMap_.erase(ite);
+    for (auto requestId = requestIds.begin(); requestId != requestIds.end();) {
+        HILOG_DEBUG("stop callback wait windowId: %{public}d, requestId: %{public}d", windowId, *requestId);
+        auto iter = requestIdMap_.find(*requestId);
+        if (iter != requestIdMap_.end()) {
+            HILOG_DEBUG("requestIdMap_ set callback and erase requestId:%{public}d", *requestId);
+            sptr<IAccessibilityElementOperatorCallback> callback = requestIdMap_[*requestId];
+            if (callback != nullptr) {
+                callback->SetExecuteActionResult(false, *requestId);
+            }
+            requestIdMap_.erase(iter);
         }
-        iter = requestIds.erase(iter);
+        requestId = requestIds.erase(requestId);
     }
 }
 } // namespace Accessibility

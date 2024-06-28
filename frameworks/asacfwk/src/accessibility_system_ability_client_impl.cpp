@@ -583,6 +583,10 @@ void AccessibilitySystemAbilityClientImpl::SetFindFocusedElementInfoResult(
 {
     std::lock_guard<std::mutex> lock(mutex_);
     HILOG_DEBUG("requestId[%{public}d]", requestId);
+    if (serviceProxy_ == nullptr) {
+        HILOG_ERROR("serviceProxy_ is nullptr");
+        return;
+    }
     sptr<IAccessibilityElementOperatorCallback> callback = AccessibilityElementOperatorImpl::GetCallback(requestId);
     if (requestId >= 0) {
         if (callback != nullptr) {
@@ -599,6 +603,10 @@ void AccessibilitySystemAbilityClientImpl::SetFocusMoveSearchResult(
 {
     std::lock_guard<std::mutex> lock(mutex_);
     HILOG_DEBUG("requestId[%{public}d]", requestId);
+    if (serviceProxy_ == nullptr) {
+        HILOG_ERROR("serviceProxy_ is nullptr");
+        return;
+    }
     sptr<IAccessibilityElementOperatorCallback> callback = AccessibilityElementOperatorImpl::GetCallback(requestId);
     if (requestId >= 0) {
         if (callback != nullptr) {
@@ -615,6 +623,10 @@ void AccessibilitySystemAbilityClientImpl::SetExecuteActionResult(
 {
     std::lock_guard<std::mutex> lock(mutex_);
     HILOG_DEBUG("requestId[%{public}d]", requestId);
+    if (serviceProxy_ == nullptr) {
+        HILOG_ERROR("serviceProxy_ is nullptr");
+        return;
+    }
     sptr<IAccessibilityElementOperatorCallback> callback = AccessibilityElementOperatorImpl::GetCallback(requestId);
     if (requestId >= 0) {
         if (callback != nullptr) {
@@ -631,6 +643,10 @@ void AccessibilitySystemAbilityClientImpl::SetCursorPositionResult(
 {
     std::lock_guard<std::mutex> lock(mutex_);
     HILOG_DEBUG("requestId[%{public}d]  cursorPosition[%{public}d]", requestId, cursorPosition);
+    if (serviceProxy_ == nullptr) {
+        HILOG_ERROR("serviceProxy_ is nullptr");
+        return;
+    }
     sptr<IAccessibilityElementOperatorCallback> callback = AccessibilityElementOperatorImpl::GetCallback(requestId);
     if (requestId >= 0) {
         if (callback != nullptr) {
