@@ -218,7 +218,7 @@ HWTEST_F(AccessibleAbilityChannelUnitTest,
 /**
  * @tc.number: AccessibleAbilityChannel_Unittest_GetWindow_002
  * @tc.name: GetWindow
- * @tc.desc: Test function GetWindow
+ * @tc.desc: Test function GetWindow 
  */
 HWTEST_F(AccessibleAbilityChannelUnitTest,
     AccessibleAbilityChannel_Unittest_GetWindow_002, TestSize.Level1)
