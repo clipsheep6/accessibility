@@ -34,7 +34,7 @@ namespace {
         "selected", "clickable", "longClickable", "isEnable", "isPassword", "scrollable",
         "editable", "pluralLineSupported", "parent", "children", "isFocused", "accessibilityFocused",
         "error", "isHint", "pageId", "valueMax", "valueMin", "valueNow", "windowId", "accessibilityText",
-        "textType", "offset", "currentItem", "allAttribute"};
+        "textType", "offset", "currentItem", "extraElement", "allAttribute"};
     const std::vector<std::string> WINDOW_INFO_ATTRIBUTE_NAMES = {"isActive", "screenRect", "layer", "type",
         "rootElement", "isFocused", "windowId"};
 
@@ -86,6 +86,7 @@ namespace {
         {"textType", &NAccessibilityElement::GetElementInfoTextType},
         {"offset", &NAccessibilityElement::GetElementInfoOffset},
         {"currentItem", &NAccessibilityElement::GetElementInfoGridItem},
+        {"extraElement", &NAccessibilityElement::GetElementInfoExtraElement},
         {"allAttribute", &NAccessibilityElement::GetElementInfoAllAttribute},
     };
     std::map<std::string, AttributeNamesFunc> windowInfoCompleteMap = {
@@ -589,6 +590,16 @@ void NAccessibilityElement::GetElementInfoGridItem(NAccessibilityElementData *ca
     ConvertGridItemToJS(callbackInfo->env_, value, gridItem);
 }
 
+void NAccessibilityElement::GetElementInfoExtraElement(NAccessibilityElementData *callbackInfo, napi_value &value)
+{
+    if (!CheckElementInfoParameter(callbackInfo, value)) {
+        return;
+    }
+    OHOS::Accessibility::ExtraElementinfo extraElement = callbackInfo->accessibilityElement_.elementInfo_->GetExtraElementinfoForAcc();
+    NAPI_CALL_RETURN_VOID(callbackInfo->env_, napi_create_object(callbackInfo->env_, &value));
+    ConvertExtraElementToJS(callbackInfo->env_, value, extraElement);
+}
+
 void NAccessibilityElement::GetElementInfoCheckable(NAccessibilityElementData *callbackInfo, napi_value &value)
 {
     if (!CheckElementInfoParameter(callbackInfo, value)) {
@@ -1057,6 +1068,10 @@ void NAccessibilityElement::GetElementInfoAllAttribute3(NAccessibilityElementDat
     GetElementInfoGridItem(callbackInfo, grid);
     NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, value, "grid", grid));
 
+    napi_value extraElement = nullptr;
+    GetElementInfoExtraElement(callbackInfo, grid);
+    NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, value, "extraElement", extraElement));
+    
     napi_value currentIndex = nullptr;
     GetElementInfoCurrentIndex(callbackInfo, currentIndex);
     NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, value, "currentIndex", currentIndex));

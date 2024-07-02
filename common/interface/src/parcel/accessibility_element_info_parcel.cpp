@@ -441,5 +441,41 @@ sptr<RectParcel> RectParcel::Unmarshalling(Parcel& parcel)
     }
     return rect;
 }
+
+ExtraElementinfoParcel::ExtraElementinfoParcel(const ExtraElementinfo &extraElementinfo)
+{
+    ExtraElementinfo *self = this;
+    *self = extraElementinfo;
+}
+
+bool ExtraElementinfoParcel::ReadFromParcel(Parcel &parcel)
+{
+    READ_PARCEL_AND_RETURN_FALSE_IF_FAIL(Map, parcel, extraElementinfoFirst_);
+    READ_PARCEL_AND_RETURN_FALSE_IF_FAIL(Map, parcel, extraElementinfoSceond_);
+
+    return true;
+}
+
+bool ExtraElementinfoParcel::Marshalling(Parcel &parcel) const
+{
+    WRITE_PARCEL_AND_RETURN_FALSE_IF_FAIL(Map, parcel, extraElementinfoFirst_);
+    WRITE_PARCEL_AND_RETURN_FALSE_IF_FAIL(Map, parcel, extraElementinfoSceond_);
+
+    return true;
+}
+
+sptr<ExtraElementinfoParcel> ExtraElementinfoParcel::Unmarshalling(Parcel &parcel)
+{
+    sptr<ExtraElementinfoParcel> extraElementinfo = new(std::nothrow) ExtraElementinfoParcel();
+    if (!extraElementinfo) {
+        HILOG_ERROR("Failed to create extraElementinfo.");
+        return nullptr;
+    }
+    if (!extraElementinfo->ReadFromParcel(parcel)) {
+        HILOG_ERROR("read from parcel failed");
+        return nullptr;
+    }
+    return extraElementinfo;
+}
 } // namespace Accessibility
 } // namespace OHOS

@@ -842,5 +842,44 @@ int32_t AccessibilityElementInfo::GetParentWindowId() const
 {
     return parentWindowId_;
 }
+
+ExtraElementinfo::ExtraElementinfo(const std::map<std::string, std::string> extraElementinfo, const std::map<std::string, int_32> extraElementinfo1)
+{
+    extraElementinfoFirst_ = extraElementinfoFirst;
+    extraElementinfoSecond_ = extraElementinfoSecond;
+}
+void ExtraElementinfo::SetExtraElementinfo(const std::map<std::string, std::string> extraElementinfo)
+{
+    extraElementinfoFirst_ = extraElementinfoFirst;
+}
+
+void ExtraElementinfo::SetExtraElementinfo(const std::map<std::string, int32_t> extraElementinfo1)
+{
+    extraElementinfoSecond_ = extraElementinfoSecond;    
+}
+
+const std::map &ExtraElementinfo::GetExtraElementinfoFirst() const
+{
+    return extraElementinfoFirst_;
+}
+
+const std::map &ExtraElementinfo::GetExtraElementinfoSecond() const
+{
+    return extraElementinfoSecond_;
+}
+
+void AccessibilityElementInfo::SetExtraElementinfoForAcc(const ExtraElementinfo &extraElementinfo)
+{
+    extraElementinfo_ = extraElementinfo;
+}
+
+const ExtraElementinfo &AccessibilityElementInfo::GetExtraElementinfoForAcc() const
+{
+    return extraElementinfo_;
+}
+const GridItemInfo &AccessibilityElementInfo::GetGridItem() const
+{
+    return gridItem_;
+}
 } // namespace Accessibility
 } // namespace OHOS

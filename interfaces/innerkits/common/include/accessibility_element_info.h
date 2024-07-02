@@ -292,6 +292,35 @@ protected:
     bool selected_ = false;
 };
 
+/*
+* class define the extra elementinfo
+*/
+class ExtraElementinfo {
+public:
+    /**
+     * @brief Construct
+     */
+    ExtraElementinfo() {}
+
+    ExtraElementinfo(const std::map<std::string, std::string> extraElementinfoFirst, const std::map<std::string, int_32> extraElementinfoSecond);
+
+    /**
+     * @brief Sets the extra Elementinfo.
+     * @param extraElementinfo The extraElementinfo map.
+     */
+    void SetExtraElementinfo(const std::map<std::string, std::string> extraElementinfoFirst);
+
+    void SetExtraElementinfo(const std::map<std::string, int_32> extraElementinfoSecond);
+
+    const std::map &GetExtraElementinfoFirst() const;
+
+    const std::map &GetExtraElementinfoSecond() const;
+
+protected:
+    std::map<std::string, std::string> extraElementinfoFirst_ = {};
+    std::map<std::string, int_32> extraElementinfoSecond_ = {};
+}
+
 class Rect {
 public:
     /**
@@ -1407,6 +1436,10 @@ public:
     */
     void SetParentWindowId(const int32_t iParentWindowId);
 
+    void SetExtraElementinfoForAcc(const ExtraElementinfo &extraElementinfo)
+
+    const ExtraElementinfo &GetExtraElementinfoForAcc() const;
+
 protected:
     int32_t pageId_ = -1;
     int32_t windowId_ = -1;
@@ -1471,6 +1504,7 @@ protected:
     std::string latestContent_ = "";
     std::string textType_ = "";
     float offset_ = 0.0f;
+    ExtraElementinfo extraElementinfo_;
 };
 } // namespace Accessibility
 } // namespace OHOS
