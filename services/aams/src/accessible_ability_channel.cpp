@@ -210,6 +210,25 @@ RetError AccessibleAbilityChannel::FindFocusedElementInfo(const int32_t accessib
     return syncFuture.get();
 }
 
+void AccessibleAbilityChannel::SetKeyCodeSingle(std::shared_ptr<MMI::KeyEvent>& keyEvent, const int32_t keyCode)
+{
+    HILOG_DEBUG();
+    Singleton<AccessibleAbilityManagerService>::GetInstance().PostDelayUnloadTask();
+    if (!keyEvent) {
+        HILOG_ERROR("KeyEvent is nullptr");
+        return;
+    }
+
+    keyEvent->SetKeyCode(keyCode);
+    keyEvent->SetKeyAction(MMI::KeyEvent::KEY_ACTION_DOWN);
+
+    MMI::KeyEvent::KeyItem item;
+    item.SetKeyCode(keyCode);
+    item.SetPressed(true);
+
+    keyEvent->AddKeyItem(item);
+}
+
 RetError AccessibleAbilityChannel::FocusMoveSearch(const int32_t accessibilityWindowId, const int64_t elementId,
     const int32_t direction, const int32_t requestId, const sptr<IAccessibilityElementOperatorCallback> &callback)
 {
