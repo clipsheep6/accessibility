@@ -20,6 +20,16 @@ class AccessibilityExtensionContext extends ExtensionContext {
     super(obj);
   }
 
+  startAbility(want, callback) {
+    console.log('startAbility');
+    return this.__context_impl__.startAbility(want, callback);
+  }
+
+  startAbility(want, startOptions, callback) {
+    console.log('startAbility_options');
+    return this.__context_impl__.startAbility(want, startOptions, callback);
+  }
+
   setTargetBundleName(targetNames, callback) {
     console.log('setTargetBundleName');
     return this.__context_impl__.setTargetBundleName(targetNames, callback);

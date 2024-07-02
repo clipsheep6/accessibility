@@ -16,11 +16,34 @@
 #include "accessibility_extension_context.h"
 #include "accessible_ability_client.h"
 #include "hilog_wrapper.h"
+#include "ability_manager_client.h"
 
 using namespace std;
 
 namespace OHOS {
 namespace Accessibility {
+int AccessibilityExtensionContext::ILLEGAL_REQUEST_CODE(-1);
+RetError AccessibilityExtensionContext::StartAbility(const AAFwk::Want &want)
+{
+    HILOG_DEBUG();
+    auto ret = AAFwk::AbilityManagerClient::GetInstance()->StartAbility(want, token_, ILLEGAL_REQUEST_CODE);
+    if (ret != ERR_OK) {
+        HILOG_ERROR("StartAbility is failed %{public}d", ret);
+        return RET_ERR_FAILED;
+    }
+    return RET_OK;
+}
+
+RetError AccessibilityExtensionContext::StartAbility(const AAFwk::Want &want, const AAFwk::StartOptions &startOptions)
+{
+    HILOG_DEBUG();
+    auto ret = AAFwk::AbilityManagerClient::GetInstance()->StartAbility(want, startOptions, token_,
+        ILLEGAL_REQUEST_CODE);
+    if (ret != ERR_OK) {
+        HILOG_ERROR("StartAbility is failed %{public}d", ret);
+    }
+    return RET_OK;
+}
 RetError AccessibilityExtensionContext::GetFocus(const int32_t focusType, AccessibilityElementInfo &elementInfo)
 {
     HILOG_DEBUG();
