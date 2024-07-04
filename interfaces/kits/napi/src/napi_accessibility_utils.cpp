@@ -1827,5 +1827,56 @@ void ConvertStringVecToJS(napi_env env, napi_value &result, std::vector<std::str
         index++;
     }
 }
+
+napi_value GetNapiValue(napi_env env, napi_value jsObject, const std::string& key)
+{
+    if (jsObject == nullptr) {
+        HILOG_ERROR("Js object is nullptr");
+        return nullptr;
+    }
+    napi_value keyValue;
+    NAPI_CALL(env, napi_create_string_utf8(env, key.c_str(), NAPI_AUTO_LENGTH, &keyValue));
+    bool result = false;
+    NAPI_CALL(env, napi_has_property(env, jsObject, keyValue, &result));
+    if (result) {
+        napi_value value = nullptr;
+        NAPI_CALL(env, napi_get_property(env, jsObject, keyValue, &value));
+        return value;
+    }
+    HILOG_ERROR("get napi value fail");
+    return nullptr;
+}
+
+bool GetStringValue(napi_env env, napi_value jsObject, std::string& result)
+{
+    napi_valuetype valueType = napi_undefined;
+    if (napi_typeof(env, jsObject, &valueType) != napi_ok) {
+        HILOG_ERROR("Can not get napi type");
+        return false;
+    }
+    if (valueType != napi_string) {
+        HILOG_ERROR("object is no a string");
+        return false;
+    }
+
+    size_t size = 0;
+    if (napi_get_value_string_utf8(env, jsObject, nullptr, 0, &size) != napi_ok) {
+        HILOG_ERROR("Can not get string size");
+        return false;
+    }
+    result.reserve(size + 1);
+    result.resize(size);
+    if (napi_get_value_string_utf8(env, jsObject, result.data(), (size + 1), &size) != napi_ok) {
+        HILOG_ERROR("Can not get string value");
+        return false;
+    }
+    return true;
+}
+
+bool GetStringValueByKey(napi_env env, napi_value jsObject, const std::string& key, std::string& result)
+{
+    napi_value value = GetNapiValue(env, jsObject, key);
+    return GetStringValue(env, value, result);
+}
 } // namespace AccessibilityNapi
 } // namespace OHOS

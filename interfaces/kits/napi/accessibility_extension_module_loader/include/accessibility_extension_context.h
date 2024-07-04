@@ -23,9 +23,53 @@
 #include "accessibility_gesture_inject_path.h"
 #include "accessibility_window_info.h"
 #include "extension_context.h"
+#include "ability_context.h"
+#include "napi_base_context.h"
+#include "napi_common_want.h"
+#include "ui_content.h"
 
 namespace OHOS {
 namespace Accessibility {
+
+struct CommonAsyncContext {
+    explicit CommonAsyncContext(napi_env napiEnv);
+    virtual ~CommonAsyncContext();
+    napi_env env = nullptr;
+    napi_status status = napi_invalid_arg;
+    int32_t errCode = 0;
+    napi_deferred deferred = nullptr;  // promise handle
+    napi_ref callbackRef = nullptr;    // callback handle
+    napi_async_work work = nullptr;    // work handle
+};
+
+struct UIExtensionRequestContext : public CommonAsyncContext {
+    explicit UIExtensionRequestContext(napi_env env) : CommonAsyncContext(env) {};
+    std::shared_ptr<OHOS::AbilityRuntime::AbilityContext> context = nullptr;
+    OHOS::AAFwk::Want requestWant;
+};
+
+class UIExtensionCallback {
+public:
+    explicit UIExtensionCallback(std::shared_ptr<UIExtensionRequestContext>& reqContext);
+    void SetSessionId(int32_t sessionId);
+    void OnRelease(int32_t releaseCode);
+    void OnResult(int32_t resultCode, const OHOS::AAFwk::Want& result);
+    void OnReceive(const OHOS::AAFwk::WantParams& request);
+    void OnError(int32_t code, const std::string& name, const std::string& message);
+    void OnRemoteReady(const std::shared_ptr<OHOS::Ace::ModalUIExtensionProxy>& uiProxy);
+    void OnDestroy();
+    void SendMessageBack();
+
+private:
+    bool SetErrorCode(int32_t code);
+    void ProcessCallbackOrPromise(napi_env env, const CommonAsyncContext* asyncContext, napi_value data);
+    int32_t sessionId_ = 0;
+    int32_t resultCode_ = 0;
+    OHOS::AAFwk::Want resultWant_;
+    std::shared_ptr<UIExtensionRequestContext> reqContext_ = nullptr;
+    bool alreadyCallback_ = false;
+};
+
 class AccessibilityExtensionContext : public AbilityRuntime::ExtensionContext {
 public:
     AccessibilityExtensionContext() = default;
@@ -154,6 +198,8 @@ public:
      * @return Return RET_OK if sets target bundle names successfully, otherwise refer to the RetError for the failure.
      */
     RetError SetTargetBundleName(const std::vector<std::string> &targetBundleNames);
+
+    void StartUIExtension(std::shared_ptr<UIExtensionRequestContext> asyncContext);
 };
 } // namespace Accessibility
 } // namespace OHOS

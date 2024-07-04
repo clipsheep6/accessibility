@@ -132,6 +132,10 @@ bool ConvertGesturePathJSToNAPIPart1(napi_env env, napi_value object,
 bool ConvertGesturePathJSToNAPIPart2(napi_env env, napi_value object,
     std::shared_ptr<OHOS::Accessibility::AccessibilityGestureInjectPath>& gesturePath);
 
+napi_value GetNapiValue(napi_env env, napi_value jsObject, const std::string& key);
+bool GetStringValue(napi_env env, napi_value jsObject, std::string& result);
+bool GetStringValueByKey(napi_env env, napi_value jsObject, const std::string& key, std::string& result);
+
 struct AccessibilityCallbackInfo {
     napi_env env_;
     napi_ref ref_;

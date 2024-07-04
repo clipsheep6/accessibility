@@ -22,6 +22,8 @@
 #include "hilog_wrapper.h"
 #include "napi_accessibility_element.h"
 #include "accessibility_utils.h"
+#include "string_wrapper.h"
+#include "want_params_wrapper.h"
 
 using namespace OHOS::AbilityRuntime;
 using namespace OHOS::AccessibilityNapi;
@@ -29,6 +31,9 @@ using namespace OHOS::AccessibilityNapi;
 namespace OHOS {
 namespace Accessibility {
 namespace {
+const std::string PARAM_UI_EXTENSION_TYPE = "ability.want.params.uiExtensionType";
+const std::string SYS_COMMON_UI = "sys/commonUI";
+
 static void ConvertAccessibilityWindowInfoToJS(
     napi_env env, napi_value result, const AccessibilityWindowInfo& accessibilityWindowInfo)
 {
@@ -147,6 +152,53 @@ static void GetLastParamForTwo(napi_env env, NapiCallbackInfo& info, napi_value&
     }
 }
 
+static bool ParseUIAbilityContextReq(
+    napi_env env, const napi_value& obj, std::shared_ptr<OHOS::AbilityRuntime::AbilityContext>& abilityContext)
+{
+    bool stageMode = false;
+    napi_status status = OHOS::AbilityRuntime::IsStageContext(env, obj, stageMode);
+    if (status != napi_ok || !stageMode) {
+        HILOG_ERROR("not stage mode");
+        return false;
+    }
+
+    auto context = OHOS::AbilityRuntime::GetStageModeContext(env, obj);
+    if (context == nullptr) {
+        HILOG_ERROR("get context failed");
+        return false;
+    }
+
+    abilityContext = OHOS::AbilityRuntime::Context::ConvertTo<OHOS::AbilityRuntime::AbilityContext>(context);
+    if (abilityContext == nullptr) {
+        HILOG_ERROR("get abilityContext failed");
+        return false;
+    }
+    HILOG_DEBUG("end ParseUIAbilityContextReq");
+    return true;
+}
+
+static bool ParseWantReq(napi_env env, const napi_value& obj, OHOS::AAFwk::Want& requestWant)
+{
+    std::string bundleName;
+    std::string abilityName;
+    bool ret = GetStringValueByKey(env, obj, "bundleName", bundleName);
+    if (!ret || bundleName.empty()) {
+        HILOG_ERROR("get bundleName failed");
+        return false;
+    }
+    ret = GetStringValueByKey(env, obj, "abilityName", abilityName);
+    if (!ret || abilityName.empty()) {
+        HILOG_ERROR("get abilityName failed");
+        return false;
+    }
+    requestWant.SetElementName(bundleName, abilityName);
+
+    requestWant.SetParam(PARAM_UI_EXTENSION_TYPE, SYS_COMMON_UI);
+    HILOG_DEBUG("end ParseWantReq");
+    return true;
+}
+
+
 class NAccessibilityExtensionContext final {
 public:
     explicit NAccessibilityExtensionContext(
@@ -189,8 +241,55 @@ public:
         GET_NAPI_INFO_AND_CALL(env, info, NAccessibilityExtensionContext, OnGestureInjectSync);
     }
 
+    static napi_value StartAbility(napi_env env, napi_callback_info info)
+    {
+        GET_NAPI_INFO_AND_CALL(env, info, NAccessibilityExtensionContext, OnStartUIExtension);
+    }
+
 private:
     std::weak_ptr<AccessibilityExtensionContext> context_;
+
+    napi_value OnStartUIExtension(napi_env env, NapiCallbackInfo& info)
+    {
+        HILOG_INFO();
+        NAccessibilityErrorCode errCode = NAccessibilityErrorCode::ACCESSIBILITY_OK;
+        napi_value result = nullptr;
+        napi_get_undefined(env, &result);
+
+        if (info.argc < ARGS_SIZE_ONE) {
+            HILOG_ERROR("Start ability failed, not enough params.");
+            errCode = NAccessibilityErrorCode::ACCESSIBILITY_ERROR_INVALID_PARAM;
+        }
+
+        auto asyncContext = std::make_shared<UIExtensionRequestContext>(env);
+        if (!ParseUIAbilityContextReq(env, info.argv[PARAM0], asyncContext->context)) {
+            HILOG_ERROR("ParseUIAbilityContextReq failed");
+            errCode = NAccessibilityErrorCode::ACCESSIBILITY_ERROR_INVALID_PARAM;
+        }
+        if (!ParseWantReq(env, info.argv[PARAM1], asyncContext->requestWant)) {
+            HILOG_ERROR("ParseWantReq failed");
+            errCode = NAccessibilityErrorCode::ACCESSIBILITY_ERROR_INVALID_PARAM;
+        }
+        if (errCode == NAccessibilityErrorCode::ACCESSIBILITY_ERROR_INVALID_PARAM) {
+            HILOG_ERROR("invalid param");
+            napi_throw(env, CreateJsError(env,
+                static_cast<int32_t>(NAccessibilityErrorCode::ACCESSIBILITY_ERROR_INVALID_PARAM),
+                ERROR_MESSAGE_PARAMETER_ERROR));
+            return CreateJsUndefined(env);
+        }
+
+        napi_create_promise(env, &asyncContext->deferred, &result);
+
+        auto context = context_.lock();
+            if (!context) {
+                HILOG_ERROR("context is released");
+                return result;
+            }
+
+        context->StartUIExtension(asyncContext);
+        HILOG_DEBUG("end OnStartUIExtension");
+        return result;
+    }
 
     napi_value OnSetTargetBundleName(napi_env env, NapiCallbackInfo& info)
     {
@@ -647,6 +746,7 @@ napi_value CreateJsAccessibilityExtensionContext(
     BindNativeFunction(env, object, "getWindows", moduleName, NAccessibilityExtensionContext::GetWindows);
     BindNativeFunction(env, object, "injectGesture", moduleName, NAccessibilityExtensionContext::InjectGesture);
     BindNativeFunction(env, object, "injectGestureSync", moduleName, NAccessibilityExtensionContext::InjectGestureSync);
+    BindNativeFunction(env, object, "startAbility", moduleName, NAccessibilityExtensionContext::StartAbility);
     return object;
 }
 } // namespace Accessibility
