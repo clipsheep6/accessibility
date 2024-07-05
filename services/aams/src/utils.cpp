@@ -271,7 +271,7 @@ void Utils::SelectUsefulFromVecWithSameBundle(std::vector<std::string> &selectVe
             }
         }
         if (it == cmpVec.end()) {
-            selectVec.erase(iter);
+            iter = selectVec.erase(iter);
             hasDif = true;
         } else {
             ++iter;
