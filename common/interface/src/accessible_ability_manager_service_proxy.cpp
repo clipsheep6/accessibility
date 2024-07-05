@@ -25,12 +25,10 @@ namespace Accessibility {
 AccessibleAbilityManagerServiceProxy::AccessibleAbilityManagerServiceProxy(const sptr<IRemoteObject> &impl)
     : IRemoteProxy<IAccessibleAbilityManagerService>(impl)
 {
-    HILOG_INFO("AccessibleAbilityManagerServiceProxy construct this ptr = %{public}p", this);
 }
 
 AccessibleAbilityManagerServiceProxy::~AccessibleAbilityManagerServiceProxy()
 {
-    HILOG_INFO("AccessibleAbilityManagerServiceProxy destruct this ptr = %{public}p", this);
 }
 
 bool AccessibleAbilityManagerServiceProxy::WriteInterfaceToken(MessageParcel &data)
