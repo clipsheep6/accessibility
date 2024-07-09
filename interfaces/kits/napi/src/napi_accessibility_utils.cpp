@@ -276,6 +276,33 @@ void ConvertRectToJS(napi_env env, napi_value result, const Accessibility::Rect&
     NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, result, "height", nHeight));
 }
 
+void ConvertSpanToJS(napi_env env, napi_value result, const Accessibility::SpanInfo& span)
+{
+    napi_value spanId;
+    NAPI_CALL_RETURN_VOID(env, napi_create_int32(env, span.GetSpanId(), &spanId));
+    NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, result, "spanId", spanId));
+
+    napi_value spanText;
+    NAPI_CALL_RETURN_VOID(env, napi_create_string_utf8(env, span.GetSpanText().c_str(), NAPI_AUTO_LENGTH, &spanText));
+    NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, result, "spanText", spanText));
+
+    napi_value accessibilityText;
+    NAPI_CALL_RETURN_VOID(env, napi_create_string_utf8(env, span.GetAccessibilityText().c_str(),
+        NAPI_AUTO_LENGTH, &accessibilityText));
+    NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, result, "accessibilityText", accessibilityText));
+
+    napi_value accessibilityDescription;
+    NAPI_CALL_RETURN_VOID(env, napi_create_string_utf8(env, span.GetAccessibilityDescription().c_str(),
+        NAPI_AUTO_LENGTH, &accessibilityDescription));
+    NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, result, "accessibilityDescription",
+        accessibilityDescription));
+
+    napi_value accessibilityLevel;
+    NAPI_CALL_RETURN_VOID(env, napi_create_string_utf8(env, span.GetAccessibilityLevel().c_str(),
+        NAPI_AUTO_LENGTH, &accessibilityLevel));
+    NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, result, "accessibilityLevel", accessibilityLevel));
+}
+
 void ConvertGridItemToJS(napi_env env, napi_value result, const Accessibility::GridItemInfo& gridItem)
 {
     napi_value rowIndex = nullptr;
@@ -670,6 +697,7 @@ std::string ConvertOperationTypeToString(ActionType type)
         {ActionType::ACCESSIBILITY_ACTION_COMMON, "common"},
         {ActionType::ACCESSIBILITY_ACTION_SET_TEXT, "setText"},
         {ActionType::ACCESSIBILITY_ACTION_DELETED, "delete"},
+        {ActionType::ACCESSIBILITY_ACTION_EXEC_SUB_COMPONENT, "execSubComponent"},
     };
 
     if (triggerActionTable.find(type) == triggerActionTable.end()) {
@@ -771,7 +799,8 @@ ActionType ConvertStringToAccessibleOperationType(const std::string &type)
         {"back", ActionType::ACCESSIBILITY_ACTION_BACK},
         {"recentTask", ActionType::ACCESSIBILITY_ACTION_RECENTTASK},
         {"notificationCenter", ActionType::ACCESSIBILITY_ACTION_NOTIFICATIONCENTER},
-        {"controlCenter", ActionType::ACCESSIBILITY_ACTION_CONTROLCENTER}};
+        {"controlCenter", ActionType::ACCESSIBILITY_ACTION_CONTROLCENTER},
+        {"execSubComponent", ActionType::ACCESSIBILITY_ACTION_EXEC_SUB_COMPONENT}};
 
     if (accessibleOperationTypeTable.find(type) == accessibleOperationTypeTable.end()) {
         HILOG_WARN("invalid key[%{public}s]", type.c_str());
@@ -952,6 +981,13 @@ void ConvertActionArgsJSToNAPI(
             str = ConvertStringJSToNAPI(env, object, propertyNameValue, hasProperty);
             if (hasProperty) {
                 args.insert(std::pair<std::string, std::string>("setText", str.c_str()));
+            }
+            break;
+        case ActionType::ACCESSIBILITY_ACTION_EXEC_SUB_COMPONENT:
+            napi_create_string_utf8(env, "spanId", NAPI_AUTO_LENGTH, &propertyNameValue);
+            str = ConvertStringJSToNAPI(env, object, propertyNameValue, hasProperty);
+            if (hasProperty) {
+                args.insert(std::pair<std::string, std::string>("spanId", str.c_str()));
             }
             break;
         default:
