@@ -227,6 +227,41 @@ public:
 };
 
 /*
+* class define the span info
+*/
+class SpanInfoParcel : public SpanInfo, public Parcelable {
+public:
+    /**
+     * @brief Construct
+     */
+    SpanInfoParcel() = default;
+
+    /**
+     * @brief Construct
+     * @param rangeInfo The object of SpanInfo.
+     */
+    explicit SpanInfoParcel(const SpanInfo &spanInfo);
+
+    /**
+     * @brief Used for IPC communication
+     * @param parcel
+     */
+    bool ReadFromParcel(Parcel &parcel);
+
+    /**
+     * @brief Used for IPC communication
+     * @param parcel
+     */
+    virtual bool Marshalling(Parcel &parcel) const override;
+
+    /**
+     * @brief Used for IPC communication
+     * @param parcel
+     */
+    static sptr<SpanInfoParcel> Unmarshalling(Parcel &parcel);
+};
+
+/*
 * The class supply the api to set/get ui component property
 */
 class AccessibilityElementInfoParcel : public AccessibilityElementInfo, public Parcelable {
