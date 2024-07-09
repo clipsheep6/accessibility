@@ -40,7 +40,6 @@ namespace {
     constexpr int DISPLAY_DALTONIZER_GREEN = 12;
     constexpr int DISPLAY_DALTONIZER_RED = 11;
     constexpr int DISPLAY_DALTONIZER_BLUE = 13;
-    constexpr int DEFAULT_ACCOUNT_ID = 100;
     const std::string HIGH_TEXT_CONTRAST_ENABLED = "high_text_contrast_enabled";
     const std::string ACCESSIBILITY_DISPLAY_INVERSION_ENABLED = "accessibility_display_inversion_enabled";
     const std::string ACCESSIBILITY_DISPLAY_DALTONIZER_ENABLED = "accessibility_display_daltonizer_enabled";
@@ -468,13 +467,11 @@ void AccessibilityAccountData::SetScreenReaderState(const std::string &name, con
 bool AccessibilityAccountData::GetDefaultUserScreenReaderState()
 {
     HILOG_DEBUG();
-    auto datashare = std::make_shared<AccessibilityDatashareHelper>(DATASHARE_TYPE::SECURE, DEFAULT_ACCOUNT_ID);
-    if (datashare == nullptr) {
+    if (config_ == nullptr) {
+        HILOG_ERROR("config_ is nullptr.");
         return false;
     }
-    std::string tmpString = datashare->GetStringValue(ENABLED_ACCESSIBILITY_SERVICES, "");
-    std::vector<std::string> services;
-    Utils::StringToVector(tmpString, services);
+    std::vector<std::string> services = config_->GetEnabledAccessibilityServices();
     auto iter = std::find(services.begin(), services.end(), SCREEN_READER_BUNDLE_ABILITY_NAME);
     return iter != services.end();
 }

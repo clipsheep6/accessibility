@@ -1396,23 +1396,22 @@ void AccessibleAbilityManagerService::RemovedUser(int32_t accountId)
 
 void AccessibleAbilityManagerService::SwitchedUser(int32_t accountId)
 {
-    HILOG_DEBUG();
-
     if (accountId == currentAccountId_) {
         HILOG_WARN("The account is current account id.");
         return;
     }
 
     std::map<std::string, uint32_t> importantEnabledAbilities;
+    bool screenReaderState = false;
     // Clear last account's data
     if (currentAccountId_ != -1) {
-        HILOG_DEBUG();
         sptr<AccessibilityAccountData> accountData = GetCurrentAccountData();
         if (!accountData) {
             HILOG_ERROR("Current account data is null");
             return;
         }
         defaultConfigCallbacks_ = accountData->GetConfigCallbacks();
+        screenReaderState = accountData->GetDefaultUserScreenReaderState();
         accountData->GetImportantEnabledAbilities(importantEnabledAbilities);
         accountData->OnAccountSwitched();
         UpdateAccessibilityManagerService();
@@ -1443,6 +1442,14 @@ void AccessibleAbilityManagerService::SwitchedUser(int32_t accountId)
     UpdateAllSetting();
     UpdateAutoStartAbilities();
     RegisterShortKeyEvent();
+    if (screenReaderState) {
+        uint32_t capabilities = CAPABILITY_GESTURE | CAPABILITY_KEY_EVENT_OBSERVER | CAPABILITY_RETRIEVE |
+            CAPABILITY_TOUCH_GUIDE | CAPABILITY_ZOOM;
+        RetError result = InnerEnableAbility(SCREEN_READER_BUNDLE_ABILITY_NAME, capabilities);
+        if (result != RET_OK) {
+            HILOG_ERROR("enableAbility failed.");
+        }
+    }
 }
 
 void AccessibleAbilityManagerService::PackageRemoved(const std::string &bundleName)
