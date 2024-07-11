@@ -22,6 +22,8 @@ namespace OHOS {
 namespace Accessibility {
 
 std::unordered_map<int32_t, int32_t> AccessibilityElementOperatorImpl::requestWindId_ = {};
+std::unordered_map<int32_t,
+    sptr<IAccessibilityElementOperatorCallback>> AccessibilityElementOperatorImpl::requests_ = {};
 AccessibilityElementOperatorImpl::AccessibilityElementOperatorImpl(int32_t windowId,
     const std::shared_ptr<AccessibilityElementOperator> &operation,
     AccessibilityElementOperatorCallback &callback)
@@ -180,6 +182,23 @@ int32_t AccessibilityElementOperatorImpl::GetWindIdByRequestId(const int32_t req
         return -1;
     }
     return requestWindId_[requestId];
+}
+
+sptr<IAccessibilityElementOperatorCallback> AccessibilityElementOperatorImpl::GetCallback(const int32_t requestId)
+{
+    if (requests_.find(requestId) == requests_.end()) {
+        return nullptr;
+    }
+    return requests_[requestId];
+}
+
+void AccessibilityElementOperatorImpl::EraseCallback(const int32_t requestId)
+{
+    auto iter = requests_.find(requestId);
+    if (iter != requests_.end()) {
+        requests_.erase(iter);
+    }
+    HILOG_DEBUG("Can't find the callback [requestId:%d]", requestId);
 }
 
 void AccessibilityElementOperatorImpl::SetSearchElementInfoByAccessibilityIdResult(
