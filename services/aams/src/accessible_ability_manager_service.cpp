@@ -58,9 +58,9 @@ namespace {
     constexpr int32_t REQUEST_ID_MAX = 0x0000FFFF;
     constexpr int32_t DEFAULT_ACCOUNT_ID = 100;
     constexpr int32_t UNLOAD_TASK_INTERNAL = 3 * 60 * 1000; // ms
-    constexpr int32_t ELEMENT_MOVE_BIT_SPLIT = 13;
     constexpr int32_t TREE_ID_INVALID = -1;
-    constexpr int32_t ELEMENT_MOVE_BIT = 51;
+    constexpr int32_t ELEMENT_MOVE_BIT = 32;
+    constexpr uint32_t MAX_ELEMENT_ID = 0x00FFFFFFFF;
 } // namespace
 
 const bool REGISTER_RESULT =
@@ -708,7 +708,7 @@ RetError AccessibleAbilityManagerService::RegisterElementOperator(Registration p
     ++treeId;
     int64_t nodeId = parameter.elementId;
     if (parameter.elementId > 0) {
-        nodeId = (parameter.elementId << ELEMENT_MOVE_BIT_SPLIT) >> ELEMENT_MOVE_BIT_SPLIT;
+        nodeId = MAX_ELEMENT_ID & parameter.elementId;
     }
     HILOG_INFO("get element and treeid - parameter.elementId[%{public}" PRId64 "] element[%{public}" PRId64 "]",
         parameter.elementId, nodeId);
