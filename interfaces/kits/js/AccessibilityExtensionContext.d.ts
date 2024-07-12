@@ -17,6 +17,8 @@ import type { AsyncCallback } from '../@ohos.base';
 import ExtensionContext from './ExtensionContext';
 import type accessibility from '../@ohos.accessibility';
 import type { GesturePath } from '../@ohos.accessibility.GesturePath';
+import type common from './@ohos.app.ability.common';
+import type Want from './@ohos.app.ability.Want';
 
 /**
  * The accessibility extension context. Used to configure, query information, and inject gestures.
@@ -230,6 +232,23 @@ export default class AccessibilityExtensionContext extends ExtensionContext {
    * @since 10
    */
   injectGestureSync(gesturePath: GesturePath): void;
+
+  
+   /**
+   * Starts the UIExtension. This method uses a promise to return the result.
+   *
+   * @param { common.UIAbilityContext } context - Indicates the UIAbility context of the caller.
+   * @param { Want } want - Indicates the request to the DLP manager.
+   * @returns { Promise<number> } Indicates the result code returned after the UIExtension is destroyed.
+   * @throws { BusinessError } 401 - Parameter error.
+   * @throws { BusinessError } 19100001 - Invalid parameter value.
+   * @throws { BusinessError } 19100011 - System service exception.
+   * @throws { BusinessError } 19100016 - Uri does not exist in want.
+   * @throws { BusinessError } 19100017 - DisplayName does not exist in want (under parameters).
+   * @syscap SystemCapability.Security.DataLossPrevention
+   * @StageModelOnly
+   */
+  startAbility(context: common.UIAbilityContext, want: Want): Promise<number>;
 }
 
 /**
