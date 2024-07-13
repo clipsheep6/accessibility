@@ -106,13 +106,12 @@ ErrCode AccessibleAbilityChannelStub::HandleSearchElementInfoByAccessibilityId(M
     }
 
     int32_t mode = data.ReadInt32();
-    if (mode == PREFETCH_RECURSIVE_CHILDREN) {
-        if (!Permission::CheckCallingPermission(OHOS_PERMISSION_QUERY_ACCESSIBILITY_ELEMENT) &&
-            !Permission::IsStartByHdcd()) {
-            HILOG_ERROR("no get element permission");
-            reply.WriteInt32(RET_ERR_NO_CONNECTION);
-            return NO_ERROR;
-        }
+
+    if (!Permission::CheckCallingPermission(OHOS_PERMISSION_QUERY_ACCESSIBILITY_ELEMENT) &&
+        !Permission::IsStartByHdcd()) {
+        HILOG_ERROR("no get element permission");
+        reply.WriteInt32(RET_ERR_NO_CONNECTION);
+        return NO_ERROR;
     }
 
     if (mode == GET_SOURCE_MODE) {
