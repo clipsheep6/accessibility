@@ -507,13 +507,7 @@ bool AccessibleAbilityManagerService::ExecuteActionOnAccessibilityFocused(const 
     } else {
         connection->GetProxy()->ExecuteAction(elementId, action, actionArguments, 1, actionCallback);
     }
-    std::future_status waitAction = actionFuture.wait_for(std::chrono::milliseconds(timeOut));
-    if (waitAction != std::future_status::ready) {
-        HILOG_ERROR("ExecuteAction Failed to wait result");
-        return false;
-    }
-
-    return actionCallback->executeActionResult_;
+    return true;
 }
 
 void AccessibleAbilityManagerService::SetFocusWindowId(const int32_t focusWindowId)
