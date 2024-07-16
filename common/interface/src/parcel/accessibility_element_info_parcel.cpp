@@ -129,6 +129,12 @@ bool AccessibilityElementInfoParcel::ReadFromParcelThirdPart(Parcel &parcel)
     READ_PARCEL_AND_RETURN_FALSE_IF_FAIL(Bool, parcel, validElement_);
     READ_PARCEL_AND_RETURN_FALSE_IF_FAIL(String, parcel, inspectorKey_);
     READ_PARCEL_AND_RETURN_FALSE_IF_FAIL(String, parcel, pagePath_);
+    READ_PARCEL_AND_RETURN_FALSE_IF_FAIL(Int32, parcel, zIndex_);
+    READ_PARCEL_AND_RETURN_FALSE_IF_FAIL(Float, parcel, opacity_);
+    READ_PARCEL_AND_RETURN_FALSE_IF_FAIL(String, parcel, backgroundColor_);
+    READ_PARCEL_AND_RETURN_FALSE_IF_FAIL(String, parcel, backgroundImage_);
+    READ_PARCEL_AND_RETURN_FALSE_IF_FAIL(String, parcel, blur_);
+    READ_PARCEL_AND_RETURN_FALSE_IF_FAIL(String, parcel, hitTestBehavior_);
     return true;
 }
 
@@ -219,6 +225,12 @@ bool AccessibilityElementInfoParcel::MarshallingSecondPart(Parcel &parcel) const
     WRITE_PARCEL_AND_RETURN_FALSE_IF_FAIL(Bool, parcel, validElement_);
     WRITE_PARCEL_AND_RETURN_FALSE_IF_FAIL(String, parcel, inspectorKey_);
     WRITE_PARCEL_AND_RETURN_FALSE_IF_FAIL(String, parcel, pagePath_);
+    WRITE_PARCEL_AND_RETURN_FALSE_IF_FAIL(Int32, parcel, zIndex_);
+    WRITE_PARCEL_AND_RETURN_FALSE_IF_FAIL(Float, parcel, opacity_);
+    WRITE_PARCEL_AND_RETURN_FALSE_IF_FAIL(String, parcel, backgroundColor_);
+    WRITE_PARCEL_AND_RETURN_FALSE_IF_FAIL(String, parcel, backgroundImage_);
+    WRITE_PARCEL_AND_RETURN_FALSE_IF_FAIL(String, parcel, blur_);
+    WRITE_PARCEL_AND_RETURN_FALSE_IF_FAIL(String, parcel, hitTestBehavior_);
     return true;
 }
 
