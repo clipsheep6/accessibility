@@ -167,7 +167,7 @@ public:
             elementId = CONT_SPLIT_ID;
             return;
         }
-        if ((elementId & MAX_ELEMENT_ID) != elementId) {
+        if ((static_cast<uint64_t>(elementId) & MAX_ELEMENT_ID) != elementId) {
             return;
         }
         uint64_t itemp = 0;
@@ -192,7 +192,7 @@ public:
             return;
         }
         splitTreeId = (static_cast<uint64_t>(elementId) >> ELEMENT_MOVE_BIT);
-        splitElementId = MAX_ELEMENT_ID & elementId;
+        splitElementId = MAX_ELEMENT_ID & static_cast<uint64_t>(elementId);
     }
 };
 } // namespace Accessibility
