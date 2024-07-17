@@ -470,8 +470,12 @@ bool AccessibilityAccountData::GetDefaultUserScreenReaderState()
 {
     HILOG_DEBUG();
     std::vector<std::string> services = config_->GetEnabledAccessibilityServices();
-    auto iter = std::find(services.begin(), services.end(), SCREEN_READER_BUNDLE_ABILITY_NAME);
-    return iter != services.end();
+    auto iter = std::find(services.begin(), services.end(), SCREEN_READER_BUNDLE_ABILITY_NAME);//com.huawei.hmos.screenreader/AccessibilityExtAbility
+    if(iter != services.end())
+    {
+        return true;
+    }
+    return false;
 }
 
 void AccessibilityAccountData::DelAutoStartPrefKeyInRemovePkg(const std::string &bundleName)
