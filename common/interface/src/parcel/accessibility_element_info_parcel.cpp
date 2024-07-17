@@ -131,6 +131,17 @@ bool AccessibilityElementInfoParcel::ReadFromParcelThirdPart(Parcel &parcel)
     READ_PARCEL_AND_RETURN_FALSE_IF_FAIL(Bool, parcel, validElement_);
     READ_PARCEL_AND_RETURN_FALSE_IF_FAIL(String, parcel, inspectorKey_);
     READ_PARCEL_AND_RETURN_FALSE_IF_FAIL(String, parcel, pagePath_);
+    int32_t spanListSize = 0;
+    READ_PARCEL_AND_RETURN_FALSE_IF_FAIL(Int32, parcel, spanListSize);
+    ContainerSecurityVerify(parcel, spanListSize, spanList_.max_size());
+    for (int32_t i = 0; i < spanListSize; i++) {
+        sptr<SpanInfoParcel> spanList = parcel.ReadStrongParcelable<SpanInfoParcel>();
+        if (!spanList) {
+            HILOG_ERROR("ReadStrongParcelable<spanList> failed");
+            return false;
+        }
+        spanList_.emplace_back(*spanList);
+    }
     READ_PARCEL_AND_RETURN_FALSE_IF_FAIL(Bool, parcel, accessibilityGroup_);
     READ_PARCEL_AND_RETURN_FALSE_IF_FAIL(String, parcel, accessibilityLevel_);
     return true;
@@ -223,6 +234,11 @@ bool AccessibilityElementInfoParcel::MarshallingSecondPart(Parcel &parcel) const
     WRITE_PARCEL_AND_RETURN_FALSE_IF_FAIL(Bool, parcel, validElement_);
     WRITE_PARCEL_AND_RETURN_FALSE_IF_FAIL(String, parcel, inspectorKey_);
     WRITE_PARCEL_AND_RETURN_FALSE_IF_FAIL(String, parcel, pagePath_);
+    WRITE_PARCEL_AND_RETURN_FALSE_IF_FAIL(Int32, parcel, spanList_.size());
+    for (auto &span : spanList_) {
+        SpanInfoParcel spanList(span);
+        WRITE_PARCEL_AND_RETURN_FALSE_IF_FAIL(Parcelable, parcel, &spanList);
+    }
     WRITE_PARCEL_AND_RETURN_FALSE_IF_FAIL(Bool, parcel, accessibilityGroup_);
     WRITE_PARCEL_AND_RETURN_FALSE_IF_FAIL(String, parcel, accessibilityLevel_);
     return true;
@@ -441,6 +457,46 @@ sptr<RectParcel> RectParcel::Unmarshalling(Parcel& parcel)
         return nullptr;
     }
     return rect;
+}
+
+SpanInfoParcel::SpanInfoParcel(const SpanInfo &spanInfo)
+{
+    SpanInfo *self = this;
+    *self = spanInfo;
+}
+
+bool SpanInfoParcel::ReadFromParcel(Parcel &parcel)
+{
+    READ_PARCEL_AND_RETURN_FALSE_IF_FAIL(Int32, parcel, spanId_);
+    READ_PARCEL_AND_RETURN_FALSE_IF_FAIL(String, parcel, spanText_);
+    READ_PARCEL_AND_RETURN_FALSE_IF_FAIL(String, parcel, accessibilityText_);
+    READ_PARCEL_AND_RETURN_FALSE_IF_FAIL(String, parcel, accessibilityDescription_);
+    READ_PARCEL_AND_RETURN_FALSE_IF_FAIL(String, parcel, accessibilityLevel_);
+    return true;
+}
+
+bool SpanInfoParcel::Marshalling(Parcel &parcel) const
+{
+    WRITE_PARCEL_AND_RETURN_FALSE_IF_FAIL(Int32, parcel, spanId_);
+    WRITE_PARCEL_AND_RETURN_FALSE_IF_FAIL(String, parcel, spanText_);
+    WRITE_PARCEL_AND_RETURN_FALSE_IF_FAIL(String, parcel, accessibilityText_);
+    WRITE_PARCEL_AND_RETURN_FALSE_IF_FAIL(String, parcel, accessibilityDescription_);
+    WRITE_PARCEL_AND_RETURN_FALSE_IF_FAIL(String, parcel, accessibilityLevel_);
+    return true;
+}
+
+sptr<SpanInfoParcel> SpanInfoParcel::Unmarshalling(Parcel& parcel)
+{
+    sptr<SpanInfoParcel> spanInfo = new(std::nothrow) SpanInfoParcel();
+    if (spanInfo == nullptr) {
+        HILOG_ERROR("Failed to create spanInfo.");
+        return nullptr;
+    }
+    if (!spanInfo->ReadFromParcel(parcel)) {
+        HILOG_ERROR("read from parcel failed");
+        return nullptr;
+    }
+    return spanInfo;
 }
 } // namespace Accessibility
 } // namespace OHOS
