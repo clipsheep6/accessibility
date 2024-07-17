@@ -37,7 +37,7 @@ public:
     AccessibleAbilityManagerServiceStubFuzzTest() = default;
     ~AccessibleAbilityManagerServiceStubFuzzTest() = default;
 
-    RetError SendEvent(const AccessibilityEventInfo &uiEvent) override {return RET_OK;}
+    RetError SendEvent(const AccessibilityEventInfo &uiEvent, const int32_t flag) override {return RET_OK;}
 
     uint32_t RegisterStateObserver(const sptr<IAccessibleAbilityManagerStateObserver> &callback) override {return 0;}
 
@@ -121,6 +121,7 @@ public:
     RetError GetFocusedWindowId(int32_t &focusedWindowId) override {return RET_OK;}
     uint32_t RegisterConfigObserver(const sptr<IAccessibleAbilityManagerConfigObserver> &callback) override {return 0;}
     void PostDelayUnloadTask() override {}
+    void RemoveRequestId(int32_t requestId) override {}
 };
 
 uint32_t GetU32Data(const uint8_t* ptr)

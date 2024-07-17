@@ -54,9 +54,10 @@ int MockAccessibleAbilityManagerServiceStub::OnRemoteRequest(
     return 0;
 }
 
-RetError MockAccessibleAbilityManagerServiceStub::SendEvent(const AccessibilityEventInfo &uiEvent)
+RetError MockAccessibleAbilityManagerServiceStub::SendEvent(const AccessibilityEventInfo &uiEvent, const int32_t flag)
 {
     (void)uiEvent;
+    (void)flag;
     return RET_OK;
 }
 
@@ -480,6 +481,11 @@ RetError MockAccessibleAbilityManagerServiceStub::GetFocusedWindowId(int32_t &fo
 {
     focusedWindowId = 1;
     return RET_OK;
+}
+
+void MockAccessibleAbilityManagerServiceStub::RemoveRequestId(int32_t requestId)
+{
+    (void)requestId;
 }
 } // namespace Accessibility
 } // namespace OHOS

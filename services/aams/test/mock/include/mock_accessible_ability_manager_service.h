@@ -28,7 +28,7 @@ class MockAccessibleAbilityManagerService : public AccessibleAbilityManagerServi
 public:
     MOCK_METHOD0(OnStart, void());
     MOCK_METHOD0(OnStop, void());
-    MOCK_METHOD1(SendEvent, RetError(const AccessibilityEventInfo& uiEvent));
+    MOCK_METHOD2(SendEvent, RetError(const AccessibilityEventInfo& uiEvent, const int32_t flag));
     MOCK_METHOD2(RegisterStateCallback,
         uint32_t(const sptr<AccessibleAbilityManagerServiceStub>& callback, const int32_t accountId));
     MOCK_METHOD2(RegisterCaptionPropertyCallback,
@@ -103,6 +103,7 @@ public:
     MOCK_METHOD1(ExecuteActionOnAccessibilityFocused, bool(const ActionType &action));
     MOCK_METHOD1(FindFocusedElement, bool(AccessibilityElementInfo &elementInfo));
     MOCK_METHOD1(GetFocusedWindowId, RetError(int32_t &focusedWindowId));
+    MOCK_METHOD1(RemoveRequestId, void(int32_t requestId));
 };
 } // namespace Accessibility
 } // namespace OHOS

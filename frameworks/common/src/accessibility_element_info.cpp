@@ -901,6 +901,24 @@ void AccessibilityElementInfo::SetHitTestBehavior(const std::string &hitTestBeha
 const std::string &AccessibilityElementInfo::GetHitTestBehavior() const
 {
     return hitTestBehavior_;
+const std::string &AccessibilityElementInfo::GetAccessibilityLevel() const
+{
+    return accessibilityLevel_;
+}
+
+bool AccessibilityElementInfo::GetAccessibilityGroup() const
+{
+    return accessibilityGroup_;
+}
+
+void AccessibilityElementInfo::SetAccessibilityGroup(const bool accessibilityGroup)
+{
+    accessibilityGroup_ = accessibilityGroup;
+}
+
+void AccessibilityElementInfo::SetAccessibilityLevel(const std::string accessibilityLevel)
+{
+    accessibilityLevel_ = accessibilityLevel;
 }
 } // namespace Accessibility
 } // namespace OHOS

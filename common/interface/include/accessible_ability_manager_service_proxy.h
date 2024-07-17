@@ -43,7 +43,7 @@ public:
      * @param uiEvent Indicates the accessibility event information specified by AccessibilityEventInfo.
      * @return Returns RET_OK if successful, otherwise refer to the RetError for the failure.
      */
-    virtual RetError SendEvent(const AccessibilityEventInfo &uiEvent) override;
+    virtual RetError SendEvent(const AccessibilityEventInfo &uiEvent, const int32_t flag) override;
 
     /**
      * @brief Register the state observer of AAMS.
@@ -165,6 +165,7 @@ public:
     virtual void GetRealWindowAndElementId(int32_t& windowId, int64_t& elementId) override;
     virtual void GetSceneBoardInnerWinId(int32_t windowId, int64_t elementId, int32_t& innerWid) override;
     virtual RetError GetFocusedWindowId(int32_t &focusedWindowId) override;
+    virtual void RemoveRequestId(int32_t requestId) override;
 private:
     /**
      * @brief Write the descriptor of IPC.

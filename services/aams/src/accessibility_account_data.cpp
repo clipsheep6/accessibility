@@ -52,6 +52,9 @@ namespace {
     const std::string ACCESSIBILITY_DISPLAY_DALTONIZER = "accessibility_display_daltonizer";
     const std::string SCREEN_READER_BUNDLE_ABILITY_NAME = "com.huawei.hmos.screenreader/AccessibilityExtAbility";
     const std::string DEVICE_PROVISIONED = "device_provisioned";
+    const std::string ENABLED_ACCESSIBILITY_SERVICES = "enabled_accessibility_services";
+    const std::string ACCESSIBILITY_SHORTCUT_ON_LOCK_SCREEN = "accessibility_shortcut_on_lock_screen";
+    const std::string ACCESSIBILITY_SHORTCUT_DIALOG_SHOWN = "accessibility_shortcut_dialog_shown";
 } // namespace
 
 AccessibilityAccountData::AccessibilityAccountData(int32_t accountId)
@@ -463,13 +466,12 @@ void AccessibilityAccountData::SetScreenReaderState(const std::string &name, con
     }
 }
 
-bool AccessibilityAccountData::GetScreenReaderState()
+bool AccessibilityAccountData::GetDefaultUserScreenReaderState()
 {
     HILOG_DEBUG();
-    AccessibilitySettingProvider& provider = AccessibilitySettingProvider::GetInstance(POWER_MANAGER_SERVICE_ID);
-    bool state = false;
-    provider.GetBoolValue(ACCESSIBILITY_SCREENREADER_ENABLED, state);
-    return state;
+    std::vector<std::string> services = config_->GetEnabledAccessibilityServices();
+    auto iter = std::find(services.begin(), services.end(), SCREEN_READER_BUNDLE_ABILITY_NAME);
+    return iter != services.end();
 }
 
 void AccessibilityAccountData::DelAutoStartPrefKeyInRemovePkg(const std::string &bundleName)
@@ -491,8 +493,8 @@ void AccessibilityAccountData::DelAutoStartPrefKeyInRemovePkg(const std::string 
 
 bool AccessibilityAccountData::GetAbilityAutoStartState(const std::string &name)
 {
-    if (name == SCREEN_READER_BUNDLE_ABILITY_NAME) {
-        return GetScreenReaderState();
+    if (name == SCREEN_READER_BUNDLE_ABILITY_NAME && GetAccountType() == AccountSA::OsAccountType::PRIVATE) {
+        return GetDefaultUserScreenReaderState();
     }
     if (!config_) {
         HILOG_WARN("config_ is nullptr.");
@@ -523,6 +525,8 @@ void AccessibilityAccountData::GetConfigValueAtoHos(ConfigValueAtoHosUpdate &val
     provider.GetBoolValue(MASTER_MONO, value.audioMono);
     provider.GetBoolValue(ACCESSIBILITY_SCREENREADER_ENABLED, value.isScreenReaderEnabled);
     provider.GetFloatValue(MASTER_BALENCE, value.audioBalance);
+    provider.GetBoolValue(ACCESSIBILITY_SHORTCUT_ON_LOCK_SCREEN, value.shortcutEnabledOnLockScreen);
+    provider.GetBoolValue(ACCESSIBILITY_SHORTCUT_DIALOG_SHOWN, value.shortcutDialogShown);
     int tmpClickResTime = 0;
     provider.GetIntValue(CLICK_RESPONSE_TIME, tmpClickResTime);
     if (tmpClickResTime == DOUBLE_CLICK_RESPONSE_TIME_MEDIUM) {
@@ -630,6 +634,10 @@ void AccessibilityAccountData::Init()
     if (!config_) {
         config_ = std::make_shared<AccessibilitySettingsConfig>(id_);
         config_->Init();
+    }
+    ErrCode rtn = AccountSA::OsAccountManager::GetOsAccountType(id_, accountType_);
+    if (rtn != ERR_OK) {
+        HILOG_ERROR("get account type failed for accountId [%{public}d]", id_);
     }
 }
 
@@ -779,9 +787,6 @@ uint32_t AccessibilityAccountData::GetInputFilterFlag() const
     }
     if (isGesturesSimulation_) {
         flag |= AccessibilityInputInterceptor::FEATURE_INJECT_TOUCH_EVENTS;
-    }
-    if (config_->GetShortKeyState()) {
-        flag |= AccessibilityInputInterceptor::FEATURE_SHORT_KEY;
     }
     if (config_->GetMouseKeyState()) {
         flag |= AccessibilityInputInterceptor::FEATURE_MOUSE_KEY;
@@ -994,12 +999,6 @@ void AccessibilityAccountData::RemoveUITestClient(sptr<AccessibleAbilityConnecti
 
 AccountSA::OsAccountType AccessibilityAccountData::GetAccountType()
 {
-    if (accountType_ == AccountSA::OsAccountType::END) {
-        ErrCode rtn = AccountSA::OsAccountManager::GetOsAccountType(id_, accountType_);
-        if (rtn != ERR_OK) {
-            HILOG_ERROR("get account type failed for accountId [%{public}d]", id_);
-        }
-    }
     return accountType_;
 }
 
@@ -1121,7 +1120,7 @@ void AccessibilityAccountData::AccessibilityAbility::GetDisableAbilities(
     for (auto& connection : connectionMap_) {
         for (auto iter = disabledAbilities.begin(); iter != disabledAbilities.end();) {
             if (connection.second && (iter->GetId() == connection.second->GetAbilityInfo().GetId())) {
-                disabledAbilities.erase(iter);
+                iter = disabledAbilities.erase(iter);
             } else {
                 iter++;
             }

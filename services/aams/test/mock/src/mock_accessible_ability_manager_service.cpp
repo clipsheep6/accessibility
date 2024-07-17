@@ -80,7 +80,7 @@ int AccessibleAbilityManagerService::Dump(int fd, const std::vector<std::u16stri
     return 0;
 }
 
-RetError AccessibleAbilityManagerService::SendEvent(const AccessibilityEventInfo& uiEvent)
+RetError AccessibleAbilityManagerService::SendEvent(const AccessibilityEventInfo& uiEvent, const int32_t flag)
 {
     HILOG_INFO("AccessibleAbilityManagerService::SendEvent successfully");
     EventType uTeventType = uiEvent.GetEventType();
@@ -257,6 +257,11 @@ RetError AccessibleAbilityManagerService::SetScreenMagnificationState(const bool
 }
 
 void AccessibleAbilityManagerService::UpdateAllSetting()
+{
+    return;
+}
+
+void AccessibleAbilityManagerService::UpdateShortKeyRegister()
 {
     return;
 }
@@ -607,6 +612,20 @@ int32_t AccessibleAbilityManagerService::GetTreeIdBySplitElementId(const int64_t
 {
     (void)elementId;
     return 0;
+}
+
+void AccessibleAbilityManagerService::RemoveRequestId(int32_t requestId)
+{
+    (void)requestId;
+}
+
+void AccessibleAbilityManagerService::AddRequestId(int32_t windowId, int32_t treeId, int32_t requestId,
+    sptr<IAccessibilityElementOperatorCallback> callback)
+{
+    (void)windowId;
+    (void)treeId;
+    (void)requestId;
+    (void)callback;
 }
 } // namespace Accessibility
 } // namespace OHOS
