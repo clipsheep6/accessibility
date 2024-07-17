@@ -843,6 +843,64 @@ int32_t AccessibilityElementInfo::GetParentWindowId() const
     return parentWindowId_;
 }
 
+void AccessibilityElementInfo::SetZIndex(const int32_t zIndex)
+{
+    zIndex_ = zIndex;
+}
+
+int32_t AccessibilityElementInfo::GetZIndex() const
+{
+    return zIndex_;
+}
+
+void AccessibilityElementInfo::SetOpacity(const float opacity)
+{
+    opacity_ = opacity;
+}
+
+float AccessibilityElementInfo::GetOpacity() const
+{
+    return opacity_;
+}
+
+void AccessibilityElementInfo::SetBackgroundColor(const std::string &backgroundColor)
+{
+    backgroundColor_ = backgroundColor;
+}
+
+const std::string &AccessibilityElementInfo::GetBackgroundColor() const
+{
+    return backgroundColor_;
+}
+
+void AccessibilityElementInfo::SetBackgroundImage(const std::string &backgroundImage)
+{
+    backgroundImage_ = backgroundImage;
+}
+
+const std::string &AccessibilityElementInfo::GetBackgroundImage() const
+{
+    return backgroundImage_;
+}
+
+void AccessibilityElementInfo::SetBlur(const std::string &blur)
+{
+    blur_ = blur;
+}
+
+const std::string &AccessibilityElementInfo::GetBlur() const
+{
+    return blur_;
+}
+
+void AccessibilityElementInfo::SetHitTestBehavior(const std::string &hitTestBehavior)
+{
+    hitTestBehavior_ = hitTestBehavior;
+}
+
+const std::string &AccessibilityElementInfo::GetHitTestBehavior() const
+{
+    return hitTestBehavior_;
 const std::string &AccessibilityElementInfo::GetAccessibilityLevel() const
 {
     return accessibilityLevel_;

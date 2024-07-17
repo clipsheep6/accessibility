@@ -234,6 +234,7 @@ public:
      */
     virtual RetError SetCacheMode(const int32_t cacheMode) override;
 
+  private:
     /**
      * @brief Find the node information by accessibility ID.
      * @param accessibilityWindowId The window id that the component belongs to.
