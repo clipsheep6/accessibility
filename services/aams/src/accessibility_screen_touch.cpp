@@ -232,7 +232,7 @@ void AccessibilityScreenTouch::HandleResponseDelayStateInnerDown(MMI::PointerEve
     }
 
     startTime_ = event.GetActionTime();
-    startPointer_ = pointerItem;
+    startPointer_ = std::make_shared<MMI::PointerEvent::PointerItem>(pointerItem);
     isMoveBeyondThreshold_ = false;
 
     circleCenterPhysicalX_ = pointerItem.GetDisplayX();
@@ -263,7 +263,11 @@ void AccessibilityScreenTouch::HandleResponseDelayStateInnerMove(MMI::PointerEve
         return;
     }
 
-    if (event.GetPointerId() != startPointer_.GetPointerId()) {
+    if (startPointer_ == nullptr) {
+        return;
+    }
+
+    if (event.GetPointerId() != startPointer_->GetPointerId()) {
         if (isStopDrawCircle_ == true) {
             EventTransmission::OnPointerEvent(event);
         }
@@ -275,8 +279,8 @@ void AccessibilityScreenTouch::HandleResponseDelayStateInnerMove(MMI::PointerEve
         HILOG_WARN("get GetPointerItem %{public}d failed", event.GetPointerId());
     }
 
-    float offsetX = startPointer_.GetDisplayX() - pointerItem.GetDisplayX();
-    float offsetY = startPointer_.GetDisplayY() - pointerItem.GetDisplayY();
+    float offsetX = startPointer_->GetDisplayX() - pointerItem.GetDisplayX();
+    float offsetY = startPointer_->GetDisplayY() - pointerItem.GetDisplayY();
     double duration = hypot(offsetX, offsetY);
     if (duration > threshold_) {
         handler_->RemoveEvent(FINGER_DOWN_DELAY_MSG);
@@ -324,7 +328,7 @@ void AccessibilityScreenTouch::HandleResponseDelayStateInnerUp(MMI::PointerEvent
         return;
     }
 
-    if (event.GetPointerId() == startPointer_.GetPointerId()) {
+    if (startPointer_ != nullptr && event.GetPointerId() == startPointer_->GetPointerId()) {
         handler_->RemoveEvent(FINGER_DOWN_DELAY_MSG);
         isStopDrawCircle_ = true;
         cachedDownPointerEvents_.clear();
@@ -479,12 +483,22 @@ void AccessibilityScreenTouch::Clear()
 {
     isMoveBeyondThreshold_ = false;
     isInterceptClick_ = false;
-    startPointer_ = {};
+    startPointer_ = nullptr;
 }
 
 bool AccessibilityScreenTouch::OnPointerEvent(MMI::PointerEvent &event)
 {
     HILOG_DEBUG();
+    MMI::PointerEvent::PointerItem pointerItem;
+    if (!event.GetPointerItem(event.GetPointerId(), pointerItem)) {
+        HILOG_WARN("get GetPointerItem %{public}d failed", event.GetPointerId());
+        return false;
+    }
+    if (pointerItem.GetToolType() == MMI::PointerEvent::TOOL_TYPE_KNUCKLE) {
+        EventTransmission::OnPointerEvent(event);
+        return false;
+    }
+
     if (event.GetSourceType() != MMI::PointerEvent::SOURCE_TYPE_TOUCHSCREEN) {
         EventTransmission::OnPointerEvent(event);
         return false;

@@ -80,7 +80,7 @@ int AccessibleAbilityManagerService::Dump(int fd, const std::vector<std::u16stri
     return 0;
 }
 
-RetError AccessibleAbilityManagerService::SendEvent(const AccessibilityEventInfo& uiEvent)
+RetError AccessibleAbilityManagerService::SendEvent(const AccessibilityEventInfo& uiEvent, const int32_t flag)
 {
     HILOG_INFO("AccessibleAbilityManagerService::SendEvent successfully");
     EventType uTeventType = uiEvent.GetEventType();
@@ -257,6 +257,11 @@ RetError AccessibleAbilityManagerService::SetScreenMagnificationState(const bool
 }
 
 void AccessibleAbilityManagerService::UpdateAllSetting()
+{
+    return;
+}
+
+void AccessibleAbilityManagerService::UpdateShortKeyRegister()
 {
     return;
 }

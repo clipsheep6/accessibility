@@ -23,6 +23,7 @@ namespace Accessibility {
 namespace {
     constexpr uint32_t DEFAULT_COLOR = 0xff000000;
     const int32_t DEFAULT_SCALE = 100;
+    const int32_t SHORT_KEY_TIMEOUT_BEFORE_USE = 3000; // ms
     const std::string ACCESSIBILITY = "accessibility";
     const std::string TOUCH_GUIDE_STATE = "touch_guide_state";
     const std::string GESTURE_KEY = "gesture_state";
@@ -51,6 +52,8 @@ namespace {
     const std::string WINDOW_COLOR = "accessibility_window_color";
     const std::string FONT_SCALE = "accessibility_font_scale";
     const std::string ENABLED_ACCESSIBILITY_SERVICES = "enabled_accessibility_services";
+    const std::string SHORTCUT_ENABLED_ON_LOCK_SCREEN = "accessibility_shortcut_enabled_on_lock_screen";
+    const std::string SHORTCUT_TIMEOUT = "accessibility_shortcut_timeout";
 } // namespace
 AccessibilitySettingsConfig::AccessibilitySettingsConfig(int32_t id)
 {
@@ -107,6 +110,23 @@ RetError AccessibilitySettingsConfig::SetShortKeyState(const bool state)
     return SetConfigState(SHORTCUT_ENABLED, state);
 }
 
+RetError AccessibilitySettingsConfig::SetShortKeyOnLockScreenState(const bool state)
+{
+    HILOG_DEBUG("state = [%{public}s]", state ? "True" : "False");
+    isShortKeyEnabledOnLockScreen_ = state;
+    return SetConfigState(SHORTCUT_ENABLED_ON_LOCK_SCREEN, state);
+}
+
+RetError AccessibilitySettingsConfig::SetShortKeyTimeout(const int32_t time)
+{
+    HILOG_DEBUG("time = [%{public}u]", time);
+    shortKeyTimeout_ = time;
+    if (!datashare_) {
+        return RET_ERR_NULLPTR;
+    }
+
+    return datashare_->PutIntValue(SHORTCUT_TIMEOUT, static_cast<int32_t>(time));
+}
 
 RetError AccessibilitySettingsConfig::SetStartFromAtoHosState(const bool state)
 {
@@ -148,6 +168,7 @@ RetError AccessibilitySettingsConfig::SetShortkeyTarget(const std::string &name)
 RetError AccessibilitySettingsConfig::SetShortkeyMultiTarget(const std::vector<std::string> &name)
 {
     HILOG_DEBUG();
+    std::lock_guard<std::mutex> lock(interfaceMutex_);
     shortkeyMultiTarget_ = name;
     if (!datashare_) {
         return RET_ERR_NULLPTR;
@@ -318,6 +339,16 @@ bool AccessibilitySettingsConfig::GetShortKeyState() const
     return isShortKeyState_;
 }
 
+bool AccessibilitySettingsConfig::GetShortKeyOnLockScreenState() const
+{
+    return isShortKeyEnabledOnLockScreen_;
+}
+
+int32_t AccessibilitySettingsConfig::GetShortKeyTimeout() const
+{
+    return shortKeyTimeout_;
+}
+
 bool AccessibilitySettingsConfig::GetMouseKeyState() const
 {
     return isMouseKeyState_;
@@ -333,9 +364,11 @@ const std::string &AccessibilitySettingsConfig::GetShortkeyTarget() const
     return shortkeyTarget_;
 }
 
-const std::vector<std::string> &AccessibilitySettingsConfig::GetShortkeyMultiTarget() const
+const std::vector<std::string> AccessibilitySettingsConfig::GetShortkeyMultiTarget()
 {
-    return shortkeyMultiTarget_;
+    std::lock_guard<std::mutex> lock(interfaceMutex_);
+    std::vector<std::string> rtnVec = shortkeyMultiTarget_;
+    return rtnVec;
 }
 
 bool AccessibilitySettingsConfig::GetHighContrastTextState() const
@@ -423,13 +456,16 @@ uint32_t AccessibilitySettingsConfig::GetIgnoreRepeatClickTime() const
     return ignoreRepeatClickTime_;
 }
 
-const std::vector<std::string> &AccessibilitySettingsConfig::GetEnabledAccessibilityServices()
+const std::vector<std::string> AccessibilitySettingsConfig::GetEnabledAccessibilityServices()
 {
-    return enabledAccessibilityServices_;
+    std::lock_guard<std::mutex> lock(interfaceMutex_);
+    std::vector<std::string> rtnVec = enabledAccessibilityServices_;
+    return rtnVec;
 }
 
 RetError AccessibilitySettingsConfig::AddEnabledAccessibilityService(const std::string &serviceName)
 {
+    std::lock_guard<std::mutex> lock(interfaceMutex_);
     auto iter = std::find(enabledAccessibilityServices_.begin(), enabledAccessibilityServices_.end(), serviceName);
     if (iter != enabledAccessibilityServices_.end()) {
         return RET_OK;
@@ -446,6 +482,7 @@ RetError AccessibilitySettingsConfig::AddEnabledAccessibilityService(const std::
 
 RetError AccessibilitySettingsConfig::RemoveEnabledAccessibilityService(const std::string &serviceName)
 {
+    std::lock_guard<std::mutex> lock(interfaceMutex_);
     auto iter = std::find(enabledAccessibilityServices_.begin(), enabledAccessibilityServices_.end(), serviceName);
     if (iter == enabledAccessibilityServices_.end()) {
         return RET_OK;
@@ -568,7 +605,9 @@ void AccessibilitySettingsConfig::InitSetting()
 
     isScreenMagnificationState_ = datashare_->GetBoolValue(SCREEN_MAGNIFICATION_KEY, false);
     isMouseKeyState_= datashare_->GetBoolValue(MOUSEKEY, false);
-    isShortKeyState_ = datashare_->GetBoolValue(SHORTCUT_ENABLED, false);
+    isShortKeyState_ = datashare_->GetBoolValue(SHORTCUT_ENABLED, true);
+    isShortKeyEnabledOnLockScreen_ = datashare_->GetBoolValue(SHORTCUT_ENABLED_ON_LOCK_SCREEN, false);
+    shortKeyTimeout_ = static_cast<int32_t>(datashare_->GetIntValue(SHORTCUT_TIMEOUT, SHORT_KEY_TIMEOUT_BEFORE_USE));
     animationOffState_ = datashare_->GetBoolValue(ANIMATION_OFF_KEY, false);
     invertColorState_ = datashare_->GetBoolValue(INVERT_COLOR_KEY, false);
     highContrastTextState_ = datashare_->GetBoolValue(HIGH_CONTRAST_TEXT_KEY, false);

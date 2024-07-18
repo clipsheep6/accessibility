@@ -26,6 +26,7 @@
 namespace OHOS {
 namespace Accessibility {
 using namespace Security::AccessToken;
+constexpr int32_t IS_EXTERNAL = 1;
 
 void AccessibleAbilityManagerServiceStub::AddSetConfigHandles()
 {
@@ -220,13 +221,13 @@ bool AccessibleAbilityManagerServiceStub::CheckPermission(const std::string &per
     int result = TypePermissionState::PERMISSION_GRANTED;
     ATokenTypeEnum tokenType = AccessTokenKit::GetTokenTypeFlag(callerToken);
     if (tokenType == TOKEN_INVALID) {
-        HILOG_WARN("AccessToken type:%{private}d, permission:%{private}d denied!", tokenType, callerToken);
+        HILOG_WARN("AccessToken type invalid!");
         return false;
     } else {
         result = AccessTokenKit::VerifyAccessToken(callerToken, permission);
     }
     if (result == TypePermissionState::PERMISSION_DENIED) {
-        HILOG_WARN("AccessTokenID:%{private}u, permission:%{private}s denied!", callerToken, permission.c_str());
+        HILOG_WARN("AccessTokenID denied!");
         return false;
     }
     HILOG_DEBUG("tokenType %{private}d dAccessTokenID:%{private}u, permission:%{private}s matched!",
@@ -271,7 +272,7 @@ ErrCode AccessibleAbilityManagerServiceStub::HandleSendEvent(MessageParcel &data
         HILOG_DEBUG("ReadStrongParcelable<AbilityInfo> failed");
         return TRANSACTION_ERR;
     }
-    SendEvent(*uiEvent);
+    SendEvent(*uiEvent, IS_EXTERNAL);
 
     return NO_ERROR;
 }
