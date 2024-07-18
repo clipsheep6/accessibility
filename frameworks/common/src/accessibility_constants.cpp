@@ -32,6 +32,7 @@ const std::string ACTION_ARGU_SELECT_TEXT_INFORWARD = "selectTextInForWard";
 const std::string ACTION_ARGU_SET_OFFSET = "offset";
 const std::string ACTION_ARGU_HTML_ELEMENT = "htmlItem";
 const std::string ACTION_ARGU_SET_TEXT = "setText";
+const std::string ACTION_ARGU_EXEC_SUB_COMPONENT = "execSubComponent";
 const std::string ACTION_ARGU_MOVE_UNIT = "textMoveUnit";
 
 // HtmlItemType
