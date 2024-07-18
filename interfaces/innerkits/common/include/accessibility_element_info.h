@@ -1435,6 +1435,20 @@ public:
     */
     const std::string &GetAccessibilityLevel() const;
 
+    /**
+     * @brief Set the navDestinationId to the element info.
+     * @param navDestinationId The navDestinationId of node.
+     * @sysCap Accessibility
+    */
+    void SetNavDestinationId(const int64_t navDestinationId);
+
+    /**
+     * @brief Get the navDestinationId to the element info.
+     * @return the navDestinationId
+     * @sysCap Accessibility
+    */
+    int64_t GetNavDestinationId() const;
+
 protected:
     int32_t pageId_ = -1;
     int32_t windowId_ = -1;
@@ -1501,6 +1515,7 @@ protected:
     float offset_ = 0.0f;
     bool accessibilityGroup_ = true;
     std::string accessibilityLevel_ = "auto";
+    int64_t navDestinationId_ = -1;
 };
 } // namespace Accessibility
 } // namespace OHOS

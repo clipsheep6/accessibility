@@ -862,5 +862,15 @@ void AccessibilityElementInfo::SetAccessibilityLevel(const std::string accessibi
 {
     accessibilityLevel_ = accessibilityLevel;
 }
+
+void AccessibilityElementInfo::SetNavDestinationId(const int64_t navDestinationId)
+{
+    navDestinationId_ = navDestinationId;
+}
+
+int64_t AccessibilityElementInfo::GetNavDestinationId() const
+{
+    return navDestinationId_;
+}
 } // namespace Accessibility
 } // namespace OHOS
