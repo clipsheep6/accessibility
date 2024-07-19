@@ -192,5 +192,10 @@ bool AccessibilityWindowManager::IsInnerWindowRootElement(int64_t elementId)
     (void)elementId;
     return true;
 }
+
+int32_t AccessibilityWindowManager::GetActiveWindowId()
+{
+    return 0;
+}
 } // namespace Accessibility
 } // namespace OHOS

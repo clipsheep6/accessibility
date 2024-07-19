@@ -1329,7 +1329,7 @@ RetError AccessibleAbilityManagerService::DisableUITestAbility()
 int32_t AccessibleAbilityManagerService::GetActiveWindow()
 {
     HILOG_DEBUG();
-    return Singleton<AccessibilityWindowManager>::GetInstance().activeWindowId_;
+    return Singleton<AccessibilityWindowManager>::GetInstance().GetActiveWindowId();
 }
 
 bool AccessibleAbilityManagerService::Init()
