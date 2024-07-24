@@ -1215,15 +1215,15 @@ RetError AccessibleAbilityManagerService::GetEnabledAbilities(std::vector<std::s
 
 RetError AccessibleAbilityManagerService::DisableAbility(const std::string &name)
 {
-    HILOG_DEBUG();
-    if (!handler_) {
+    HILOG_INFO();
+    if (!actionHandler_) {
         HILOG_ERROR("handler_ is nullptr.");
         return RET_ERR_NULLPTR;
     }
 
     std::promise<RetError> syncPromise;
     std::future syncFuture = syncPromise.get_future();
-    handler_->PostTask(std::bind([this, &syncPromise, &name]() -> void {
+    actionHandler_->PostTask(std::bind([this, &syncPromise, &name]() -> void {
         HILOG_DEBUG();
         RetError result = InnerDisableAbility(name);
         syncPromise.set_value(result);
@@ -1233,7 +1233,7 @@ RetError AccessibleAbilityManagerService::DisableAbility(const std::string &name
 
 RetError AccessibleAbilityManagerService::InnerDisableAbility(const std::string &name)
 {
-    HILOG_DEBUG();
+    HILOG_INFO();
     HITRACE_METER_NAME(HITRACE_TAG_ACCESSIBILITY_MANAGER, "InnerDisableAbility:" + name);
 
     sptr<AccessibilityAccountData> accountData = GetCurrentAccountData();
