@@ -31,7 +31,7 @@ namespace {
         "bundleName", "componentType", "inputType", "text", "hintText", "description", "triggerAction",
         "textMoveUnit", "contents", "lastContent", "itemCount", "currentIndex", "startIndex", "endIndex",
         "resourceName", "textLengthLimit", "rect", "checkable", "checked", "focusable", "isVisible",
-        "selected", "clickable", "longClickable", "isEnable", "isPassword", "scrollable",
+        "selected", "clickable", "longClickable", "isEnable", "isPassword", "scrollable", "navDestinationId",
         "editable", "pluralLineSupported", "parent", "children", "isFocused", "accessibilityFocused",
         "error", "isHint", "pageId", "valueMax", "valueMin", "valueNow", "windowId", "accessibilityText",
         "textType", "offset", "currentItem", "accessibilityGroup", "accessibilityLevel",  "span", "allAttribute"};
@@ -87,6 +87,7 @@ namespace {
         {"offset", &NAccessibilityElement::GetElementInfoOffset},
         {"accessibilityGroup", &NAccessibilityElement::GetElementInfoAccessibilityGroup},
         {"accessibilityLevel", &NAccessibilityElement::GetElementInfoAccessibilityLevel},
+        {"navDestinationId", &NAccessibilityElement::GetElementInfoNavDestinationId},
         {"currentItem", &NAccessibilityElement::GetElementInfoGridItem},
         {"span", &NAccessibilityElement::GetElementInfoSpan},
         {"allAttribute", &NAccessibilityElement::GetElementInfoAllAttribute},
@@ -261,7 +262,7 @@ void NAccessibilityElement::AttributeNamesComplete(napi_env env, napi_status sta
         // Callback mode
         result[PARAM0] = CreateBusinessError(env, OHOS::Accessibility::RetError::RET_OK);
         napi_get_reference_value(env, callbackInfo->callback_, &callback);
-        napi_value returnVal;
+        napi_value returnVal = nullptr;
         napi_call_function(env, undefined, callback, ARGS_SIZE_TWO, result, &returnVal);
         napi_delete_reference(env, callbackInfo->callback_);
     } else {
@@ -439,11 +440,11 @@ void NAccessibilityElement::AttributeValueComplete(napi_env env, napi_status sta
     HILOG_DEBUG("result is %{public}d", callbackInfo->ret_);
     result[PARAM0] = CreateBusinessError(env, callbackInfo->ret_);
     if (callbackInfo->callback_) {
-        napi_value callback;
-        napi_value returnVal;
-        napi_value undefined;
+        napi_value callback = nullptr;
+        napi_value returnVal = nullptr;
+        napi_value undefined = nullptr;
         napi_get_reference_value(env, callbackInfo->callback_, &callback);
-        napi_get_undefined(env, &undefined);
+        napi_get_undefined(env, &undefined); // 是否加判断
         napi_call_function(env, undefined, callback, ARGS_SIZE_TWO, result, &returnVal);
         napi_delete_reference(env, callbackInfo->callback_);
     } else {
@@ -978,6 +979,15 @@ void NAccessibilityElement::GetElementInfoAccessibilityLevel(NAccessibilityEleme
         callbackInfo->accessibilityElement_.elementInfo_->GetAccessibilityLevel().c_str(), NAPI_AUTO_LENGTH, &value));
 }
 
+void NAccessibilityElement::GetElementInfoNavDestinationId(NAccessibilityElementData *callbackInfo, napi_value &value)
+{
+    if (!CheckElementInfoParameter(callbackInfo, value)) {
+        return;
+    }
+    NAPI_CALL_RETURN_VOID(callbackInfo->env_, napi_create_int64(callbackInfo->env_,
+        callbackInfo->accessibilityElement_.elementInfo_->GetNavDestinationId(), &value));
+}
+
 void NAccessibilityElement::GetElementInfoAllAttribute(NAccessibilityElementData *callbackInfo, napi_value &value)
 {
     NAPI_CALL_RETURN_VOID(callbackInfo->env_, napi_create_object(callbackInfo->env_, &value));
@@ -1137,6 +1147,10 @@ void NAccessibilityElement::GetElementInfoAllAttribute3(NAccessibilityElementDat
     napi_value contents = nullptr;
     GetElementInfoContents(callbackInfo, contents);
     NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, value, "contents", contents));
+
+    napi_value navDestinationId = nullptr;
+    GetElementInfoNavDestinationId(callbackInfo, navDestinationId);
+    NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, value, "navDestinationId", navDestinationId));
 }
 
 void NAccessibilityElement::GetElementInfoAllAttribute4(NAccessibilityElementData *callbackInfo, napi_value &value)
@@ -1422,7 +1436,7 @@ void NAccessibilityElement::ActionNamesComplete(napi_env env, napi_status status
     if (callbackInfo->callback_) {
         // Callback mode
         napi_get_reference_value(env, callbackInfo->callback_, &callback);
-        napi_value returnVal;
+        napi_value returnVal = nullptr;
         napi_call_function(env, undefined, callback, ARGS_SIZE_TWO, result, &returnVal);
         napi_delete_reference(env, callbackInfo->callback_);
     } else {
@@ -1468,7 +1482,7 @@ napi_value NAccessibilityElement::PerformAction(napi_env env, napi_callback_info
 {
     size_t argc = ARGS_SIZE_THREE;
     napi_value argv[ARGS_SIZE_THREE] = {0};
-    napi_value thisVar;
+    napi_value thisVar = nullptr;
     void* data = nullptr;
     napi_status status = napi_get_cb_info(env, info, &argc, argv, &thisVar, &data);
     if (status != napi_ok) {
@@ -1623,7 +1637,7 @@ void NAccessibilityElement::PerformActionComplete(napi_env env, napi_status stat
     if (callbackInfo->callback_) {
         // Callback mode
         napi_get_reference_value(env, callbackInfo->callback_, &callback);
-        napi_value returnVal;
+        napi_value returnVal = nullptr;
         napi_call_function(env, undefined, callback, ARGS_SIZE_TWO, result, &returnVal);
         napi_delete_reference(env, callbackInfo->callback_);
     } else {
@@ -1644,7 +1658,7 @@ napi_value NAccessibilityElement::FindElement(napi_env env, napi_callback_info i
 {
     size_t argc = ARGS_SIZE_THREE;
     napi_value argv[ARGS_SIZE_THREE] = {0};
-    napi_value thisVar;
+    napi_value thisVar = nullptr;
     void* data = nullptr;
     napi_status status = napi_get_cb_info(env, info, &argc, argv, &thisVar, &data);
     if (status != napi_ok) {
@@ -1895,7 +1909,7 @@ void NAccessibilityElement::GetCursorPositionComplete(napi_env env, napi_status 
     if (callbackInfo->callback_) {
         // Callback mode
         napi_get_reference_value(env, callbackInfo->callback_, &callback);
-        napi_value returnVal;
+        napi_value returnVal = nullptr;
         napi_call_function(env, undefined, callback, ARGS_SIZE_TWO, result, &returnVal);
         HILOG_INFO("NAccessibilityElement::GetCursorPositionComplete   in CallbackMode");
         napi_delete_reference(env, callbackInfo->callback_);
@@ -1928,7 +1942,7 @@ void NAccessibilityElement::FindElementComplete(napi_env env, napi_status status
         HILOG_DEBUG("callback mode. result is %{public}d", callbackInfo->ret_);
         napi_value callback = 0;
         napi_get_reference_value(env, callbackInfo->callback_, &callback);
-        napi_value returnVal;
+        napi_value returnVal = nullptr;
         napi_value undefined = 0;
         napi_get_undefined(env, &undefined);
         napi_call_function(env, undefined, callback, ARGS_SIZE_TWO, result, &returnVal);
@@ -2038,7 +2052,7 @@ napi_value NAccessibilityElement::ErrorOperation(NAccessibilityElementData *call
                 // Callback mode
                 result[PARAM1] = undefined;
                 napi_get_reference_value(env, callbackInfo->callback_, &callback);
-                napi_value returnVal;
+                napi_value returnVal = nullptr;
                 napi_call_function(env, undefined, callback, ARGS_SIZE_TWO, result, &returnVal);
                 napi_delete_reference(env, callbackInfo->callback_);
             } else {
@@ -2059,7 +2073,7 @@ napi_value NAccessibilityElement::GetCursorPosition(napi_env env, napi_callback_
 {
     size_t argc = ARGS_SIZE_ONE;
     napi_value argv[ARGS_SIZE_ONE] = {0};
-    napi_value thisVar;
+    napi_value thisVar = nullptr;
     void* data = nullptr;
     napi_status status = napi_get_cb_info(env, info, &argc, argv, &thisVar, &data);
     if (status != napi_ok) {
