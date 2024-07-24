@@ -34,7 +34,7 @@ namespace {
         "selected", "clickable", "longClickable", "isEnable", "isPassword", "scrollable", "navDestinationId",
         "editable", "pluralLineSupported", "parent", "children", "isFocused", "accessibilityFocused",
         "error", "isHint", "pageId", "valueMax", "valueMin", "valueNow", "windowId", "accessibilityText",
-        "textType", "offset", "currentItem", "accessibilityGroup", "accessibilityLevel", "allAttribute"};
+        "textType", "offset", "currentItem", "accessibilityGroup", "accessibilityLevel",  "span", "allAttribute"};
     const std::vector<std::string> WINDOW_INFO_ATTRIBUTE_NAMES = {"isActive", "screenRect", "layer", "type",
         "rootElement", "isFocused", "windowId"};
 
@@ -89,6 +89,7 @@ namespace {
         {"accessibilityLevel", &NAccessibilityElement::GetElementInfoAccessibilityLevel},
         {"navDestinationId", &NAccessibilityElement::GetElementInfoNavDestinationId},
         {"currentItem", &NAccessibilityElement::GetElementInfoGridItem},
+        {"span", &NAccessibilityElement::GetElementInfoSpan},
         {"allAttribute", &NAccessibilityElement::GetElementInfoAllAttribute},
     };
     std::map<std::string, AttributeNamesFunc> windowInfoCompleteMap = {
@@ -880,6 +881,23 @@ void NAccessibilityElement::GetElementInfoContents(NAccessibilityElementData *ca
     }
 }
 
+void NAccessibilityElement::GetElementInfoSpan(NAccessibilityElementData *callbackInfo, napi_value &value)
+{
+    if (!CheckElementInfoParameter(callbackInfo, value)) {
+        return;
+    }
+    std::vector<SpanInfo> spanInfo {};
+    spanInfo = callbackInfo->accessibilityElement_.elementInfo_->GetSpanList();
+    HILOG_DEBUG("spanInfo size: [%{public}zu]", spanInfo.size());
+
+    NAPI_CALL_RETURN_VOID(callbackInfo->env_, napi_create_array(callbackInfo->env_, &value));
+    size_t index = 0;
+    for (auto& span : spanInfo) {
+        ConvertSpanToJS(callbackInfo->env_, value, span);
+        index++;
+    }
+}
+
 void NAccessibilityElement::GetElementInfoLastContent(NAccessibilityElementData *callbackInfo, napi_value &value)
 {
     if (!CheckElementInfoParameter(callbackInfo, value)) {
@@ -1062,6 +1080,10 @@ void NAccessibilityElement::GetElementInfoAllAttribute2(NAccessibilityElementDat
     napi_value isPassword = nullptr;
     GetElementInfoIsPassword(callbackInfo, isPassword);
     NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, value, "isPassword", isPassword));
+
+    napi_value span = nullptr;
+    GetElementInfoSpan(callbackInfo, span);
+    NAPI_CALL_RETURN_VOID(env, napi_set_named_property(env, value, "span", span));
 }
 
 void NAccessibilityElement::GetElementInfoAllAttribute3(NAccessibilityElementData *callbackInfo, napi_value &value)

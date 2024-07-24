@@ -36,6 +36,7 @@ extern const std::string ACTION_ARGU_SELECT_TEXT_INFORWARD;
 extern const std::string ACTION_ARGU_SET_OFFSET;
 extern const std::string ACTION_ARGU_HTML_ELEMENT;
 extern const std::string ACTION_ARGU_SET_TEXT;
+extern const std::string ACTION_ARGU_EXEC_SUB_COMPONENT;
 extern const std::string ACTION_ARGU_MOVE_UNIT;
 
 // HtmlItemType
