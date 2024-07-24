@@ -148,10 +148,17 @@ RetError AccessibilityDatashareHelper::PutStringValue(const std::string& key, co
         DataShare::DataSharePredicates predicates;
         predicates.EqualTo(SETTING_COLUMN_KEYWORD, key);
         Uri uri(AssembleUri(key));
-        if (dataShareHelper_->Update(uri, predicates, bucket) <= 0) {
-            HILOG_DEBUG("no data exist, insert one row");
-            auto ret = dataShareHelper_->Insert(uri, bucket);
-            HILOG_INFO("helper insert %{public}s ret(%{public}d).", key.c_str(), static_cast<int>(ret));
+        auto [errCode, status] = dataShareHelper_->Update(uri, predicates, bucket);
+        if (errCode == 0) {
+            HILOG_DEBUG("data exist, dataShareHelper updata success, status = %{public}d", status);
+        } else {
+            HILOG_WARN("dataShareHelper updata fail, errcode = %{public}d, no data exist, insert one row", errCode);
+            auto [errCode1, status1] = dataShareHelper_->Insert(uri, bucket);
+            if (errCode1 == 0) {
+                HILOG_DEBUG("dataShareHelper insert success, status = %{public}d", status1);
+            } else {
+                HILOG_ERROR("dataShareHelper insert fail, errcode = %{public}d", errCode1);
+            }
         }
         if (needNotify) {
             dataShareHelper_->NotifyChange(AssembleUri(key));
