@@ -89,6 +89,14 @@ enum ChangeAction : int32_t {
     HOVER_EXIT,
 };
 
+struct Ptpointer{
+    int32_t id;
+    float px_;
+    float py_;
+};
+
+enum TWO_FINGERS_DIR : int32_t {UNKNOWN,CLOSING,FARTHERING};    
+
 class TGEventHandler : public AppExecFwk::EventHandler {
 public:
     TGEventHandler(const std::shared_ptr<AppExecFwk::EventRunner> &runner,
@@ -444,6 +452,11 @@ private:
     void CancelPostEvent(uint32_t innerEventID);
 
     /**
+     * @brief figure out direction of passingthrough.
+     */
+    TWO_FINGERS_DIR IsPassingThrouth();
+
+    /**
      * @brief Cancel message if it has been sent.
      * @param innerEventID the id of inner event
      */
@@ -520,6 +533,9 @@ private:
     int32_t rightBottomY_ = INIT_POINT_DISPLAY;
     int32_t currentPid_ = -1;
     std::list<MMI::PointerEvent> cachedPointerEvents_ {};
+    std::list<Ptpointer> firstCache_ {};
+    std::list<Ptpointer> secondCache_ {};
+
 };
 } // namespace Accessibility
 } // namespace OHOS

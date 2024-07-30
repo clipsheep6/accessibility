@@ -604,7 +604,9 @@ std::string CoverGestureTypeToString(GestureType type)
         {GestureType::GESTURE_FOUR_FINGER_SWIPE_UP, "fourFingerSwipeUp"},
         {GestureType::GESTURE_FOUR_FINGER_SWIPE_DOWN, "fourFingerSwipeDown"},
         {GestureType::GESTURE_FOUR_FINGER_SWIPE_LEFT, "fourFingerSwipeLeft"},
-        {GestureType::GESTURE_FOUR_FINGER_SWIPE_RIGHT, "fourFingerSwipeRight"}
+        {GestureType::GESTURE_FOUR_FINGER_SWIPE_RIGHT, "fourFingerSwipeRight"},
+        {GestureType::GESTURE_TWO_FINGER_CLOSING,"twoFingerClosing"},
+        {GestureType::GESTURE_TWO_FINGER_FARTHERING,"twoFingerFarthering"}
     };
 
     if (gestureTypeTable.find(type) == gestureTypeTable.end()) {
