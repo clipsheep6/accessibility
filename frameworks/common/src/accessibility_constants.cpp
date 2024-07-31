@@ -33,6 +33,7 @@ const std::string ACTION_ARGU_SET_OFFSET = "offset";
 const std::string ACTION_ARGU_HTML_ELEMENT = "htmlItem";
 const std::string ACTION_ARGU_SET_TEXT = "setText";
 const std::string ACTION_ARGU_MOVE_UNIT = "textMoveUnit";
+const std::string ACTION_ARGU_EXEC_SUB_COMPONENT = "execSubComponent";
 
 // HtmlItemType
 const std::string HTML_ITEM_INVALID = "invalid";
