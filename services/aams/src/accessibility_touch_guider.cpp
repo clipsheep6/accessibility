@@ -574,10 +574,11 @@ float calculateDistance(const Ptpointer p1, const Ptpointer p2) {
 }
 
 TWO_FINGERS_DIR TouchGuider::IsPassingThrouth(){
-     if (firstCache_.size() != secondCache_.size()) {
-        std::cerr << "Error: The paths must have the same number of points." << std::endl;
-         return TWO_FINGERS_DIR::UNKNOWN;; // 错误，路径点数不一致
-    }
+    //  两根手指不会同时离开
+    //  if (firstCache_.size() != secondCache_.size()) {
+    //     std::cerr << "Error: The paths must have the same number of points." << std::endl;
+    //      return TWO_FINGERS_DIR::UNKNOWN;; // 错误，路径点数不一致
+    // }
 
     std::vector<float> distances;
     for (auto it1 = firstCache_.begin(), it2 = secondCache_.begin(); it1 != firstCache_.end() && it2 != secondCache_.end(); ++it1, ++it2) {
@@ -606,8 +607,15 @@ TWO_FINGERS_DIR TouchGuider::IsPassingThrouth(){
 void TouchGuider::HandlePassingThroughState(MMI::PointerEvent &event)
 {
     HILOG_DEBUG();
-    HILOG_INFO("PASSINGTHROUGHOOOOOOOOOOOO");
-    if(event.GetPointerAction() == MMI::PointerEvent::POINTER_ACTION_MOVE){
+    if(event.GetPointerAction() == MMI::PointerEvent::POINTER_ACTION_DOWN){
+        if (event.GetPointerIds().size() == POINTER_COUNT_1) {
+            Clear(event);
+        } else {
+            currentState_ = static_cast<int32_t>(TouchGuideState::TRANSMITTING);
+            SendAllUpEvents(event);
+        }
+    }
+    else if(event.GetPointerAction() == MMI::PointerEvent::POINTER_ACTION_MOVE){
         int32_t pointId = event.GetPointerId();
         MMI::PointerEvent::PointerItem pointerItem;
         Ptpointer pointer;
@@ -629,10 +637,11 @@ void TouchGuider::HandlePassingThroughState(MMI::PointerEvent &event)
             else{ firstCache_.push_back(pointer);}
         }
     }
-    if (event.GetPointerAction() == MMI::PointerEvent::POINTER_ACTION_UP &&
+    else if (event.GetPointerAction() == MMI::PointerEvent::POINTER_ACTION_UP &&
         event.GetPointerIds().size() == POINTER_COUNT_1) {
-        if(IsPassingThrouth() != TWO_FINGERS_DIR::UNKNOWN){
-            if(IsPassingThrouth() == TWO_FINGERS_DIR::CLOSING)
+        TWO_FINGERS_DIR temp = IsPassingThrouth();
+        if(temp != TWO_FINGERS_DIR::UNKNOWN){
+            if(temp == TWO_FINGERS_DIR::CLOSING)
                 SendGestureEventToAA(GestureType::GESTURE_TWO_FINGER_CLOSING);
             else
                 SendGestureEventToAA(GestureType::GESTURE_TWO_FINGER_FARTHERING);
