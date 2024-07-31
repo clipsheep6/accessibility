@@ -573,13 +573,83 @@ void TouchGuider::HandleTransmitingState(MMI::PointerEvent &event)
             break;
     }
 }
+float calculateDistance(const Ptpointer p1, const Ptpointer p2) {
+    return std::sqrt((p1.px_ - p2.px_) * (p1.px_ - p2.px_) + (p1.py_ - p2.py_) * (p1.py_ - p2.py_));
+}
 
+TWO_FINGERS_DIR TouchGuider::IsPassingThrouth(){
+    //  两根手指不会同时离开
+    //  if (firstCache_.size() != secondCache_.size()) {
+    //     std::cerr << "Error: The paths must have the same number of points." << std::endl;
+    //      return TWO_FINGERS_DIR::UNKNOWN;; // 错误，路径点数不一致
+    // }
+
+    std::vector<float> distances;
+    for (auto it1 = firstCache_.begin(), it2 = secondCache_.begin(); it1 != firstCache_.end() && it2 != secondCache_.end(); ++it1, ++it2) {
+        float dist = calculateDistance(*it1, *it2);
+        distances.push_back(dist);
+    }
+
+    // 判断趋势：如果所有距离都在增加，则返回1；如果所有距离都在减少，则返回-1；否则返回0
+    bool increasing = true;
+    bool decreasing = true;
+
+    for (size_t i = 1; i < distances.size(); ++i) {
+        if (distances[i] < distances[i - 1]) {
+            increasing = false;
+        } else if (distances[i] > distances[i - 1]) {
+            decreasing = false;
+        }
+        if (!increasing && !decreasing) break; // 如果趋势不一致，提前退出
+    }
+    firstCache_.clear();
+    secondCache_.clear();
+    if (increasing) return TWO_FINGERS_DIR::FARTHERING; // 变远
+    if (decreasing) return TWO_FINGERS_DIR::CLOSING; // 变近
+    return TWO_FINGERS_DIR::UNKNOWN; // 不一致，不满足逐渐变远或变近的条件
+}
 void TouchGuider::HandlePassingThroughState(MMI::PointerEvent &event)
 {
     HILOG_DEBUG();
-
-    if (event.GetPointerAction() == MMI::PointerEvent::POINTER_ACTION_UP &&
+    if(event.GetPointerAction() == MMI::PointerEvent::POINTER_ACTION_DOWN){
+        if (event.GetPointerIds().size() == POINTER_COUNT_1) {
+            Clear(event);
+        } else {
+            currentState_ = static_cast<int32_t>(TouchGuideState::TRANSMITTING);
+            SendAllUpEvents(event);
+        }
+    }
+    else if(event.GetPointerAction() == MMI::PointerEvent::POINTER_ACTION_MOVE){
+        int32_t pointId = event.GetPointerId();
+        MMI::PointerEvent::PointerItem pointerItem;
+        Ptpointer pointer;
+        if (!event.GetPointerItem(pointId, pointerItem)) {
+            HILOG_ERROR("GetPointerItem(%{public}d) failed", pointId);
+        }
+        pointer.id = pointId;
+        pointer.px_ = static_cast<float>(pointerItem.GetDisplayX());
+        pointer.py_ = static_cast<float>(pointerItem.GetDisplayY());
+        if (firstCache_.empty()) {
+        // 如果 firstCache_ 为空，直接插入 event
+        firstCache_.push_back(pointer);
+        } else {
+        // 如果 firstCache_ 不为空，检查 event 的 id 是否与 firstCache_ 的第一个元素的 id 相同
+            if (pointer.id != firstCache_.front().id) {
+            // 如果不同，放入 secondCache
+            secondCache_.push_back(pointer);
+            }
+            else{ firstCache_.push_back(pointer);}
+        }
+    }
+    else if (event.GetPointerAction() == MMI::PointerEvent::POINTER_ACTION_UP &&
         event.GetPointerIds().size() == POINTER_COUNT_1) {
+        TWO_FINGERS_DIR temp = IsPassingThrouth();
+        if(temp != TWO_FINGERS_DIR::UNKNOWN){
+            if(temp == TWO_FINGERS_DIR::CLOSING)
+                SendGestureEventToAA(GestureType::GESTURE_TWO_FINGER_CLOSING);
+            else
+                SendGestureEventToAA(GestureType::GESTURE_TWO_FINGER_FARTHERING);
+        }
         SendEventToMultimodal(event, NO_CHANGE);
         OnTouchInteractionEnd();
         currentState_ = static_cast<int32_t>(TouchGuideState::TOUCH_GUIDING);
