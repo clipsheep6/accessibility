@@ -124,6 +124,11 @@ std::shared_ptr<MMI::PointerEvent> TouchEventInjector::obtainTouchEvent(int32_t 
 {
     HILOG_DEBUG();
     std::shared_ptr<MMI::PointerEvent> pointerEvent = MMI::PointerEvent::Create();
+    if (pointerEvent == nullptr) {
+        HILOG_ERROR("pointerEvent is nullptr");
+        return ERR_INVALID_VALUE;
+    }
+    
     pointerEvent->SetPointerId(point.GetPointerId());
     pointerEvent->SetTargetDisplayId(0);
     pointerEvent->SetPointerAction(action);
