@@ -24,7 +24,7 @@
 namespace OHOS {
 namespace Accessibility {
 namespace {
-    constexpr int32_t SA_CONNECT_TIMEOUT = 500; // ms
+    constexpr int32_t SA_CONNECT_TIMEOUT = 1000; // ms
 } // namespaces
 
 static std::mutex g_Mutex;
