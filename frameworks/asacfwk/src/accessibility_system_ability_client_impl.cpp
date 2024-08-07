@@ -363,7 +363,7 @@ RetError AccessibilitySystemAbilityClientImpl::GetAbilityList(const uint32_t acc
         return RET_ERR_INVALID_PARAM;
     }
     if (serviceProxy_ == nullptr) {
-        if(!LoadAccessibilityService()){
+        if (!LoadAccessibilityService()) {
             HILOG_ERROR("Failed to get aams service");
             return RET_ERR_SAMGR;
         }
