@@ -736,6 +736,7 @@ void TouchGuider::HandleTouchGuidingStateInnerMove(MMI::PointerEvent &event)
             CancelPostEventIfNeed(SEND_HOVER_EXIT_MSG);
             if (!IsRealMoveState(event)) {
                 HILOG_DEBUG("not a move");
+                //TODO: 判断offset是否小于长按阈值，若是，做长按相应处理
                 break;
             }
             if (IsDragGestureAccept(event)) {

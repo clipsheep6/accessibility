@@ -677,6 +677,8 @@ void AccessibilityMultiTapGestureRecognizer::HandleMultiFingerMoveEvent(MMI::Poi
                 pId, pointerIterm.GetDisplayX(), pointerIterm.GetDisplayY(), basePointerIterm.GetDisplayX(),
                 basePointerIterm.GetDisplayY());
 
+    //TODO: 双指长按判断
+    
     // two finger move will cancel gesture, but three or four finger move will enter move gesture recognize
     if (!isMoveGestureRecognizing && hypot(offsetX, offsetY) > TOUCH_SLOP * downPointSize) {
         if (downPointSize == POINTER_COUNT_2) {
@@ -690,6 +692,19 @@ void AccessibilityMultiTapGestureRecognizer::HandleMultiFingerMoveEvent(MMI::Poi
     } else if (isMoveGestureRecognizing && (abs(offsetX) >= mMinPixelsBetweenSamplesX_ ||
         abs(offsetY) >= mMinPixelsBetweenSamplesY_)) {
         SaveMoveGesturePointerInfo(event, pId, pointerIterm, offsetX, offsetY);
+    }else{
+        if (event.GetPointerIds().size() == POINTER_COUNT_2) {
+            HILOG_DEBUG("two finger move offset less than slop");
+            int64_t startTime=basePointerIterm.GetEventTime();
+            int64_t eventTime=event.GetEventTime();
+            int64_t durationTime=eventTime-startTime;
+            if(durationTime>=LONG_PRESS_TIME_THRESHOLD){  
+                HILOG_DEBUG("two finger long press");
+                listener_->MultiFingerGestureOnStarted(false); //just to update TouchGuideState::TRANSMITTING
+                handler_->SendEvent(THREE_FINGER_LONG_PRESS_MSG, 0, LONG_PRESS_TIMEOUT / US_TO_MS);
+            }
+        }
+        
     }
 }
 

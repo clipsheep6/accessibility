@@ -33,6 +33,8 @@
 
 namespace OHOS {
 namespace Accessibility {
+    const int64_t LONG_PRESS_TIME_THRESHOLD = 300000; //microsecond
+
 namespace {
     constexpr uint32_t MAX_TAP_NUM = 3;
     constexpr uint32_t MAX_MULTI_FINGER_TYPE = 3;
@@ -433,6 +435,9 @@ private:
     int32_t moveDirection = -1;
     float mMinPixelsBetweenSamplesX_ = 0;
     float mMinPixelsBetweenSamplesY_ = 0;
+
+    bool isTwoFingerLongPress_ = false;
+    
 
     std::map<int32_t, std::shared_ptr<MMI::PointerEvent>> firstDownPoint_; // first round touch down points
     std::map<int32_t, std::shared_ptr<MMI::PointerEvent>> currentDownPoint_; // current round touch down points
