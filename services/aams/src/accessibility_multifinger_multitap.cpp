@@ -695,13 +695,14 @@ void AccessibilityMultiTapGestureRecognizer::HandleMultiFingerMoveEvent(MMI::Poi
     }else{
         if (event.GetPointerIds().size() == POINTER_COUNT_2) {
             HILOG_DEBUG("two finger move offset less than slop");
-            int64_t startTime=basePointerIterm.GetEventTime();
-            int64_t eventTime=event.GetEventTime();
+            int64_t startTime=basePointerIterm.GetDownTime();
+            int64_t eventTime=event.GetActionTime();
             int64_t durationTime=eventTime-startTime;
             if(durationTime>=LONG_PRESS_TIME_THRESHOLD){  
                 HILOG_DEBUG("two finger long press");
+                isTwoFingerLongPress_=true;
                 listener_->MultiFingerGestureOnStarted(false); //just to update TouchGuideState::TRANSMITTING
-                handler_->SendEvent(THREE_FINGER_LONG_PRESS_MSG, 0, LONG_PRESS_TIMEOUT / US_TO_MS);
+                handler_->SendEvent(TWO_FINGER_LONG_PRESS_MSG, 0, LONG_PRESS_TIMEOUT / US_TO_MS);
             }
         }
         
