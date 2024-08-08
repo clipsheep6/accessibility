@@ -178,6 +178,7 @@ int32_t AccessibilityElementOperatorImpl::AddRequest(int32_t requestId,
 
 int32_t AccessibilityElementOperatorImpl::GetWindIdByRequestId(const int32_t requestId)
 {
+    std::lock_guard<std::mutex> lock(mutex_);
     if (requestWindId_.find(requestId) == requestWindId_.end()) {
         return -1;
     }
@@ -301,6 +302,7 @@ void AccessibilityElementOperatorImpl::SetCursorPositionResult(const int32_t cur
 sptr<IAccessibilityElementOperatorCallback> AccessibilityElementOperatorImpl::GetCallbackByRequestId(
     const int32_t requestId)
 {
+    std::lock_guard<std::mutex> lock(mutex_);
     auto iter = requests_.find(requestId);
     if (iter == requests_.end()) {
         return nullptr;
@@ -310,6 +312,7 @@ sptr<IAccessibilityElementOperatorCallback> AccessibilityElementOperatorImpl::Ge
 
 void AccessibilityElementOperatorImpl::EraseCallback(const int32_t requestId)
 {
+    std::lock_guard<std::mutex> lock(mutex_);
     auto iter = requests_.find(requestId);
     if (iter != requests_.end()) {
         requests_.erase(iter);
