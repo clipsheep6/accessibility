@@ -239,6 +239,12 @@ int32_t SystemAbilityManagerProxy::GetCommonEventExtraDataIdlist(int32_t saId,
     return -1;
 }
 
+int32_t SystemAbilityManagerProxy::GetSaAttributeInfo(int32_t saId,
+    SaAttributeInfo& saAttributeInfo)
+{
+    return -1;
+}
+
 int32_t SystemAbilityManagerProxy::GetExtensionSaIds(const std::string& extension, std::vector<int32_t> &saIds)
 {
     return -1;
