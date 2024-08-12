@@ -193,6 +193,10 @@ void SystemAbility::OnActive(const SystemAbilityOnDemandReason& activeReason)
 }
 
 // The details should be implemented by subclass
+void SystemAbility::OnStart(std::unordered_map<std::string, std::string>& startReason)
+{}
+
+// The details should be implemented by subclass
 void SystemAbility::OnStop()
 {
     GTEST_LOG_(INFO) << "aams MOCK SystemAbility OnStop";
@@ -202,6 +206,10 @@ void SystemAbility::OnStop(const SystemAbilityOnDemandReason& stopReason)
 {
     GTEST_LOG_(INFO) << "aams MOCK SystemAbility OnStop";
 }
+
+// The details should be implemented by subclass
+void SystemAbility::OnStop(std::unordered_map<std::string, std::string>& stopReason)
+{}
 
 // The details should be implemented by subclass
 void SystemAbility::OnAddSystemAbility(int32_t systemAbilityId, const std::string& deviceId)
