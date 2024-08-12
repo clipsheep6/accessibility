@@ -252,9 +252,9 @@ public:
         return touchSlop_;
     }
 
-    boolean IsTwoFingerLongPress() const
+    bool IsTwoFingerLongPress() const
     {
-        return twoFingerLongPress_;
+        return isTwoFingerLongPress_;
     }
 private:
     /**
