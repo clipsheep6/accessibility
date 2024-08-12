@@ -576,6 +576,16 @@ void TouchGuider::HandleTransmitingState(MMI::PointerEvent &event)
                 currentState_ = static_cast<int32_t>(TouchGuideState::TOUCH_GUIDING);
             }
             break;
+        case MMI::PointerEvent::POINTER_ACTION_MOVE:
+            if(event.GetPointerIds().size() == POINTER_COUNT_2&&multiFingerGestureRecognizer_.IsTwoFingerLongPress()) {
+                for (auto iter = cachedPointerEvents_.begin(); iter != cachedPointerEvents_.end(); ++iter) {
+                    EventTransmission::OnPointerEvent(*iter);
+                }
+                cachedPointerEvents_.clear();
+                currentState_ = static_cast<int32_t>(TouchGuideState::PASSING_THROUGH);
+            }
+            SendEventToMultimodal(event, NO_CHANGE);
+            break;
         default:
             SendEventToMultimodal(event, NO_CHANGE);
             break;
@@ -753,6 +763,7 @@ void TouchGuider::HandleTouchGuidingStateInnerMove(MMI::PointerEvent &event)
             CancelPostEventIfNeed(SEND_HOVER_EXIT_MSG);
             if (!IsRealMoveState(event)) {
                 HILOG_DEBUG("not a move");
+                //TODO: 判断offset是否小于长按阈值，若是，做长按相应处理
                 break;
             }
             if (IsDragGestureAccept(event)) {
