@@ -139,6 +139,165 @@ HWTEST_F(AccessibilitySystemAbilityClientImplTest, RegisterElementOperator_004, 
 }
 
 /**
+ * @tc.number: RegisterElementOperator_005
+ * @tc.name: RegisterElementOperator
+ * @tc.desc: Test function RegisterElementOperator(parameter success)
+ */
+HWTEST_F(AccessibilitySystemAbilityClientImplTest, RegisterElementOperator_005, TestSize.Level1)
+{
+    GTEST_LOG_(INFO) << "RegisterElementOperator_005 start";
+    impl_ = std::make_shared<AccessibilitySystemAbilityClientImpl>();
+    if (!impl_) {
+        GTEST_LOG_(INFO) << "Cann't get AccessibilitySystemAbilityClientImpl impl_";
+        return;
+    }
+    Registration parameter;
+    parameter.windowId = -1;
+    parameter.parentWindowId = 0;
+    parameter.parentTreeId = 0;
+    parameter.elementId = 0;
+    std::shared_ptr<AccessibilityElementOperator> mockOperator = std::make_shared<MockAccessibilityElementOperator>();
+    EXPECT_EQ(RET_ERR_INVALID_PARAM, impl_->RegisterElementOperator(parameter, mockOperator));
+    impl_ = nullptr;
+    GTEST_LOG_(INFO) << "RegisterElementOperator_005 end";
+}
+
+/**
+ * @tc.number: RegisterElementOperator_006
+ * @tc.name: RegisterElementOperator
+ * @tc.desc: Test function RegisterElementOperator(parameter success)
+ */
+HWTEST_F(AccessibilitySystemAbilityClientImplTest, RegisterElementOperator_006, TestSize.Level1)
+{
+    GTEST_LOG_(INFO) << "RegisterElementOperator_006 start";
+    impl_ = std::make_shared<AccessibilitySystemAbilityClientImpl>();
+    if (!impl_) {
+        GTEST_LOG_(INFO) << "Cann't get AccessibilitySystemAbilityClientImpl impl_";
+        return;
+    }
+    Registration parameter;
+    parameter.windowId = 0;
+    parameter.parentWindowId = -1;
+    parameter.parentTreeId = 0;
+    parameter.elementId = 0;
+    std::shared_ptr<AccessibilityElementOperator> mockOperator = std::make_shared<MockAccessibilityElementOperator>();
+    EXPECT_EQ(RET_ERR_INVALID_PARAM, impl_->RegisterElementOperator(parameter, mockOperator));
+    impl_ = nullptr;
+    GTEST_LOG_(INFO) << "RegisterElementOperator_006 end";
+}
+
+/**
+ * @tc.number: RegisterElementOperator_007
+ * @tc.name: RegisterElementOperator
+ * @tc.desc: Test function RegisterElementOperator(parameter success)
+ */
+HWTEST_F(AccessibilitySystemAbilityClientImplTest, RegisterElementOperator_007, TestSize.Level1)
+{
+    GTEST_LOG_(INFO) << "RegisterElementOperator_007 start";
+    impl_ = std::make_shared<AccessibilitySystemAbilityClientImpl>();
+    if (!impl_) {
+        GTEST_LOG_(INFO) << "Cann't get AccessibilitySystemAbilityClientImpl impl_";
+        return;
+    }
+    Registration parameter;
+    parameter.windowId = 0;
+    parameter.parentWindowId = 0;
+    parameter.parentTreeId = -1;
+    parameter.elementId = 0;
+    std::shared_ptr<AccessibilityElementOperator> mockOperator = std::make_shared<MockAccessibilityElementOperator>();
+    EXPECT_EQ(RET_ERR_INVALID_PARAM, impl_->RegisterElementOperator(parameter, mockOperator));
+    impl_ = nullptr;
+    GTEST_LOG_(INFO) << "RegisterElementOperator_007 end";
+}
+
+/**
+ * @tc.number: RegisterElementOperator_008
+ * @tc.name: RegisterElementOperator
+ * @tc.desc: Test function RegisterElementOperator(parameter success)
+ */
+HWTEST_F(AccessibilitySystemAbilityClientImplTest, RegisterElementOperator_008, TestSize.Level1)
+{
+    GTEST_LOG_(INFO) << "RegisterElementOperator_008 start";
+    impl_ = std::make_shared<AccessibilitySystemAbilityClientImpl>();
+    if (!impl_) {
+        GTEST_LOG_(INFO) << "Cann't get AccessibilitySystemAbilityClientImpl impl_";
+        return;
+    }
+    Registration parameter;
+    parameter.windowId = 0;
+    parameter.parentWindowId = 0;
+    parameter.parentTreeId = 0;
+    parameter.elementId = -1;
+    std::shared_ptr<AccessibilityElementOperator> mockOperator = std::make_shared<MockAccessibilityElementOperator>();
+    EXPECT_EQ(RET_ERR_INVALID_PARAM, impl_->RegisterElementOperator(parameter, mockOperator));
+    impl_ = nullptr;
+    GTEST_LOG_(INFO) << "RegisterElementOperator_008 end";
+}
+
+/**
+ * @tc.number: RegisterElementOperator_009
+ * @tc.name: RegisterElementOperator
+ * @tc.desc: Test function RegisterElementOperator(parameter success)
+ */
+HWTEST_F(AccessibilitySystemAbilityClientImplTest, RegisterElementOperator_009, TestSize.Level1)
+{
+    GTEST_LOG_(INFO) << "RegisterElementOperator_009 start";
+    impl_ = std::make_shared<AccessibilitySystemAbilityClientImpl>();
+    if (!impl_) {
+        GTEST_LOG_(INFO) << "Cann't get AccessibilitySystemAbilityClientImpl impl_";
+        return;
+    }
+    Registration parameter;
+    parameter.windowId = 0;
+    parameter.parentWindowId = 0;
+    parameter.parentTreeId = 0;
+    parameter.elementId = 0;
+    std::shared_ptr<AccessibilityElementOperator> mockOperator = std::make_shared<MockAccessibilityElementOperator>();
+    EXPECT_EQ(RET_ERR_INVALID_PARAM, impl_->RegisterElementOperator(parameter, nullptr));
+    impl_ = nullptr;
+    GTEST_LOG_(INFO) << "RegisterElementOperator_009 end";
+}
+
+/**
+ * @tc.number: GetAccessibilityState_001
+ * @tc.name: GetAccessibilityState
+ * @tc.desc: Test function GetAccessibilityState()
+ */
+HWTEST_F(AccessibilitySystemAbilityClientImplTest, GetAccessibilityState_001, TestSize.Level1)
+{
+    GTEST_LOG_(INFO) << "GetAccessibilityState_001 start";
+    impl_ = std::make_shared<AccessibilitySystemAbilityClientImpl>();
+    if (!impl_) {
+        GTEST_LOG_(INFO) << "Cann't get AccessibilitySystemAbilityClientImpl impl_";
+        return;
+    }
+    impl_->GetAccessibilityState();
+    impl_ = nullptr;
+    GTEST_LOG_(INFO) << "GetAccessibilityState_001 end";
+}
+
+/**
+ * @tc.number: SetPerformActionResult_001
+ * @tc.name: SetPerformActionResult
+ * @tc.desc: Test function SetExecuteActionResult SetPerformActionResult(succeeded,requestId)
+ */
+HWTEST_F(AccessibilitySystemAbilityClientImplTest, SetPerformActionResult_001, TestSize.Level1)
+{
+    GTEST_LOG_(INFO) << "SetPerformActionResult_001 start";
+    impl_ = std::make_shared<AccessibilitySystemAbilityClientImpl>();
+    if (!impl_) {
+        GTEST_LOG_(INFO) << "Cann't get AccessibilitySystemAbilityClientImpl impl_";
+        return;
+    }
+    const bool succeeded = true;
+    const int32_t  requestId = 0;
+    impl_->SetPerformActionResult(succeeded, requestId);
+    impl_->SetExecuteActionResult(succeeded, requestId);
+    impl_ = nullptr;
+    GTEST_LOG_(INFO) << "SetPerformActionResult_001 end";
+}
+
+/**
  * @tc.number: DeregisterElementOperator_001
  * @tc.name: DeregisterElementOperator
  * @tc.desc: Test function DeregisterElementOperator
