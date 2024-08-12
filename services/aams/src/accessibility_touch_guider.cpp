@@ -553,7 +553,7 @@ void TouchGuider::HandleTransmitingState(MMI::PointerEvent &event)
                 currentState_ = static_cast<int32_t>(TouchGuideState::TOUCH_GUIDING);
             }
             break;
-        case: MMI::PointerEvent::POINTER_ACTION_MOVE:
+        case MMI::PointerEvent::POINTER_ACTION_MOVE:
             if(event.GetPointerIds().size() == POINTER_COUNT_2&&multiFingerGestureRecognizer_.IsTwoFingerLongPress()) {
                 for (auto iter = cachedPointerEvents_.begin(); iter != cachedPointerEvents_.end(); ++iter) {
                     EventTransmission::OnPointerEvent(*iter);
