@@ -251,6 +251,11 @@ public:
     {
         return touchSlop_;
     }
+
+    boolean IsTwoFingerLongPress() const
+    {
+        return twoFingerLongPress_;
+    }
 private:
     /**
      * @brief Cancle the pendding two finger gesture recognize event.

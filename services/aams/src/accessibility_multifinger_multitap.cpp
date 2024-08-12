@@ -705,7 +705,7 @@ void AccessibilityMultiTapGestureRecognizer::HandleMultiFingerMoveEvent(MMI::Poi
                 handler_->SendEvent(TWO_FINGER_LONG_PRESS_MSG, 0, LONG_PRESS_TIMEOUT / US_TO_MS);
             }
         }
-        
+
     }
 }
 
@@ -843,6 +843,7 @@ void AccessibilityMultiTapGestureRecognizer::HandleMultiFingerTouchUpEvent(MMI::
         pointerRoute_.clear();
         moveDirection = -1;
         isMoveGestureRecognizing = false;
+        isTwoFingerLongPress_=false;
     } else {
         fingerTouchUpState_ = FingerTouchUpState::NOT_ALL_FINGER_TOUCH_UP;
     }
